@@ -253,6 +253,46 @@ $output = qx{$perl $admin_bin --root $env->{server} log docs --warnings --exit 0
 is($?, 0, '--warnings --exit 0 exits 0');
 like($output, qr/No journal entries/, '--warnings composes with --exit');
 
+# --- several repo names in one query --------------------------------------
+$admin->repo_create(name => 'notes');
+my $notes_store = App::FileSync::Store->new(root => $env->{server}, repo => 'notes');
+$notes_store->journal({
+    client  => 'test-1',
+    action  => 'session',
+    result  => 'ok',
+    exit    => 0,
+    pulled  => 0,
+    pushed  => 0,
+    deleted => 0,
+    conflicts => 0,
+});
+
+$output = qx{$perl $admin_bin --root $env->{server} log docs 2>&1};
+unlike($output, qr/^docs:$/m, 'a single repo needs no heading');
+like($output, qr/^\d{8}T\d{6}Z/m, 'and its lines are not indented');
+
+$output = qx{$perl $admin_bin --root $env->{server} log docs notes 2>&1};
+is($?, 0, 'several names exit 0');
+like($output, qr/^docs:$/m, 'the first repo is headed');
+like($output, qr/^notes:$/m, 'the second repo is headed');
+like($output, qr/^docs:\n(?:  [^\n]*\n)*?  [^\n]*\sconflict\s+a\.txt/ms,
+    'the first repo lists its own events');
+like($output, qr/^notes:\n  \d{8}T\d{6}Z\s+test-1\s+session\s+exit=0/ms,
+    'the second repo follows under its own heading');
+
+$output = qx{$perl $admin_bin --root $env->{server} log docs notes --warnings 2>&1};
+is($?, 0, 'several names with --warnings exit 0');
+like($output, qr/^notes:\nNo journal entries for notes$/m,
+    'an empty repo says so under its heading');
+like($output, qr/session\s+exit=3 .*conflicts=1/,
+    'the repo with a conflict keeps its match');
+unlike($output, qr/^  .*\splan\s/m, 'the plan event is still excluded');
+
+$output = qx{$perl $admin_bin --root $env->{server} log docs nosuch 2>&1};
+isnt($?, 0, 'an unknown repo among several is an error');
+like($output, qr/No such repo 'nosuch'/, 'and names it');
+unlike($output, qr/^docs:$/m, 'and nothing was printed before the failure');
+
 # --- filesync-admin log --json -------------------------------------------
 {
     my $output = qx{$perl $admin_bin --root $env->{server} log docs --json 2>&1};
@@ -302,6 +342,24 @@ like($output, qr/No journal entries/, '--warnings composes with --exit');
     $data = App::FileSync::json_decode($output);
     is(scalar @{ $data->{results}[0]{events} }, 1, '-n applies to the JSON events');
     is($data->{results}[0]{events}[0]{action}, 'session', 'and keeps the newest');
+
+    $output = qx{$perl $admin_bin --root $env->{server} log docs notes --json 2>&1};
+    is($?, 0, 'several names with --json exit 0');
+    $data = App::FileSync::json_decode($output);
+    is_deeply([ map { $_->{repo} } @{ $data->{results} } ], [ 'docs', 'notes' ],
+        'one result per repo, in the order given');
+    is(scalar @{ $data->{results}[0]{events} }, scalar @{ events() },
+        'the first repo keeps every event');
+    is(scalar @{ $data->{results}[1]{events} }, 1, 'the second repo is queried too');
+    like($data->{results}[1]{path}, qr{repos/notes/journal\z},
+        'each result names its own journal directory');
+
+    $output = qx{$perl $admin_bin --root $env->{server} log docs notes --json --warnings 2>&1};
+    $data = App::FileSync::json_decode($output);
+    is_deeply([ map { scalar @{ $_->{events} } } @{ $data->{results} } ], [ 1, 0 ],
+        '--warnings filters each repo');
+    is_deeply([ map { $_->{warnings} } @{ $data->{results} } ], [ 1, 1 ],
+        'and is echoed on every result');
 }
 
 done_testing();

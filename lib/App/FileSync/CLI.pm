@@ -1086,33 +1086,42 @@ sub _admin_log {
         'exit=i@'  => \@exits,
         'warnings' => \$warnings,
         'json'     => \$json,
-    ) or die "Usage: filesync-admin log NAME [-n N] [--client ID] [--since DATE] "
+    ) or die "Usage: filesync-admin log NAME... [-n N] [--client ID] [--since DATE] "
         . "[--until DATE] [--exit N] [--warnings] [--json]\n";
 
     die "log: --exit must be between 0 and 255\n"
         if grep { $_ < 0 || $_ > 255 } @exits;
 
-    # Report a bad date before the repo is touched.
+    # Report a bad date before any repo is touched.
     App::FileSync::parse_since($since) if defined $since;
     App::FileSync::parse_until($until) if defined $until;
 
-    my $name = shift @args;
-    die "log: NAME is required\n" unless defined $name && length $name;
-    die "log: unexpected arguments: @args\n" if @args;
+    my @names = @args;
+    die "log: NAME is required\n" unless @names;
+    die "log: NAME must not be empty\n"
+        if grep { !defined $_ || !length $_ } @names;
 
     $limit = 20 unless defined $limit;
 
-    my $events = $admin->journal_read(
-        repo   => $name,
-        limit  => $limit,
-        client => $client,
-        since    => $since,
-        until    => $until,
-        exits    => \@exits,
-        warnings => $warnings,
-    );
+    # Check every name before printing, so text mode never shows a partial
+    # answer before failing on a later repo.
+    App::FileSync::Config::load_repo($admin->root, $_) for @names;
 
-    if ($json) {
+    my $multiple = @names > 1;
+    my $indent   = $multiple ? '  ' : '';
+    my @results;
+
+    for my $name (@names) {
+        my $events = $admin->journal_read(
+            repo     => $name,
+            limit    => $limit,
+            client   => $client,
+            since    => $since,
+            until    => $until,
+            exits    => \@exits,
+            warnings => $warnings,
+        );
+
         my %result = (
             repo   => $name,
             path   => $admin->journal_dir($name),
@@ -1124,45 +1133,51 @@ sub _admin_log {
         $result{exits}  = [ map { $_ + 0 } @exits ] if @exits;
         $result{warnings} = 1 if $warnings;
 
-        print json_encode({ results => [ \%result ] }), "\n";
-        return 0;
-    }
+        push @results, \%result;
+        next if $json;
 
-    if (!@{$events}) {
-        print "No journal entries for $name\n";
-        return 0;
-    }
+        # With one repo the lines stand alone; with several, head each group.
+        print "$name:\n" if $multiple;
 
-    for my $event (@{$events}) {
-        my @detail;
-
-        push @detail, $event->{path} if defined $event->{path};
-        push @detail, 'from=' . $event->{from} if defined $event->{from};
-        push @detail, 'winner=' . $event->{winner} if defined $event->{winner};
-        push @detail, 'loser=' . $event->{loser_name} if defined $event->{loser_name};
-        push @detail, 'exit=' . $event->{exit} if defined $event->{exit};
-        push @detail, 'trash=' . $event->{trash} if defined $event->{trash};
-        push @detail, 'sha256=' . $event->{sha256} if defined $event->{sha256};
-
-        for my $counter (qw(actions deletions conflicts pulled pushed deleted)) {
-            push @detail, "$counter=$event->{$counter}" if defined $event->{$counter};
+        if (!@{$events}) {
+            print "No journal entries for $name\n";
+            next;
         }
 
-        push @detail, 'dry-run' if $event->{dry_run};
-        push @detail, 'locked' if $event->{locked};
+        for my $event (@{$events}) {
+            my @detail;
 
-        if (defined $event->{error} && length $event->{error}) {
-            my $message = $event->{error};
-            $message =~ s/\s+/ /g;
-            push @detail, $message;
+            push @detail, $event->{path} if defined $event->{path};
+            push @detail, 'from=' . $event->{from} if defined $event->{from};
+            push @detail, 'winner=' . $event->{winner} if defined $event->{winner};
+            push @detail, 'loser=' . $event->{loser_name} if defined $event->{loser_name};
+            push @detail, 'exit=' . $event->{exit} if defined $event->{exit};
+            push @detail, 'trash=' . $event->{trash} if defined $event->{trash};
+            push @detail, 'sha256=' . $event->{sha256} if defined $event->{sha256};
+
+            for my $counter (qw(actions deletions conflicts pulled pushed deleted)) {
+                push @detail, "$counter=$event->{$counter}" if defined $event->{$counter};
+            }
+
+            push @detail, 'dry-run' if $event->{dry_run};
+            push @detail, 'locked' if $event->{locked};
+
+            if (defined $event->{error} && length $event->{error}) {
+                my $message = $event->{error};
+                $message =~ s/\s+/ /g;
+                push @detail, $message;
+            }
+
+            printf "%s%s  %-12s %-12s %s\n",
+                $indent,
+                format_utc($event->{ts}),
+                defined $event->{client} ? $event->{client} : '-',
+                defined $event->{action} ? $event->{action} : '?',
+                join(' ', @detail);
         }
-
-        printf "%s  %-12s %-12s %s\n",
-            format_utc($event->{ts}),
-            defined $event->{client} ? $event->{client} : '-',
-            defined $event->{action} ? $event->{action} : '?',
-            join(' ', @detail);
     }
+
+    print json_encode({ results => \@results }), "\n" if $json;
 
     return 0;
 }

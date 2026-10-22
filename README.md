@@ -130,6 +130,22 @@ rehashes the restored files on the next session, so there is no reindex step;
 clients then pull the restored versions, merging edits they have not synced as
 usual.  Re-enable the jobs once that first sync has finished.
 
+To restore just one file or directory, copy that path back instead of mirroring
+the whole tree, with the jobs paused as above so nothing changes the tree while
+the copy runs:
+
+```
+rsync -a --checksum /home/foo/backups/FileSync/notes/plan.txt /home/foo/FileSync/notes/
+rsync -a --checksum /home/foo/backups/FileSync/photos/ /home/foo/FileSync/photos/
+```
+
+The trailing slash on the second source copies the directory's contents; without
+it rsync would put the directory itself inside the destination.  Add `--delete`
+only when that directory should match the backup exactly, since it removes files
+created after the backup was taken.  Everything outside the restored paths is
+left alone, and the server rehashes them on the next session, so clients pull the
+restored versions without a reindex step.
+
 Adjust `/usr/local/bin/filesync` to where the script was installed, because
 cron's default PATH rarely includes a per-user Perl bin directory.
 
