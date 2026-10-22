@@ -1,0 +1,777 @@
+package App::FileSync::Server;
+
+use strict;
+use warnings;
+
+use Digest::SHA ();
+use File::Basename qw(dirname);
+use File::Path qw(make_path);
+use File::Spec;
+use Time::HiRes ();
+
+use App::FileSync qw(json_encode validate_relpath validate_client_id validate_repo_name);
+use App::FileSync::Merge;
+use App::FileSync::Protocol;
+use App::FileSync::Settings;
+use App::FileSync::Store;
+
+our $CHUNK = 262_144;
+our $PROTO = 1;
+
+sub new {
+    my ($class, %args) = @_;
+
+    for my $required (qw(root repo client role)) {
+        die "Server: no $required given\n"
+            unless defined $args{$required} && length $args{$required};
+    }
+
+    die "Server: bad role '$args{role}'\n"
+        unless $args{role} eq 'client' || $args{role} eq 'replica';
+
+    for my $pair ([repo => 'repo name'], [client => 'client id']) {
+        my ($field, $what) = @{$pair};
+        my ($ok, $reason) = $field eq 'repo'
+            ? validate_repo_name($args{$field})
+            : validate_client_id($args{$field});
+        die "Server: bad $what: $reason\n" unless $ok;
+    }
+
+    my $self = bless {
+        root   => $args{root},
+        repo   => $args{repo},
+        client => $args{client},
+        role   => $args{role},
+        conn   => $args{connection},
+        dry_run => 0,
+        force   => 0,
+        finished => 0,
+        uploads  => {},
+        client_manifest => {},
+        plan    => {},
+        index   => {},
+        base    => {},
+        base_after => {},
+        applied => {},
+        counts  => { pulled => 0, pushed => 0, deleted => 0, conflicts => 0 },
+        logger  => $args{logger} || App::FileSync::Settings::logger(),
+    }, $class;
+
+    die "Server: no connection\n" unless $self->{conn};
+
+    return $self;
+}
+
+sub run {
+    my ($self) = @_;
+
+    my $connection = $self->{conn};
+
+    my $ok = eval {
+        my $hello = $connection->recv();
+        $self->_validate_hello($hello);
+
+        $self->{store} = App::FileSync::Store->new(
+            root => $self->{root},
+            repo => $self->{repo},
+        );
+
+        $self->_check_client_allowed();
+
+        $self->{lock} = $self->{store}->acquire_lock();
+        unless ($self->{lock}) {
+            $self->{refusal} = 'locked';
+            die "Another sync session holds the lock for repo '$self->{repo}'\n";
+        }
+
+        $self->{index} = $self->{store}->load_index();
+        $self->{base}  = $self->{store}->load_base($self->{client});
+
+        $self->{store}->clean_stale_temps();
+        $self->{store}->prune_trash() unless $self->{dry_run};
+
+        $self->{logger}->info('session opened', {
+            repo   => $self->{repo},
+            client => $self->{client},
+            role   => $self->{role},
+        });
+
+        my $policy = $self->{store}->config();
+        $connection->send({
+            ok     => 1,
+            proto  => 1,
+            server => { os => $^O },
+            repo   => { name => $self->{repo} },
+            policy => {
+                ignore              => $policy->{ignore},
+                trash_days          => $policy->{trash_days},
+                max_deletes         => $policy->{max_deletes},
+                max_delete_percent  => $policy->{max_delete_percent},
+            },
+        });
+
+        $self->_loop();
+        1;
+    };
+
+    unless ($ok) {
+        my $error = $@ || 'unknown server error';
+        chomp $error;
+
+        $self->{logger}->error($error);
+
+        my %reply = (ok => 0, error => $error, fatal => 1);
+        $reply{code} = $self->{refusal} if $self->{refusal};
+        eval { $connection->send(\%reply) };
+        return 0;
+    }
+
+    return 1;
+}
+
+sub _validate_hello {
+    my ($self, $hello) = @_;
+
+    die "Unsupported protocol version\n"
+        unless defined $hello->{proto} && $hello->{proto} == $PROTO;
+
+    for my $field (qw(client repo role)) {
+        my $expected = $self->{$field};
+        my $given = defined $hello->{$field} ? $hello->{$field} : '';
+        die "Session is pinned to $field '$expected' but the client asked for '$given'\n"
+            unless $given eq $expected;
+    }
+
+    $self->{dry_run} = $hello->{dry_run} ? 1 : 0;
+    $self->{force}   = $hello->{force} ? 1 : 0;
+    $self->{case_insensitive} = $hello->{case_insensitive} ? 1 : 0;
+
+    return 1;
+}
+
+sub _check_client_allowed {
+    my ($self) = @_;
+
+    my $clients = $self->{store}->config()->{clients} || {};
+    return 1 unless keys %{$clients};
+
+    my $entry = $clients->{ $self->{client} };
+    die "Client '$self->{client}' is not allowed on repo '$self->{repo}'\n"
+        unless $entry;
+
+    my $role = ref($entry) eq 'HASH' ? ($entry->{role} || 'client') : 'client';
+    die "Client '$self->{client}' is registered as '$role', not '$self->{role}'\n"
+        unless $role eq $self->{role};
+
+    return 1;
+}
+
+sub _loop {
+    my ($self) = @_;
+
+    my $connection = $self->{conn};
+
+    while (!$self->{finished}) {
+        my $message = $connection->recv();
+        my $command = defined $message->{cmd} ? $message->{cmd} : '';
+
+        if ($command eq 'manifest') {
+            $self->_manifest($message);
+        } elsif ($command eq 'plan') {
+            $self->_plan($message);
+        } elsif ($command eq 'get') {
+            $self->_get($message);
+        } elsif ($command eq 'put') {
+            $self->_put($message);
+        } elsif ($command eq 'chunk') {
+            $self->_chunk($message);
+        } elsif ($command eq 'chunk_end') {
+            $self->_chunk_end($message);
+        } elsif ($command eq 'mkdir') {
+            $self->_mkdir($message);
+        } elsif ($command eq 'del') {
+            $self->_delete($message);
+        } elsif ($command eq 'ack') {
+            $self->_ack($message);
+        } elsif ($command eq 'done') {
+            $self->_finish();
+        } else {
+            die "Unknown command '$command'\n";
+        }
+    }
+
+    return 1;
+}
+
+sub _manifest {
+    my ($self, $message) = @_;
+
+    my $entries = $message->{entries};
+    die "Manifest is not a list\n" unless ref($entries) eq 'ARRAY';
+
+    for my $entry (@{$entries}) {
+        die "Manifest entry is not an object\n" unless ref($entry) eq 'HASH';
+
+        my $path = delete $entry->{p};
+        my ($safe, $reason) = validate_relpath($path);
+        die "Manifest path rejected: $reason\n" unless $safe;
+
+        my $type = defined $entry->{t} ? $entry->{t} : 'f';
+        die "Bad type for $path\n" unless $type eq 'f' || $type eq 'd';
+
+        if ($type eq 'd') {
+            $self->{client_manifest}{$path} = { t => 'd' };
+            next;
+        }
+
+        die "Bad hash for $path\n"
+            unless defined $entry->{h} && $entry->{h} =~ /\A[0-9a-f]{64}\z/;
+        die "Bad size for $path\n"
+            unless defined $entry->{s} && $entry->{s} =~ /\A\d+\z/;
+
+        $entry->{m} = 0 unless defined $entry->{m};
+        $entry->{mode} = oct(644) unless defined $entry->{mode};
+
+        $self->{client_manifest}{$path} = {
+            t    => 'f',
+            s    => $entry->{s} + 0,
+            m    => $entry->{m} + 0,
+            h    => $entry->{h},
+            mode => $entry->{mode} + 0,
+        };
+    }
+
+    $self->{conn}->send({ ok => 1 });
+    return 1;
+}
+
+sub _plan {
+    my ($self) = @_;
+
+    my $store = $self->{store};
+
+    my ($master, $stats, $skipped) = $store->walk_master($self->{index});
+    $self->{index} = $master;
+
+    my $config = $store->config();
+    my $plan = App::FileSync::Merge::plan(
+        base      => $self->{base},
+        client    => $self->{client_manifest},
+        master    => $master,
+        client_id => $self->{client},
+        role      => $self->{role},
+        now       => time,
+    );
+
+    my $refusal = App::FileSync::Merge::check_delete_limit(
+        deletions          => $plan->{deletions},
+        base_size          => scalar(keys %{ $self->{base} }),
+        max_deletes        => $config->{max_deletes},
+        max_delete_percent => $config->{max_delete_percent},
+        force              => $self->{force},
+    );
+
+    if (defined $refusal) {
+        die "$refusal\n";
+    }
+
+    # Two conflicts resolved in the same second would otherwise pick the same
+    # conflict-copy name; make each one unique against the master and the plan.
+    my %used_names;
+    for my $action (@{ $plan->{actions} }) {
+        next unless $action->{a} eq 'conflict' && defined $action->{loser_name};
+
+        my $candidate = $action->{loser_name};
+        my $suffix = 1;
+        while ($used_names{$candidate} || exists $self->{index}{$candidate}) {
+            $suffix++;
+            $candidate = _name_with_suffix($action->{loser_name}, $suffix);
+        }
+        $used_names{$candidate} = 1;
+        $action->{loser_name} = $candidate;
+    }
+
+    $self->{plan} = { map { $_->{p} => $_ } @{ $plan->{actions} } };
+    $self->{base_after} = { %{ $self->{client_manifest} } };
+
+    $self->{logger}->debug('plan', {
+        repo      => $self->{repo},
+        client    => $self->{client},
+        actions   => scalar @{ $plan->{actions} },
+        deletions => $plan->{deletions},
+        conflicts => $plan->{conflicts},
+        dry_run   => $self->{dry_run} ? 1 : 0,
+    });
+
+    $self->{store}->journal({
+        client  => $self->{client},
+        action  => 'plan',
+        dry_run => $self->{dry_run} ? 1 : 0,
+        actions => scalar @{ $plan->{actions} },
+        deletions => $plan->{deletions},
+        conflicts => $plan->{conflicts},
+    }) unless $self->{dry_run};
+
+    $self->{conn}->send({
+        ok       => 1,
+        actions  => $plan->{actions},
+        warnings => $plan->{warnings},
+    });
+
+    return 1;
+}
+
+sub _planned {
+    my ($self, $path) = @_;
+    return $self->{plan}{$path};
+}
+
+sub _get {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $action = $self->_planned($path)
+        or die "Read of unplanned path '$path'\n";
+
+    die "Read of '$path' is not in the plan\n"
+        unless $action->{a} eq 'pull'
+            || ($action->{a} eq 'conflict' && $action->{winner} eq 'remote');
+
+    my $abs = $self->{store}->abs_path($path);
+    my @stat = Time::HiRes::stat($abs);
+    die "Cannot stat $abs: $!\n" unless @stat;
+    die "Cannot send a directory for '$path'\n" unless -f _;
+
+    my $size = $stat[7];
+    my $offset = defined $message->{off} ? $message->{off} + 0 : 0;
+    my $max = defined $message->{max} ? $message->{max} + 0 : $CHUNK;
+
+    die "Invalid offset for '$path'\n" if $offset < 0 || $offset > $size;
+
+    my $length = $size - $offset;
+    $length = $max if $length > $max;
+    $length = 0 if $length < 0;
+
+    my $bytes = '';
+    if ($length > 0) {
+        open my $fh, '<', $abs or die "Cannot read $abs: $!\n";
+        binmode $fh;
+        seek($fh, $offset, 0) or die "Cannot seek in $abs: $!\n";
+
+        while (length($bytes) < $length) {
+            my $read = read($fh, my $part, $length - length($bytes));
+            die "Cannot read $abs: $!\n" unless defined $read;
+            last if $read == 0;
+            $bytes .= $part;
+        }
+        close $fh;
+    }
+
+    $self->{conn}->send({
+        ok   => 1,
+        len  => length($bytes),
+        eof  => ($offset + length($bytes) >= $size) ? 1 : 0,
+        s    => $size,
+        m    => $stat[9],
+        mode => $stat[2] & 07777,
+    });
+    $self->{conn}->send_bytes($bytes);
+
+    return 1;
+}
+
+sub _put {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $action = $self->_planned($path)
+        or die "Write of unplanned path '$path'\n";
+
+    my $is_conflict = $action->{a} eq 'conflict';
+    die "Write of '$path' is not in the plan\n"
+        unless $action->{a} eq 'push'
+            || ($is_conflict && $action->{winner} eq 'client');
+
+    die "Already receiving '$path'\n" if $self->{uploads}{$path};
+
+    $self->{store}->ensure_parent($path);
+
+    if ($is_conflict && defined $message->{conflict_name}) {
+        $self->_preserve_loser($path, $message->{conflict_name}, {
+            sha256 => $message->{h},
+            mtime  => $message->{m},
+        });
+    }
+
+    my $temp = $self->{store}->temp_path($path);
+    open my $fh, '>', $temp or die "Cannot write $temp: $!\n";
+    binmode $fh;
+
+    $self->{uploads}{$path} = {
+        fh    => $fh,
+        temp  => $temp,
+        sha   => Digest::SHA->new(256),
+        got   => 0,
+        size  => defined $message->{s} ? $message->{s} + 0 : undef,
+        hash  => $message->{h},
+        mtime => $message->{m},
+        mode  => $message->{mode},
+    };
+
+    $self->{conn}->send({ ok => 1, off => 0 });
+    return 1;
+}
+
+sub _chunk {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $upload = $self->{uploads}{$path}
+        or die "Data for '$path' without a put\n";
+
+    my $length = $message->{len};
+    die "Bad chunk length\n"
+        unless defined $length && $length =~ /\A\d+\z/ && $length <= 8 * 1024 * 1024;
+
+    my $bytes = $length ? $self->{conn}->read_bytes($length) : '';
+
+    print { $upload->{fh} } $bytes or do {
+        my $error = $!;
+        close $upload->{fh};
+        unlink $upload->{temp};
+        delete $self->{uploads}{$path};
+        die "Cannot write $upload->{temp}: $error\n";
+    };
+
+    $upload->{sha}->add($bytes);
+    $upload->{got} += $length;
+
+    $self->{conn}->send({ ok => 1, off => $upload->{got} });
+    return 1;
+}
+
+sub _chunk_end {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $upload = delete $self->{uploads}{$path}
+        or die "End of data for '$path' without a put\n";
+
+    close $upload->{fh} or do {
+        my $error = $!;
+        unlink $upload->{temp};
+        die "Cannot close $upload->{temp}: $error\n";
+    };
+
+    my $hash = $upload->{sha}->hexdigest();
+
+    if (defined $upload->{hash} && $hash ne $upload->{hash}) {
+        unlink $upload->{temp};
+        die "Hash mismatch for '$path': expected $upload->{hash}, got $hash\n";
+    }
+
+    if (defined $upload->{size} && $upload->{got} != $upload->{size}) {
+        unlink $upload->{temp};
+        die "Size mismatch for '$path': expected $upload->{size}, got $upload->{got}\n";
+    }
+
+    $self->{store}->commit_temp($path, $upload->{temp}, $upload->{mtime}, $upload->{mode});
+
+    my $entry = {
+        t    => 'f',
+        s    => $upload->{got},
+        m    => defined $upload->{mtime} ? $upload->{mtime} : time,
+        h    => $hash,
+        mode => defined $upload->{mode} ? $upload->{mode} : oct(644),
+    };
+
+    $self->{index}{$path}      = $entry;
+    $self->{base_after}{$path} = { %{$entry} };
+
+    $self->{store}->journal({
+        client => $self->{client},
+        action => 'push',
+        path   => $path,
+        size   => $upload->{got},
+        sha256 => $hash,
+        result => 'ok',
+    });
+
+    $self->{applied}{$path} = 1;
+    $self->{conn}->send({ ok => 1 });
+    return 1;
+}
+
+sub _mkdir {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $action = $self->_planned($path)
+        or die "Directory creation for unplanned path '$path'\n";
+
+    die "Directory creation for '$path' is not in the plan\n"
+        unless $action->{a} eq 'push'
+            || ($action->{a} eq 'conflict' && $action->{winner} eq 'client');
+
+    my $abs = $self->{store}->abs_path($path);
+    make_path($abs) unless -d $abs;
+
+    $self->{index}{$path}      = { t => 'd' };
+    $self->{base_after}{$path} = { t => 'd' };
+
+    $self->{store}->journal({
+        client => $self->{client},
+        action => 'mkdir',
+        path   => $path,
+        result => 'ok',
+    });
+
+    $self->{applied}{$path} = 1;
+    $self->{conn}->send({ ok => 1 });
+    return 1;
+}
+
+sub _delete {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $action = $self->_planned($path)
+        or die "Deletion of unplanned path '$path'\n";
+
+    die "Deletion of '$path' is not in the plan\n"
+        unless $action->{a} eq 'delete_remote';
+
+    my $trashed = $self->{store}->move_to_trash($path, time);
+
+    $self->{applied}{$path} = 1;
+    delete $self->{index}{$path};
+    delete $self->{base_after}{$path};
+
+    $self->{store}->journal({
+        client => $self->{client},
+        action => 'delete',
+        path   => $path,
+        trash  => $trashed,
+        result => 'ok',
+    });
+
+    $self->{conn}->send({ ok => 1, trash => $trashed });
+    return 1;
+}
+
+sub _ack {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $action = $self->_planned($path) or die "Ack for unplanned path '$path'\n";
+
+    if ($message->{deleted}) {
+        delete $self->{base_after}{$path};
+    } elsif (($message->{t} || '') eq 'd') {
+        $self->{base_after}{$path} = { t => 'd' };
+    } else {
+        die "Bad ack hash for '$path'\n"
+            unless defined $message->{h} && $message->{h} =~ /\A[0-9a-f]{64}\z/;
+
+        $self->{base_after}{$path} = {
+            t    => 'f',
+            s    => defined $message->{s} ? $message->{s} + 0 : 0,
+            m    => defined $message->{m} ? $message->{m} + 0 : 0,
+            h    => $message->{h},
+            mode => defined $message->{mode} ? $message->{mode} + 0 : oct(644),
+        };
+    }
+
+    if (($action->{a} || '') eq 'conflict' && ($action->{winner} || '') eq 'remote') {
+        my $loser  = $self->{client_manifest}{$path} || {};
+        my $winner = $self->{index}{$path} || {};
+
+        $self->{store}->journal({
+            client        => $self->{client},
+            action        => 'conflict',
+            path          => $path,
+            winner        => 'remote',
+            loser_name    => $action->{loser_name},
+            winner_sha256 => $winner->{h},
+            winner_mtime  => $winner->{m},
+            loser_sha256  => $loser->{h},
+            loser_mtime   => $loser->{m},
+            result        => 'ok',
+        });
+    }
+
+    $self->{applied}{$path} = 1;
+    $self->{conn}->send({ ok => 1 });
+    return 1;
+}
+
+# Move the master's losing version aside before the client's version is written.
+sub _preserve_loser {
+    my ($self, $path, $conflict_rel, $winner) = @_;
+    $winner ||= {};
+
+    my ($safe, $reason) = validate_relpath($conflict_rel);
+    die "Unsafe conflict name: $reason\n" unless $safe;
+    die "Conflict name is the same as the path\n" if $conflict_rel eq $path;
+
+    my $abs = $self->{store}->abs_path($path);
+    return 1 unless -e $abs || -l $abs;
+
+    my $destination = $self->{store}->abs_path($conflict_rel);
+    die "Conflict copy already exists: $conflict_rel\n"
+        if -e $destination || -l $destination;
+
+    make_path(dirname($destination)) unless -d dirname($destination);
+
+    rename($abs, $destination)
+        or die "Cannot preserve $path as $conflict_rel: $!\n";
+
+    my $old = $self->{index}{$path};
+    delete $self->{index}{$path};
+    $self->{index}{$conflict_rel} = $old if $old;
+
+    $self->{store}->journal({
+        client => $self->{client},
+        action => 'conflict_copy',
+        path   => $conflict_rel,
+        from   => $path,
+        sha256 => $old ? $old->{h} : undef,
+        result => 'ok',
+    });
+
+    $self->{store}->journal({
+        client        => $self->{client},
+        action        => 'conflict',
+        path          => $path,
+        winner        => 'client',
+        loser_name    => $conflict_rel,
+        winner_sha256 => $winner->{sha256},
+        winner_mtime  => $winner->{mtime},
+        loser_sha256  => $old ? $old->{h} : undef,
+        loser_mtime   => $old ? $old->{m} : undef,
+        result        => 'ok',
+    });
+
+    return 1;
+}
+
+# The pinned arguments in authorized_keys are the authority for a session.
+# sshd passes the command the client asked for in SSH_ORIGINAL_COMMAND, so check
+# that it agrees with the pinned repo, client, role and protocol and asks for
+# nothing else: in particular it may not choose its own --root.
+sub validate_forced_command {
+    my ($original, $pinned) = @_;
+
+    return (1, undef) unless defined $original;
+    $original =~ s/\A\s+//;
+    $original =~ s/\s+\z//;
+    return (1, undef) unless length $original;
+
+    my @tokens = split /\s+/, $original;
+
+    if (@tokens && $tokens[0] !~ /\A--/) {
+        my $program = shift @tokens;
+        return (0, "unexpected program '$program' in the remote command")
+            unless $program =~ m{(?:\A|/)filesync-server\z};
+    }
+
+    my %allowed = (
+        repo   => 'repo',
+        client => 'client',
+        role   => 'role',
+        proto  => 'proto',
+    );
+
+    while (@tokens) {
+        my $token = shift @tokens;
+        return (0, "unexpected argument '$token' in the remote command")
+            unless $token =~ /\A--([a-z][a-z-]*)(?:=(.*))?\z/s;
+
+        my ($flag, $value) = ($1, $2);
+        unless (defined $value) {
+            return (0, "the remote command gives --$flag without a value")
+                unless @tokens;
+            $value = shift @tokens;
+        }
+
+        my $field = $allowed{$flag};
+        return (0, "the remote command may not set --$flag") unless $field;
+
+        if ($field eq 'proto') {
+            return (0, "the remote command asks for protocol '$value'")
+                unless $value eq $PROTO;
+            next;
+        }
+
+        my $expected = $pinned->{$field};
+        return (0, "the remote command asks for $field '$value' but this key is pinned to "
+                . "'$expected'")
+            unless defined $expected && $value eq $expected;
+    }
+
+    return (1, undef);
+}
+
+sub _finish {
+    my ($self) = @_;
+
+    my $store = $self->{store};
+
+    unless ($self->{dry_run}) {
+        my @unfinished = grep { !$self->{applied}{ $_->{p} } } values %{ $self->{plan} };
+        die 'Session ended before all actions completed: '
+            . join(', ', map { $_->{p} } @unfinished) . "\n"
+            if @unfinished;
+    }
+
+    unless ($self->{dry_run}) {
+        $store->save_index($self->{index});
+        $store->save_base($self->{client}, $self->{base_after});
+    }
+
+    my $summary = {
+        pulled    => scalar(grep { $_->{a} eq 'pull' } values %{ $self->{plan} }),
+        pushed    => scalar(grep { $_->{a} eq 'push' } values %{ $self->{plan} }),
+        deleted   => scalar(grep { $_->{a} =~ /\Adelete_/ } values %{ $self->{plan} }),
+        conflicts => scalar(grep { $_->{a} eq 'conflict' } values %{ $self->{plan} }),
+    };
+
+    $self->{logger}->info('session finished', {
+        repo => $self->{repo},
+        client => $self->{client},
+        %{$summary},
+        dry_run => $self->{dry_run} ? 1 : 0,
+    });
+
+    $self->{store}->journal({
+        client  => $self->{client},
+        action  => 'session',
+        result  => 'ok',
+        dry_run => $self->{dry_run} ? 1 : 0,
+        %{$summary},
+    }) unless $self->{dry_run};
+
+    $self->{conn}->send({ ok => 1, summary => $summary });
+    $self->{finished} = 1;
+
+    return 1;
+}
+
+sub _name_with_suffix {
+    my ($name, $suffix) = @_;
+
+    my ($dir, $base) = ('', $name);
+    if ($name =~ m{\A(.*)/([^/]+)\z}) {
+        ($dir, $base) = ($1, $2);
+    }
+
+    my ($stem, $ext) = ($base, '');
+    if ($base =~ /\A(.+)(\.[^.]+)\z/) {
+        ($stem, $ext) = ($1, $2);
+    }
+
+    my $new = "$stem-$suffix$ext";
+    return length($dir) ? "$dir/$new" : $new;
+}
+
+1;
