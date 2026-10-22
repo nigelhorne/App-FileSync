@@ -1,7 +1,5 @@
 # Generated from Makefile.PL using makefilepl2cpanfile
 
-requires 'perl', '5.020';
-
 requires 'Carp';
 requires 'Digest::SHA';
 requires 'Encode';
@@ -22,13 +20,16 @@ requires 'POSIX';
 requires 'Time::HiRes';
 requires 'Time::Local';
 
-on 'configure' => sub {
-	requires 'ExtUtils::MakeMaker', '6.64';   # Minimum version for TEST_REQUIRES
-};
-
 on 'test' => sub {
 	requires 'File::Temp';
 	requires 'Test::Deep';
 	requires 'Test::Exception';
 	requires 'Test::Most';
+};
+
+on 'develop' => sub {
+	requires 'Devel::Cover';
+	requires 'Perl::Critic';
+	requires 'Test::Pod';
+	requires 'Test::Pod::Coverage';
 };
