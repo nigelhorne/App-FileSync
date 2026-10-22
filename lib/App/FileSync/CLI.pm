@@ -143,6 +143,7 @@ sub _client_dispatch {
     return _client_sync(@args) if $command eq 'sync';
     return _client_status(@args) if $command eq 'status';
     return _client_log(@args) if $command eq 'log';
+    return _client_settings(@args) if $command eq 'settings';
     return _client_verify(@args) if $command eq 'verify';
     return _client_restore(@args) if $command eq 'restore';
     return _client_snapshot(@args) if $command eq 'snapshot';
@@ -165,6 +166,7 @@ filesync - keep a directory in step with a master copy
     filesync status [--repo NAME] [--json]
     filesync log    [--repo NAME] [-n N] [--since YYYY-MM-DD|EPOCH]
                     [--until YYYY-MM-DD|EPOCH] [--exit N]... [--json]
+    filesync settings [--json]
     filesync verify [--repo NAME] [--deep] [--json]
     filesync restore PATH [--repo NAME] [--to DIR] [--list]
     filesync snapshot [--repo NAME] [--keep N]
@@ -175,7 +177,8 @@ filesync - keep a directory in step with a master copy
 The sync root must contain the .filesync-root marker created by "filesync init".
 Diagnostics go to stderr; settings are read from ~/.conf/app-filesync.json or
 $FILESYNC_SETTINGS (log_level, log_format, log_file, ssh_identity,
-ssh_known_hosts, server_command).  Per-repo values from "filesync init" win.
+ssh_known_hosts, server_command).  "filesync settings" prints the effective
+values and where each came from.  Per-repo values from "filesync init" win.
 
 Exit codes: 0 ok, 1 fatal, 2 another run holds the lock, 3 completed with
 warnings, 4 verification found drift.
@@ -539,6 +542,56 @@ sub _client_log {
     }
 
     return 0;
+}
+
+sub _client_settings {
+    my (@args) = @_;
+
+    my $json;
+    GetOptionsFromArray(\@args, 'json' => \$json)
+        or die "Usage: filesync settings [--json]\n";
+    die "settings: unexpected arguments: @args\n" if @args;
+
+    my $report = App::FileSync::Settings::explain();
+    my $file   = $report->{settings_file};
+
+    if ($json) {
+        print json_encode($report), "\n";
+        return 0;
+    }
+
+    print 'settings file: ', (defined $file && length $file ? $file : '(none)'), "\n\n";
+
+    for my $row (@{ $report->{settings} }) {
+        printf "  %-16s %-34s %s\n",
+            $row->{key}, _display_setting($row->{key}, $row->{value}), _describe_source($row);
+    }
+
+    print "\nAn empty ssh_identity or ssh_known_hosts means ssh's own default; "
+        . "an empty server_command means filesync-server.\n";
+
+    return 0;
+}
+
+# Blank means "use the transport default" for these, so name that explicitly
+# rather than printing an empty column.
+sub _display_setting {
+    my ($key, $value) = @_;
+
+    return '(stderr)'       if $key eq 'log_file'       && !length $value;
+    return '(ssh default)'  if $key eq 'ssh_identity'    && !length $value;
+    return '(ssh default)'  if $key eq 'ssh_known_hosts' && !length $value;
+    return 'filesync-server' if $key eq 'server_command' && !length $value;
+    return defined $value ? $value : '';
+}
+
+sub _describe_source {
+    my ($row) = @_;
+
+    return $row->{label} if $row->{source} eq 'default';
+    return "merged: $row->{label}" if $row->{source} eq 'merged';
+    return "environment $row->{label}" if $row->{source} eq 'env';
+    return "file $row->{label}";
 }
 
 sub _client_verify {

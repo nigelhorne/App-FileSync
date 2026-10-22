@@ -22,6 +22,7 @@ WriteMakefile(
     EXE_FILES      => [ 'bin/filesync', 'bin/filesync-server', 'bin/filesync-admin' ],
     PREREQ_PM      => {
         'Carp'           => 0,
+        'Config::Abstraction' => 0,
         'Digest::SHA'    => 0,
         'Encode'         => 0,
         'Exporter'       => 0,

@@ -88,6 +88,70 @@ sub slurp {
         'so a stale environment path falls back to the defaults');
 }
 
+# ----------------------------------------------------- where values came from
+{
+    my $dir = tempdir(CLEANUP => 1);
+    my $empty = write_json(File::Spec->catfile($dir, 'empty.json'), "{}\n");
+
+    my $defaults = App::FileSync::Settings::explain(config_file => $empty);
+    is($defaults->{settings_file}, $empty, 'the report names the settings file');
+    is_deeply(
+        [ map { $_->{key} } @{ $defaults->{settings} } ],
+        [ qw(log_level log_format log_file ssh_identity ssh_known_hosts server_command) ],
+        'every process setting is reported, in a stable order',
+    );
+    is($_->{source}, 'default', "$_->{key} says it is a built-in default")
+        for @{ $defaults->{settings} };
+    is($_->{label}, 'built-in default', "$_->{key} names the built-in default")
+        for @{ $defaults->{settings} };
+
+    my $config = write_json(
+        File::Spec->catfile($dir, 'app-filesync.json'),
+        qq({"App__FileSync":{"log_level":"debug","ssh_identity":"/home/me/.ssh/id_filesync"}}\n),
+    );
+    write_json(
+        File::Spec->catfile($dir, 'universal.json'),
+        qq({"UNIVERSAL":{"ssh_known_hosts":"/home/me/.ssh/known_hosts_filesync"}}\n),
+    );
+
+    my %reported = map { $_->{key} => $_ }
+        @{ App::FileSync::Settings::explain(config_file => $config)->{settings} };
+
+    is($reported{log_level}{value}, 'debug', 'the report carries the effective value');
+    is($reported{log_level}{source}, 'file', 'a settings-file value is reported as a file');
+    like($reported{log_level}{label}, qr/\Qapp-filesync.json\E \[App__FileSync\]/,
+        'the file label names the section');
+
+    is($reported{ssh_known_hosts}{source}, 'file', 'the UNIVERSAL section is reported');
+    like($reported{ssh_known_hosts}{label}, qr/\Quniversal.json\E \[UNIVERSAL\]/,
+        'and distinguished from the class section');
+    is($reported{log_format}{source}, 'default', 'an unset key is still the default');
+    is($reported{server_command}{value}, 'filesync-server',
+        'the default remote program is reported as effective');
+
+    # Every reported value must be what the sync would actually use.
+    my $loaded = App::FileSync::Settings::load(config_file => $config);
+    is($reported{$_}{value}, $loaded->{$_}, "$_ matches what load() returns")
+        for keys %reported;
+
+    local $ENV{App__FileSync__log_level} = 'error';
+    my ($level_row) = grep { $_->{key} eq 'log_level' }
+        @{ App::FileSync::Settings::explain(config_file => $config)->{settings} };
+    is($level_row->{value}, 'error', 'the report shows the environment override');
+    is($level_row->{source}, 'env', 'and says it came from the environment');
+    is($level_row->{label}, 'App__FileSync__log_level', 'naming the variable');
+
+    # With no settings file the only source is the environment.
+    local $ENV{FILESYNC_SETTINGS} = File::Spec->catfile($dir, 'absent.json');
+    local $ENV{App__FileSync__ssh_identity} = '/tmp/from-env';
+    my $no_file = App::FileSync::Settings::explain();
+    is($no_file->{settings_file}, undef, 'no settings file is reported');
+    my ($identity) = grep { $_->{key} eq 'ssh_identity' } @{ $no_file->{settings} };
+    is($identity->{value}, '/tmp/from-env', 'an environment-only setting is effective');
+    is($identity->{source}, 'env', 'and is attributed to the environment');
+    is($identity->{label}, 'App__FileSync__ssh_identity', 'naming the variable');
+}
+
 # ---------------------------------------------------------------- logger
 {
     my $dir = tempdir(CLEANUP => 1);
@@ -157,6 +221,40 @@ sub slurp {
     my ($plan) = grep { $_->{message} eq 'plan received' } @captured;
     is($plan->{level}, 'debug', 'the plan is logged at debug');
     is($plan->{fields}{actions}, 1, 'the plan entry counts the actions');
+}
+
+# ----------------------------------- the settings command
+{
+    my $dir = tempdir(CLEANUP => 1);
+    my $settings = write_json(
+        File::Spec->catfile($dir, 'app-filesync.json'),
+        qq({"App__FileSync":{"ssh_identity":"/home/me/.ssh/id_filesync"}}\n),
+    );
+
+    local $ENV{FILESYNC_SETTINGS} = $settings;
+
+    my $output = `$^X $filesync settings 2>&1`;
+    is($?, 0, 'filesync settings exits 0');
+    like($output, qr/^settings file: \Q$settings\E$/m, 'it names the settings file');
+    like($output, qr/^\s+ssh_identity\s+\/home\/me\/\.ssh\/id_filesync\s+file \Q$settings\E \[App__FileSync\]$/m,
+        'it shows an SSH default and where it came from');
+    like($output, qr/^\s+server_command\s+filesync-server\s+built-in default$/m,
+        'it shows the transport default for the remote program');
+    like($output, qr/^\s+log_file\s+\(stderr\)/m, 'an empty log_file is shown as stderr');
+
+    $output = `$^X $filesync settings --json 2>&1`;
+    is($?, 0, 'filesync settings --json exits 0');
+    my $decoded = eval { App::FileSync::json_decode($output) };
+    ok(ref($decoded) eq 'HASH', 'the JSON parses');
+    is($decoded->{settings_file}, $settings, 'the JSON names the settings file');
+    is(scalar @{ $decoded->{settings} }, 6, 'the JSON has a row per setting');
+    my ($identity_row) = grep { $_->{key} eq 'ssh_identity' } @{ $decoded->{settings} };
+    is($identity_row->{value}, '/home/me/.ssh/id_filesync', 'the JSON carries the value');
+    is($identity_row->{source}, 'file', 'the JSON carries the source kind');
+
+    $output = `$^X $filesync settings extra 2>&1`;
+    isnt($?, 0, 'a stray argument is an error');
+    like($output, qr/settings: unexpected arguments: extra/, 'and names it');
 }
 
 # --------------------------------------------------------------- the CLI

@@ -3,6 +3,7 @@ package App::FileSync::Settings;
 use strict;
 use warnings;
 
+use Config::Abstraction;
 use File::Basename qw(dirname);
 use File::Path qw(make_path);
 use File::Spec;
@@ -22,6 +23,12 @@ our $DEFAULT_SERVER_COMMAND = 'filesync-server';
 our @VALID_LEVELS = qw(
     trace debug info informational notice warn warning error err
     crit critical fatal alert emerg emergency panic
+);
+
+# The process-wide settings, in the order "filesync settings" prints them.
+our @SETTING_KEYS = qw(
+    log_level log_format log_file
+    ssh_identity ssh_known_hosts server_command
 );
 
 sub _default_config_path {
@@ -73,6 +80,178 @@ sub load {
     delete $settings->{logger};
 
     return $settings;
+}
+
+sub _defaults {
+    return {
+        log_level       => $DEFAULT_LEVEL,
+        log_format      => $DEFAULT_FORMAT,
+        log_file        => '',
+        ssh_identity    => '',
+        ssh_known_hosts => '',
+        server_command  => $DEFAULT_SERVER_COMMAND,
+    };
+}
+
+# Where each effective setting came from, for "filesync settings".  The values
+# are whatever load() returns; the provenance is reconstructed from the same
+# layers Object::Configure merges: the class section of the settings file, the
+# UNIVERSAL section beside it, and App__FileSync__* environment variables.
+sub explain {
+    my (%args) = @_;
+
+    my $config_file = exists $args{config_file}
+        ? config_file($args{config_file})
+        : config_file();
+
+    my $settings = load(%args);
+    my $defaults = _defaults();
+
+    my $class_explanation = {};
+    my $universal_file;
+    my $universal_explanation = {};
+    if (defined $config_file && length $config_file) {
+        $class_explanation = _explanation($config_file, 'App__FileSync');
+        $universal_file = _universal_file($config_file);
+        $universal_explanation = _explanation($universal_file, 'UNIVERSAL')
+            if defined $universal_file;
+    }
+
+    my @rows;
+    for my $key (@SETTING_KEYS) {
+        my %row = (
+            key    => $key,
+            value  => $settings->{$key},
+            source => 'default',
+            label  => 'built-in default',
+        );
+        my $winner_value = $defaults->{$key};
+
+        if (defined $config_file && length $config_file) {
+            if (my $entry = _pick($universal_explanation, 'UNIVERSAL', $key)) {
+                $row{source} = $entry->{type};
+                $row{label}  = $entry->{type} eq 'env'
+                    ? $entry->{label}
+                    : "$universal_file [UNIVERSAL]";
+                $winner_value = $entry->{value};
+            }
+            if (my $entry = _pick($class_explanation, 'App__FileSync', $key)) {
+                $row{source} = $entry->{type};
+                $row{label}  = $entry->{type} eq 'env'
+                    ? $entry->{label}
+                    : "$config_file [App__FileSync]";
+                $winner_value = $entry->{value};
+            }
+        } else {
+            # No settings file: Object::Configure falls back to environment
+            # variables only, universal ones first and class ones last.
+            for my $prefix (qw(UNIVERSAL App__FileSync)) {
+                my $name = "${prefix}__$key";
+                next unless exists $ENV{$name};
+                $row{source} = 'env';
+                $row{label}  = $name;
+                $winner_value = $ENV{$name};
+            }
+        }
+
+        # A value that no modelled layer accounts for came from somewhere else
+        # (a "global" section, say); say so instead of claiming a default.
+        if (_differs($settings->{$key}, $winner_value)) {
+            $row{source} = 'merged';
+            $row{label}  = join(' + ', _labels_for($key, $universal_explanation, $class_explanation))
+                || 'unknown source';
+        }
+
+        push @rows, \%row;
+    }
+
+    return {
+        settings_file => $config_file,
+        settings      => \@rows,
+    };
+}
+
+sub _differs {
+    my ($left, $right) = @_;
+    return 1 unless defined $left && defined $right;
+    return 1 unless defined $left || defined $right;
+    return "$left" ne "$right" ? 1 : 0;
+}
+
+sub _explanation {
+    my ($file, $section) = @_;
+
+    my $reader = Config::Abstraction->new(
+        config_file => $file,
+        env_prefix  => "${section}__",
+    );
+    return {} unless $reader;
+
+    my $explanation = $reader->explain_sources();
+    return ref($explanation) eq 'HASH' ? $explanation : {};
+}
+
+# The last source that set a key in a section wins, which is how
+# Config::Abstraction layers a file under its environment variables.
+sub _pick {
+    my ($explanation, $section, $key) = @_;
+
+    for my $full ("$section.$key", "global.$key", $key) {
+        my $entry = $explanation->{$full};
+        next unless ref($entry) eq 'HASH' && ref($entry->{sources}) eq 'ARRAY';
+        my @sources = @{ $entry->{sources} };
+        next unless @sources;
+
+        my $winner = $sources[-1];
+        return {
+            type  => $winner->{type},
+            label => $winner->{label},
+            value => $winner->{value},
+        };
+    }
+
+    return undef;
+}
+
+sub _labels_for {
+    my ($key, @explanations) = @_;
+
+    my (%seen, @labels);
+    for my $explanation (@explanations) {
+        for my $full (sort keys %{$explanation}) {
+            next unless $full eq $key || $full =~ /\.\Q$key\E\z/;
+            for my $source (@{ $explanation->{$full}{sources} || [] }) {
+                my $label = $source->{label};
+                next unless defined $label && length $label;
+                push @labels, $label unless $seen{$label}++;
+            }
+        }
+    }
+
+    return @labels;
+}
+
+# Object::Configure looks for universal<ext> beside the settings file, then the
+# other config-file extensions; mirror its search so the report matches.
+sub _universal_file {
+    my ($config_file) = @_;
+
+    my ($volume, $directory) = File::Spec->splitpath($config_file);
+    my $base_directory = File::Spec->catpath($volume, $directory, '');
+    my $ext = $config_file =~ /(\.[^.\/\\]+)\z/ ? $1 : '';
+
+    my %seen;
+    for my $candidate (grep { !$seen{$_}++ } (
+        File::Spec->catfile($base_directory, "universal$ext"),
+        File::Spec->catfile($base_directory, 'universal.conf'),
+        File::Spec->catfile($base_directory, 'universal.yml'),
+        File::Spec->catfile($base_directory, 'universal.yaml'),
+        File::Spec->catfile($base_directory, 'universal.json'),
+    )) {
+        return $candidate if -f $candidate && -r $candidate;
+    }
+
+    return undef;
 }
 
 sub logger {
@@ -136,6 +315,10 @@ App::FileSync::Settings - process-wide settings and logging for App::FileSync
     my $settings = App::FileSync::Settings::load();
     my $level = $settings->{log_level};
 
+    my $report = App::FileSync::Settings::explain();
+    printf "%s = %s (%s)\n", $_->{key}, $_->{value}, $_->{label}
+        for @{ $report->{settings} };
+
 =head1 DESCRIPTION
 
 Settings that apply to the process rather than to one repo - the log level,
@@ -191,6 +374,16 @@ Returns the merged settings hashref (without the Object::Configure logger).
 =head2 config_file
 
 Returns the settings file that would be used, or C<undef>.
+
+=head2 explain
+
+    my $report = App::FileSync::Settings::explain(%args);
+
+Returns C<{ settings_file =E<gt> $path_or_undef, settings =E<gt> \@rows }>, with
+one row per key in C<@App::FileSync::Settings::SETTING_KEYS>.  Each row has the
+effective C<value>, a C<source> of C<default>, C<file>, C<env> or C<merged>, and
+a human-readable C<label> naming the file section, environment variable or
+built-in default that supplied it.  C<config_file> and C<config_dirs> may bepassed, as for C<load>.
 
 =head1 LICENCE
 
