@@ -563,7 +563,7 @@ sub _client_settings {
     print 'settings file: ', (defined $file && length $file ? $file : '(none)'), "\n\n";
 
     for my $row (@{ $report->{settings} }) {
-        printf "  %-16s %-34s %s\n",
+        printf "  %-16s %-40s %s\n",
             $row->{key}, _display_setting($row->{key}, $row->{value}), _describe_source($row);
     }
 
@@ -578,10 +578,13 @@ sub _client_settings {
 sub _display_setting {
     my ($key, $value) = @_;
 
-    return '(stderr)'       if $key eq 'log_file'       && !length $value;
-    return '(ssh default)'  if $key eq 'ssh_identity'    && !length $value;
-    return '(ssh default)'  if $key eq 'ssh_known_hosts' && !length $value;
-    return 'filesync-server' if $key eq 'server_command' && !length $value;
+    my $blank = !defined($value) || !length($value);
+
+    return '(stderr)'        if $blank && $key eq 'log_file';
+    return '(ssh default)'   if $blank && $key eq 'ssh_identity';
+    return '(ssh default)'   if $blank && $key eq 'ssh_known_hosts';
+    return 'filesync-server' if $blank && $key eq 'server_command';
+
     return defined $value ? $value : '';
 }
 

@@ -148,8 +148,8 @@ sub explain {
             for my $prefix (qw(UNIVERSAL App__FileSync)) {
                 my $name = "${prefix}__$key";
                 next unless exists $ENV{$name};
-                $row{source} = 'env';
-                $row{label}  = $name;
+                $row{source}  = 'env';
+                $row{label}   = $name;
                 $winner_value = $ENV{$name};
             }
         }
@@ -173,8 +173,9 @@ sub explain {
 
 sub _differs {
     my ($left, $right) = @_;
-    return 1 unless defined $left && defined $right;
-    return 1 unless defined $left || defined $right;
+
+    return 0 if !defined $left && !defined $right;
+    return 1 if !defined $left || !defined $right;
     return "$left" ne "$right" ? 1 : 0;
 }
 
