@@ -766,13 +766,15 @@ sub _trim_log {
 
 # Recent run attempts, oldest first, at most $opts{limit} of them.  $opts{since}
 # and $opts{until} are "YYYY-MM-DD" dates or epochs, $opts{exits} a list of
-# exit codes to keep; all three filter before the limit is applied.
+# exit codes to keep, and $opts{warnings} keeps only runs that recorded one;
+# all four filter before the limit is applied.
 sub log {
     my ($self, %opts) = @_;
 
     my $limit = defined $opts{limit} && $opts{limit} > 0 ? $opts{limit} : 20;
     my $since = defined $opts{since} ? App::FileSync::parse_since($opts{since}) : undef;
     my $until = defined $opts{until} ? App::FileSync::parse_until($opts{until}) : undef;
+    my $warnings_only = $opts{warnings} ? 1 : 0;
     my $exits = $opts{exits};
     my @exits = ref($exits) eq 'ARRAY' ? map { $_ + 0 } @{$exits}
         : defined $exits ? ($exits + 0) : ();
@@ -794,6 +796,7 @@ sub log {
             next if defined $since && $ts < $since;
             next if defined $until && $ts > $until;
             next if @exits && !grep { ($entry->{exit} || 0) == $_ } @exits;
+            next if $warnings_only && !_has_warnings($entry);
 
             push @runs, $entry;
         }
@@ -810,8 +813,24 @@ sub log {
     $result->{since} = $since if defined $since;
     $result->{until} = $until if defined $until;
     $result->{exits} = \@exits if @exits;
+    $result->{warnings} = 1 if $warnings_only;
 
     return $result;
+}
+
+# A run carries warnings when the plan or scanner reported one, or when the
+# summary counts a conflict or a skipped path.  Older entries may predate one
+# of the fields, so either is enough.
+sub _has_warnings {
+    my ($entry) = @_;
+
+    return 1 if ref($entry->{warnings}) eq 'ARRAY' && @{ $entry->{warnings} };
+
+    my $summary = $entry->{summary} || {};
+    return 1 if ($summary->{conflicts} || 0) > 0;
+    return 1 if ($summary->{skipped} || 0) > 0;
+
+    return 0;
 }
 
 sub _cache_path {

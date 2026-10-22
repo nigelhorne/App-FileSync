@@ -165,8 +165,8 @@ filesync - keep a directory in step with a master copy
                     [--json] [--no-prune]
     filesync status [--repo NAME] [--json]
     filesync log    [--repo NAME] [-n N] [--since YYYY-MM-DD|EPOCH]
-                    [--until YYYY-MM-DD|EPOCH] [--exit N]... [--json]
-    filesync settings [--json]
+                    [--until YYYY-MM-DD|EPOCH] [--exit N]... [--warnings] [--json]
+    filesync settings [--config FILE] [--json]
     filesync verify [--repo NAME] [--deep] [--json]
     filesync restore PATH [--repo NAME] [--to DIR] [--list]
     filesync snapshot [--repo NAME] [--keep N]
@@ -178,7 +178,8 @@ The sync root must contain the .filesync-root marker created by "filesync init".
 Diagnostics go to stderr; settings are read from ~/.conf/app-filesync.json or
 $FILESYNC_SETTINGS (log_level, log_format, log_file, ssh_identity,
 ssh_known_hosts, server_command).  "filesync settings" prints the effective
-values and where each came from.  Per-repo values from "filesync init" win.
+values and where each came from.  Per-repo values from "filesync init" win;
+port and host_key_checking exist per repo only and are marked [repo only].
 
 Exit codes: 0 ok, 1 fatal, 2 another run holds the lock, 3 completed with
 warnings, 4 verification found drift.
@@ -462,17 +463,18 @@ sub _client_status {
 sub _client_log {
     my (@args) = @_;
 
-    my (@repos, @exits, $limit, $since, $until, $json, $config_path);
+    my (@repos, @exits, $limit, $since, $until, $json, $config_path, $warnings);
     GetOptionsFromArray(\@args,
         'repo=s@'  => \@repos,
         'n=i'      => \$limit,
         'since=s'  => \$since,
         'until=s'  => \$until,
         'exit=i@'  => \@exits,
+        'warnings' => \$warnings,
         'json'     => \$json,
         'config=s' => \$config_path,
     ) or die "Usage: filesync log [--repo NAME] [-n N] [--since DATE] [--until DATE] "
-        . "[--exit N] [--json]\n";
+        . "[--exit N] [--warnings] [--json]\n";
     die "log: unexpected arguments: @args\n" if @args;
     die "log: -n must be positive\n" if defined $limit && $limit < 1;
     die "log: --exit must be between 0 and 255\n"
@@ -497,7 +499,8 @@ sub _client_log {
         my $result = App::FileSync::Client->new(
             config => $config,
             name   => $name,
-        )->log(limit => $limit, since => $since, until => $until, exits => \@exits);
+        )->log(limit => $limit, since => $since, until => $until,
+            exits => \@exits, warnings => $warnings);
 
         push @results, $result;
         next if $json;
@@ -547,13 +550,25 @@ sub _client_log {
 sub _client_settings {
     my (@args) = @_;
 
-    my $json;
-    GetOptionsFromArray(\@args, 'json' => \$json)
-        or die "Usage: filesync settings [--json]\n";
+    my ($json, $config_path);
+    GetOptionsFromArray(\@args, 'json' => \$json, 'config=s' => \$config_path)
+        or die "Usage: filesync settings [--config FILE] [--json]\n";
     die "settings: unexpected arguments: @args\n" if @args;
 
     my $report = App::FileSync::Settings::explain();
     my $file   = $report->{settings_file};
+
+    my $client_config = App::FileSync::Config::load_client($config_path);
+    my $client_file   = defined $config_path && length $config_path
+        ? $config_path
+        : App::FileSync::Config::client_config_path();
+
+    $report->{config_file} = $client_file;
+    $report->{repos} = App::FileSync::Settings::explain_repos(
+        config      => $client_config,
+        report      => $report,
+        config_file => $client_file,
+    );
 
     if ($json) {
         print json_encode($report), "\n";
@@ -569,8 +584,44 @@ sub _client_settings {
 
     print "\nAn empty ssh_identity or ssh_known_hosts means ssh's own default; "
         . "an empty server_command means filesync-server.\n";
+    print "In the repo sections, [repo only] marks port and host_key_checking, "
+        . "which have no process-wide default.\n";
+
+    if (my @repos = @{ $report->{repos} || [] }) {
+        print "\nrepos:\n";
+        for my $repo (@repos) {
+            printf "  %s (%s%s)\n",
+                $repo->{repo},
+                $repo->{transport},
+                defined $repo->{server} ? ", $repo->{server}" : '';
+
+            if (!defined $repo->{ssh}) {
+                print "    the local transport does not use the SSH settings\n";
+                next;
+            }
+
+            for my $row (@{ $repo->{ssh} }) {
+                printf "    %-18s %-38s %s\n",
+                    $row->{key},
+                    _display_setting($row->{key}, $row->{value}),
+                    _describe_repo_source($row);
+            }
+        }
+    }
 
     return 0;
+}
+
+sub _describe_repo_source {
+    my ($row) = @_;
+
+    my $description =
+          $row->{source} eq 'repo'    ? "repo ($row->{label})"
+        : $row->{source} eq 'process' ? "process ($row->{label})"
+        :                               $row->{label};
+
+    # Port and host-key checking have no process-wide fallback, so say so.
+    return $row->{repo_only} ? "$description [repo only]" : $description;
 }
 
 # Blank means "use the transport default" for these, so name that explicitly
@@ -917,7 +968,8 @@ filesync-admin --root DIR <command>
     client forget ID --repo NAME
     verify NAME [--deep] [--sample N] [--json]
     restore NAME PATH [--to DIR] [--list] [--date YYYY-MM-DD]
-    log NAME [-n N] [--client ID] [--since YYYY-MM-DD|EPOCH]
+    log NAME... [-n N] [--client ID] [--since YYYY-MM-DD|EPOCH]
+                  [--until YYYY-MM-DD|EPOCH] [--exit N]... [--warnings] [--json]
 
 Exit codes: 0 ok, 1 fatal, 4 verification found drift.
 USAGE
@@ -1025,12 +1077,24 @@ sub _admin_repo_show {
 sub _admin_log {
     my ($admin, @args) = @_;
 
-    my ($limit, $client, $since);
+    my ($limit, $client, $since, $until, @exits, $json, $warnings);
     GetOptionsFromArray(\@args,
-        'n=i'    => \$limit,
+        'n=i'      => \$limit,
         'client=s' => \$client,
         'since=s'  => \$since,
-    ) or die "Usage: filesync-admin log NAME [-n N] [--client ID] [--since DATE]\n";
+        'until=s'  => \$until,
+        'exit=i@'  => \@exits,
+        'warnings' => \$warnings,
+        'json'     => \$json,
+    ) or die "Usage: filesync-admin log NAME [-n N] [--client ID] [--since DATE] "
+        . "[--until DATE] [--exit N] [--warnings] [--json]\n";
+
+    die "log: --exit must be between 0 and 255\n"
+        if grep { $_ < 0 || $_ > 255 } @exits;
+
+    # Report a bad date before the repo is touched.
+    App::FileSync::parse_since($since) if defined $since;
+    App::FileSync::parse_until($until) if defined $until;
 
     my $name = shift @args;
     die "log: NAME is required\n" unless defined $name && length $name;
@@ -1042,8 +1106,27 @@ sub _admin_log {
         repo   => $name,
         limit  => $limit,
         client => $client,
-        since  => $since,
+        since    => $since,
+        until    => $until,
+        exits    => \@exits,
+        warnings => $warnings,
     );
+
+    if ($json) {
+        my %result = (
+            repo   => $name,
+            path   => $admin->journal_dir($name),
+            events => $events,
+        );
+        $result{client} = $client if defined $client && length $client;
+        $result{since}  = App::FileSync::parse_since($since) if defined $since;
+        $result{until}  = App::FileSync::parse_until($until) if defined $until;
+        $result{exits}  = [ map { $_ + 0 } @exits ] if @exits;
+        $result{warnings} = 1 if $warnings;
+
+        print json_encode({ results => [ \%result ] }), "\n";
+        return 0;
+    }
 
     if (!@{$events}) {
         print "No journal entries for $name\n";
@@ -1057,6 +1140,7 @@ sub _admin_log {
         push @detail, 'from=' . $event->{from} if defined $event->{from};
         push @detail, 'winner=' . $event->{winner} if defined $event->{winner};
         push @detail, 'loser=' . $event->{loser_name} if defined $event->{loser_name};
+        push @detail, 'exit=' . $event->{exit} if defined $event->{exit};
         push @detail, 'trash=' . $event->{trash} if defined $event->{trash};
         push @detail, 'sha256=' . $event->{sha256} if defined $event->{sha256};
 
@@ -1065,6 +1149,13 @@ sub _admin_log {
         }
 
         push @detail, 'dry-run' if $event->{dry_run};
+        push @detail, 'locked' if $event->{locked};
+
+        if (defined $event->{error} && length $event->{error}) {
+            my $message = $event->{error};
+            $message =~ s/\s+/ /g;
+            push @detail, $message;
+        }
 
         printf "%s  %-12s %-12s %s\n",
             format_utc($event->{ts}),

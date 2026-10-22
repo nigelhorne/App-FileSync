@@ -8,7 +8,7 @@ use File::Path qw(make_path);
 use File::Spec;
 use Time::HiRes ();
 
-use App::FileSync qw(json_encode json_decode validate_relpath parse_since);
+use App::FileSync qw(json_encode json_decode validate_relpath parse_since parse_until);
 use App::FileSync::Config;
 use App::FileSync::Ignore;
 use App::FileSync::Settings;
@@ -144,11 +144,17 @@ sub client_list {
     ];
 }
 
+sub journal_dir {
+    my ($self, $repo) = @_;
+
+    my $store = App::FileSync::Store->new(root => $self->{root}, repo => $repo);
+    return File::Spec->catdir($store->meta_dir(), 'journal');
+}
+
 sub journal_read {
     my ($self, %args) = @_;
 
-    my $store = App::FileSync::Store->new(root => $self->{root}, repo => $args{repo});
-    my $dir = File::Spec->catdir($store->meta_dir(), 'journal');
+    my $dir = $self->journal_dir($args{repo});
 
     my @files = sort glob(File::Spec->catfile($dir, '*.jsonl'));
     my @events;
@@ -174,6 +180,27 @@ sub journal_read {
     if (defined $args{since}) {
         my $since = parse_since($args{since});
         @events = grep { ($_->{ts} || 0) >= $since } @events;
+    }
+
+    if (defined $args{until}) {
+        my $until = parse_until($args{until});
+        @events = grep { ($_->{ts} || 0) <= $until } @events;
+    }
+
+    # Only session outcomes record an exit code, so the filter selects those.
+    my $exits = $args{exits};
+    if (ref($exits) eq 'ARRAY' && @{$exits}) {
+        my %wanted = map { ($_ + 0) => 1 } @{$exits};
+        @events = grep { defined $_->{exit} && $wanted{ $_->{exit} + 0 } } @events;
+    }
+
+    # The server journals planned conflicts on the plan event too, but only a
+    # session outcome shows a run that had to keep the conflict copies, which
+    # is the client's --warnings case.
+    if ($args{warnings}) {
+        @events = grep {
+            ($_->{action} || '') eq 'session' && ($_->{conflicts} || 0) > 0
+        } @events;
     }
 
     @events = sort { ($a->{ts} || 0) <=> ($b->{ts} || 0) } @events;

@@ -152,6 +152,62 @@ sub slurp {
     is($identity->{label}, 'App__FileSync__ssh_identity', 'naming the variable');
 }
 
+# ------------------------------------------------- per-repo SSH settings
+{
+    my $dir = tempdir(CLEANUP => 1);
+    my $empty = write_json(File::Spec->catfile($dir, 'empty.json'), "{}\n");
+
+    my $repos = App::FileSync::Settings::explain_repos(
+        report      => App::FileSync::Settings::explain(config_file => $empty),
+        config_file => '/home/me/.filesync/config.json',
+        config      => { repos => {
+            docs   => { transport => 'ssh', server => 'srv', identity => '/repo/key',
+                        port => 2222, host_key_checking => 'accept-new' },
+            local  => { transport => 'local', server_root => '/srv/filesync' },
+            mirror => { transport => 'ssh', server => 'srv' },
+        } },
+    );
+
+    is(scalar @{$repos}, 3, 'every repo is reported');
+    is($repos->[0]{repo}, 'docs', 'in name order');
+    is($repos->[0]{server}, 'srv', 'the server is named');
+
+    my %ssh = map { $_->{key} => $_ } @{ $repos->[0]{ssh} };
+    is($ssh{ssh_identity}{value}, '/repo/key', 'a repo identity is effective');
+    is($ssh{ssh_identity}{source}, 'repo', 'and attributed to the repo');
+    is($ssh{ssh_identity}{label}, '/home/me/.filesync/config.json [docs]',
+        'naming the client config and repo');
+
+    is($ssh{ssh_known_hosts}{value}, '', 'an unset known-hosts file is empty');
+    is($ssh{ssh_known_hosts}{source}, 'default', 'and attributed to ssh');
+    is($ssh{ssh_known_hosts}{label}, 'ssh default', 'naming ssh\'s default');
+
+    is($ssh{server_command}{value}, 'filesync-server', 'the process default applies');
+    is($ssh{server_command}{source}, 'process', 'attributed to the process settings');
+    is($ssh{server_command}{label}, 'built-in default', 'naming the default');
+
+    is($ssh{port}{value}, 2222, 'a repo port is effective');
+    is($ssh{port}{source}, 'repo', 'and attributed to the repo');
+    ok($ssh{port}{repo_only}, 'the port is marked repo only');
+    is($ssh{host_key_checking}{value}, 'accept-new',
+        'a repo host-key policy is effective');
+    is($ssh{host_key_checking}{source}, 'repo', 'and attributed to the repo');
+    ok($ssh{host_key_checking}{repo_only},
+        'the host-key policy is marked repo only');
+
+    is($repos->[1]{repo}, 'local', 'the local repo is reported');
+    is($repos->[1]{ssh}, undef, 'with no SSH settings to resolve');
+
+    my %inherited = map { $_->{key} => $_ } @{ $repos->[2]{ssh} };
+    is($inherited{port}{value}, 22, 'an unset port falls back to ssh');
+    is($inherited{port}{source}, 'default', 'attributed to ssh');
+    ok($inherited{port}{repo_only}, 'and says the key has no other source');
+    is($inherited{host_key_checking}{value}, 'yes',
+        'an unset host-key policy falls back to ssh');
+    ok($inherited{host_key_checking}{repo_only},
+        'and says the key has no other source');
+}
+
 # ---------------------------------------------------------------- logger
 {
     my $dir = tempdir(CLEANUP => 1);
@@ -233,6 +289,14 @@ sub slurp {
 
     local $ENV{FILESYNC_SETTINGS} = $settings;
 
+    # The repos come from the client config: one overrides the identity, one
+    # inherits everything, one uses the local transport.
+    my $client_config = write_json(
+        File::Spec->catfile($dir, 'config.json'),
+        qq({"repos":{"docs":{"transport":"ssh","server":"srv","identity":"/home/me/.ssh/docs_key"},"mirror":{"transport":"ssh","server":"srv","port":2222,"host_key_checking":"accept-new"},"localdocs":{"transport":"local","server_root":"/srv/filesync"}}}\n),
+    );
+    local $ENV{FILESYNC_CONFIG} = $client_config;
+
     my $output = `$^X $filesync settings 2>&1`;
     is($?, 0, 'filesync settings exits 0');
     like($output, qr/^settings file: \Q$settings\E$/m, 'it names the settings file');
@@ -241,6 +305,24 @@ sub slurp {
     like($output, qr/^\s+server_command\s+filesync-server\s+built-in default$/m,
         'it shows the transport default for the remote program');
     like($output, qr/^\s+log_file\s+\(stderr\)/m, 'an empty log_file is shown as stderr');
+
+    like($output, qr/^repos:$/m, 'the repos are listed');
+    like($output, qr/^  docs \(ssh, srv\)$/m, 'a repo names its transport and server');
+    like($output, qr/^    ssh_identity\s+\/home\/me\/\.ssh\/docs_key\s+repo \(\Q$client_config\E \[docs\]\)$/m,
+        'a repo value says the repo supplied it');
+    like($output, qr/^    ssh_known_hosts\s+\(ssh default\)\s+ssh default$/m,
+        'an unset value says ssh supplied it');
+    like($output, qr/^    server_command\s+filesync-server\s+process \(built-in default\)$/m,
+        'an inherited value says the process settings supplied it');
+    like($output, qr/^    port\s+22\s+ssh default \[repo only\]$/m,
+        'an unset port still says the key is repo only');
+    like($output, qr/^  mirror \(ssh, srv\)$/m, 'the second SSH repo is listed');
+    like($output, qr/^    port\s+2222\s+repo \(\Q$client_config\E \[mirror\]\) \[repo only\]$/m,
+        'a repo port is marked repo only');
+    like($output, qr/^    host_key_checking\s+accept-new\s+repo \(\Q$client_config\E \[mirror\]\) \[repo only\]$/m,
+        'a repo host-key policy is marked repo only');
+    like($output, qr/local transport does not use the SSH settings/,
+        'a local repo has no SSH rows');
 
     $output = `$^X $filesync settings --json 2>&1`;
     is($?, 0, 'filesync settings --json exits 0');
@@ -251,6 +333,33 @@ sub slurp {
     my ($identity_row) = grep { $_->{key} eq 'ssh_identity' } @{ $decoded->{settings} };
     is($identity_row->{value}, '/home/me/.ssh/id_filesync', 'the JSON carries the value');
     is($identity_row->{source}, 'file', 'the JSON carries the source kind');
+
+    is($decoded->{config_file}, $client_config, 'the JSON names the client config');
+    is(scalar @{ $decoded->{repos} }, 3, 'the JSON has a row per repo');
+    my ($docs) = grep { $_->{repo} eq 'docs' } @{ $decoded->{repos} };
+    my %repo_ssh = map { $_->{key} => $_ } @{ $docs->{ssh} };
+    is($repo_ssh{ssh_identity}{value}, '/home/me/.ssh/docs_key',
+        'the JSON carries the repo override');
+    is($repo_ssh{ssh_identity}{source}, 'repo', 'with its source');
+    is($repo_ssh{ssh_identity}{label}, "$client_config [docs]", 'and label');
+    is($repo_ssh{ssh_known_hosts}{source}, 'default',
+        'an unset key is a transport default in the JSON');
+    is($repo_ssh{server_command}{value}, 'filesync-server',
+        'the inherited remote program is effective');
+    is($repo_ssh{server_command}{source}, 'process', 'and attributed to the settings');
+    is($repo_ssh{port}{value}, 22, 'an unset port is effective in the JSON');
+    ok($repo_ssh{port}{repo_only}, 'and still marks the key repo only');
+
+    my ($mirror) = grep { $_->{repo} eq 'mirror' } @{ $decoded->{repos} };
+    my %mirror_ssh = map { $_->{key} => $_ } @{ $mirror->{ssh} };
+    is($mirror_ssh{port}{value}, 2222, 'the JSON carries the repo port');
+    ok($mirror_ssh{port}{repo_only}, 'marked repo only');
+    is($mirror_ssh{host_key_checking}{value}, 'accept-new',
+        'the JSON carries the repo host-key policy');
+    ok($mirror_ssh{host_key_checking}{repo_only}, 'marked repo only');
+
+    my ($local) = grep { $_->{repo} eq 'localdocs' } @{ $decoded->{repos} };
+    is($local->{ssh}, undef, 'the local repo has no SSH rows in the JSON');
 
     $output = `$^X $filesync settings extra 2>&1`;
     isnt($?, 0, 'a stray argument is an error');

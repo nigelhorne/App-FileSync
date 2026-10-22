@@ -386,4 +386,63 @@ my $filesync = File::Spec->catfile($Bin, '..', 'bin', 'filesync');
     ok(defined $data->{results}[0]{until}, 'the cutoff is echoed');
 }
 
+# ----------------------------------------------- --warnings
+{
+    my $env = TestSync->new_env();
+    $env->write_file('client', 'a.txt', "alpha\n", $T0);
+    $env->sync();                                  # exit 0, nothing to warn about
+
+    # exit 3: a conflict, which is recorded as a warning.
+    $env->write_file('client', 'a.txt', "local\n", $T0 + 100);
+    $env->write_file('server', 'a.txt', "master\n", $T0 + 200);
+    my $conflict = $env->sync();
+    is($conflict->{exit}, 3, 'the conflict run exits 3');
+
+    # exit 3: a skipped path, with no conflict.
+    symlink 'a.txt', $env->client_path('link') or die "Cannot symlink: $!";
+    my $skipped = $env->sync();
+    is($skipped->{summary}{skipped}, 1, 'the symlink is skipped');
+    is($skipped->{summary}{conflicts}, 0, 'without a conflict');
+
+    # exit 2: a lock refusal is not a completed-with-warnings run.
+    my $lock = App::FileSync::Lock::acquire(
+        path     => File::Spec->catfile($env->{home}, 'locks', 'docs.lock'),
+        nonblock => 1,
+    );
+    $env->sync();
+    undef $lock;
+
+    is(scalar @{ $env->log()->{runs} }, 4, 'four attempts are recorded');
+
+    my $with = $env->log(warnings => 1);
+    is(scalar @{ $with->{runs} }, 2, '--warnings selects the two warning runs');
+    is($with->{warnings}, 1, 'the filter is echoed');
+    ok((grep { ($_->{summary}{conflicts} || 0) > 0 } @{ $with->{runs} }),
+        'the conflict run is included');
+    ok((grep { ($_->{summary}{skipped} || 0) > 0 } @{ $with->{runs} }),
+        'the skipped run is included');
+    ok(!(grep { !@{ $_->{warnings} || [] } } @{ $with->{runs} }),
+        'every selected run carries a warning message');
+
+    my $newest = $env->log(warnings => 1, limit => 1);
+    is(scalar @{ $newest->{runs} }, 1, 'the limit applies after the filter');
+    is($newest->{runs}[0]{summary}{skipped}, 1, 'and keeps the newest match');
+
+    my $output = `$^X $filesync log --repo docs --warnings 2>&1`;
+    is($?, 0, 'log --warnings exits 0');
+    my @lines = grep { /^docs / } split /\n/, $output;
+    is(scalar @lines, 2, 'it prints both warning runs');
+    like($output, qr/warning: link: skipped \(symbolic link\)/, 'with the warning detail');
+    unlike($output, qr/\bexit 0\b/, 'and not the clean runs');
+
+    $output = `$^X $filesync log --repo docs --warnings --exit 0 2>&1`;
+    like($output, qr/no runs recorded/, '--warnings composes with --exit');
+
+    $output = `$^X $filesync log --repo docs --warnings --json 2>&1`;
+    is($?, 0, '--warnings --json exits 0');
+    my $data = App::FileSync::json_decode($output);
+    is(scalar @{ $data->{results}[0]{runs} }, 2, 'the JSON is filtered too');
+    is($data->{results}[0]{warnings}, 1, 'and echoes the filter');
+}
+
 done_testing();

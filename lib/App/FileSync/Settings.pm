@@ -31,6 +31,15 @@ our @SETTING_KEYS = qw(
     ssh_identity ssh_known_hosts server_command
 );
 
+# How each repo-level SSH key corresponds to the process setting it falls back
+# to.  The names differ only because the repo config uses shorter keys.
+our %REPO_SSH_KEYS = (
+    ssh_identity    => 'identity',
+    ssh_known_hosts => 'known_hosts',
+    server_command  => 'server_command',
+);
+our @REPO_SSH_SETTINGS = qw(ssh_identity ssh_known_hosts server_command);
+
 sub _default_config_path {
     my $path = $ENV{FILESYNC_SETTINGS};
     return $path if defined $path && length $path;
@@ -169,6 +178,95 @@ sub explain {
         settings_file => $config_file,
         settings      => \@rows,
     };
+}
+
+# How the SSH settings resolve for every repo in a client config, for
+# "filesync settings".  Each row reports the value the transport will use and
+# whether the repo, the process settings or ssh's own default supplied it.
+sub explain_repos {
+    my (%args) = @_;
+
+    my $config      = ref($args{config}) eq 'HASH' ? $args{config} : {};
+    my $report      = ref($args{report}) eq 'HASH' ? $args{report} : {};
+    my $config_file = $args{config_file};
+
+    my %process = map { $_->{key} => $_ } @{ $report->{settings} || [] };
+
+    my @repos;
+    for my $name (sort keys %{ $config->{repos} || {} }) {
+        my $repo = $config->{repos}{$name};
+        $repo = {} unless ref($repo) eq 'HASH';
+
+        my $transport = $repo->{transport} || 'ssh';
+        my $entry = {
+            repo      => $name,
+            transport => $transport,
+        };
+        $entry->{server} = $repo->{server}
+            if defined $repo->{server} && length $repo->{server};
+
+        # The local transport never runs ssh, so there is nothing to resolve.
+        if ($transport eq 'ssh') {
+            my @rows;
+            for my $key (@REPO_SSH_SETTINGS) {
+                my $value = $repo->{ $REPO_SSH_KEYS{$key} };
+                my %row = (key => $key, value => '');
+
+                my $setting = $process{$key};
+
+                if (defined $value && length $value) {
+                    $row{value}  = $value;
+                    $row{source} = 'repo';
+                    $row{label}  = defined $config_file && length $config_file
+                        ? "$config_file [$name]"
+                        : "[$name]";
+                } elsif ($setting && defined $setting->{value} && length $setting->{value}) {
+                    $row{value}  = $setting->{value};
+                    $row{source} = 'process';
+                    $row{label}  = $setting->{label};
+                } else {
+                    $row{source} = 'default';
+                    $row{label}  = 'ssh default';
+                }
+
+                push @rows, \%row;
+            }
+
+            # These two are recorded per repo only: there is no process-wide
+            # default to fall back to, so the marker is always set.
+            push @rows,
+                _repo_only_row($repo, $name, $config_file, 'port', '22'),
+                _repo_only_row($repo, $name, $config_file, 'host_key_checking', 'yes');
+
+            $entry->{ssh} = \@rows;
+        } else {
+            $entry->{ssh} = undef;
+        }
+
+        push @repos, $entry;
+    }
+
+    return \@repos;
+}
+
+sub _repo_only_row {
+    my ($repo, $name, $config_file, $key, $default) = @_;
+
+    my %row = (key => $key, repo_only => 1, value => $default);
+
+    if (defined $repo->{$key} && length $repo->{$key}) {
+        $row{value}  = $repo->{$key};
+        $row{source} = 'repo';
+        $row{label}  = defined $config_file && length $config_file
+            ? "$config_file [$name]"
+            : "[$name]";
+    } else {
+        # The transport omits -p and StrictHostKeyChecking defaults to yes.
+        $row{source} = 'default';
+        $row{label}  = 'ssh default';
+    }
+
+    return \%row;
 }
 
 sub _differs {
@@ -382,9 +480,25 @@ Returns the settings file that would be used, or C<undef>.
 
 Returns C<{ settings_file =E<gt> $path_or_undef, settings =E<gt> \@rows }>, with
 one row per key in C<@App::FileSync::Settings::SETTING_KEYS>.  Each row has the
-effective C<value>, a C<source> of C<default>, C<file>, C<env> or C<merged>, and
-a human-readable C<label> naming the file section, environment variable or
-built-in default that supplied it.  C<config_file> and C<config_dirs> may bepassed, as for C<load>.
+effective C<value>, a C<source> of C<default>, C<file>, C<env> or C<merged>, anda human-readable C<label> naming the file section, environment variable or
+built-in default that supplied it.  C<config_file> and C<config_dirs> may be
+passed, as for C<load>.
+
+=head2 explain_repos
+
+    my $repos = App::FileSync::Settings::explain_repos(%args);
+
+Resolves C<ssh_identity>, C<ssh_known_hosts> and C<server_command> for every
+repo in a client config.  C<config> is the hashref from
+C<App::FileSync::Config::load_client>, C<report> is the result of C<explain>,
+and C<config_file> is the client config path used in labels.
+
+Each entry has C<repo>, C<transport>, C<server> (when the repo records one) and
+C<ssh>: one C<{key, value, source, label}> row per setting, where C<source> is
+C<repo> (the repo's own entry), C<process> (the settings reported by C<explain>)
+or C<default> (ssh's own default, when nothing sets a value).  C<ssh> is
+C<undef> for the local transport, which never runs ssh.
+
 
 =head1 LICENCE
 

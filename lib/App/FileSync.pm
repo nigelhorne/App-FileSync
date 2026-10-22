@@ -267,6 +267,69 @@ Formats an epoch as C<YYYYMMDDTHHMMSSZ>.
 
 Writes a file through a temporary file in the same directory and renames it into place.
 
+=head1 EXAMPLES
+
+On the server, create the master copy and allow the client once.  Then, on each
+client, register the directory and add a cron entry that runs every minute:
+
+    # once, on the client
+    filesync init --repo documents --root /home/foo/Documents --server srv
+
+    # crontab -e, for foo on each client
+    * * * * * /usr/local/bin/filesync sync --repo documents --quiet >/dev/null
+
+The summary line is dropped so cron does not mail on every successful run;
+diagnostics still go to standard error, so a failure is mailed.  Every attempt,
+successful or not, is also appended to F<~/.filesync/logs/documents.jsonl>, and
+C<filesync log --repo documents --exit 1> lists the ones that failed.
+
+Windows clients use a scheduled task rather than cron.  With the script in
+F<C:\filesync> and Strawberry Perl installed, the same job is set up from a
+command prompt:
+
+    REM once, on the client
+    C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync init ^
+      --repo documents --root C:\Users\foo\Documents --server srv
+
+    REM then create the task; it runs every minute as the current user
+    schtasks /Create /SC MINUTE /MO 1 /TN FileSync /F ^
+      /TR "C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync sync --repo documents --quiet"
+
+The task runs only while that user is logged on, which suits a Documents
+folder; its run log is still written under F<%USERPROFILE%\.filesync\logs>, so
+C<filesync log --repo documents --warnings> works there too.
+
+The master copy on the server is an ordinary directory tree, so it can be
+mirrored to a backup directory from the same crontab:
+
+    # crontab -e, for foo on the server
+    * * * * * rsync -a --delete --exclude '.filesync-tmp-*' \
+        /home/foo/FileSync/ /home/foo/backups/FileSync/
+
+Filesync writes each file to a temporary name and renames it into place, so the
+mirror never catches a half-written upload; the exclusion keeps the temporary
+files themselves out of the backup.  C<--delete> makes the copy a mirror: a
+deletion that reaches the master also removes the backed-up file.
+
+To restore the master from that backup, stop the client jobs (comment out their
+cron lines, or disable the scheduled task) and the server's backup job, so the
+backup job cannot copy a half-restored tree back into the backup.  Let any
+running sync finish, then mirror the backup back:
+
+    rsync -a --delete --checksum /home/foo/backups/FileSync/ /home/foo/FileSync/
+
+C<--checksum> compares the contents, so a restored file is not skipped just
+because its size and modification time happen to match the newer copy.  This is
+a rollback rather than a merge: files created after the backup was taken
+disappear from the master, and the next sync propagates that to the clients, so
+copy anything you need to keep out of the tree first.  The server
+rehashes the restored files on the next session, so there is no reindex step;
+clients then pull the restored versions, merging edits they have not synced as
+usual.  Re-enable the jobs once that first sync has finished.
+
+Adjust F</usr/local/bin/filesync> to where the script was installed, because
+cron's default PATH rarely includes a per-user Perl bin directory.
+
 =head1 LICENCE
 
 GPL v2 for personal single-user, single-computer use.  All other users must apply in

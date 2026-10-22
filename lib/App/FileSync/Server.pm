@@ -119,6 +119,7 @@ sub run {
         chomp $error;
 
         $self->{logger}->error($error);
+        $self->_journal_failed_session($error);
 
         my %reply = (ok => 0, error => $error, fatal => 1);
         $reply{code} = $self->{refusal} if $self->{refusal};
@@ -127,6 +128,34 @@ sub run {
     }
 
     return 1;
+}
+
+# A run that never reached _finish() is an attempt the admin should see, with
+# the same exit codes the client records: 2 for a lock refusal, 1 otherwise.
+# Nothing is journalled when there is no repo store yet (a bad hello, say), and
+# a journal write that fails must not mask the original error.
+sub _journal_failed_session {
+    my ($self, $error) = @_;
+
+    return 0 if $self->{finished} || $self->{session_journalled} || $self->{dry_run};
+
+    my $store = $self->{store} or return 0;
+
+    my $locked = ($self->{refusal} || '') eq 'locked' ? 1 : 0;
+    my %event = (
+        client => $self->{client},
+        action => 'session',
+        result => 'error',
+        exit   => $locked ? 2 : 1,
+        error  => $error,
+    );
+    $event{locked} = 1 if $locked;
+
+    my $ok = eval { $store->journal(\%event); 1 };
+    $self->{logger}->warn('cannot journal the failed session', { error => $@ })
+        unless $ok;
+
+    return $ok ? 1 : 0;
 }
 
 sub _validate_hello {
@@ -747,9 +776,13 @@ sub _finish {
         client  => $self->{client},
         action  => 'session',
         result  => 'ok',
+        # The client exits 3 when it had to keep conflict copies; record that
+        # here too, so --exit means the same thing on both sides.
+        exit    => $summary->{conflicts} ? 3 : 0,
         dry_run => $self->{dry_run} ? 1 : 0,
         %{$summary},
     }) unless $self->{dry_run};
+    $self->{session_journalled} = 1;
 
     $self->{conn}->send({ ok => 1, summary => $summary });
     $self->{finished} = 1;
