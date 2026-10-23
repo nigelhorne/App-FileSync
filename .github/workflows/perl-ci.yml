@@ -154,6 +154,58 @@ jobs:
         shell: cmd
         run: cpanm --notest --reinstall YAML::XS
 
+      # TEMPORARY probe: find which module faults at exit on 5.42 Windows.
+      - name: Probe the shutdown fault (5.42 Windows, temporary)
+        if: runner.os == 'Windows' && matrix.perl == '5.42'
+        shell: pwsh
+        run: |
+          $env:PATH = "$env:USERPROFILE\perl5\bin;$env:PATH"
+          $env:PERL5LIB = "$env:USERPROFILE\perl5\lib\perl5"
+          $mods = @(
+            'Log::Abstraction',
+            'Log::Abstraction::Backend',
+            'Log::Abstraction::Backend::Array',
+            'Log::Abstraction::Backend::Code',
+            'Log::Abstraction::Backend::Fd',
+            'Log::Abstraction::Backend::File',
+            'Log::Abstraction::Backend::Journald',
+            'Log::Abstraction::Backend::LogAny',
+            'Log::Abstraction::Backend::LogDispatch',
+            'Log::Abstraction::Backend::Object',
+            'Log::Abstraction::Backend::Sendmail',
+            'Log::Abstraction::Backend::Syslog',
+            'Sub::Private',
+            'Attribute::Handlers',
+            'B::Hooks::EndOfScope',
+            'namespace::clean',
+            'Params::Validate::Strict',
+            'Sub::Identify',
+            'Params::Get',
+            'Return::Set',
+            'Readonly',
+            'Readonly::Values::Syslog',
+            'Sys::Syslog',
+            'Log::Any',
+            'Log::Dispatch',
+            'Log::Log4perl',
+            'Mail::Sendmail'
+          )
+          foreach ($mod in $mods) {
+            $null = & perl -M$mod -e "print $mod->VERSION, qq{\n}" 2>&1
+            Write-Output ("{0,-48} exit={1}" -f $mod, $LASTEXITCODE)
+          }
+
+          $null = & perl -e "use Sub::Private { mode => 'enforce' }; 1" 2>&1
+          Write-Output ("{0,-48} exit={1}" -f 'Sub::Private block form', $LASTEXITCODE)
+
+          foreach ($ver in @('0.40', '0.39')) {
+            $lib = Join-Path $env:TEMP "la-$ver"
+            cpanm --quiet --notest --local-lib="$lib" "https://cpan.metacpan.org/authors/id/N/NH/NHORNE/Log-Abstraction-$ver.tar.gz" 2>&1 |
+              Select-Object -Last 2
+            $null = & perl "-I$lib\lib\perl5" -MLog::Abstraction -e "print Log::Abstraction->VERSION, qq{\n}" 2>&1
+            Write-Output ("{0,-48} exit={1}" -f "Log::Abstraction $ver", $LASTEXITCODE)
+          }
+
       - name: Lint and syntax check
         shell: perl {0}
         run: |
