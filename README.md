@@ -21,9 +21,9 @@ and no web interface.
 Only files whose content changed are transferred.  Data frames are deflated when that
 makes them smaller, and files of at least 64 KiB are sent as rsync-style block deltas
 when the other side already holds an older copy, so an edit moves the changed blocks
-rather than the whole file.  `filesync sync --no-delta` forces whole files.
-
-The design and its rationale are in `SPEC.md` in the distribution root.
+rather than the whole file.  `filesync sync --no-delta` forces whole files.  Each run
+reports the payload bytes it sent and received and how many files moved as a delta, and
+`filesync log` repeats those figures for past runs.
 
 This module holds the pieces shared by the client, the server and the admin tools:
 byte-transparent JSON, path validation, conflict-copy naming and atomic file writes.
@@ -145,9 +145,9 @@ rsync -a --delete --checksum --dry-run --itemize-changes \
 ```
 
 No output and exit 0 mean the master matches the backup.  Any line beginning
-`>f` names a path that still differs, and `*deleting` names one the rollback
-should have removed.  The index still describes the pre-rollback tree, so
-`filesync-admin verify` may report drift at this point; that is expected.
+`>f` names a path that still differs, and `*deleting` names one the
+rollback should have removed.  The index still describes the pre-rollback tree,
+so `filesync-admin verify` may report drift at this point; that is expected.
 Rebuild it and check it:
 
 ```
@@ -158,9 +158,7 @@ sudo -u filesync filesync-admin verify documents --deep
 `reindex` hashes every file in the master and replaces the index atomically; it
 refuses to run while a sync session holds the repo lock, and it names any paths
 it could not index.  `clean` and exit 0 from `verify` confirm that the master
-and its index agree.  Re-enable the jobs once that check passes.  For a script
-that runs both checks, reads their `--json` reports and only then re-enables
-cron, see the recovery automation example in `SPEC.md` §9.
+and its index agree.  Re-enable the jobs once that check passes.
 
 To restore just one file or directory, copy that path back instead of mirroring
 the whole tree, with the jobs paused as above so nothing changes the tree while

@@ -21,7 +21,7 @@ our @EXPORT_OK = qw(
 );
 
 # Deliberately utf8(0): paths are byte strings on the wire, and both ends of the
-# protocol are this implementation.  See SPEC.md section 10.2.
+# protocol are this implementation.
 my $JSON = JSON::PP->new->canonical->allow_nonref;
 
 sub json_encode { return $JSON->encode($_[0]) }
@@ -250,8 +250,6 @@ when the other side already holds an older copy, so an edit moves the changed bl
 rather than the whole file.  C<filesync sync --no-delta> forces whole files.  Each run
 reports the payload bytes it sent and received and how many files moved as a delta, and
 C<filesync log> repeats those figures for past runs.
-
-The design and its rationale are in F<SPEC.md> in the distribution root.
 
 This module holds the pieces shared by the client, the server and the admin tools:
 byte-transparent JSON, path validation, conflict-copy naming and atomic file writes.
