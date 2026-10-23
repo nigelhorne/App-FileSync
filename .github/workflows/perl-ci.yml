@@ -99,35 +99,54 @@ jobs:
           eval $(perl -I ~/perl5/lib/perl5 -Mlocal::lib)
           cpanm --notest --installdeps --verbose .
 
-      # Perl 5.42 on Windows faults inside DateTime-Locale's configure: its
-      # check_conflicts() call loads DateTime::Locale::Conflicts, and the
-      # process dies of an access violation (0xC0000005) before WriteMakefile
-      # runs, so cpanm sees only a Makefile that never appeared.  The call
-      # merely warns about an incompatible DateTime::Format::Strptime, so
-      # install the distribution with it disabled and let cpanm find it
-      # already present.  Revisit when DateTime-Locale or perl is fixed.
-      - name: Install DateTime-Locale without its conflict check (Windows 5.42)
-        if: runner.os == 'Windows' && matrix.perl == '5.42'
-        shell: pwsh
-        run: |
-          $dist = 'DateTime-Locale-1.46'
-          New-Item -ItemType Directory -Force -Path dtl | Out-Null
-          Push-Location dtl
-          curl.exe -fsSL -o dtl.tar.gz "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/$dist.tar.gz"
-          tar.exe xzf dtl.tar.gz
-          Set-Location $dist
-          & perl -i -pe 's/^check_conflicts/# check_conflicts/' Makefile.PL
-          & cpanm --notest .
-          Pop-Location
-          Remove-Item -Recurse -Force dtl
-
       - name: Install dependencies (Windows)
-        if: runner.os == 'Windows'
+        if: runner.os == 'Windows' && matrix.perl != '5.42'
         shell: cmd
         run: |
           @echo off
           set "PATH=%USERPROFILE%\perl5\bin;%PATH%"
           set "PERL5LIB=%USERPROFILE%\perl5\lib\perl5"
+          cpanm --notest --installdeps --verbose .
+
+      # On 5.42.3 for Windows the configure of DateTime-Locale and DateTime
+      # dies of an access violation (0xC0000005) before WriteMakefile runs, so
+      # cpanm can only report that no Makefile appeared.  Both distributions
+      # call check_conflicts(), which loads their Conflicts module, whose
+      # `use Dist::CheckConflicts -also => [...]` requires every listed
+      # module; the process faults while doing that.  The check itself only
+      # warns about an incompatible optional module, so preload a stub that
+      # makes that registration a no-op and the loop never runs.
+      - name: Install dependencies (Windows 5.42)
+        if: runner.os == 'Windows' && matrix.perl == '5.42'
+        shell: pwsh
+        run: |
+          $env:PATH = "$env:USERPROFILE\perl5\bin;$env:PATH"
+          $env:PERL5LIB = "$env:USERPROFILE\perl5\lib\perl5"
+          $stubs = Join-Path $env:GITHUB_WORKSPACE 'ci-stubs'
+          New-Item -ItemType Directory -Force -Path (Join-Path $stubs 'CI') | Out-Null
+          $module = @'
+          package CI::SkipDistCheckConflicts;
+          use strict;
+          use warnings;
+          BEGIN {
+              if (eval { require Dist::CheckConflicts; 1 }) {
+                  no warnings 'redefine';
+                  *Dist::CheckConflicts::import = sub {
+                      my $caller = caller;
+                      no strict 'refs';
+                      for my $name (qw(conflicts check_conflicts calculate_conflicts dist)) {
+                          next unless defined &{"Dist::CheckConflicts::$name"};
+                          *{"${caller}::$name"} = \&{"Dist::CheckConflicts::$name"};
+                      }
+                      1;
+                  };
+                  *Dist::CheckConflicts::conflicts = sub { () };
+              }
+          }
+          1;
+          '@
+          Set-Content -Path (Join-Path $stubs 'CI/SkipDistCheckConflicts.pm') -Value $module -Encoding ascii
+          $env:PERL5OPT = "-I$stubs -MCI::SkipDistCheckConflicts"
           cpanm --notest --installdeps --verbose .
 
       - name: Reinstall YAML::XS against current Perl (Windows)
