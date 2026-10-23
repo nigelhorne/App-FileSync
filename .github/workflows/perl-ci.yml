@@ -99,113 +99,25 @@ jobs:
           eval $(perl -I ~/perl5/lib/perl5 -Mlocal::lib)
           cpanm --notest --installdeps --verbose .
 
+      # 5.42.3 for Windows faults with an access violation (0xC0000005) in
+      # B::Hooks::EndOfScope when the hook is released, so every process that
+      # loads it -- namespace::clean, namespace::autoclean, Sub::Private, and
+      # through them Log::Abstraction and Object::Configure -- dies at exit.
+      # The harness only keeps the low byte of that status, which is 5, so the
+      # test files that log were reported as failed.  The distribution's
+      # plain-Perl implementation of the hook is unaffected; forcing it also
+      # lets the DateTime-Locale and DateTime configure, which load
+      # namespace::autoclean through their Conflicts module, get past
+      # check_conflicts().
       - name: Install dependencies (Windows)
-        if: runner.os == 'Windows' && matrix.perl != '5.42'
+        if: runner.os == 'Windows'
         shell: cmd
         run: |
           @echo off
           set "PATH=%USERPROFILE%\perl5\bin;%PATH%"
           set "PERL5LIB=%USERPROFILE%\perl5\lib\perl5"
+          if "${{ matrix.perl }}" == "5.42" set "B_HOOKS_ENDOFSCOPE_IMPLEMENTATION=PP"
           cpanm --notest --installdeps --verbose .
-
-      # On 5.42.3 for Windows the configure of DateTime-Locale and DateTime
-      # dies of an access violation (0xC0000005) before WriteMakefile runs, so
-      # cpanm can only report that no Makefile appeared.  Both distributions
-      # call check_conflicts(), which loads their Conflicts module, whose
-      # `use Dist::CheckConflicts -also => [...]` requires every listed
-      # module; the process faults while doing that.  The check itself only
-      # warns about an incompatible optional module, so preload a stub that
-      # makes that registration a no-op and the loop never runs.
-      - name: Install dependencies (Windows 5.42)
-        if: runner.os == 'Windows' && matrix.perl == '5.42'
-        shell: pwsh
-        run: |
-          $env:PATH = "$env:USERPROFILE\perl5\bin;$env:PATH"
-          $env:PERL5LIB = "$env:USERPROFILE\perl5\lib\perl5"
-          $stubs = Join-Path $env:GITHUB_WORKSPACE 'ci-stubs'
-          New-Item -ItemType Directory -Force -Path (Join-Path $stubs 'CI') | Out-Null
-          $module = @'
-          package CI::SkipDistCheckConflicts;
-          use strict;
-          use warnings;
-          BEGIN {
-              if (eval { require Dist::CheckConflicts; 1 }) {
-                  no warnings 'redefine';
-                  *Dist::CheckConflicts::import = sub {
-                      my $caller = caller;
-                      no strict 'refs';
-                      for my $name (qw(conflicts check_conflicts calculate_conflicts dist)) {
-                          next unless defined &{"Dist::CheckConflicts::$name"};
-                          *{"${caller}::$name"} = \&{"Dist::CheckConflicts::$name"};
-                      }
-                      1;
-                  };
-                  *Dist::CheckConflicts::conflicts = sub { () };
-              }
-          }
-          1;
-          '@
-          Set-Content -Path (Join-Path $stubs 'CI/SkipDistCheckConflicts.pm') -Value $module -Encoding ascii
-          $env:PERL5OPT = "-I$stubs -MCI::SkipDistCheckConflicts"
-          cpanm --notest --installdeps --verbose .
-
-      - name: Reinstall YAML::XS against current Perl (Windows)
-        if: runner.os == 'Windows'
-        shell: cmd
-        run: cpanm --notest --reinstall YAML::XS
-
-      # TEMPORARY probe: does the pure-perl end-of-scope hook avoid the fault?
-      - name: Probe the shutdown fault with PP hooks (5.42 Windows, temporary)
-        if: runner.os == 'Windows' && matrix.perl == '5.42'
-        shell: pwsh
-        run: |
-          $env:PATH = "$env:USERPROFILE\perl5\bin;$env:PATH"
-          $env:PERL5LIB = "$env:USERPROFILE\perl5\lib\perl5"
-          $env:B_HOOKS_ENDOFSCOPE_IMPLEMENTATION = 'PP'
-          $driver = Join-Path $env:RUNNER_TEMP 'probe.pl'
-          $code = @'
-          use strict;
-          use warnings;
-
-          printf("perl %vd on %s\n", $^V, $^O);
-          printf("implementation=%s\n", $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} // '(unset)');
-
-          my @mods = qw(
-              B::Hooks::EndOfScope
-              namespace::clean
-              namespace::autoclean
-              Sub::Private
-              Log::Abstraction
-              Object::Configure
-              Config::Abstraction
-          );
-          for my $m (@mods) {
-              system($^X, "-M$m", '-e', q{print qq{ok\n}});
-              printf("%-48s exit=%s\n", $m, $?);
-          }
-
-          my @snips = (
-              ['plain 1', '1'],
-              ['use Sub::Private', 'use Sub::Private; 1'],
-              ['Sub::Private block enforce', q{use Sub::Private { mode => q{enforce} }; 1}],
-              ['use namespace::clean', 'use namespace::clean; 1'],
-              ['Private attribute', 'use Attribute::Handlers; use Sub::Private; sub f :Private { 1 } 1'],
-              ['Log::Abstraction new+warn', q{use Log::Abstraction; my $l = Log::Abstraction->new(logger => sub { }); $l->warn(q{x}); 1}],
-              ['App::FileSync', 'use lib q{lib}; use App::FileSync; 1'],
-              ['bin/filesync version', 'system($^X, q{bin/filesync}, q{version}); 1'],
-          );
-          for my $s (@snips) {
-              system($^X, '-e', $s->[1]);
-              printf("%-48s exit=%s\n", $s->[0], $?);
-          }
-          exit 0;
-          '@
-          Set-Content -Path $driver -Value $code -Encoding ascii
-          perl $driver
-          Write-Output '=== cpanm --reinstall DateTime::Locale with PP hooks, no stub'
-          cpanm --reinstall --notest DateTime::Locale 2>&1 | Select-Object -Last 6
-          Write-Output "cpanm exit=$LASTEXITCODE"
-          exit 0
 
       - name: Lint and syntax check
         shell: perl {0}
@@ -249,6 +161,7 @@ jobs:
           @echo off
           set "PATH=%USERPROFILE%\perl5\bin;%PATH%"
           set "PERL5LIB=%USERPROFILE%\perl5\lib\perl5"
+          if "${{ matrix.perl }}" == "5.42" set "B_HOOKS_ENDOFSCOPE_IMPLEMENTATION=PP"
           prove -lr t/
 
       - name: Run Perl::Critic
