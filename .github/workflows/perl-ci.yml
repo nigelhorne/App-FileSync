@@ -108,64 +108,34 @@ jobs:
           set "PERL5LIB=%USERPROFILE%\perl5\lib\perl5"
           cpanm --notest --installdeps --verbose .
 
-      # Temporary: locate the statement in DateTime-Locale's Makefile.PL that
-      # faults on 5.42.
+      # Temporary: confirm that the check_conflicts() call is the fault and
+      # that patching it out lets the distribution install.
       - name: Probe DateTime-Locale configure (Windows)
         if: runner.os == 'Windows' && matrix.perl == '5.42' && always()
         continue-on-error: true
         shell: pwsh
         run: |
-          $probe = @'
-          use strict;
-          use warnings;
-          $| = 1;
-          print "perl $^V\n";
-          sub step {
-              my ($name, $code) = @_;
-              print "--- $name\n";
-              my $ok = eval { $code->(); 1 };
-              if ($ok) { print "    ok\n"; return 1; }
-              my $err = $@ || 'unknown error';
-              $err =~ s/\s+\z//;
-              print "    died: $err\n";
-              return 0;
-          }
-          step('use 5.008004', sub { eval "use 5.008004; 1" or die $@ });
-          step('ExtUtils::MakeMaker', sub { require ExtUtils::MakeMaker; 1 });
-          step('File::ShareDir::Install', sub { require File::ShareDir::Install; 1 });
-          step('File::ShareDir', sub { require File::ShareDir; 1 });
-          step('Dist::CheckConflicts', sub { require Dist::CheckConflicts; 1 });
-          step('Locale::Conflicts', sub { require './lib/DateTime/Locale/Conflicts.pm'; 1 });
-          step('check_conflicts', sub { DateTime::Locale::Conflicts->check_conflicts; 1 });
-          step('install_share', sub { File::ShareDir::Install::install_share('dist', 'share'); 1 });
-          step('WriteMakefile', sub {
-              ExtUtils::MakeMaker::WriteMakefile(
-                  NAME => 'DateTime::Locale',
-                  VERSION => '1.46',
-                  PREREQ_PM => {},
-                  CONFIGURE_REQUIRES => {},
-              );
-              1;
-          });
-          print "reached the end\n";
-          '@
-          Set-Content -Path probe-dtl.pl -Value $probe -Encoding ascii
+          Remove-Item -Recurse -Force dtl -ErrorAction SilentlyContinue
           New-Item -ItemType Directory -Force -Path dtl | Out-Null
           Push-Location dtl
           curl.exe -fsSL -o dtl.tar.gz https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-Locale-1.46.tar.gz
           tar.exe xzf dtl.tar.gz
           Set-Location DateTime-Locale-1.46
-          Write-Output '=== step by step'
-          & perl ..\..\probe-dtl.pl
-          Write-Output "probe exit: $LASTEXITCODE"
-          Write-Output '=== the real Makefile.PL'
+          Write-Output '=== require the module check_conflicts() loads'
+          & perl -e 'require q{./lib/DateTime/Locale/Conflicts.pm}; print qq{ok\n}'
+          Write-Output "Conflicts require exit: $LASTEXITCODE"
+          Write-Output '=== patch out check_conflicts() and configure'
+          & perl -pi.bak -e 's/^check_conflicts/# check_conflicts/' Makefile.PL
+          Select-String -Path Makefile.PL -Pattern 'check_conflicts' | ForEach-Object { $_.Line }
           & perl Makefile.PL
           Write-Output "Makefile.PL exit: $LASTEXITCODE"
-          Write-Output ("Makefile present: " + (Test-Path Makefile))
-          Set-Location ..\..
-          Write-Output '=== File::ShareDir::Install alone'
-          & perl -MFile::ShareDir::Install -e 'print qq{$File::ShareDir::Install::VERSION $INC{q{File/ShareDir/Install.pm}}\n}'
-          Write-Output "FSDI exit: $LASTEXITCODE"
+          Write-Output ('Makefile present: ' + (Test-Path Makefile))
+          Set-Location ..
+          Write-Output '=== install the patched distribution'
+          & cpanm --notest DateTime-Locale-1.46
+          Write-Output "cpanm exit: $LASTEXITCODE"
+          & perl -MDateTime::Locale -e 'print qq{DateTime::Locale $DateTime::Locale::VERSION\n}'
+          Write-Output "DateTime::Locale load exit: $LASTEXITCODE"
           Pop-Location
 
       - name: Reinstall YAML::XS against current Perl (Windows)
