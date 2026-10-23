@@ -199,6 +199,194 @@ my $T0 = 1_700_000_000;
     ok(!$env->exists_in('server', 'file1.txt'), 'files are gone after --force');
 }
 
+# The percentage guard is not replica-only: a normal client with a surviving
+# base may delete exactly its share.  Two of twenty files is the 10% allowance.
+{
+    my $env = TestSync->new_env();
+
+    $env->write_file('client', sprintf('file%02d.txt', $_), "content $_\n", $T0 + $_)
+        for 1 .. 20;
+    is($env->sync()->{summary}{pushed}, 20, 'the client pushes twenty files');
+
+    my $base_path = $env->meta_path('clients', 'test-1.json');
+    my $base = App::FileSync::json_decode(App::FileSync::read_text($base_path));
+    is(scalar(keys %{ $base->{entries} }), 20, 'the base survives with twenty entries');
+
+    unlink $env->client_path('file19.txt');
+    unlink $env->client_path('file20.txt');
+
+    my $allowed = $env->sync();
+    is($allowed->{summary}{deleted}, 2,
+        'a local deletion within the percentage limit proceeds without --force');
+    is($allowed->{summary}{pushed}, 0, 'nothing else is pushed');
+    is($allowed->{summary}{pulled}, 0, 'nothing is pulled');
+    is($allowed->{exit}, 0, 'the allowed deletion exits 0');
+
+    ok(!$env->exists_in('server', 'file19.txt'), 'the first deletion reached the master');
+    ok(!$env->exists_in('server', 'file20.txt'), 'the second deletion reached the master');
+    ok($env->exists_in('server', 'file18.txt'), 'files inside the allowance stay');
+    is($env->read_file('server', 'file18.txt'), "content 18\n", 'with their content');
+
+    $base = App::FileSync::json_decode(App::FileSync::read_text($base_path));
+    is(scalar(keys %{ $base->{entries} }), 18,
+        'the base advanced to the eighteen survivors');
+
+    my $stable = $env->sync();
+    is($stable->{summary}{deleted}, 0, 'the allowed deletion is not repeated');
+    is($stable->{summary}{pushed}, 0, 'nothing is left to push');
+    is($stable->{summary}{pulled}, 0, 'and nothing is left to pull');
+}
+
+# One more local deletion than the allowance is refused before the master is
+# touched, even though the client has already removed the files from its tree.
+{
+    my $env = TestSync->new_env();
+
+    $env->write_file('client', sprintf('file%02d.txt', $_), "content $_\n", $T0 + $_)
+        for 1 .. 20;
+    is($env->sync()->{summary}{pushed}, 20, 'the client pushes twenty files');
+
+    my $base_path = $env->meta_path('clients', 'test-1.json');
+    my $base_before = App::FileSync::read_text($base_path);
+    my $cache_path = File::Spec->catfile($env->{home}, 'cache', 'docs.json');
+    my $cache_before = App::FileSync::read_text($cache_path);
+    my $master_before = $env->snapshot(File::Spec->catdir($env->{server}, 'master', 'docs'));
+
+    unlink $env->client_path('file18.txt');
+    unlink $env->client_path('file19.txt');
+    unlink $env->client_path('file20.txt');
+
+    my $error;
+    eval { $env->sync(); 1 } or $error = $@;
+    ok($error, 'three local deletions are refused without --force');
+    like($error, qr/refusing to delete 3 of 20 known files \(limit is 10%\)/,
+        'the refusal names the count, the surviving base and the percentage');
+
+    is_deeply($env->snapshot(File::Spec->catdir($env->{server}, 'master', 'docs')),
+        $master_before, 'the refused run leaves the master untouched');
+    is(App::FileSync::read_text($base_path), $base_before,
+        'the refusal does not advance the stored base');
+    is(App::FileSync::read_text($cache_path), $cache_before,
+        'and does not advance the client cache');
+
+    my $base = App::FileSync::json_decode(App::FileSync::read_text($base_path));
+    is(scalar(keys %{ $base->{entries} }), 20, 'the base still knows all twenty files');
+    ok($env->exists_in('server', 'file20.txt'), 'the last master copy is still there');
+    is($env->read_file('server', 'file18.txt'), "content 18\n", 'and keeps its content');
+
+    my $forced = $env->sync(force => 1);
+    is($forced->{summary}{deleted}, 3, '--force performs the three deletions');
+    is($forced->{summary}{pushed}, 0, 'nothing else is pushed');
+    is($forced->{summary}{pulled}, 0, 'nothing is pulled');
+    ok(!$env->exists_in('server', 'file20.txt'), 'the forced deletions reach the master');
+    is_deeply([ @{ $env->tree(File::Spec->catdir($env->{server}, 'master', 'docs')) } ],
+        [ map { sprintf 'file%02d.txt', $_ } 1 .. 17 ],
+        'the master keeps exactly the seventeen files the client kept');
+
+    my $stable = $env->sync();
+    is($stable->{summary}{deleted}, 0, 'nothing is left to delete after --force');
+    is($stable->{summary}{pushed}, 0, 'and nothing is left to push');
+    is($stable->{summary}{pulled}, 0, 'and nothing is left to pull');
+}
+
+# The same guard covers master-to-client deletions: a normal client with a
+# surviving base may lose exactly its share when the master removes files.
+{
+    my $env = TestSync->new_env();
+
+    $env->write_file('client', sprintf('file%02d.txt', $_), "content $_\n", $T0 + $_)
+        for 1 .. 20;
+    is($env->sync()->{summary}{pushed}, 20, 'the client pushes twenty files');
+
+    my $base_path = $env->meta_path('clients', 'test-1.json');
+    my $base = App::FileSync::json_decode(App::FileSync::read_text($base_path));
+    is(scalar(keys %{ $base->{entries} }), 20, 'the base survives with twenty entries');
+
+    unlink $env->server_path('file19.txt');
+    unlink $env->server_path('file20.txt');
+
+    my $allowed = $env->sync();
+    is($allowed->{summary}{deleted}, 2,
+        'a master deletion within the percentage limit proceeds without --force');
+    is($allowed->{summary}{pulled}, 0, 'nothing is pulled');
+    is($allowed->{summary}{pushed}, 0, 'nothing is pushed');
+    is($allowed->{exit}, 0, 'the allowed master deletion exits 0');
+
+    ok(!$env->exists_in('client', 'file19.txt'), 'the first master deletion reached the client');
+    ok(!$env->exists_in('client', 'file20.txt'), 'the second master deletion reached the client');
+    ok($env->exists_in('client', 'file18.txt'), 'files inside the allowance stay locally');
+    is($env->read_file('client', 'file18.txt'), "content 18\n", 'with their content');
+
+    my @trash = glob(File::Spec->catfile(
+        $env->{home}, 'trash', '*', '*', '*', 'file19.txt'));
+    ok(@trash, 'the copy removed by the master went to the client trash');
+
+    $base = App::FileSync::json_decode(App::FileSync::read_text($base_path));
+    is(scalar(keys %{ $base->{entries} }), 18,
+        'the base advanced to the eighteen survivors');
+
+    my $stable = $env->sync();
+    is($stable->{summary}{deleted}, 0, 'the allowed master deletion is not repeated');
+    is($stable->{summary}{pulled}, 0, 'nothing is left to pull');
+    is($stable->{summary}{pushed}, 0, 'and nothing is left to push');
+}
+
+# One more master deletion than the allowance is refused before the client
+# removes anything; both sides still agree with the surviving base.
+{
+    my $env = TestSync->new_env();
+
+    $env->write_file('client', sprintf('file%02d.txt', $_), "content $_\n", $T0 + $_)
+        for 1 .. 20;
+    is($env->sync()->{summary}{pushed}, 20, 'the client pushes twenty files');
+
+    my $base_path = $env->meta_path('clients', 'test-1.json');
+    my $base_before = App::FileSync::read_text($base_path);
+    my $cache_path = File::Spec->catfile($env->{home}, 'cache', 'docs.json');
+    my $cache_before = App::FileSync::read_text($cache_path);
+    my $client_before = $env->snapshot($env->{client});
+
+    unlink $env->server_path('file18.txt');
+    unlink $env->server_path('file19.txt');
+    unlink $env->server_path('file20.txt');
+    my $master_after = $env->snapshot(File::Spec->catdir($env->{server}, 'master', 'docs'));
+
+    my $error;
+    eval { $env->sync(); 1 } or $error = $@;
+    ok($error, 'three master deletions are refused without --force');
+    like($error, qr/refusing to delete 3 of 20 known files \(limit is 10%\)/,
+        'the refusal names the count, the surviving base and the percentage');
+
+    is_deeply($env->snapshot($env->{client}), $client_before,
+        'the refused run leaves every client file untouched');
+    is(App::FileSync::read_text($cache_path), $cache_before,
+        'and does not advance the client cache');
+    is(App::FileSync::read_text($base_path), $base_before,
+        'nor the stored base');
+    is_deeply($env->snapshot(File::Spec->catdir($env->{server}, 'master', 'docs')),
+        $master_after, 'the refusal does not touch the master either');
+
+    my $base = App::FileSync::json_decode(App::FileSync::read_text($base_path));
+    is(scalar(keys %{ $base->{entries} }), 20, 'the base still knows all twenty files');
+    ok($env->exists_in('client', 'file20.txt'), 'the last local copy is still there');
+    is($env->read_file('client', 'file18.txt'), "content 18\n", 'and keeps its content');
+    ok(!$env->exists_in('server', 'file20.txt'), 'the master deletions are real');
+
+    my $forced = $env->sync(force => 1);
+    is($forced->{summary}{deleted}, 3, '--force performs the three deletions');
+    is($forced->{summary}{pulled}, 0, 'nothing else is pulled');
+    is($forced->{summary}{pushed}, 0, 'nothing is pushed');
+    ok(!$env->exists_in('client', 'file20.txt'), 'the forced deletions reach the client');
+    is_deeply([ @{ $env->tree($env->{client}) } ],
+        [ '.filesync-root', map { sprintf 'file%02d.txt', $_ } 1 .. 17 ],
+        'the client keeps exactly the seventeen surviving files');
+
+    my $stable = $env->sync();
+    is($stable->{summary}{deleted}, 0, 'nothing is left to delete after --force');
+    is($stable->{summary}{pulled}, 0, 'and nothing is left to pull');
+    is($stable->{summary}{pushed}, 0, 'and nothing is left to push');
+}
+
 # ------------------------------------------------------------ safety rails
 {
     my $env = TestSync->new_env();
@@ -233,16 +421,21 @@ my $T0 = 1_700_000_000;
     my $env = TestSync->new_env();
 
     my $name = "h\xc3\xa9llo w\xc3\xb6rld.txt";
+    # Windows forbids a double quote in a filename; an ampersand is still a
+    # shell metacharacter, so the quoting path is exercised there too.
+    my $quoted = $^O eq 'MSWin32'
+        ? q{quote'and&double.txt}
+        : q{quote'and"double.txt};
     $env->write_file('client', $name, "unicode\n", $T0);
     $env->write_file('client', 'with space.txt', "spaces\n", $T0);
-    $env->write_file('client', "quote'and\"double.txt", "quotes\n", $T0);
+    $env->write_file('client', $quoted, "quotes\n", $T0);
 
     my $result = $env->sync();
     is($result->{summary}{pushed}, 3, 'awkward names are pushed');
     ok($env->exists_in('server', $name), 'UTF-8 name survived the protocol');
     is($env->read_file('server', $name), "unicode\n", 'UTF-8 content survived');
     ok($env->exists_in('server', 'with space.txt'), 'spaces survived');
-    ok($env->exists_in('server', "quote'and\"double.txt"), 'quotes survived');
+    ok($env->exists_in('server', $quoted), 'quotes and metacharacters survived');
 
     my $again = $env->sync();
     is($again->{summary}{pushed}, 0, 'no re-push of awkward names');

@@ -167,6 +167,19 @@ ok(defined App::FileSync::Merge::check_delete_limit(
 ok(!defined App::FileSync::Merge::check_delete_limit(
     deletions => 1, base_size => 2, max_delete_percent => 10),
     'a single deletion is never blocked by the percentage rule');
+
+# Ten percent of a five-file base floors to zero; the guard raises the
+# allowance to one so a small repo can still shed a file, but no more.
+ok(!defined App::FileSync::Merge::check_delete_limit(
+    deletions => 1, base_size => 5, max_deletes => 200, max_delete_percent => 10),
+    'one deletion in a five-file base is allowed');
+
+my $small_refusal = App::FileSync::Merge::check_delete_limit(
+    deletions => 2, base_size => 5, max_deletes => 200, max_delete_percent => 10);
+ok(defined $small_refusal, 'two deletions in a five-file base are refused');
+is($small_refusal,
+    'refusing to delete 2 of 5 known files (limit is 10%); rerun with --force if this is intended',
+    'the small-repo refusal names the count, the base and the percentage');
 ok(!defined App::FileSync::Merge::check_delete_limit(
     deletions => 201, base_size => 10_000, max_deletes => 200, force => 1),
     '--force overrides the limits');

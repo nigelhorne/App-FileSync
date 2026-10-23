@@ -86,6 +86,16 @@ sub new {
         '--role',   $role,
         '--proto',  $PROTO;
 
+    # CreateProcess cannot start a batch file, and the exec in the child does
+    # not retry through the shell on Windows.  A configured .cmd/.bat wrapper
+    # is therefore launched by the command interpreter explicitly.
+    if ($^O eq 'MSWin32' && $command[0] =~ /\.(?:cmd|bat)\z/i) {
+        my $comspec = defined $ENV{COMSPEC} && length $ENV{COMSPEC}
+            ? $ENV{COMSPEC}
+            : 'cmd.exe';
+        unshift @command, $comspec, '/d', '/c';
+    }
+
     my $errors = File::Temp->new(UNLINK => 1);
     my $err_path = $errors->filename;
 

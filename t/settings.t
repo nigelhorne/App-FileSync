@@ -33,6 +33,13 @@ sub slurp {
     return $text;
 }
 
+# Windows environment variables are case-insensitive, so the name that comes
+# back from the environment is upper-cased there.
+sub env_name {
+    my ($name) = @_;
+    return $^O eq 'MSWin32' ? uc $name : $name;
+}
+
 # --------------------------------------------------------------- settings
 {
     my $dir = tempdir(CLEANUP => 1);
@@ -139,7 +146,8 @@ sub slurp {
         @{ App::FileSync::Settings::explain(config_file => $config)->{settings} };
     is($level_row->{value}, 'error', 'the report shows the environment override');
     is($level_row->{source}, 'env', 'and says it came from the environment');
-    is($level_row->{label}, 'App__FileSync__log_level', 'naming the variable');
+    is($level_row->{label}, env_name('App__FileSync__log_level'),
+        'naming the variable');
 
     # With no settings file the only source is the environment.
     local $ENV{FILESYNC_SETTINGS} = File::Spec->catfile($dir, 'absent.json');
@@ -149,7 +157,8 @@ sub slurp {
     my ($identity) = grep { $_->{key} eq 'ssh_identity' } @{ $no_file->{settings} };
     is($identity->{value}, '/tmp/from-env', 'an environment-only setting is effective');
     is($identity->{source}, 'env', 'and is attributed to the environment');
-    is($identity->{label}, 'App__FileSync__ssh_identity', 'naming the variable');
+    is($identity->{label}, env_name('App__FileSync__ssh_identity'),
+        'naming the variable');
 }
 
 # ------------------------------------------------- per-repo SSH settings
@@ -212,9 +221,13 @@ sub slurp {
 {
     my $dir = tempdir(CLEANUP => 1);
     my $log = File::Spec->catfile($dir, 'run.log');
+    # Encode rather than interpolate: a Windows log path contains backslashes
+    # that are not valid JSON escapes.
     my $config = write_json(
         File::Spec->catfile($dir, 'settings.json'),
-        qq({"App__FileSync":{"log_level":"debug","log_file":"$log"}}\n),
+        App::FileSync::json_encode({
+            App__FileSync => { log_level => 'debug', log_file => $log },
+        }) . "\n",
     );
 
     my $logger = App::FileSync::Settings::logger(config_file => $config);
@@ -230,7 +243,9 @@ sub slurp {
     # --verbose beats a quieter file; --quiet beats a louder one.
     my $quiet_config = write_json(
         File::Spec->catfile($dir, 'quiet.json'),
-        qq({"App__FileSync":{"log_level":"warning","log_file":"$log"}}\n),
+        App::FileSync::json_encode({
+            App__FileSync => { log_level => 'warning', log_file => $log },
+        }) . "\n",
     );
 
     my $verbose = App::FileSync::Settings::logger(config_file => $quiet_config, verbose => 1);

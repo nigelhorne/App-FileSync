@@ -8,11 +8,6 @@ use FindBin qw($Bin);
 use lib 't/lib';
 use TestSync;
 
-# The stand-in ssh is a shebang script that the transport executes directly,
-# which needs a Unix kernel.  Windows has no real sshd here either.
-plan skip_all => 'the fake ssh helper needs a Unix executable script'
-    if $^O eq 'MSWin32';
-
 use App::FileSync::Config;
 use App::FileSync::Lock;
 use App::FileSync::Store;
@@ -20,7 +15,10 @@ use App::FileSync::Store;
 my $env   = TestSync->new_env();
 my $perl  = $^X;
 my $base  = $env->{base};
-my $fake  = File::Spec->catfile($base, 'fake-ssh');
+my $fake_script = File::Spec->catfile($base, 'fake-ssh.pl');
+my $fake  = $^O eq 'MSWin32'
+    ? File::Spec->catfile($base, 'fake-ssh.cmd')
+    : File::Spec->catfile($base, 'fake-ssh');
 my $log   = File::Spec->catfile($base, 'ssh.log');
 my $server_bin = File::Spec->catfile($Bin, '..', 'bin', 'filesync-server');
 
@@ -77,10 +75,26 @@ exec $^X, @tokens;
 die "exec failed: $!\n";
 FAKE
 
-open my $fh, '>', $fake or die $!;
+open my $fh, '>', $fake_script or die $!;
 print {$fh} $script;
 close $fh;
-chmod 0755, $fake or die $!;
+
+if ($^O eq 'MSWin32') {
+    # CreateProcess cannot start a .cmd itself, so Perl routes a batch
+    # command through cmd.exe; the wrapper only restores the interpreter and
+    # hands every ssh argument on.  @echo off keeps cmd's echoing out of the
+    # protocol pipe on stdout.
+    # :raw keeps Perl's text layer from turning the CRLF endings into
+    # CRCRLF on Windows.
+    open my $wrapper, '>:raw', $fake or die $!;
+    print {$wrapper} "\@echo off\r\n";
+    print {$wrapper} '"', $perl, '" "', $fake_script, '" %*', "\r\n";
+    close $wrapper;
+} else {
+    rename $fake_script, $fake
+        or die "Cannot rename $fake_script to $fake: $!";
+    chmod 0755, $fake or die $!;
+}
 
 $ENV{FAKE_SSH_LOG}        = $log;
 $ENV{FAKE_SSH_ROOT}       = $env->{server};
