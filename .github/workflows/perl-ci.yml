@@ -122,19 +122,19 @@ jobs:
           tar.exe xzf dtl.tar.gz
           Set-Location DateTime-Locale-1.46
           Write-Output '=== require the module check_conflicts() loads'
-          & perl -e 'require q{./lib/DateTime/Locale/Conflicts.pm}; print qq{ok\n}'
+          & perl -e 'require q{./lib/DateTime/Locale/Conflicts.pm}'
           Write-Output "Conflicts require exit: $LASTEXITCODE"
           Write-Output '=== patch out check_conflicts() and configure'
-          & perl -pi.bak -e 's/^check_conflicts/# check_conflicts/' Makefile.PL
+          & perl -i -pe 's/^check_conflicts/# check_conflicts/' Makefile.PL
+          Write-Output "patch exit: $LASTEXITCODE"
           Select-String -Path Makefile.PL -Pattern 'check_conflicts' | ForEach-Object { $_.Line }
           & perl Makefile.PL
           Write-Output "Makefile.PL exit: $LASTEXITCODE"
           Write-Output ('Makefile present: ' + (Test-Path Makefile))
-          Set-Location ..
           Write-Output '=== install the patched distribution'
-          & cpanm --notest DateTime-Locale-1.46
+          & cpanm --notest .
           Write-Output "cpanm exit: $LASTEXITCODE"
-          & perl -MDateTime::Locale -e 'print qq{DateTime::Locale $DateTime::Locale::VERSION\n}'
+          & perl -MDateTime::Locale -e 1
           Write-Output "DateTime::Locale load exit: $LASTEXITCODE"
           Pop-Location
 
