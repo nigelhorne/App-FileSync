@@ -155,8 +155,8 @@ sub explain {
             # No settings file: Object::Configure falls back to environment
             # variables only, universal ones first and class ones last.
             for my $prefix (qw(UNIVERSAL App__FileSync)) {
-                my $name = "${prefix}__$key";
-                next unless exists $ENV{$name};
+                my $name = _env_key("${prefix}__$key");
+                next unless defined $name;
                 $row{source}  = 'env';
                 $row{label}   = $name;
                 $winner_value = $ENV{$name};
@@ -288,6 +288,24 @@ sub _explanation {
 
     my $explanation = $reader->explain_sources();
     return ref($explanation) eq 'HASH' ? $explanation : {};
+}
+
+# The name the environment actually uses, matched the way Config::Abstraction
+# matches an env_prefix: case-insensitively.  Windows reports environment
+# names upper-cased, so building one from "prefix__key" is not enough; the
+# report would then name a variable that does not exist in the same spelling
+# as the one that supplied the value.
+sub _env_key {
+    my ($name) = @_;
+
+    return $name if grep { $_ eq $name } keys %ENV;
+
+    my $wanted = lc $name;
+    for my $key (keys %ENV) {
+        return $key if lc $key eq $wanted;
+    }
+
+    return undef;
 }
 
 # The last source that set a key in a section wins, which is how
