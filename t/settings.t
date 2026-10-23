@@ -159,6 +159,20 @@ sub env_name {
     is($identity->{source}, 'env', 'and is attributed to the environment');
     is($identity->{label}, env_name('App__FileSync__ssh_identity'),
         'naming the variable');
+
+    # Config::Abstraction matches an env_prefix case-insensitively, so the
+    # report names the variable the way the environment spells it: Windows
+    # upper-cases the name whatever case it was set in.
+    delete local $ENV{App__FileSync__ssh_identity};
+    local $ENV{APP__FILESYNC__SSH_IDENTITY} = '/tmp/from-upper-env';
+    my $upper = App::FileSync::Settings::explain();
+    my ($upper_identity) = grep { $_->{key} eq 'ssh_identity' }
+        @{ $upper->{settings} };
+    is($upper_identity->{value}, '/tmp/from-upper-env',
+        'a name in a different case is still effective');
+    is($upper_identity->{source}, 'env', 'and is attributed to the environment');
+    is($upper_identity->{label}, 'APP__FILESYNC__SSH_IDENTITY',
+        'the report uses the spelling the environment uses');
 }
 
 # ------------------------------------------------- per-repo SSH settings

@@ -180,6 +180,20 @@ ok(defined $small_refusal, 'two deletions in a five-file base are refused');
 is($small_refusal,
     'refusing to delete 2 of 5 known files (limit is 10%); rerun with --force if this is intended',
     'the small-repo refusal names the count, the base and the percentage');
+
+# Nine files is the largest base whose ten percent still floors to zero (ten
+# files first reach an allowance of one), and the raised allowance holds there
+# too: one deletion passes, a two-file batch does not.
+ok(!defined App::FileSync::Merge::check_delete_limit(
+    deletions => 1, base_size => 9, max_deletes => 200, max_delete_percent => 10),
+    'one deletion in a nine-file base is allowed');
+
+my $floor_refusal = App::FileSync::Merge::check_delete_limit(
+    deletions => 2, base_size => 9, max_deletes => 200, max_delete_percent => 10);
+ok(defined $floor_refusal, 'two deletions in a nine-file base are refused');
+is($floor_refusal,
+    'refusing to delete 2 of 9 known files (limit is 10%); rerun with --force if this is intended',
+    'the nine-file refusal names the count, the base and the percentage');
 ok(!defined App::FileSync::Merge::check_delete_limit(
     deletions => 201, base_size => 10_000, max_deletes => 200, force => 1),
     '--force overrides the limits');
