@@ -1,0 +1,4145 @@
+{
+   "runs" : [
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756519.87632,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "-e",
+         "start" : 1792756150.48048,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756150.61112,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "-e",
+         "start" : 1792756150.611,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756150.94754,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/00-load.t",
+         "start" : 1792756150.83242,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756168.19618,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/cli.t",
+         "start" : 1792756152.22999,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756153.74103,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756152.49336,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756152.77118,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/../bin/filesync-server",
+         "start" : 1792756152.75378,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756154.9652,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756154.96138,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756157.43578,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756156.19827,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756156.47825,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/../bin/filesync-server",
+         "start" : 1792756156.46022,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756158.65451,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756158.65427,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756159.8713,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756159.86704,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756161.07445,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756161.07025,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756162.30054,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756162.2946,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756164.75712,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756163.51383,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756163.79667,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/../bin/filesync-server",
+         "start" : 1792756163.77985,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756166.01292,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756165.99514,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756167.23935,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756167.23565,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756188.12611,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/delta.t",
+         "start" : 1792756169.18361,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756175.10415,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756175.07321,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756177.32224,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756176.33045,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756179.71034,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756178.53581,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756180.95168,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756180.93353,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756182.19801,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756182.16592,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756183.43403,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756183.41207,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756184.66781,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756184.64356,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756185.92715,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756185.90032,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756187.17131,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756187.14335,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756194.50194,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/forced.t",
+         "start" : 1792756190.83387,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756191.10775,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-server",
+         "start" : 1792756191.10273,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756192.32464,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-server",
+         "start" : 1792756192.31949,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756193.53946,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-server",
+         "start" : 1792756193.5345,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756195.50079,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/ignore.t",
+         "start" : 1792756195.4976,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756223.34935,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/join.t",
+         "start" : 1792756195.86889,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756196.15971,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756196.13902,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756197.41791,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756197.38065,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756198.67756,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756198.63821,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756199.94262,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756199.90664,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756201.17825,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756201.16334,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756202.4162,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756202.39429,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756203.67317,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756203.64228,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756204.926,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756204.89533,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756206.17118,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756206.14996,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756207.40111,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756207.39423,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756208.66627,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756208.63019,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756209.93067,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756209.8957,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756211.18597,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756211.1547,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756212.43839,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756212.41852,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756213.67632,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756213.66948,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756214.93187,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756214.90276,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756216.17555,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756216.15412,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756217.41869,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756217.3926,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756218.66861,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756218.6422,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756219.87919,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756219.87248,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756221.12047,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756221.09777,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756222.37449,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756222.34437,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756264.16195,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/journal.t",
+         "start" : 1792756224.32145,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756224.61597,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756224.59445,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756225.86921,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756225.84731,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756227.12425,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756227.10028,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756228.48072,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756228.46087,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756229.72171,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756229.71284,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756230.9658,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756230.9573,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756232.31867,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756232.29836,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756233.55405,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756233.53382,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756234.77746,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756234.75732,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756236.01447,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756235.99436,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756237.25222,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756237.23213,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756238.48615,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756238.46612,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756239.71528,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756239.695,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756240.93889,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756240.9183,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756242.17883,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756242.15848,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756243.39307,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756243.38703,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756244.6122,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756244.60622,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756245.84594,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756245.8259,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756247.07915,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756247.05875,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756248.30794,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756248.28789,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756249.55911,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756249.53886,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756250.7968,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756250.76749,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756252.01467,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756251.98894,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756253.2438,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756253.23595,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756254.48869,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756254.46678,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756255.74798,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756255.72704,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756256.97993,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756256.95958,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756258.22124,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756258.20059,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756259.45581,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756259.43548,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756260.69258,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756260.67222,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756261.9234,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756261.8956,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756263.1833,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756263.15712,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756359.03746,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/log.t",
+         "start" : 1792756265.14751,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756265.4375,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756265.41972,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756266.68986,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756266.68294,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756267.92336,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756267.90532,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756269.17574,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756269.15847,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756270.4202,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756270.3975,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756271.67641,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756271.65915,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756272.90873,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756272.9008,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756274.14876,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756274.14039,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756275.39581,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756275.37841,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756276.62853,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756276.61996,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756277.87729,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756277.85953,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756279.12304,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756279.1058,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756280.35793,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756280.34004,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756281.60168,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756281.58386,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756282.83772,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756282.81992,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756284.10627,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756284.08717,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756285.35856,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756285.3527,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756286.60081,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756286.58378,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756287.86546,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756287.84739,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756289.09752,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756289.0897,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756290.33428,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756290.32636,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756291.56235,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756291.55641,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756292.78897,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756292.78422,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756294.03627,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756294.01873,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756295.26507,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756295.25645,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756296.47866,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756296.4696,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756297.72273,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756297.70539,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756298.95452,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756298.93648,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756300.17951,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756300.17138,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756301.40533,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756301.39741,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756302.61864,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756302.61089,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756303.85122,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756303.84333,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756305.07079,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756305.06309,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756306.30767,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756306.29964,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756307.52587,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756307.51815,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756308.74983,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756308.74188,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756309.96837,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756309.96359,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756311.19359,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756311.1764,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756312.43856,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756312.41621,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756313.64644,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756313.63589,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756314.87187,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756314.86138,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756316.10942,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756316.09894,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756317.33774,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756317.3273,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756318.56656,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756318.55596,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756319.79639,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756319.7859,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756321.012,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756321.0071,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756322.24111,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756322.23046,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756323.46016,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756323.44972,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756324.69229,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756324.68143,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756325.92387,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756325.91335,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756327.15061,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756327.13974,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756328.3803,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756328.36882,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756329.62492,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756329.60788,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756330.86702,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756330.84443,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756332.11928,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756332.09647,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756333.3978,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756333.38728,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756334.62821,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756334.61771,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756335.85287,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756335.842,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756337.09482,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756337.07668,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756338.32701,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756338.32022,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756339.57037,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756339.55317,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756340.82881,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756340.80692,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756342.05611,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756342.04853,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756343.28558,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756343.27633,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756344.51419,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756344.5047,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756345.75128,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756345.74185,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756346.97651,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756346.96706,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756348.19974,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756348.19029,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756349.42179,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756349.41203,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756350.65992,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756350.65049,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756351.88764,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756351.8782,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756353.11869,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756353.10925,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756354.34439,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756354.33508,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756355.57351,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756355.56407,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756356.80748,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756356.79796,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756358.03753,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756358.0274,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756359.96077,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/merge.t",
+         "start" : 1792756359.95127,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756360.29135,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/mtime.t",
+         "start" : 1792756360.28917,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756360.58834,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/paths.t",
+         "start" : 1792756360.57671,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756372.19106,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/reindex.t",
+         "start" : 1792756361.01634,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756361.30743,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756361.28385,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756362.56581,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756362.55858,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756363.80391,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756363.7957,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756365.02538,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756365.01798,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756366.2962,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756366.27788,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756367.52521,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756367.51703,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756368.77982,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756368.76248,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756370.01179,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756370.00403,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756371.22965,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756371.22163,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756395.87462,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/replica.t",
+         "start" : 1792756373.15249,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756373.43952,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756373.41943,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756374.68718,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756374.66614,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756375.92789,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756375.90367,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756377.16759,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756377.14449,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756378.41173,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756378.39027,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756379.65817,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756379.63579,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756380.89524,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756380.87954,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756382.15785,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756382.11944,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756383.41567,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756383.37984,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756384.68281,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756384.63411,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756385.92753,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756385.90486,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756387.21306,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756387.15071,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756388.49184,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756388.4283,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756389.76367,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756389.70341,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756391.07057,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756391.00361,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756392.34657,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756392.28936,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756393.64025,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756393.57603,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756394.91145,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756394.85727,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756417.86496,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/restore.t",
+         "start" : 1792756396.85048,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756397.13723,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756397.11606,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756398.37619,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756398.35355,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756399.63855,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756399.62117,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756400.87062,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756400.85185,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756402.09384,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756402.08783,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756403.31265,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756403.30666,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756404.53407,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756404.52693,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756405.75508,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756405.7479,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756407.01816,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756406.99674,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756408.25749,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756408.23514,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756409.52655,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756409.5062,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756410.77574,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756410.75824,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756412.01773,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756411.99942,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756413.23769,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756413.23067,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756414.45356,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756414.4461,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756415.682,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756415.66675,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756416.90067,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756416.89237,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756418.74449,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/scan.t",
+         "start" : 1792756418.73714,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756434.02071,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/settings.t",
+         "start" : 1792756419.14069,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756419.47492,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756419.45682,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756420.69853,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756420.69204,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756421.9212,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756421.91351,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756423.15216,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756423.14732,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756424.39269,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756424.37581,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756426.85608,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756425.61292,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756425.89508,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/../bin/filesync-server",
+         "start" : 1792756425.87657,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756428.09467,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756428.08866,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756430.55985,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756429.31663,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756429.60264,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/../bin/filesync-server",
+         "start" : 1792756429.58018,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756433.03631,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756431.77779,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756432.06181,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/../bin/filesync-server",
+         "start" : 1792756432.0425,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756446.14837,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/snapshot.t",
+         "start" : 1792756435.01449,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756435.31368,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756435.29336,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756436.57687,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756436.55663,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756437.82818,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756437.811,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756439.06687,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756439.0604,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756440.2755,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756440.2697,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756441.50082,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756441.49458,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756442.72312,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756442.71737,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756443.96563,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756443.94741,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756445.18564,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756445.17871,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756458.41179,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/ssh.t",
+         "start" : 1792756447.11956,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756451.32221,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/ssh.t",
+         "start" : 1792756447.11956,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756449.23519,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/ssh.t",
+         "start" : 1792756447.11956,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756460.50301,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/ssh.t",
+         "start" : 1792756447.11956,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756447.13491,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/ssh.t",
+         "start" : 1792756447.11956,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756462.58979,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/ssh.t",
+         "start" : 1792756447.11956,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756454.24968,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/ssh.t",
+         "start" : 1792756447.11956,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756464.68328,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/ssh.t",
+         "start" : 1792756447.11956,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756456.35604,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/ssh.t",
+         "start" : 1792756447.11956,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756452.17571,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/ssh.t",
+         "start" : 1792756447.11956,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756447.94325,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/tmp/2SV5hPRmWe/fake-ssh",
+         "start" : 1792756447.94308,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756448.25707,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-server",
+         "start" : 1792756448.23901,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756450.03473,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/tmp/2SV5hPRmWe/fake-ssh",
+         "start" : 1792756450.03462,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756450.35297,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-server",
+         "start" : 1792756450.32948,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756452.1226,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/tmp/2SV5hPRmWe/fake-ssh",
+         "start" : 1792756452.12247,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756452.98034,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/tmp/2SV5hPRmWe/fake-ssh",
+         "start" : 1792756452.98022,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756453.28466,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-server",
+         "start" : 1792756453.2759,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756455.05974,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/tmp/2SV5hPRmWe/fake-ssh",
+         "start" : 1792756455.05963,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756455.37436,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-server",
+         "start" : 1792756455.35307,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756457.15401,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/tmp/2SV5hPRmWe/fake-ssh",
+         "start" : 1792756457.1539,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756457.44994,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-server",
+         "start" : 1792756457.44508,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756459.21121,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/tmp/2SV5hPRmWe/fake-ssh",
+         "start" : 1792756459.21108,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756459.53236,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-server",
+         "start" : 1792756459.50659,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756461.30062,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/tmp/2SV5hPRmWe/fake-ssh",
+         "start" : 1792756461.30051,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756461.62085,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-server",
+         "start" : 1792756461.59261,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756463.39091,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/tmp/2SV5hPRmWe/fake-ssh",
+         "start" : 1792756463.39079,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756463.71661,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-server",
+         "start" : 1792756463.68623,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756497.30333,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/sync.t",
+         "start" : 1792756465.69149,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756465.9847,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756465.9622,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756467.22494,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756467.20411,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756468.47215,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756468.44815,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756469.71257,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756469.68969,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756470.96153,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756470.94077,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756472.21264,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756472.19138,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756473.45271,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756473.42953,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756474.70394,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756474.68033,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756475.95104,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756475.93299,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756477.2021,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756477.17936,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756478.46201,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756478.43867,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756479.70955,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756479.68845,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756480.95206,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756480.92589,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756482.20413,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756482.17969,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756483.4726,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756483.45146,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756484.71244,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756484.69222,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756485.96746,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756485.93982,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756487.24284,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756487.19437,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756488.49819,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756488.4661,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756489.77543,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756489.73424,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756491.02056,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756491.00278,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756492.26981,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756492.25227,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756493.52441,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756493.49757,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756494.7722,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756494.74911,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756496.3299,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756496.29597,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756500.26234,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/trash.t",
+         "start" : 1792756500.25455,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756519.2019,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "t/verify.t",
+         "start" : 1792756500.65311,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756500.94146,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756500.92034,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756502.19753,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756502.18044,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756503.42994,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756503.42347,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756504.68274,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756504.66204,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756505.93944,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756505.91838,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756507.18686,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756507.16927,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756508.43232,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756508.41489,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756509.65154,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756509.64302,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756510.87261,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756510.86412,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756512.1045,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync",
+         "start" : 1792756512.09568,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756513.34795,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/bin/filesync-server",
+         "start" : 1792756513.33075,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756514.57448,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756514.56659,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756515.79676,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756515.78865,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756517.02184,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756517.01381,
+         "version" : "v0.001.0"
+      },
+      {
+         "OS" : "linux",
+         "abstract" : "cron-driven file synchronisation without a daemon",
+         "dir" : "/home/runner/work/App-FileSync/App-FileSync",
+         "finish" : 1792756518.23776,
+         "name" : "App-FileSync",
+         "perl" : "5.40.5",
+         "run" : "/home/runner/work/App-FileSync/App-FileSync/t/../bin/filesync-admin",
+         "start" : 1792756518.2293,
+         "version" : "v0.001.0"
+      }
+   ],
+   "summary" : {
+      "/tmp/2SV5hPRmWe/fake-ssh" : {},
+      "Total" : {
+         "branch" : {
+            "covered" : 1606,
+            "error" : 858,
+            "percentage" : 65.1785714285714,
+            "total" : 2464,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 541,
+            "error" : 657,
+            "percentage" : 45.1585976627713,
+            "total" : 1198,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 3542,
+            "error" : 354,
+            "percentage" : 90.9137577002053,
+            "total" : 3896
+         },
+         "subroutine" : {
+            "covered" : 415,
+            "error" : 18,
+            "percentage" : 95.8429561200924,
+            "total" : 433
+         },
+         "total" : {
+            "covered" : 6104,
+            "error" : 1887,
+            "percentage" : 76.3859341759479,
+            "total" : 7991,
+            "uncoverable" : 0
+         }
+      },
+      "bin/filesync" : {
+         "statement" : {
+            "covered" : 16,
+            "percentage" : 100,
+            "total" : 16
+         },
+         "subroutine" : {
+            "covered" : 5,
+            "percentage" : 100,
+            "total" : 5
+         },
+         "total" : {
+            "covered" : 21,
+            "percentage" : 100,
+            "total" : 21
+         }
+      },
+      "bin/filesync-admin" : {
+         "statement" : {
+            "covered" : 16,
+            "percentage" : 100,
+            "total" : 16
+         },
+         "subroutine" : {
+            "covered" : 5,
+            "percentage" : 100,
+            "total" : 5
+         },
+         "total" : {
+            "covered" : 21,
+            "percentage" : 100,
+            "total" : 21
+         }
+      },
+      "bin/filesync-server" : {
+         "statement" : {
+            "covered" : 16,
+            "percentage" : 100,
+            "total" : 16
+         },
+         "subroutine" : {
+            "covered" : 5,
+            "percentage" : 100,
+            "total" : 5
+         },
+         "total" : {
+            "covered" : 21,
+            "percentage" : 100,
+            "total" : 21
+         }
+      },
+      "blib/lib/App/FileSync.pm" : {
+         "branch" : {
+            "covered" : 76,
+            "error" : 14,
+            "percentage" : 84.4444444444444,
+            "total" : 90,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 10,
+            "error" : 3,
+            "percentage" : 76.9230769230769,
+            "total" : 13,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 123,
+            "error" : 7,
+            "percentage" : 94.6153846153846,
+            "total" : 130
+         },
+         "subroutine" : {
+            "covered" : 24,
+            "percentage" : 100,
+            "total" : 24
+         },
+         "total" : {
+            "covered" : 233,
+            "error" : 24,
+            "percentage" : 90.6614785992218,
+            "total" : 257,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Admin.pm" : {
+         "branch" : {
+            "covered" : 76,
+            "error" : 38,
+            "percentage" : 66.6666666666667,
+            "total" : 114,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 36,
+            "error" : 30,
+            "percentage" : 54.5454545454545,
+            "total" : 66,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 211,
+            "error" : 16,
+            "percentage" : 92.9515418502203,
+            "total" : 227
+         },
+         "subroutine" : {
+            "covered" : 26,
+            "error" : 2,
+            "percentage" : 92.8571428571429,
+            "total" : 28
+         },
+         "total" : {
+            "covered" : 349,
+            "error" : 86,
+            "percentage" : 80.2298850574713,
+            "total" : 435,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/CLI.pm" : {
+         "branch" : {
+            "covered" : 327,
+            "error" : 249,
+            "percentage" : 56.7708333333333,
+            "total" : 576,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 93,
+            "error" : 169,
+            "percentage" : 35.4961832061069,
+            "total" : 262,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 552,
+            "error" : 142,
+            "percentage" : 79.5389048991354,
+            "total" : 694
+         },
+         "subroutine" : {
+            "covered" : 47,
+            "error" : 7,
+            "percentage" : 87.037037037037,
+            "total" : 54
+         },
+         "total" : {
+            "covered" : 1019,
+            "error" : 567,
+            "percentage" : 64.249684741488,
+            "total" : 1586,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Client.pm" : {
+         "branch" : {
+            "covered" : 292,
+            "error" : 124,
+            "percentage" : 70.1923076923077,
+            "total" : 416,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 112,
+            "error" : 134,
+            "percentage" : 45.5284552845528,
+            "total" : 246,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 633,
+            "error" : 49,
+            "percentage" : 92.8152492668622,
+            "total" : 682
+         },
+         "subroutine" : {
+            "covered" : 57,
+            "percentage" : 100,
+            "total" : 57
+         },
+         "total" : {
+            "covered" : 1094,
+            "error" : 307,
+            "percentage" : 78.0870806566738,
+            "total" : 1401,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Config.pm" : {
+         "branch" : {
+            "covered" : 17,
+            "error" : 15,
+            "percentage" : 53.125,
+            "total" : 32,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 5,
+            "error" : 13,
+            "percentage" : 27.7777777777778,
+            "total" : 18,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 57,
+            "error" : 6,
+            "percentage" : 90.4761904761905,
+            "total" : 63
+         },
+         "subroutine" : {
+            "covered" : 16,
+            "percentage" : 100,
+            "total" : 16
+         },
+         "total" : {
+            "covered" : 95,
+            "error" : 34,
+            "percentage" : 73.6434108527132,
+            "total" : 129,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Delta.pm" : {
+         "branch" : {
+            "covered" : 56,
+            "error" : 30,
+            "percentage" : 65.1162790697674,
+            "total" : 86,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 12,
+            "error" : 11,
+            "percentage" : 52.1739130434783,
+            "total" : 23,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 178,
+            "error" : 11,
+            "percentage" : 94.1798941798942,
+            "total" : 189
+         },
+         "subroutine" : {
+            "covered" : 15,
+            "error" : 2,
+            "percentage" : 88.2352941176471,
+            "total" : 17
+         },
+         "total" : {
+            "covered" : 261,
+            "error" : 54,
+            "percentage" : 82.8571428571429,
+            "total" : 315,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Ignore.pm" : {
+         "branch" : {
+            "covered" : 27,
+            "error" : 5,
+            "percentage" : 84.375,
+            "total" : 32,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 6,
+            "error" : 5,
+            "percentage" : 54.5454545454545,
+            "total" : 11,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 51,
+            "error" : 2,
+            "percentage" : 96.2264150943396,
+            "total" : 53
+         },
+         "subroutine" : {
+            "covered" : 5,
+            "percentage" : 100,
+            "total" : 5
+         },
+         "total" : {
+            "covered" : 89,
+            "error" : 12,
+            "percentage" : 88.1188118811881,
+            "total" : 101,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Lock.pm" : {
+         "branch" : {
+            "covered" : 7,
+            "error" : 3,
+            "percentage" : 70,
+            "total" : 10,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 1,
+            "error" : 2,
+            "percentage" : 33.3333333333333,
+            "total" : 3,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 26,
+            "percentage" : 100,
+            "total" : 26
+         },
+         "subroutine" : {
+            "covered" : 6,
+            "percentage" : 100,
+            "total" : 6
+         },
+         "total" : {
+            "covered" : 40,
+            "error" : 5,
+            "percentage" : 88.8888888888889,
+            "total" : 45,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Merge.pm" : {
+         "branch" : {
+            "covered" : 88,
+            "error" : 10,
+            "percentage" : 89.7959183673469,
+            "total" : 98,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 44,
+            "error" : 16,
+            "percentage" : 73.3333333333333,
+            "total" : 60,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 117,
+            "error" : 1,
+            "percentage" : 99.1525423728814,
+            "total" : 118
+         },
+         "subroutine" : {
+            "covered" : 10,
+            "percentage" : 100,
+            "total" : 10
+         },
+         "total" : {
+            "covered" : 259,
+            "error" : 27,
+            "percentage" : 90.5594405594406,
+            "total" : 286,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Protocol.pm" : {
+         "branch" : {
+            "covered" : 41,
+            "error" : 21,
+            "percentage" : 66.1290322580645,
+            "total" : 62,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 8,
+            "error" : 10,
+            "percentage" : 44.4444444444444,
+            "total" : 18,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 101,
+            "error" : 8,
+            "percentage" : 92.6605504587156,
+            "total" : 109
+         },
+         "subroutine" : {
+            "covered" : 18,
+            "error" : 1,
+            "percentage" : 94.7368421052632,
+            "total" : 19
+         },
+         "total" : {
+            "covered" : 168,
+            "error" : 40,
+            "percentage" : 80.7692307692308,
+            "total" : 208,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Scan.pm" : {
+         "branch" : {
+            "covered" : 31,
+            "error" : 13,
+            "percentage" : 70.4545454545455,
+            "total" : 44,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 22,
+            "error" : 13,
+            "percentage" : 62.8571428571429,
+            "total" : 35,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 95,
+            "error" : 10,
+            "percentage" : 90.4761904761905,
+            "total" : 105
+         },
+         "subroutine" : {
+            "covered" : 9,
+            "percentage" : 100,
+            "total" : 9
+         },
+         "total" : {
+            "covered" : 157,
+            "error" : 36,
+            "percentage" : 81.3471502590674,
+            "total" : 193,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Server.pm" : {
+         "branch" : {
+            "covered" : 228,
+            "error" : 112,
+            "percentage" : 67.0588235294118,
+            "total" : 340,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 66,
+            "error" : 83,
+            "percentage" : 44.2953020134228,
+            "total" : 149,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 484,
+            "error" : 35,
+            "percentage" : 93.2562620423892,
+            "total" : 519
+         },
+         "subroutine" : {
+            "covered" : 42,
+            "error" : 1,
+            "percentage" : 97.6744186046512,
+            "total" : 43
+         },
+         "total" : {
+            "covered" : 820,
+            "error" : 231,
+            "percentage" : 78.0209324452902,
+            "total" : 1051,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Settings.pm" : {
+         "branch" : {
+            "covered" : 71,
+            "error" : 33,
+            "percentage" : 68.2692307692308,
+            "total" : 104,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 36,
+            "error" : 43,
+            "percentage" : 45.5696202531646,
+            "total" : 79,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 167,
+            "error" : 14,
+            "percentage" : 92.2651933701657,
+            "total" : 181
+         },
+         "subroutine" : {
+            "covered" : 20,
+            "error" : 1,
+            "percentage" : 95.2380952380952,
+            "total" : 21
+         },
+         "total" : {
+            "covered" : 294,
+            "error" : 91,
+            "percentage" : 76.3636363636364,
+            "total" : 385,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Snapshot.pm" : {
+         "branch" : {
+            "covered" : 93,
+            "error" : 59,
+            "percentage" : 61.1842105263158,
+            "total" : 152,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 16,
+            "error" : 26,
+            "percentage" : 38.0952380952381,
+            "total" : 42,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 216,
+            "error" : 18,
+            "percentage" : 92.3076923076923,
+            "total" : 234
+         },
+         "subroutine" : {
+            "covered" : 20,
+            "percentage" : 100,
+            "total" : 20
+         },
+         "total" : {
+            "covered" : 345,
+            "error" : 103,
+            "percentage" : 77.0089285714286,
+            "total" : 448,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Store.pm" : {
+         "branch" : {
+            "covered" : 32,
+            "error" : 28,
+            "percentage" : 53.3333333333333,
+            "total" : 60,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 12,
+            "error" : 15,
+            "percentage" : 44.4444444444444,
+            "total" : 27,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 136,
+            "error" : 7,
+            "percentage" : 95.1048951048951,
+            "total" : 143
+         },
+         "subroutine" : {
+            "covered" : 38,
+            "error" : 2,
+            "percentage" : 95,
+            "total" : 40
+         },
+         "total" : {
+            "covered" : 218,
+            "error" : 52,
+            "percentage" : 80.7407407407407,
+            "total" : 270,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Transport/Local.pm" : {
+         "branch" : {
+            "covered" : 10,
+            "error" : 8,
+            "percentage" : 55.5555555555556,
+            "total" : 18,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 3,
+            "error" : 5,
+            "percentage" : 37.5,
+            "total" : 8,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 40,
+            "error" : 1,
+            "percentage" : 97.5609756097561,
+            "total" : 41
+         },
+         "subroutine" : {
+            "covered" : 10,
+            "percentage" : 100,
+            "total" : 10
+         },
+         "total" : {
+            "covered" : 63,
+            "error" : 14,
+            "percentage" : 81.8181818181818,
+            "total" : 77,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Transport/SSH.pm" : {
+         "branch" : {
+            "covered" : 54,
+            "error" : 36,
+            "percentage" : 60,
+            "total" : 90,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 26,
+            "error" : 35,
+            "percentage" : 42.6229508196721,
+            "total" : 61,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 112,
+            "error" : 7,
+            "percentage" : 94.1176470588235,
+            "total" : 119
+         },
+         "subroutine" : {
+            "covered" : 14,
+            "error" : 2,
+            "percentage" : 87.5,
+            "total" : 16
+         },
+         "total" : {
+            "covered" : 206,
+            "error" : 80,
+            "percentage" : 72.027972027972,
+            "total" : 286,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Trash.pm" : {
+         "branch" : {
+            "covered" : 44,
+            "error" : 36,
+            "percentage" : 55,
+            "total" : 80,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 18,
+            "error" : 27,
+            "percentage" : 40,
+            "total" : 45,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 111,
+            "error" : 11,
+            "percentage" : 90.983606557377,
+            "total" : 122
+         },
+         "subroutine" : {
+            "covered" : 15,
+            "percentage" : 100,
+            "total" : 15
+         },
+         "total" : {
+            "covered" : 188,
+            "error" : 74,
+            "percentage" : 71.7557251908397,
+            "total" : 262,
+            "uncoverable" : 0
+         }
+      },
+      "blib/lib/App/FileSync/Verify.pm" : {
+         "branch" : {
+            "covered" : 36,
+            "error" : 24,
+            "percentage" : 60,
+            "total" : 60,
+            "uncoverable" : 0
+         },
+         "condition" : {
+            "covered" : 15,
+            "error" : 17,
+            "percentage" : 46.875,
+            "total" : 32,
+            "uncoverable" : 0
+         },
+         "statement" : {
+            "covered" : 84,
+            "error" : 9,
+            "percentage" : 90.3225806451613,
+            "total" : 93
+         },
+         "subroutine" : {
+            "covered" : 8,
+            "percentage" : 100,
+            "total" : 8
+         },
+         "total" : {
+            "covered" : 143,
+            "error" : 50,
+            "percentage" : 74.0932642487047,
+            "total" : 193,
+            "uncoverable" : 0
+         }
+      }
+   }
+}
