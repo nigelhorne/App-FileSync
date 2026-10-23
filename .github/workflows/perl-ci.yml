@@ -119,45 +119,6 @@ jobs:
           if "${{ matrix.perl }}" == "5.42" set "B_HOOKS_ENDOFSCOPE_IMPLEMENTATION=PP"
           cpanm --notest --installdeps --verbose .
 
-      # TEMPORARY probe: which module faults inside the -also require loop?
-      - name: Probe the Conflicts require loop (5.42 Windows, temporary)
-        if: runner.os == 'Windows' && matrix.perl == '5.42'
-        shell: pwsh
-        run: |
-          $env:PATH = "$env:USERPROFILE\perl5\bin;$env:PATH"
-          $env:PERL5LIB = "$env:USERPROFILE\perl5\lib\perl5"
-          $driver = Join-Path $env:RUNNER_TEMP 'loop.pl'
-          $code = @'
-          use strict;
-          use warnings;
-          $| = 1;
-
-          # Exactly the -also list of DateTime::Locale::Conflicts 1.46.
-          my @also = qw(
-              Carp Dist::CheckConflicts Exporter File::ShareDir File::Spec
-              List::Util Params::ValidationCompiler Specio::Declare
-              Specio::Library::String Storable namespace::autoclean strict warnings
-          );
-
-          print qq{=== require loop, in -also order\n};
-          for my $m (@also) {
-              print qq{requiring $m\n};
-              eval { require $m };
-              print qq{requiring $m: }, ($@ ? 'failed' : 'ok'), qq{\n};
-          }
-          print qq{=== loop finished\n};
-
-          print qq{\n=== one child per entry\n};
-          for my $m (@also) {
-              system($^X, '-e', qq{print qq{before\n}; require $m; print qq{after\n}});
-              printf("child %-30s exit=%s\n", $m, $?);
-          }
-          exit 0;
-          '@
-          Set-Content -Path $driver -Value $code -Encoding ascii
-          perl $driver
-          exit 0
-
       - name: Lint and syntax check
         shell: perl {0}
         run: |
