@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use File::Temp ();
-use POSIX ();
+use IPC::Open3 ();
 
 use App::FileSync qw(validate_client_id validate_repo_name);
 
@@ -86,9 +86,8 @@ sub new {
         '--role',   $role,
         '--proto',  $PROTO;
 
-    # CreateProcess cannot start a batch file, and the exec in the child does
-    # not retry through the shell on Windows.  A configured .cmd/.bat wrapper
-    # is therefore launched by the command interpreter explicitly.
+    # CreateProcess cannot start a batch file on its own, so a configured
+    # .cmd/.bat wrapper is launched by the command interpreter explicitly.
     if ($^O eq 'MSWin32' && $command[0] =~ /\.(?:cmd|bat)\z/i) {
         my $comspec = defined $ENV{COMSPEC} && length $ENV{COMSPEC}
             ? $ENV{COMSPEC}
@@ -101,30 +100,18 @@ sub new {
 
     # stderr is a file, not the protocol pipe: ssh and the remote shell both
     # write warnings there, and they must never be mistaken for a frame.
-    pipe(my $child_in,  my $writer) or die "SSH transport: pipe: $!\n";
-    pipe(my $reader,    my $child_out) or die "SSH transport: pipe: $!\n";
+    open my $err_fh, '>', $err_path
+        or die "SSH transport: cannot write $err_path: $!\n";
 
-    my $pid = fork;
-    die "SSH transport: cannot fork: $!\n" unless defined $pid;
-
-    unless ($pid) {
-        close $writer;
-        close $reader;
-
-        open STDIN,  '<&', $child_in  or POSIX::_exit(127);
-        open STDOUT, '>&', $child_out or POSIX::_exit(127);
-        open STDERR, '>',  $err_path  or POSIX::_exit(127);
-
-        {
-            no warnings 'exec';
-            exec @command;
-        }
-
-        POSIX::_exit(127);
-    }
-
-    close $child_in;
-    close $child_out;
+    # IPC::Open3 rather than a hand-rolled fork/exec.  On Windows fork() is a
+    # pseudo-process, and perlfork warns that handles created by pipe() are not
+    # always duplicated into it, which leaves a full-duplex session waiting on
+    # a pipe end that never closes.  Open3 spawns natively there.
+    my ($writer, $reader);
+    my $pid = IPC::Open3::open3(
+        $writer, $reader, '>&' . fileno($err_fh), @command,
+    );
+    close $err_fh;
 
     return bless {
         pid        => $pid,
