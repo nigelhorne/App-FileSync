@@ -47,6 +47,7 @@ WriteMakefile(
         'File::Temp'     => 0,
         'Test::Deep'     => 0,
         'Test::Exception' => 0,
+        'Test::Mockingbird::TimeTravel' => '0.14',
         'Test::Most'     => 0,
     },
     META_MERGE     => {

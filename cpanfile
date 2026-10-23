@@ -26,6 +26,7 @@ on 'test' => sub {
 	requires 'File::Temp';
 	requires 'Test::Deep';
 	requires 'Test::Exception';
+	requires 'Test::Mockingbird::TimeTravel', '0.14';
 	requires 'Test::Most';
 };
 
