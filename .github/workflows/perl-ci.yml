@@ -148,6 +148,63 @@ jobs:
           eval $(perl -I ~/perl5/lib/perl5 -Mlocal::lib)
           prove -lr t/
 
+      # Temporary: find out why every Perl process exits 5 on some runners.
+      - name: Probe Perl exit statuses (Windows)
+        if: runner.os == 'Windows' && always()
+        continue-on-error: true
+        shell: cmd
+        run: |
+          @echo off
+          set "PATH=%USERPROFILE%\perl5\bin;%PATH%"
+          set "PERL5LIB=%USERPROFILE%\perl5\lib\perl5"
+          echo === baseline
+          perl -e "print qq{baseline\n}"
+          echo exit=%ERRORLEVEL%
+          echo === plain Test::More
+          perl -e "use Test::More tests => 1; ok(1, q{plain})"
+          echo exit=%ERRORLEVEL%
+          echo === use IPC::Open3
+          perl -e "use IPC::Open3 (); print qq{loaded\n}"
+          echo exit=%ERRORLEVEL%
+          echo === use POSIX
+          perl -e "use POSIX (); print qq{loaded\n}"
+          echo exit=%ERRORLEVEL%
+          echo === use Config::Abstraction
+          perl -e "use Config::Abstraction; print qq{loaded\n}"
+          echo exit=%ERRORLEVEL%
+          echo === use Log::Abstraction
+          perl -e "use Log::Abstraction; print qq{loaded\n}"
+          echo exit=%ERRORLEVEL%
+          echo === use Object::Configure
+          perl -e "use Object::Configure; print qq{loaded\n}"
+          echo exit=%ERRORLEVEL%
+          echo === use App::FileSync
+          perl -Ilib -e "use App::FileSync; print qq{loaded\n}"
+          echo exit=%ERRORLEVEL%
+          echo === use App::FileSync then exit 0
+          perl -Ilib -e "use App::FileSync; print qq{loaded\n}; exit 0"
+          echo exit=%ERRORLEVEL%
+          echo === use App::FileSync::Transport::SSH
+          perl -Ilib -e "use App::FileSync::Transport::SSH; print qq{loaded\n}"
+          echo exit=%ERRORLEVEL%
+          echo === old SSH transport
+          mkdir oldssh\App\FileSync\Transport
+          git show 82896fa:lib/App/FileSync/Transport/SSH.pm > oldssh\App\FileSync\Transport\SSH.pm
+          perl -Ioldssh -Ilib -e "use App::FileSync::Transport::SSH; print qq{loaded\n}"
+          echo exit=%ERRORLEVEL%
+          echo === use App::FileSync::Admin
+          perl -Ilib -e "use App::FileSync::Admin; print qq{loaded\n}"
+          echo exit=%ERRORLEVEL%
+          echo === use App::FileSync::CLI
+          perl -Ilib -e "use App::FileSync::CLI; print qq{loaded\n}"
+          echo exit=%ERRORLEVEL%
+          echo === Test::Most with App::FileSync
+          perl -Ilib -e "use Test::Most; use_ok(q{App::FileSync}); done_testing()"
+          echo exit=%ERRORLEVEL%
+          echo === filesync version
+          perl bin\filesync version
+          echo exit=%ERRORLEVEL%
+
       - name: Run tests (Windows)
         if: runner.os == 'Windows'
         shell: cmd
