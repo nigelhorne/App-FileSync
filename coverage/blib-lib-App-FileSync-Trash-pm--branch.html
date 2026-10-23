@@ -62,9 +62,9 @@ https://pjcj.net
 <tr><td class="h"><a id="L163">163</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless -d dirname($to)</td></tr>
 <tr><td class="h"><a id="L164">164</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless File::Copy::copy($src, $to)</td></tr>
 <tr><td class="h"><a id="L165">165</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">unless $^O eq &quot;MSWin32&quot;</td></tr>
-<tr><td class="h"><a id="L174">174</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">$path =~ m[/(\d{4})/(\d{2})/(\d{2})/] ? :</td></tr>
-<tr><td class="h"><a id="L180">180</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless opendir $dh, $dir</td></tr>
-<tr><td class="h"><a id="L181">181</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $_ ne &quot;.&quot;</td></tr>
+<tr><td class="h"><a id="L174">174</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">$path =~ m([/\\](\d{4})[/\\](\d{2})[/\\](\d{2})[/\\]) ? :</td></tr>
+<tr><td class="h"><a id="L182">182</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless opendir $dh, $dir</td></tr>
+<tr><td class="h"><a id="L183">183</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $_ ne &quot;.&quot;</td></tr>
 </table>
 </body>
 </html>
