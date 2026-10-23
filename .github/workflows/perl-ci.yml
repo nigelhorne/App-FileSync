@@ -157,6 +157,12 @@ jobs:
           @echo off
           set "PATH=%USERPROFILE%\perl5\bin;%PATH%"
           set "PERL5LIB=%USERPROFILE%\perl5\lib\perl5"
+          echo === retrying the dependency install
+          cpanm --notest DateTime::Locale
+          if errorlevel 1 cpanm --notest DateTime::Locale
+          if errorlevel 1 cpanm --notest DateTime::Locale
+          if errorlevel 1 cpanm --notest DateTime::Locale
+          cpanm --notest --installdeps .
           echo === baseline
           perl -e "print qq{baseline\n}"
           echo exit=%ERRORLEVEL%
@@ -178,6 +184,12 @@ jobs:
           echo === use Object::Configure
           perl -e "use Object::Configure; print qq{loaded\n}"
           echo exit=%ERRORLEVEL%
+          echo === use App::FileSync::Settings
+          perl -Ilib -e "use App::FileSync::Settings; print qq{loaded\n}"
+          echo exit=%ERRORLEVEL%
+          echo === use App::FileSync::CLI then exit 0
+          perl -Ilib -e "use App::FileSync::CLI; print qq{loaded\n}; exit 0"
+          echo exit=%ERRORLEVEL%
           echo === use App::FileSync
           perl -Ilib -e "use App::FileSync; print qq{loaded\n}"
           echo exit=%ERRORLEVEL%
@@ -186,11 +198,6 @@ jobs:
           echo exit=%ERRORLEVEL%
           echo === use App::FileSync::Transport::SSH
           perl -Ilib -e "use App::FileSync::Transport::SSH; print qq{loaded\n}"
-          echo exit=%ERRORLEVEL%
-          echo === old SSH transport
-          mkdir oldssh\App\FileSync\Transport
-          git show 82896fa:lib/App/FileSync/Transport/SSH.pm > oldssh\App\FileSync\Transport\SSH.pm
-          perl -Ioldssh -Ilib -e "use App::FileSync::Transport::SSH; print qq{loaded\n}"
           echo exit=%ERRORLEVEL%
           echo === use App::FileSync::Admin
           perl -Ilib -e "use App::FileSync::Admin; print qq{loaded\n}"
