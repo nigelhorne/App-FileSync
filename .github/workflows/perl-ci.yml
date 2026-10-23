@@ -185,7 +185,7 @@ jobs:
           cover
         shell: bash
 
-      - name: Show cpanm build log on failure (Windows)
+      - name: Show cpanm build log and silent configures on failure (Windows)
         if: runner.os == 'Windows' && failure()
         shell: pwsh
         run: |
@@ -202,6 +202,44 @@ jobs:
           Select-String -Path $log.FullName -Pattern '^-> N/A$|^-> FAIL' -Context 60,2
           Write-Output '=== tail'
           Get-Content $log.FullName -Tail 60
+
+          # cpanm prints only "N/A" when a Makefile.PL exits without writing a
+          # Makefile, and it records neither the script's output nor its exit
+          # status.  A distribution that dies, crashes or takes a silent exit
+          # is thereby invisible, so re-run every distribution that was
+          # configured but left no Makefile behind, reporting what the script
+          # actually said and how the process ended.
+          $env:PERL_MM_USE_DEFAULT = '1'
+          $configured = @(Get-Content $log.FullName |
+            Select-String -Pattern '^Configuring (\S+)' |
+            ForEach-Object { $_.Matches[0].Groups[1].Value })
+          $dirs = Get-ChildItem $log.Directory.FullName -Directory | Where-Object {
+            ($configured -contains $_.Name) -and
+            (Test-Path (Join-Path $_.FullName 'Makefile.PL')) -and
+            -not (Test-Path (Join-Path $_.FullName 'Makefile'))
+          }
+          $interpreter = & perl -e 'print "$^V $^X"'
+          Write-Output "=== re-running with perl $interpreter"
+          if (-not $dirs) {
+            Write-Output '=== no configured distribution was left without a Makefile'
+          }
+          foreach ($dir in $dirs) {
+            Write-Output "=== re-running Makefile.PL in $($dir.Name)"
+            Push-Location $dir.FullName
+            $output = & perl Makefile.PL 2>&1 | Out-String
+            $status = $LASTEXITCODE
+            Pop-Location
+            if ($output) {
+              Write-Output $output.TrimEnd()
+            } else {
+              Write-Output '(the script printed nothing at all)'
+            }
+            if ($null -eq $status) {
+              Write-Output 'exit code: unknown'
+            } else {
+              Write-Output ("exit code: {0} (0x{1:X8})" -f $status, $status)
+            }
+          }
 
       - name: Show cpanm build log on failure (non-Windows)
         if: runner.os != 'Windows' && failure()
