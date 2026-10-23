@@ -99,6 +99,28 @@ jobs:
           eval $(perl -I ~/perl5/lib/perl5 -Mlocal::lib)
           cpanm --notest --installdeps --verbose .
 
+      # Perl 5.42 on Windows faults inside DateTime-Locale's configure: its
+      # check_conflicts() call loads DateTime::Locale::Conflicts, and the
+      # process dies of an access violation (0xC0000005) before WriteMakefile
+      # runs, so cpanm sees only a Makefile that never appeared.  The call
+      # merely warns about an incompatible DateTime::Format::Strptime, so
+      # install the distribution with it disabled and let cpanm find it
+      # already present.  Revisit when DateTime-Locale or perl is fixed.
+      - name: Install DateTime-Locale without its conflict check (Windows 5.42)
+        if: runner.os == 'Windows' && matrix.perl == '5.42'
+        shell: pwsh
+        run: |
+          $dist = 'DateTime-Locale-1.46'
+          New-Item -ItemType Directory -Force -Path dtl | Out-Null
+          Push-Location dtl
+          curl.exe -fsSL -o dtl.tar.gz "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/$dist.tar.gz"
+          tar.exe xzf dtl.tar.gz
+          Set-Location $dist
+          & perl -i -pe 's/^check_conflicts/# check_conflicts/' Makefile.PL
+          & cpanm --notest .
+          Pop-Location
+          Remove-Item -Recurse -Force dtl
+
       - name: Install dependencies (Windows)
         if: runner.os == 'Windows'
         shell: cmd
@@ -107,36 +129,6 @@ jobs:
           set "PATH=%USERPROFILE%\perl5\bin;%PATH%"
           set "PERL5LIB=%USERPROFILE%\perl5\lib\perl5"
           cpanm --notest --installdeps --verbose .
-
-      # Temporary: confirm that the check_conflicts() call is the fault and
-      # that patching it out lets the distribution install.
-      - name: Probe DateTime-Locale configure (Windows)
-        if: runner.os == 'Windows' && matrix.perl == '5.42' && always()
-        continue-on-error: true
-        shell: pwsh
-        run: |
-          Remove-Item -Recurse -Force dtl -ErrorAction SilentlyContinue
-          New-Item -ItemType Directory -Force -Path dtl | Out-Null
-          Push-Location dtl
-          curl.exe -fsSL -o dtl.tar.gz https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-Locale-1.46.tar.gz
-          tar.exe xzf dtl.tar.gz
-          Set-Location DateTime-Locale-1.46
-          Write-Output '=== require the module check_conflicts() loads'
-          & perl -e 'require q{./lib/DateTime/Locale/Conflicts.pm}'
-          Write-Output "Conflicts require exit: $LASTEXITCODE"
-          Write-Output '=== patch out check_conflicts() and configure'
-          & perl -i -pe 's/^check_conflicts/# check_conflicts/' Makefile.PL
-          Write-Output "patch exit: $LASTEXITCODE"
-          Select-String -Path Makefile.PL -Pattern 'check_conflicts' | ForEach-Object { $_.Line }
-          & perl Makefile.PL
-          Write-Output "Makefile.PL exit: $LASTEXITCODE"
-          Write-Output ('Makefile present: ' + (Test-Path Makefile))
-          Write-Output '=== install the patched distribution'
-          & cpanm --notest .
-          Write-Output "cpanm exit: $LASTEXITCODE"
-          & perl -MDateTime::Locale -e 1
-          Write-Output "DateTime::Locale load exit: $LASTEXITCODE"
-          Pop-Location
 
       - name: Reinstall YAML::XS against current Perl (Windows)
         if: runner.os == 'Windows'
