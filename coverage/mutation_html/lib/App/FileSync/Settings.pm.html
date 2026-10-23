@@ -1,0 +1,1063 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>File: lib/App/FileSync/Settings.pm</title>
+<style>
+
+/* --------------------------------------------------
+   CSS Variables (Light Mode Default)
+-------------------------------------------------- */
+
+:root {
+    --bg: #ffffff;
+    --text: #000000;
+    --table-header: #333;
+    --table-header-text: #ffffff;
+
+    --survived-1: #f8d7da;
+    --survived-2: #f5b7b1;
+    --survived-3: #ec7063;
+
+    --killed: #d4edda;
+    --border: #cccccc;
+}
+
+/* --------------------------------------------------
+   Dark Mode Overrides
+-------------------------------------------------- */
+
+html[data-theme='dark'] {
+    --bg: #1e1e1e;
+    --text: #dddddd;
+    --table-header: #222;
+    --table-header-text: #ffffff;
+
+    --survived-1: #5c2b2e;
+    --survived-2: #7b2c2f;
+    --survived-3: #a93226;
+
+    --killed: #1e4620;
+    --border: #555;
+}
+
+/* --------------------------------------------------
+   Global Styles
+-------------------------------------------------- */
+
+body {
+	font-family: sans-serif;
+	background: var(--bg);
+	color: var(--text);
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    background: var(--table-header);
+    color: var(--table-header-text);
+}
+
+.survived-1 { background-color: var(--survived-1); }
+.survived-2 { background-color: var(--survived-2); }
+.survived-3 { background-color: var(--survived-3); }
+
+.killed { background-color: var(--killed); }
+
+.legend {
+    border: 1px solid #ccc;
+    background: #fafafa;
+    padding: 10px;
+    margin: 15px 0;
+    font-size: 0.9em;
+}
+
+.legend pre {
+    background: #f4f4f4;
+    padding: 5px;
+}
+
+.legend-box {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin: 0 6px 0 20px;
+    vertical-align: middle;
+    border: 1px solid var(--border);
+}
+
+/* White box for non-mutated lines */
+.legend-box.none {
+	background-color: var(--bg);
+}
+
+/* --------------------------------------------------
+   Suggested Test Box Styling
+   Theme-aware and readable in light & dark modes
+-------------------------------------------------- */
+
+.suggested-test {
+    margin-top: 6px;
+    margin-bottom: 12px;
+
+    /* Use theme variables instead of hardcoded colors */
+    background: var(--bg);
+    color: var(--text);
+
+    padding: 8px;
+    border-radius: 4px;
+
+    /* Subtle border for visual separation */
+    border: 1px solid var(--border);
+}
+
+/* Label styling */
+.suggest-label {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+/* Ensure the test code block inherits readable colors */
+.suggested-test pre {
+    background: transparent;   /* Prevent nested dark blocks */
+    color: inherit;            /* Match theme text color */
+    margin: 0;
+    font-family: monospace;
+}
+
+pre { line-height: 1.4; }
+
+pre > details {
+    margin: 0.2em 0;
+}
+
+pre > details:first-child {
+    margin-top: 0;
+}
+
+pre > details:last-child {
+    margin-bottom: 0;
+}
+
+pre details,
+pre summary,
+pre ul,
+pre li {
+    white-space: normal;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+.nav { margin-bottom: 1em; }
+
+.toggle {
+    float: right;
+    cursor: pointer;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
+/* Tooltip container */
+.tooltip {
+	position: relative;
+	cursor: help;
+}
+
+/* Tooltip bubble */
+.tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: var(--table-header);
+    color: var(--table-header-text);
+    padding: 6px 10px;
+    white-space: normal;
+    max-width: 300px;
+    min-width: 30ch;
+    font-size: 12px;
+    border-radius: 6px;
+    z-index: 1000;
+    margin-left: 10ch;   /* move tooltip ~10 characters to the right */
+}
+
+.mutant-details {
+	margin-left: 2em;
+	font-size: 0.9em;
+}
+
+/* Indent the list of mutations that displays when expanding by 8 characters */
+pre details.mutant-details ul {
+	padding-left: 8ch;
+	margin: 0.2em 0;
+}
+
+.mutant-details summary {
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.lcsaj-dot {
+    color: #5555ff;
+    font-size: 10px;
+    margin-right: 3px;
+}
+
+.lcsaj-dot-uncovered {
+    color: #cc4444;
+    font-size: 10px;
+    margin-right: 3px;
+}
+
+.lcsaj-tip {
+	position: relative;
+	display: inline-block;
+}
+
+.lcsaj-tip .lcsaj-tip-text {
+	visibility: hidden;
+	background-color: #333;
+	color: #fff;
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 11px;
+	white-space: nowrap;
+	position: fixed;
+	z-index: 9999;
+	pointer-events: none;
+}
+
+.lcsaj-tip:hover .lcsaj-tip-text {
+	visibility: visible;
+}
+
+.cpd-dot {
+    color: #cc8800;
+    font-size: 10px;
+    margin-right: 3px;
+    cursor: help;
+    text-decoration: none;
+}
+a.cpd-dot { cursor: pointer; }
+a.cpd-dot:hover { color: #ff8800; }
+
+.cpd-tip {
+    position: relative;
+    display: inline-block;
+}
+
+.cpd-tip .cpd-tip-text {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    white-space: nowrap;
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.cpd-tip:hover .cpd-tip-text {
+    visibility: visible;
+}
+
+/* CPD drill-down page styles */
+.dup-line { background-color: #fff3cd; display: block; }
+.dup-line:hover { background-color: #ffe082; }
+.intra-dot { color: #9944cc; margin-right: 4px; cursor: help; text-decoration: none; }
+a.intra-dot { cursor: pointer; }
+a.intra-dot:hover { color: #7700bb; }
+.cpd-legend {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 6px 10px;
+    margin-bottom: 1em;
+    font-size: 0.9em;
+}
+
+</style>
+</head>
+<body>
+<button class="toggle" onclick="toggleTheme()">🌙 Toggle Theme</button>
+<h1>lib/App/FileSync/Settings.pm</h1>
+<div class="nav"><a href="../FileSync.pm.html">⬅ Previous</a> <a href="../../../../index.html">Index</a>
+</div><div class='summary'>
+<strong>Structural Coverage (Approximate)</strong><p>
+TER1 (Statement): 92.55%<br>
+TER2 (Branch): 69.44%<br>
+TER3 (LCSAJ): 88.9% (8/9)<br>
+Approximate LCSAJ segments: 109<br>
+</div>
+
+    <div class="legend">
+        <h3>LCSAJ Legend</h3>
+
+        <p>
+        <span class="lcsaj-dot">●</span>
+        <b>Covered</b> — this LCSAJ path was executed during testing.
+        </p>
+
+        <p>
+        <span class="lcsaj-dot-uncovered">●</span>
+        <b>Not covered</b> — this LCSAJ path was never executed. These are the paths to focus on.
+        </p>
+
+        <p>
+        Multiple dots on a line indicate that multiple control-flow paths begin at that line.
+        Hovering over any dot shows:
+        </p>
+
+        <pre>
+        start → end → jump
+        </pre>
+
+        <ul>
+        <li><b>start</b> – first line of the linear sequence</li>
+        <li><b>end</b> – last line before control flow changes</li>
+        <li><b>jump</b> – line execution jumps to next</li>
+        </ul>
+
+        <p>
+        Uncovered paths show <b>[NOT COVERED]</b> in the tooltip.
+	</p>
+    </div>
+
+		<div class="legend">
+			<h3>Mutant Testing Legend</h3>
+			<span class="legend-box survived-1"></span> Survived (tests missed this)
+			<span class="legend-box killed"></span> Killed (tests detected this)
+			<span class="legend-box none"></span> No mutation
+		</div>
+	<pre>
+<span class="">    1: package App::FileSync::Settings;
+</span><span class="">    2: 
+</span><span class="">    3: use strict;
+</span><span class="">    4: use warnings;
+</span><span class="">    5: 
+</span><span class="">    6: use Config::Abstraction;
+</span><span class="">    7: use File::Basename qw(dirname);
+</span><span class="">    8: use File::Path qw(make_path);
+</span><span class="">    9: use File::Spec;
+</span><span class="">   10: use Log::Abstraction;
+</span><span class="">   11: use Object::Configure;
+</span><span class="">   12: 
+</span><span class="">   13: # Process-wide settings live in Object::Configure; the repos themselves stay in
+</span><span class="">   14: # ~/.filesync/config.json, which &quot;filesync init&quot; writes and the admin tool edits.
+</span><span class="">   15: our $DEFAULT_FORMAT  = &#39;%level%: %message%&#39;;
+</span><span class="">   16: our $DEFAULT_LEVEL   = &#39;warning&#39;;
+</span><span class="">   17: our $CONFIG_BASENAME = &#39;app-filesync.json&#39;;
+</span><span class="">   18: 
+</span><span class="">   19: # Defaults for every SSH repo.  A repo&#39;s own config still wins, so one machine
+</span><span class="">   20: # can point at another identity without repeating the common settings.
+</span><span class="">   21: our $DEFAULT_SERVER_COMMAND = &#39;filesync-server&#39;;
+</span><span class="">   22: 
+</span><span class="">   23: our @VALID_LEVELS = qw(
+</span><span class="">   24:     trace debug info informational notice warn warning error err
+</span><span class="">   25:     crit critical fatal alert emerg emergency panic
+</span><span class="">   26: );
+</span><span class="">   27: 
+</span><span class="">   28: # The process-wide settings, in the order &quot;filesync settings&quot; prints them.
+</span><span class="">   29: our @SETTING_KEYS = qw(
+</span><span class="">   30:     log_level log_format log_file
+</span><span class="">   31:     ssh_identity ssh_known_hosts server_command
+</span><span class="">   32: );
+</span><span class="">   33: 
+</span><span class="">   34: # How each repo-level SSH key corresponds to the process setting it falls back
+</span><span class="">   35: # to.  The names differ only because the repo config uses shorter keys.
+</span><span class="">   36: our %REPO_SSH_KEYS = (
+</span><span class="">   37:     ssh_identity    =&gt; &#39;identity&#39;,
+</span><span class="">   38:     ssh_known_hosts =&gt; &#39;known_hosts&#39;,
+</span><span class="">   39:     server_command  =&gt; &#39;server_command&#39;,
+</span><span class="">   40: );
+</span><span class="">   41: our @REPO_SSH_SETTINGS = qw(ssh_identity ssh_known_hosts server_command);
+</span><span class="">   42: 
+</span><span class="">   43: sub _default_config_path {
+</span><span class="">   44:     my $path = $ENV{FILESYNC_SETTINGS};
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   45:     return $path if defined $path &amp;&amp; length $path;
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">   46: 
+</span><span class="">   47:     my $home = $ENV{HOME};
+</span><span class="">   48:     $home = $ENV{USERPROFILE} if !defined $home || !length $home;
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">   49:     return undef unless defined $home &amp;&amp; length $home;
+</span>
+					<details class="mutant-details">
+					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
+					<ul>
+				<li><b>BOOL_NEGATE_49_5: Negate boolean return expression</b><br>MEDIUM: Add tests asserting both true and false outcomes
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Boolean branch test suggestion
+ok( !func(INPUT), &#39;Verify boolean branch behaviour&#39; );
+</pre>
+								</div>
+							</li><li><b>RETURN_UNDEF_49_5: Replace return expression with undef</b><br>LOW: Mutation survived, but impact may be minor
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Return value assertion
+is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
+</pre>
+								</div>
+							</li></ul></details>
+<span class="">   50: 
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">   51:     return File::Spec-&gt;catfile($home, &#39;.conf&#39;, $CONFIG_BASENAME);
+</span>
+					<details class="mutant-details">
+					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
+					<ul>
+				<li><b>BOOL_NEGATE_51_5: Negate boolean return expression</b><br>MEDIUM: Add tests asserting both true and false outcomes
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Boolean branch test suggestion
+ok( !func(INPUT), &#39;Verify boolean branch behaviour&#39; );
+</pre>
+								</div>
+							</li><li><b>RETURN_UNDEF_51_5: Replace return expression with undef</b><br>LOW: Mutation survived, but impact may be minor
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Return value assertion
+is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
+</pre>
+								</div>
+							</li></ul></details>
+<span class="">   52: }
+</span><span class="">   53: 
+</span><span class="">   54: sub config_file {
+</span><span class="">   55:     my ($given) = @_;
+</span><span class="">   56: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   57:     return $given if defined $given &amp;&amp; length $given;
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">   58: 
+</span><span class="">   59:     my $path = _default_config_path();
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">   60:     return undef unless defined $path &amp;&amp; length $path;
+</span>
+					<details class="mutant-details">
+					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
+					<ul>
+				<li><b>BOOL_NEGATE_60_5: Negate boolean return expression</b><br>MEDIUM: Add tests asserting both true and false outcomes
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Boolean branch test suggestion
+ok( !func(INPUT), &#39;Verify boolean branch behaviour&#39; );
+</pre>
+								</div>
+							</li><li><b>RETURN_UNDEF_60_5: Replace return expression with undef</b><br>LOW: Mutation survived, but impact may be minor
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Return value assertion
+is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
+</pre>
+								</div>
+							</li></ul></details>
+<span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   61:     return -e $path ? $path : undef;
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">   62: }
+</span><span class="">   63: 
+</span><span class="">   64: # Merge the settings file (if any), the UNIVERSAL section and the
+</span><span class="">   65: # App__FileSync__* environment variables over the built-in defaults.
+</span><span class="">   66: sub load {
+</span><span class="">   67:     my (%args) = @_;
+</span><span class="">   68: 
+</span><span class="">   69:     my $config_file = exists $args{config_file}
+</span><span class="">   70:         ? config_file($args{config_file})
+</span><span class="">   71:         : config_file();
+</span><span class="">   72: 
+</span><span class="">   73:     my %params = (
+</span><span class="">   74:         log_level       =&gt; $DEFAULT_LEVEL,
+</span><span class="">   75:         log_format      =&gt; $DEFAULT_FORMAT,
+</span><span class="">   76:         log_file        =&gt; &#39;&#39;,
+</span><span class="">   77:         ssh_identity    =&gt; &#39;&#39;,
+</span><span class="">   78:         ssh_known_hosts =&gt; &#39;&#39;,
+</span><span class="">   79:         server_command  =&gt; $DEFAULT_SERVER_COMMAND,
+</span><span class="">   80:         # We build the logger ourselves; this keeps Object::Configure from
+</span><span class="">   81:         # constructing its default Log::Log4perl backend as a side effect.
+</span><span class="">   82:         logger     =&gt; [],
+</span><span class="">   83:     );
+</span><span class="">   84: 
+</span><span class="">   85:     $params{config_file} = $config_file if defined $config_file &amp;&amp; length $config_file;
+</span><span class="">   86:     $params{config_dirs} = $args{config_dirs} if ref($args{config_dirs}) eq &#39;ARRAY&#39;;
+</span><span class="">   87: 
+</span><span class="">   88:     my $settings = Object::Configure::configure(&#39;App::FileSync&#39;, \%params);
+</span><span class="">   89:     delete $settings-&gt;{logger};
+</span><span class="">   90: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   91:     return $settings;
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">   92: }
+</span><span class="">   93: 
+</span><span class="">   94: sub _defaults {
+</span><span class="">   95:     return {
+</span><span class="">   96:         log_level       =&gt; $DEFAULT_LEVEL,
+</span><span class="">   97:         log_format      =&gt; $DEFAULT_FORMAT,
+</span><span class="">   98:         log_file        =&gt; &#39;&#39;,
+</span><span class="">   99:         ssh_identity    =&gt; &#39;&#39;,
+</span><span class="">  100:         ssh_known_hosts =&gt; &#39;&#39;,
+</span><span class="">  101:         server_command  =&gt; $DEFAULT_SERVER_COMMAND,
+</span><span class="">  102:     };
+</span><span class="">  103: }
+</span><span class="">  104: 
+</span><span class="">  105: # Where each effective setting came from, for &quot;filesync settings&quot;.  The values
+</span><span class="">  106: # are whatever load() returns; the provenance is reconstructed from the same
+</span><span class="">  107: # layers Object::Configure merges: the class section of the settings file, the
+</span><span class="">  108: # UNIVERSAL section beside it, and App__FileSync__* environment variables.
+</span><span class="">  109: sub explain {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">110 → 122 → 129</span></span>  110:     my (%args) = @_;
+</span><span class="">  111: 
+</span><span class="">  112:     my $config_file = exists $args{config_file}
+</span><span class="">  113:         ? config_file($args{config_file})
+</span><span class="">  114:         : config_file();
+</span><span class="">  115: 
+</span><span class="">  116:     my $settings = load(%args);
+</span><span class="">  117:     my $defaults = _defaults();
+</span><span class="">  118: 
+</span><span class="">  119:     my $class_explanation = {};
+</span><span class="">  120:     my $universal_file;
+</span><span class="">  121:     my $universal_explanation = {};
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  122:     if (defined $config_file &amp;&amp; length $config_file) {
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  123:         $class_explanation = _explanation($config_file, &#39;App__FileSync&#39;);
+</span><span class="">  124:         $universal_file = _universal_file($config_file);
+</span><span class="">  125:         $universal_explanation = _explanation($universal_file, &#39;UNIVERSAL&#39;)
+</span><span class="">  126:             if defined $universal_file;
+</span><span class="">  127:     }
+</span><span class="">  128: 
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">129 → 130 → 177</span></span>  129:     my @rows;
+</span><span class="">  130:     for my $key (@SETTING_KEYS) {
+</span><span class="">  131:         my %row = (
+</span><span class="">  132:             key    =&gt; $key,
+</span><span class="">  133:             value  =&gt; $settings-&gt;{$key},
+</span><span class="">  134:             source =&gt; &#39;default&#39;,
+</span><span class="">  135:             label  =&gt; &#39;built-in default&#39;,
+</span><span class="">  136:         );
+</span><span class="">  137:         my $winner_value = $defaults-&gt;{$key};
+</span><span class="">  138: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  139:         if (defined $config_file &amp;&amp; length $config_file) {
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  140:             if (my $entry = _pick($universal_explanation, &#39;UNIVERSAL&#39;, $key)) {
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  141:                 $row{source} = $entry-&gt;{type};
+</span><span class="">  142:                 $row{label}  = $entry-&gt;{type} eq &#39;env&#39;
+</span><span class="">  143:                     ? $entry-&gt;{label}
+</span><span class="">  144:                     : &quot;$universal_file [UNIVERSAL]&quot;;
+</span><span class="">  145:                 $winner_value = $entry-&gt;{value};
+</span><span class="">  146:             }
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  147:             if (my $entry = _pick($class_explanation, &#39;App__FileSync&#39;, $key)) {
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  148:                 $row{source} = $entry-&gt;{type};
+</span><span class="">  149:                 $row{label}  = $entry-&gt;{type} eq &#39;env&#39;
+</span><span class="">  150:                     ? $entry-&gt;{label}
+</span><span class="">  151:                     : &quot;$config_file [App__FileSync]&quot;;
+</span><span class="">  152:                 $winner_value = $entry-&gt;{value};
+</span><span class="">  153:             }
+</span><span class="">  154:         } else {
+</span><span class="">  155:             # No settings file: Object::Configure falls back to environment
+</span><span class="">  156:             # variables only, universal ones first and class ones last.
+</span><span class="">  157:             for my $prefix (qw(UNIVERSAL App__FileSync)) {
+</span><span class="">  158:                 my $name = _env_key(&quot;${prefix}__$key&quot;);
+</span><span class="">  159:                 next unless defined $name;
+</span><span class="">  160:                 $row{source}  = &#39;env&#39;;
+</span><span class="">  161:                 $row{label}   = $name;
+</span><span class="">  162:                 $winner_value = $ENV{$name};
+</span><span class="">  163:             }
+</span><span class="">  164:         }
+</span><span class="">  165: 
+</span><span class="">  166:         # A value that no modelled layer accounts for came from somewhere else
+</span><span class="">  167:         # (a &quot;global&quot; section, say); say so instead of claiming a default.
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  168:         if (_differs($settings-&gt;{$key}, $winner_value)) {
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  169:             $row{source} = &#39;merged&#39;;
+</span><span class="">  170:             $row{label}  = join(&#39; + &#39;, _labels_for($key, $universal_explanation, $class_explanation))
+</span><span class="">  171:                 || &#39;unknown source&#39;;
+</span><span class="">  172:         }
+</span><span class="">  173: 
+</span><span class="">  174:         push @rows, \%row;
+</span><span class="">  175:     }
+</span><span class="">  176: 
+</span><span class="">  177:     return {
+</span><span class="">  178:         settings_file =&gt; $config_file,
+</span><span class="">  179:         settings      =&gt; \@rows,
+</span><span class="">  180:     };
+</span><span class="">  181: }
+</span><span class="">  182: 
+</span><span class="">  183: # How the SSH settings resolve for every repo in a client config, for
+</span><span class="">  184: # &quot;filesync settings&quot;.  Each row reports the value the transport will use and
+</span><span class="">  185: # whether the repo, the process settings or ssh&#39;s own default supplied it.
+</span><span class="">  186: sub explain_repos {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">187 → 196 → 249</span></span>  187:     my (%args) = @_;
+</span><span class="">  188: 
+</span><span class="">  189:     my $config      = ref($args{config}) eq &#39;HASH&#39; ? $args{config} : {};
+</span><span class="">  190:     my $report      = ref($args{report}) eq &#39;HASH&#39; ? $args{report} : {};
+</span><span class="">  191:     my $config_file = $args{config_file};
+</span><span class="">  192: 
+</span><span class="">  193:     my %process = map { $_-&gt;{key} =&gt; $_ } @{ $report-&gt;{settings} || [] };
+</span><span class="">  194: 
+</span><span class="">  195:     my @repos;
+</span><span class="">  196:     for my $name (sort keys %{ $config-&gt;{repos} || {} }) {
+</span><span class="">  197:         my $repo = $config-&gt;{repos}{$name};
+</span><span class="">  198:         $repo = {} unless ref($repo) eq &#39;HASH&#39;;
+</span><span class="">  199: 
+</span><span class="">  200:         my $transport = $repo-&gt;{transport} || &#39;ssh&#39;;
+</span><span class="">  201:         my $entry = {
+</span><span class="">  202:             repo      =&gt; $name,
+</span><span class="">  203:             transport =&gt; $transport,
+</span><span class="">  204:         };
+</span><span class="">  205:         $entry-&gt;{server} = $repo-&gt;{server}
+</span><span class="">  206:             if defined $repo-&gt;{server} &amp;&amp; length $repo-&gt;{server};
+</span><span class="">  207: 
+</span><span class="">  208:         # The local transport never runs ssh, so there is nothing to resolve.
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  209:         if ($transport eq &#39;ssh&#39;) {
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  210:             my @rows;
+</span><span class="">  211:             for my $key (@REPO_SSH_SETTINGS) {
+</span><span class="">  212:                 my $value = $repo-&gt;{ $REPO_SSH_KEYS{$key} };
+</span><span class="">  213:                 my %row = (key =&gt; $key, value =&gt; &#39;&#39;);
+</span><span class="">  214: 
+</span><span class="">  215:                 my $setting = $process{$key};
+</span><span class="">  216: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  217:                 if (defined $value &amp;&amp; length $value) {
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  218:                     $row{value}  = $value;
+</span><span class="">  219:                     $row{source} = &#39;repo&#39;;
+</span><span class="">  220:                     $row{label}  = defined $config_file &amp;&amp; length $config_file
+</span><span class="">  221:                         ? &quot;$config_file [$name]&quot;
+</span><span class="">  222:                         : &quot;[$name]&quot;;
+</span><span class="">  223:                 } elsif ($setting &amp;&amp; defined $setting-&gt;{value} &amp;&amp; length $setting-&gt;{value}) {
+</span><span class="">  224:                     $row{value}  = $setting-&gt;{value};
+</span><span class="">  225:                     $row{source} = &#39;process&#39;;
+</span><span class="">  226:                     $row{label}  = $setting-&gt;{label};
+</span><span class="">  227:                 } else {
+</span><span class="">  228:                     $row{source} = &#39;default&#39;;
+</span><span class="">  229:                     $row{label}  = &#39;ssh default&#39;;
+</span><span class="">  230:                 }
+</span><span class="">  231: 
+</span><span class="">  232:                 push @rows, \%row;
+</span><span class="">  233:             }
+</span><span class="">  234: 
+</span><span class="">  235:             # These two are recorded per repo only: there is no process-wide
+</span><span class="">  236:             # default to fall back to, so the marker is always set.
+</span><span class="">  237:             push @rows,
+</span><span class="">  238:                 _repo_only_row($repo, $name, $config_file, &#39;port&#39;, &#39;22&#39;),
+</span><span class="">  239:                 _repo_only_row($repo, $name, $config_file, &#39;host_key_checking&#39;, &#39;yes&#39;);
+</span><span class="">  240: 
+</span><span class="">  241:             $entry-&gt;{ssh} = \@rows;
+</span><span class="">  242:         } else {
+</span><span class="">  243:             $entry-&gt;{ssh} = undef;
+</span><span class="">  244:         }
+</span><span class="">  245: 
+</span><span class="">  246:         push @repos, $entry;
+</span><span class="">  247:     }
+</span><span class="">  248: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  249:     return \@repos;
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  250: }
+</span><span class="">  251: 
+</span><span class="">  252: sub _repo_only_row {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">253 → 257 → 269</span></span>  253:     my ($repo, $name, $config_file, $key, $default) = @_;
+</span><span class="">  254: 
+</span><span class="">  255:     my %row = (key =&gt; $key, repo_only =&gt; 1, value =&gt; $default);
+</span><span class="">  256: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  257:     if (defined $repo-&gt;{$key} &amp;&amp; length $repo-&gt;{$key}) {
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  258:         $row{value}  = $repo-&gt;{$key};
+</span><span class="">  259:         $row{source} = &#39;repo&#39;;
+</span><span class="">  260:         $row{label}  = defined $config_file &amp;&amp; length $config_file
+</span><span class="">  261:             ? &quot;$config_file [$name]&quot;
+</span><span class="">  262:             : &quot;[$name]&quot;;
+</span><span class="">  263:     } else {
+</span><span class="">  264:         # The transport omits -p and StrictHostKeyChecking defaults to yes.
+</span><span class="">  265:         $row{source} = &#39;default&#39;;
+</span><span class="">  266:         $row{label}  = &#39;ssh default&#39;;
+</span><span class="">  267:     }
+</span><span class="">  268: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  269:     return \%row;
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  270: }
+</span><span class="">  271: 
+</span><span class="">  272: sub _differs {
+</span><span class="">  273:     my ($left, $right) = @_;
+</span><span class="">  274: 
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  275:     return 0 if !defined $left &amp;&amp; !defined $right;
+</span>
+					<details class="mutant-details">
+					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
+					<ul>
+				<li><b>BOOL_NEGATE_275_5: Negate boolean return expression</b><br>MEDIUM: Add tests asserting both true and false outcomes
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Boolean branch test suggestion
+ok( !func(INPUT), &#39;Verify boolean branch behaviour&#39; );
+</pre>
+								</div>
+							</li><li><b>RETURN_UNDEF_275_5: Replace return expression with undef</b><br>LOW: Mutation survived, but impact may be minor
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Return value assertion
+is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
+</pre>
+								</div>
+							</li></ul></details>
+<span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  276:     return 1 if !defined $left || !defined $right;
+</span>
+					<details class="mutant-details">
+					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
+					<ul>
+				<li><b>BOOL_NEGATE_276_5: Negate boolean return expression</b><br>MEDIUM: Add tests asserting both true and false outcomes
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Boolean branch test suggestion
+ok( !func(INPUT), &#39;Verify boolean branch behaviour&#39; );
+</pre>
+								</div>
+							</li><li><b>RETURN_UNDEF_276_5: Replace return expression with undef</b><br>LOW: Mutation survived, but impact may be minor
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Return value assertion
+is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
+</pre>
+								</div>
+							</li></ul></details>
+<span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  277:     return &quot;$left&quot; ne &quot;$right&quot; ? 1 : 0;
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  278: }
+</span><span class="">  279: 
+</span><span class="">  280: sub _explanation {
+</span><span class="">  281:     my ($file, $section) = @_;
+</span><span class="">  282: 
+</span><span class="">  283:     my $reader = Config::Abstraction-&gt;new(
+</span><span class="">  284:         config_file =&gt; $file,
+</span><span class="">  285:         env_prefix  =&gt; &quot;${section}__&quot;,
+</span><span class="">  286:     );
+</span><span class="">  287:     return {} unless $reader;
+</span><span class="">  288: 
+</span><span class="">  289:     my $explanation = $reader-&gt;explain_sources();
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  290:     return ref($explanation) eq &#39;HASH&#39; ? $explanation : {};
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  291: }
+</span><span class="">  292: 
+</span><span class="">  293: # The name the environment actually uses, matched the way Config::Abstraction
+</span><span class="">  294: # matches an env_prefix: case-insensitively.  Windows reports environment
+</span><span class="">  295: # names upper-cased, so building one from &quot;prefix__key&quot; is not enough; the
+</span><span class="">  296: # report would then name a variable that does not exist in the same spelling
+</span><span class="">  297: # as the one that supplied the value.
+</span><span class="">  298: sub _env_key {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">299 → 304 → 308</span></span>  299:     my ($name) = @_;
+</span><span class="">  300: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  301:     return $name if grep { $_ eq $name } keys %ENV;
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  302: 
+</span><span class="">  303:     my $wanted = lc $name;
+</span><span class="">  304:     for my $key (keys %ENV) {
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  305:         return $key if lc $key eq $wanted;
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  306:     }
+</span><span class="">  307: 
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  308:     return undef;
+</span>
+					<details class="mutant-details">
+					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
+					<ul>
+				<li><b>BOOL_NEGATE_308_5: Negate boolean return expression</b><br>MEDIUM: Add tests asserting both true and false outcomes
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Boolean branch test suggestion
+ok( !func(INPUT), &#39;Verify boolean branch behaviour&#39; );
+</pre>
+								</div>
+							</li><li><b>RETURN_UNDEF_308_5: Replace return expression with undef</b><br>LOW: Mutation survived, but impact may be minor
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Return value assertion
+is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
+</pre>
+								</div>
+							</li></ul></details>
+<span class="">  309: }
+</span><span class="">  310: 
+</span><span class="">  311: # The last source that set a key in a section wins, which is how
+</span><span class="">  312: # Config::Abstraction layers a file under its environment variables.
+</span><span class="">  313: sub _pick {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">314 → 316 → 330</span></span>  314:     my ($explanation, $section, $key) = @_;
+</span><span class="">  315: 
+</span><span class="">  316:     for my $full (&quot;$section.$key&quot;, &quot;global.$key&quot;, $key) {
+</span><span class="">  317:         my $entry = $explanation-&gt;{$full};
+</span><span class="">  318:         next unless ref($entry) eq &#39;HASH&#39; &amp;&amp; ref($entry-&gt;{sources}) eq &#39;ARRAY&#39;;
+</span><span class="">  319:         my @sources = @{ $entry-&gt;{sources} };
+</span><span class="">  320:         next unless @sources;
+</span><span class="">  321: 
+</span><span class="">  322:         my $winner = $sources[-1];
+</span><span class="">  323:         return {
+</span><span class="">  324:             type  =&gt; $winner-&gt;{type},
+</span><span class="">  325:             label =&gt; $winner-&gt;{label},
+</span><span class="">  326:             value =&gt; $winner-&gt;{value},
+</span><span class="">  327:         };
+</span><span class="">  328:     }
+</span><span class="">  329: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  330:     return undef;
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  331: }
+</span><span class="">  332: 
+</span><span class="">  333: sub _labels_for {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot-uncovered">●</span><span class="lcsaj-tip-text">[NOT COVERED] 334 → 337 → 348</span></span>  334:     my ($key, @explanations) = @_;
+</span><span class="">  335: 
+</span><span class="">  336:     my (%seen, @labels);
+</span><span class="">  337:     for my $explanation (@explanations) {
+</span><span class="">  338:         for my $full (sort keys %{$explanation}) {
+</span><span class="">  339:             next unless $full eq $key || $full =~ /\.\Q$key\E\z/;
+</span><span class="">  340:             for my $source (@{ $explanation-&gt;{$full}{sources} || [] }) {
+</span><span class="">  341:                 my $label = $source-&gt;{label};
+</span><span class="">  342:                 next unless defined $label &amp;&amp; length $label;
+</span><span class="">  343:                 push @labels, $label unless $seen{$label}++;
+</span><span class="">  344:             }
+</span><span class="">  345:         }
+</span><span class="">  346:     }
+</span><span class="">  347: 
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  348:     return @labels;
+</span>
+					<details class="mutant-details">
+					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
+					<ul>
+				<li><b>BOOL_NEGATE_348_5: Negate boolean return expression</b><br>MEDIUM: Add tests asserting both true and false outcomes
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Boolean branch test suggestion
+ok( !func(INPUT), &#39;Verify boolean branch behaviour&#39; );
+</pre>
+								</div>
+							</li><li><b>RETURN_UNDEF_348_5: Replace return expression with undef</b><br>LOW: Mutation survived, but impact may be minor
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Return value assertion
+is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
+</pre>
+								</div>
+							</li></ul></details>
+<span class="">  349: }
+</span><span class="">  350: 
+</span><span class="">  351: # Object::Configure looks for universal&lt;ext&gt; beside the settings file, then the
+</span><span class="">  352: # other config-file extensions; mirror its search so the report matches.
+</span><span class="">  353: sub _universal_file {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">354 → 361 → 371</span></span>  354:     my ($config_file) = @_;
+</span><span class="">  355: 
+</span><span class="">  356:     my ($volume, $directory) = File::Spec-&gt;splitpath($config_file);
+</span><span class="">  357:     my $base_directory = File::Spec-&gt;catpath($volume, $directory, &#39;&#39;);
+</span><span class="">  358:     my $ext = $config_file =~ /(\.[^.\/\\]+)\z/ ? $1 : &#39;&#39;;
+</span><span class="">  359: 
+</span><span class="">  360:     my %seen;
+</span><span class="">  361:     for my $candidate (grep { !$seen{$_}++ } (
+</span><span class="">  362:         File::Spec-&gt;catfile($base_directory, &quot;universal$ext&quot;),
+</span><span class="">  363:         File::Spec-&gt;catfile($base_directory, &#39;universal.conf&#39;),
+</span><span class="">  364:         File::Spec-&gt;catfile($base_directory, &#39;universal.yml&#39;),
+</span><span class="">  365:         File::Spec-&gt;catfile($base_directory, &#39;universal.yaml&#39;),
+</span><span class="">  366:         File::Spec-&gt;catfile($base_directory, &#39;universal.json&#39;),
+</span><span class="">  367:     )) {
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  368:         return $candidate if -f $candidate &amp;&amp; -r $candidate;
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  369:     }
+</span><span class="">  370: 
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  371:     return undef;
+</span>
+					<details class="mutant-details">
+					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
+					<ul>
+				<li><b>BOOL_NEGATE_371_5: Negate boolean return expression</b><br>MEDIUM: Add tests asserting both true and false outcomes
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Boolean branch test suggestion
+ok( !func(INPUT), &#39;Verify boolean branch behaviour&#39; );
+</pre>
+								</div>
+							</li><li><b>RETURN_UNDEF_371_5: Replace return expression with undef</b><br>LOW: Mutation survived, but impact may be minor
+
+								<div class="suggested-test">
+								<div class="suggest-label">🧪 Suggested Test</div>
+								<pre># Return value assertion
+is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
+</pre>
+								</div>
+							</li></ul></details>
+<span class="">  372: }
+</span><span class="">  373: 
+</span><span class="">  374: sub logger {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">375 → 393 → 402</span></span>  375:     my (%args) = @_;
+</span><span class="">  376: 
+</span><span class="">  377:     my $settings = load(%args);
+</span><span class="">  378: 
+</span><span class="">  379:     my $level = defined $args{level} &amp;&amp; length $args{level}
+</span><span class="">  380:         ? $args{level}
+</span><span class="">  381:         : (defined $settings-&gt;{log_level} &amp;&amp; length $settings-&gt;{log_level}
+</span><span class="">  382:             ? $settings-&gt;{log_level}
+</span><span class="">  383:             : $DEFAULT_LEVEL);
+</span><span class="">  384: 
+</span><span class="">  385:     die &quot;Invalid log_level &#39;$level&#39; (want &quot; . join(&#39;, &#39;, @VALID_LEVELS) . &quot;)\n&quot;
+</span><span class="">  386:         unless grep { lc($_) eq lc($level) } @VALID_LEVELS;
+</span><span class="">  387: 
+</span><span class="">  388:     my $format = defined $settings-&gt;{log_format} &amp;&amp; length $settings-&gt;{log_format}
+</span><span class="">  389:         ? $settings-&gt;{log_format}
+</span><span class="">  390:         : $DEFAULT_FORMAT;
+</span><span class="">  391: 
+</span><span class="">  392:     my $destination;
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  393:     if (defined $settings-&gt;{log_file} &amp;&amp; length $settings-&gt;{log_file}) {
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  394:         my $path = $settings-&gt;{log_file};
+</span><span class="">  395:         my $directory = dirname($path);
+</span><span class="">  396:         make_path($directory) unless -d $directory;
+</span><span class="">  397:         $destination = { file =&gt; $path };
+</span><span class="">  398:     } else {
+</span><span class="">  399:         $destination = { fd =&gt; \*STDERR };
+</span><span class="">  400:     }
+</span><span class="">  401: 
+</span><span class="">  402:     my $logger = Log::Abstraction-&gt;new(
+</span><span class="">  403:         level          =&gt; $level,
+</span><span class="">  404:         format         =&gt; $format,
+</span><span class="">  405:         # Logging must never turn a handled error into a second, uncaught one.
+</span><span class="">  406:         croak_on_error =&gt; 0,
+</span><span class="">  407:         logger         =&gt; $destination,
+</span><span class="">  408:     );
+</span><span class="">  409: 
+</span><span class="">  410:     # A command-line flag describes this run, so it beats the settings file.
+</span><span class="">  411:     $logger = $logger-&gt;new(level =&gt; &#39;debug&#39;) if $args{verbose};
+</span><span class="">  412:     $logger = $logger-&gt;new(level =&gt; &#39;error&#39;) if $args{quiet};
+</span><span class="">  413: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  414:     return $logger;
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  415: }
+</span><span class="">  416: 
+</span><span class="">  417: 1;
+</span><span class="">  418: 
+</span><span class="">  419: __END__
+</span><span class="">  420: 
+</span><span class="">  421: =head1 NAME
+</span><span class="">  422: 
+</span><span class="">  423: App::FileSync::Settings - process-wide settings and logging for App::FileSync
+</span><span class="">  424: 
+</span><span class="">  425: =head1 SYNOPSIS
+</span><span class="">  426: 
+</span><span class="">  427:     use App::FileSync::Settings;
+</span><span class="">  428: 
+</span><span class="">  429:     my $logger = App::FileSync::Settings::logger(verbose =&gt; 1);
+</span><span class="">  430:     $logger-&gt;error(&#39;...&#39;);
+</span><span class="">  431: 
+</span><span class="">  432:     my $settings = App::FileSync::Settings::load();
+</span><span class="">  433:     my $level = $settings-&gt;{log_level};
+</span><span class="">  434: 
+</span><span class="">  435:     my $report = App::FileSync::Settings::explain();
+</span><span class="">  436:     printf &quot;%s = %s (%s)\n&quot;, $_-&gt;{key}, $_-&gt;{value}, $_-&gt;{label}
+</span><span class="">  437:         for @{ $report-&gt;{settings} };
+</span><span class="">  438: 
+</span><span class="">  439: =head1 DESCRIPTION
+</span><span class="">  440: 
+</span><span class="">  441: Settings that apply to the process rather than to one repo - the log level,
+</span><span class="">  442: format and destination, plus the SSH identity, known-hosts file and remote
+</span><span class="">  443: server command - are read through L&lt;Object::Configure&gt;.  The repos themselves
+</span><span class="">  444: remain in F&lt;~/.filesync/config.json&gt;, which C&lt;filesync init&gt; writes; this
+</span><span class="">  445: module does not replace that store.
+</span><span class="">  446: 
+</span><span class="">  447: The settings file is F&lt;~/.conf/app-filesync.json&gt; when it exists, or the path in
+</span><span class="">  448: C&lt;FILESYNC_SETTINGS&gt;.  The section key is C&lt;App__FileSync&gt;, and a C&lt;UNIVERSAL&gt;
+</span><span class="">  449: section in the same directory applies to every class that uses
+</span><span class="">  450: Object::Configure.  Environment variables named C&lt;App__FileSync__I&lt;key&gt;&gt;
+</span><span class="">  451: override the file:
+</span><span class="">  452: 
+</span><span class="">  453:     # ~/.conf/app-filesync.json
+</span><span class="">  454:     { &quot;App__FileSync&quot;: { &quot;log_level&quot;: &quot;debug&quot;, &quot;log_format&quot;: &quot;%level%: %message%&quot; } }
+</span><span class="">  455: 
+</span><span class="">  456:     # or
+</span><span class="">  457:     export App__FileSync__log_level=debug
+</span><span class="">  458: 
+</span><span class="">  459: C&lt;log_file&gt; sends the log to a file instead of standard error; leading
+</span><span class="">  460: directories are created.  C&lt;log_format&gt; is a L&lt;Log::Abstraction&gt; format string.
+</span><span class="">  461: 
+</span><span class="">  462: C&lt;ssh_identity&gt;, C&lt;ssh_known_hosts&gt; and C&lt;server_command&gt; are the defaults for
+</span><span class="">  463: every SSH repo, so a per-repo C&lt;identity&gt;, C&lt;known_hosts&gt; or C&lt;server_command&gt;
+</span><span class="">  464: (written by C&lt;filesync init --identity&gt; and friends) only has to be set when it
+</span><span class="">  465: differs.  C&lt;server_command&gt; defaults to C&lt;filesync-server&gt;:
+</span><span class="">  466: 
+</span><span class="">  467:     { &quot;App__FileSync&quot;: {
+</span><span class="">  468:         &quot;ssh_identity&quot;    : &quot;~/.ssh/filesync_ed25519&quot;,
+</span><span class="">  469:         &quot;ssh_known_hosts&quot; : &quot;~/.ssh/filesync_known_hosts&quot;,
+</span><span class="">  470:         &quot;server_command&quot;  : &quot;/usr/local/bin/filesync-server&quot;
+</span><span class="">  471:     } }
+</span><span class="">  472: 
+</span><span class="">  473: Command output (sync summaries, plans, C&lt;--json&gt;) is written to standard output
+</span><span class="">  474: by the commands themselves; the logger carries diagnostics on standard error,
+</span><span class="">  475: so a cron job can separate the two.  C&lt;--verbose&gt; raises the level to C&lt;debug&gt;
+</span><span class="">  476: and C&lt;--quiet&gt; lowers it to C&lt;error&gt; for that run, overriding the file.
+</span><span class="">  477: 
+</span><span class="">  478: =head1 FUNCTIONS
+</span><span class="">  479: 
+</span><span class="">  480: =head2 logger
+</span><span class="">  481: 
+</span><span class="">  482:     my $logger = App::FileSync::Settings::logger(%args);
+</span><span class="">  483: 
+</span><span class="">  484: Returns a L&lt;Log::Abstraction&gt; writing to standard error (or C&lt;log_file&gt;).
+</span><span class="">  485: C&lt;config_file&gt;, C&lt;config_dirs&gt;, C&lt;level&gt;, C&lt;verbose&gt; and C&lt;quiet&gt; may be passed.
+</span><span class="">  486: 
+</span><span class="">  487: =head2 load
+</span><span class="">  488: 
+</span><span class="">  489: Returns the merged settings hashref (without the Object::Configure logger).
+</span><span class="">  490: 
+</span><span class="">  491: =head2 config_file
+</span><span class="">  492: 
+</span><span class="">  493: Returns the settings file that would be used, or C&lt;undef&gt;.
+</span><span class="">  494: 
+</span><span class="">  495: =head2 explain
+</span><span class="">  496: 
+</span><span class="">  497:     my $report = App::FileSync::Settings::explain(%args);
+</span><span class="">  498: 
+</span><span class="">  499: Returns C&lt;{ settings_file =E&lt;gt&gt; $path_or_undef, settings =E&lt;gt&gt; \@rows }&gt;, with
+</span><span class="">  500: one row per key in C&lt;@App::FileSync::Settings::SETTING_KEYS&gt;.  Each row has the
+</span><span class="">  501: effective C&lt;value&gt;, a C&lt;source&gt; of C&lt;default&gt;, C&lt;file&gt;, C&lt;env&gt; or C&lt;merged&gt;, anda human-readable C&lt;label&gt; naming the file section, environment variable or
+</span><span class="">  502: built-in default that supplied it.  C&lt;config_file&gt; and C&lt;config_dirs&gt; may be
+</span><span class="">  503: passed, as for C&lt;load&gt;.
+</span><span class="">  504: 
+</span><span class="">  505: =head2 explain_repos
+</span><span class="">  506: 
+</span><span class="">  507:     my $repos = App::FileSync::Settings::explain_repos(%args);
+</span><span class="">  508: 
+</span><span class="">  509: Resolves C&lt;ssh_identity&gt;, C&lt;ssh_known_hosts&gt; and C&lt;server_command&gt; for every
+</span><span class="">  510: repo in a client config.  C&lt;config&gt; is the hashref from
+</span><span class="">  511: C&lt;App::FileSync::Config::load_client&gt;, C&lt;report&gt; is the result of C&lt;explain&gt;,
+</span><span class="">  512: and C&lt;config_file&gt; is the client config path used in labels.
+</span><span class="">  513: 
+</span><span class="">  514: Each entry has C&lt;repo&gt;, C&lt;transport&gt;, C&lt;server&gt; (when the repo records one) and
+</span><span class="">  515: C&lt;ssh&gt;: one C&lt;{key, value, source, label}&gt; row per setting, where C&lt;source&gt; is
+</span><span class="">  516: C&lt;repo&gt; (the repo&#39;s own entry), C&lt;process&gt; (the settings reported by C&lt;explain&gt;)
+</span><span class="">  517: or C&lt;default&gt; (ssh&#39;s own default, when nothing sets a value).  C&lt;ssh&gt; is
+</span><span class="">  518: C&lt;undef&gt; for the local transport, which never runs ssh.
+</span><span class="">  519: 
+</span><span class="">  520: 
+</span><span class="">  521: =head1 LICENCE
+</span><span class="">  522: 
+</span><span class="">  523: GPL v2 for personal single-user, single-computer use.  All other users must
+</span><span class="">  524: apply in writing to the author.
+</span><span class="">  525: 
+</span><span class="">  526: =cut
+</span></pre>
+
+<script>
+function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+}
+
+(function() {
+    const saved = localStorage.getItem('theme');
+    if(saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+    }
+})();
+
+document.addEventListener("mousemove", function(e) {
+	document.querySelectorAll(".lcsaj-tip-text, .cpd-tip-text").forEach(function(tip) {
+		tip.style.left = (e.clientX + 12) + "px";
+		tip.style.top  = (e.clientY + 12) + "px";
+	});
+});
+</script>
+</body>
+</html>
+	

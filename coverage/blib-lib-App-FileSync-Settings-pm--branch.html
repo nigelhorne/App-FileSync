@@ -20,7 +20,7 @@ https://pjcj.net
 <h1>Branch Coverage</h1>
 <table>
 <tr><td class="h" align="right">File:</td><td align="left">blib/lib/App/FileSync/Settings.pm</td></tr>
-<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">68.3%</td></tr>
+<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">69.4%</td></tr>
 </table>
 <div><br/></div>
 <table>
@@ -42,7 +42,7 @@ https://pjcj.net
 <tr><td class="h"><a id="L144">144</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">$entry-&gt;{&#39;type&#39;} eq &#39;env&#39; ? :</td></tr>
 <tr><td class="h"><a id="L147">147</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (my $entry = _pick($class_explanation, &quot;App__FileSync&quot;, $key))</td></tr>
 <tr><td class="h"><a id="L151">151</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$entry-&gt;{&#39;type&#39;} eq &#39;env&#39; ? :</td></tr>
-<tr><td class="h"><a id="L159">159</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless exists $ENV{$name}</td></tr>
+<tr><td class="h"><a id="L159">159</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless defined $name</td></tr>
 <tr><td class="h"><a id="L168">168</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if (_differs($settings-&gt;{$key}, $winner_value))</td></tr>
 <tr><td class="h"><a id="L189">189</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">ref $args{&#39;config&#39;} eq &#39;HASH&#39; ? :</td></tr>
 <tr><td class="h"><a id="L190">190</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">ref $args{&#39;report&#39;} eq &#39;HASH&#39; ? :</td></tr>
@@ -61,22 +61,24 @@ https://pjcj.net
 <tr><td class="h"><a id="L277">277</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">&quot;$left&quot; ne &quot;$right&quot; ? :</td></tr>
 <tr><td class="h"><a id="L287">287</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $reader</td></tr>
 <tr><td class="h"><a id="L290">290</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">ref $explanation eq &#39;HASH&#39; ? :</td></tr>
-<tr><td class="h"><a id="L300">300</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ref $entry eq &quot;HASH&quot; and ref $entry-&gt;{&#39;sources&#39;} eq &quot;ARRAY&quot;</td></tr>
-<tr><td class="h"><a id="L302">302</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless @sources</td></tr>
-<tr><td class="h"><a id="L321">321</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">unless $full eq $key or $full =~ /\.\Q$key\E\z/</td></tr>
-<tr><td class="h"><a id="L322">322</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">unless $explanation-&gt;{$full}{&#39;sources&#39;}</td></tr>
-<tr><td class="h"><a id="L324">324</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">unless defined $label and length $label</td></tr>
-<tr><td class="h"><a id="L325">325</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">unless $seen{$label}++</td></tr>
-<tr><td class="h"><a id="L340">340</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">$config_file =~ m((\.[^./\\]+)\z) ? :</td></tr>
-<tr><td class="h"><a id="L350">350</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if -f $candidate and -r $candidate</td></tr>
-<tr><td class="h"><a id="L365">365</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">defined $settings-&gt;{&#39;log_level&#39;} &amp;&amp; length $settings-&gt;{&#39;log_level&#39;} ? :</td></tr>
+<tr><td class="h"><a id="L301">301</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if grep {$_ eq $name;} keys %ENV</td></tr>
+<tr><td class="h"><a id="L305">305</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if lc $key eq $wanted</td></tr>
+<tr><td class="h"><a id="L318">318</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ref $entry eq &quot;HASH&quot; and ref $entry-&gt;{&#39;sources&#39;} eq &quot;ARRAY&quot;</td></tr>
+<tr><td class="h"><a id="L320">320</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless @sources</td></tr>
+<tr><td class="h"><a id="L339">339</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">unless $full eq $key or $full =~ /\.\Q$key\E\z/</td></tr>
+<tr><td class="h"><a id="L340">340</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">unless $explanation-&gt;{$full}{&#39;sources&#39;}</td></tr>
+<tr><td class="h"><a id="L342">342</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">unless defined $label and length $label</td></tr>
+<tr><td class="h"><a id="L343">343</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">unless $seen{$label}++</td></tr>
+<tr><td class="h"><a id="L358">358</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">$config_file =~ m((\.[^./\\]+)\z) ? :</td></tr>
+<tr><td class="h"><a id="L368">368</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if -f $candidate and -r $candidate</td></tr>
+<tr><td class="h"><a id="L383">383</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">defined $settings-&gt;{&#39;log_level&#39;} &amp;&amp; length $settings-&gt;{&#39;log_level&#39;} ? :</td></tr>
 <tr><td class="h"></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">defined $args{&#39;level&#39;} &amp;&amp; length $args{&#39;level&#39;} ? :</td></tr>
-<tr><td class="h"><a id="L368">368</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless grep {lc $_ eq lc $level;} @VALID_LEVELS</td></tr>
-<tr><td class="h"><a id="L372">372</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">defined $settings-&gt;{&#39;log_format&#39;} &amp;&amp; length $settings-&gt;{&#39;log_format&#39;} ? :</td></tr>
-<tr><td class="h"><a id="L375">375</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (defined $settings-&gt;{&#39;log_file&#39;} and length $settings-&gt;{&#39;log_file&#39;}) { }</td></tr>
-<tr><td class="h"><a id="L378">378</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $directory</td></tr>
-<tr><td class="h"><a id="L393">393</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $args{&#39;verbose&#39;}</td></tr>
-<tr><td class="h"><a id="L394">394</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $args{&#39;quiet&#39;}</td></tr>
+<tr><td class="h"><a id="L386">386</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless grep {lc $_ eq lc $level;} @VALID_LEVELS</td></tr>
+<tr><td class="h"><a id="L390">390</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">defined $settings-&gt;{&#39;log_format&#39;} &amp;&amp; length $settings-&gt;{&#39;log_format&#39;} ? :</td></tr>
+<tr><td class="h"><a id="L393">393</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (defined $settings-&gt;{&#39;log_file&#39;} and length $settings-&gt;{&#39;log_file&#39;}) { }</td></tr>
+<tr><td class="h"><a id="L396">396</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $directory</td></tr>
+<tr><td class="h"><a id="L411">411</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $args{&#39;verbose&#39;}</td></tr>
+<tr><td class="h"><a id="L412">412</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $args{&#39;quiet&#39;}</td></tr>
 </table>
 </body>
 </html>

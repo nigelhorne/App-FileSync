@@ -291,7 +291,7 @@ a.intra-dot:hover { color: #7700bb; }
 <button class="toggle" onclick="toggleTheme()">🌙 Toggle Theme</button>
 <h1>lib/App/FileSync.pm</h1>
 <div class="nav"><a href="../../../index.html">Index</a>
-</div><div class='summary'>
+ <a href="FileSync/Settings.pm.html">Next ➡</a></div><div class='summary'>
 <strong>Structural Coverage (Approximate)</strong><p>
 TER1 (Statement): 94.62%<br>
 TER2 (Branch): 84.44%<br>
@@ -362,7 +362,7 @@ Approximate LCSAJ segments: 91<br>
 </span><span class="">   21: );
 </span><span class="">   22: 
 </span><span class="">   23: # Deliberately utf8(0): paths are byte strings on the wire, and both ends of the
-</span><span class="">   24: # protocol are this implementation.  See SPEC.md section 10.2.
+</span><span class="">   24: # protocol are this implementation.
 </span><span class="">   25: my $JSON = JSON::PP-&gt;new-&gt;canonical-&gt;allow_nonref;
 </span><span class="">   26: 
 </span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   27: sub json_encode { return $JSON-&gt;encode($_[0]) }
@@ -387,7 +387,7 @@ Approximate LCSAJ segments: 91<br>
 </span><span class="">   46:         utf8::encode($_[0]) unless utf8::downgrade($_[0], 1);
 </span><span class="">   47:     }
 </span><span class="">   48: 
-</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">   49:     return 1;
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">   49:     return 1;
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -427,7 +427,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </span><span class="">   65: # units), which the 2-second comparison tolerance already allows for.
 </span><span class="">   66: sub set_mtime {
 </span><span class="">   67: 	my ($path, $mtime) = @_;
-</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">   68: 	return 1 unless defined $mtime;
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">   68: 	return 1 unless defined $mtime;
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -450,7 +450,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 								</div>
 							</li></ul></details>
 <span class="">   69: 
-</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">   70: 	return 1 if eval { Time::HiRes::utime($mtime, $mtime, $path); 1 };
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">   70: 	return 1 if eval { Time::HiRes::utime($mtime, $mtime, $path); 1 };
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -597,7 +597,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </span><span class="">  151: }
 </span><span class="">  152: 
 </span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  153: sub validate_repo_name   { return _validate_id(&#39;repo name&#39;,   $_[0]) }
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  154: sub validate_client_id   { return _validate_id(&#39;client id&#39;,   $_[0]) }
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  154: sub validate_client_id   { return _validate_id(&#39;client id&#39;,   $_[0]) }
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -647,7 +647,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </span><span class="">  180: sub parse_until {
 </span><span class="">  181:     my ($value, $option) = @_;
 </span><span class="">  182:     my ($epoch, $is_date) = _parse_when($value, $option || &#39;--until&#39;);
-</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  183:     return undef unless defined $epoch;
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  183:     return undef unless defined $epoch;
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -797,158 +797,156 @@ is( func(VALUE_AT_BOUNDARY), EXPECTED, &#39;Test boundary behaviour&#39; );
 </span><span class="">  251: reports the payload bytes it sent and received and how many files moved as a delta, and
 </span><span class="">  252: C&lt;filesync log&gt; repeats those figures for past runs.
 </span><span class="">  253: 
-</span><span class="">  254: The design and its rationale are in F&lt;SPEC.md&gt; in the distribution root.
-</span><span class="">  255: 
-</span><span class="">  256: This module holds the pieces shared by the client, the server and the admin tools:
-</span><span class="">  257: byte-transparent JSON, path validation, conflict-copy naming and atomic file writes.
+</span><span class="">  254: This module holds the pieces shared by the client, the server and the admin tools:
+</span><span class="">  255: byte-transparent JSON, path validation, conflict-copy naming and atomic file writes.
+</span><span class="">  256: 
+</span><span class="">  257: =head1 FUNCTIONS
 </span><span class="">  258: 
-</span><span class="">  259: =head1 FUNCTIONS
+</span><span class="">  259: =head2 json_encode
 </span><span class="">  260: 
-</span><span class="">  261: =head2 json_encode
+</span><span class="">  261: =head2 json_decode
 </span><span class="">  262: 
-</span><span class="">  263: =head2 json_decode
-</span><span class="">  264: 
-</span><span class="">  265: Encode and decode a structure as a single line of JSON.  Paths are byte strings and are
-</span><span class="">  266: not treated as UTF-8 by these functions.
+</span><span class="">  263: Encode and decode a structure as a single line of JSON.  Paths are byte strings and are
+</span><span class="">  264: not treated as UTF-8 by these functions.
+</span><span class="">  265: 
+</span><span class="">  266: =head2 validate_relpath
 </span><span class="">  267: 
-</span><span class="">  268: =head2 validate_relpath
-</span><span class="">  269: 
-</span><span class="">  270: Returns C&lt;(1, undef)&gt; for a safe relative path, or C&lt;(0, $reason)&gt;.  Absolute paths,
-</span><span class="">  271: backslashes, control characters, empty, C&lt;.&gt; and C&lt;..&gt; components, and paths longer than
-</span><span class="">  272: 4096 bytes or with a component longer than 255 bytes are rejected.
+</span><span class="">  268: Returns C&lt;(1, undef)&gt; for a safe relative path, or C&lt;(0, $reason)&gt;.  Absolute paths,
+</span><span class="">  269: backslashes, control characters, empty, C&lt;.&gt; and C&lt;..&gt; components, and paths longer than
+</span><span class="">  270: 4096 bytes or with a component longer than 255 bytes are rejected.
+</span><span class="">  271: 
+</span><span class="">  272: =head2 validate_repo_name
 </span><span class="">  273: 
-</span><span class="">  274: =head2 validate_repo_name
+</span><span class="">  274: =head2 validate_client_id
 </span><span class="">  275: 
-</span><span class="">  276: =head2 validate_client_id
-</span><span class="">  277: 
-</span><span class="">  278: Return C&lt;(1, undef)&gt; for a name usable as a directory name (C&lt;[A-Za-z0-9][A-Za-z0-9._-]*&gt;,
-</span><span class="">  279: at most 64 characters), or C&lt;(0, $reason)&gt;.
+</span><span class="">  276: Return C&lt;(1, undef)&gt; for a name usable as a directory name (C&lt;[A-Za-z0-9][A-Za-z0-9._-]*&gt;,
+</span><span class="">  277: at most 64 characters), or C&lt;(0, $reason)&gt;.
+</span><span class="">  278: 
+</span><span class="">  279: =head2 conflict_name
 </span><span class="">  280: 
-</span><span class="">  281: =head2 conflict_name
+</span><span class="">  281:     my $name = conflict_name(&#39;notes.txt&#39;, &#39;laptop-1&#39;, time);
 </span><span class="">  282: 
-</span><span class="">  283:     my $name = conflict_name(&#39;notes.txt&#39;, &#39;laptop-1&#39;, time);
-</span><span class="">  284: 
-</span><span class="">  285: Returns the conflict-copy name for a losing version: the original name with
-</span><span class="">  286: C&lt;.conflict-E&lt;lt&gt;clientE&lt;gt&gt;-E&lt;lt&gt;timestampE&lt;gt&gt;&gt; inserted before the extension.
+</span><span class="">  283: Returns the conflict-copy name for a losing version: the original name with
+</span><span class="">  284: C&lt;.conflict-E&lt;lt&gt;clientE&lt;gt&gt;-E&lt;lt&gt;timestampE&lt;gt&gt;&gt; inserted before the extension.
+</span><span class="">  285: 
+</span><span class="">  286: =head2 format_utc
 </span><span class="">  287: 
-</span><span class="">  288: =head2 format_utc
+</span><span class="">  288: Formats an epoch as C&lt;YYYYMMDDTHHMMSSZ&gt;.
 </span><span class="">  289: 
-</span><span class="">  290: Formats an epoch as C&lt;YYYYMMDDTHHMMSSZ&gt;.
+</span><span class="">  290: =head2 write_atomic
 </span><span class="">  291: 
-</span><span class="">  292: =head2 write_atomic
+</span><span class="">  292: Writes a file through a temporary file in the same directory and renames it into place.
 </span><span class="">  293: 
-</span><span class="">  294: Writes a file through a temporary file in the same directory and renames it into place.
+</span><span class="">  294: =head1 EXAMPLES
 </span><span class="">  295: 
-</span><span class="">  296: =head1 EXAMPLES
-</span><span class="">  297: 
-</span><span class="">  298: On the server, create the master copy and allow the client once.  Then, on each
-</span><span class="">  299: client, register the directory and add a cron entry that runs every minute:
-</span><span class="">  300: 
-</span><span class="">  301:     # once, on the client
-</span><span class="">  302:     filesync init --repo documents --root /home/foo/Documents --server srv
-</span><span class="">  303: 
-</span><span class="">  304:     # crontab -e, for foo on each client
-</span><span class="">  305:     * * * * * /usr/local/bin/filesync sync --repo documents --quiet &gt;/dev/null
-</span><span class="">  306: 
-</span><span class="">  307: The summary line is dropped so cron does not mail on every successful run;
-</span><span class="">  308: diagnostics still go to standard error, so a failure is mailed.  Every attempt,
-</span><span class="">  309: successful or not, is also appended to F&lt;~/.filesync/logs/documents.jsonl&gt;, and
-</span><span class="">  310: C&lt;filesync log --repo documents --exit 1&gt; lists the ones that failed.
-</span><span class="">  311: 
-</span><span class="">  312: Windows clients use a scheduled task rather than cron.  With the script in
-</span><span class="">  313: F&lt;C:\filesync&gt; and Strawberry Perl installed, the same job is set up from a
-</span><span class="">  314: command prompt:
-</span><span class="">  315: 
-</span><span class="">  316:     REM once, on the client
-</span><span class="">  317:     C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync init ^
-</span><span class="">  318:       --repo documents --root C:\Users\foo\Documents --server srv
-</span><span class="">  319: 
-</span><span class="">  320:     REM then create the task; it runs every minute as the current user
-</span><span class="">  321:     schtasks /Create /SC MINUTE /MO 1 /TN FileSync /F ^
-</span><span class="">  322:       /TR &quot;C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync sync --repo documents --quiet&quot;
-</span><span class="">  323: 
-</span><span class="">  324: The task runs only while that user is logged on, which suits a Documents
-</span><span class="">  325: folder; its run log is still written under F&lt;%USERPROFILE%\.filesync\logs&gt;, so
-</span><span class="">  326: C&lt;filesync log --repo documents --warnings&gt; works there too.
-</span><span class="">  327: 
-</span><span class="">  328: The master copy on the server is an ordinary directory tree, so it can be
-</span><span class="">  329: mirrored to a backup directory from the same crontab:
-</span><span class="">  330: 
-</span><span class="">  331:     # crontab -e, for foo on the server
-</span><span class="">  332:     * * * * * rsync -a --delete --exclude &#39;.filesync-tmp-*&#39; \
-</span><span class="">  333:         /home/foo/FileSync/ /home/foo/backups/FileSync/
-</span><span class="">  334: 
-</span><span class="">  335: Filesync writes each file to a temporary name and renames it into place, so the
-</span><span class="">  336: mirror never catches a half-written upload; the exclusion keeps the temporary
-</span><span class="">  337: files themselves out of the backup.  C&lt;--delete&gt; makes the copy a mirror: a
-</span><span class="">  338: deletion that reaches the master also removes the backed-up file.
-</span><span class="">  339: 
-</span><span class="">  340: To restore the master from that backup, stop the client jobs (comment out their
-</span><span class="">  341: cron lines, or disable the scheduled task) and the server&#39;s backup job, so the
-</span><span class="">  342: backup job cannot copy a half-restored tree back into the backup.  Let any
-</span><span class="">  343: running sync finish, then mirror the backup back:
+</span><span class="">  296: On the server, create the master copy and allow the client once.  Then, on each
+</span><span class="">  297: client, register the directory and add a cron entry that runs every minute:
+</span><span class="">  298: 
+</span><span class="">  299:     # once, on the client
+</span><span class="">  300:     filesync init --repo documents --root /home/foo/Documents --server srv
+</span><span class="">  301: 
+</span><span class="">  302:     # crontab -e, for foo on each client
+</span><span class="">  303:     * * * * * /usr/local/bin/filesync sync --repo documents --quiet &gt;/dev/null
+</span><span class="">  304: 
+</span><span class="">  305: The summary line is dropped so cron does not mail on every successful run;
+</span><span class="">  306: diagnostics still go to standard error, so a failure is mailed.  Every attempt,
+</span><span class="">  307: successful or not, is also appended to F&lt;~/.filesync/logs/documents.jsonl&gt;, and
+</span><span class="">  308: C&lt;filesync log --repo documents --exit 1&gt; lists the ones that failed.
+</span><span class="">  309: 
+</span><span class="">  310: Windows clients use a scheduled task rather than cron.  With the script in
+</span><span class="">  311: F&lt;C:\filesync&gt; and Strawberry Perl installed, the same job is set up from a
+</span><span class="">  312: command prompt:
+</span><span class="">  313: 
+</span><span class="">  314:     REM once, on the client
+</span><span class="">  315:     C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync init ^
+</span><span class="">  316:       --repo documents --root C:\Users\foo\Documents --server srv
+</span><span class="">  317: 
+</span><span class="">  318:     REM then create the task; it runs every minute as the current user
+</span><span class="">  319:     schtasks /Create /SC MINUTE /MO 1 /TN FileSync /F ^
+</span><span class="">  320:       /TR &quot;C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync sync --repo documents --quiet&quot;
+</span><span class="">  321: 
+</span><span class="">  322: The task runs only while that user is logged on, which suits a Documents
+</span><span class="">  323: folder; its run log is still written under F&lt;%USERPROFILE%\.filesync\logs&gt;, so
+</span><span class="">  324: C&lt;filesync log --repo documents --warnings&gt; works there too.
+</span><span class="">  325: 
+</span><span class="">  326: The master copy on the server is an ordinary directory tree, so it can be
+</span><span class="">  327: mirrored to a backup directory from the same crontab:
+</span><span class="">  328: 
+</span><span class="">  329:     # crontab -e, for foo on the server
+</span><span class="">  330:     * * * * * rsync -a --delete --exclude &#39;.filesync-tmp-*&#39; \
+</span><span class="">  331:         /home/foo/FileSync/ /home/foo/backups/FileSync/
+</span><span class="">  332: 
+</span><span class="">  333: Filesync writes each file to a temporary name and renames it into place, so the
+</span><span class="">  334: mirror never catches a half-written upload; the exclusion keeps the temporary
+</span><span class="">  335: files themselves out of the backup.  C&lt;--delete&gt; makes the copy a mirror: a
+</span><span class="">  336: deletion that reaches the master also removes the backed-up file.
+</span><span class="">  337: 
+</span><span class="">  338: To restore the master from that backup, stop the client jobs (comment out their
+</span><span class="">  339: cron lines, or disable the scheduled task) and the server&#39;s backup job, so the
+</span><span class="">  340: backup job cannot copy a half-restored tree back into the backup.  Let any
+</span><span class="">  341: running sync finish, then mirror the backup back:
+</span><span class="">  342: 
+</span><span class="">  343:     rsync -a --delete --checksum /home/foo/backups/FileSync/ /home/foo/FileSync/
 </span><span class="">  344: 
-</span><span class="">  345:     rsync -a --delete --checksum /home/foo/backups/FileSync/ /home/foo/FileSync/
-</span><span class="">  346: 
-</span><span class="">  347: C&lt;--checksum&gt; compares the contents, so a restored file is not skipped just
-</span><span class="">  348: because its size and modification time happen to match the newer copy.  This is
-</span><span class="">  349: a rollback rather than a merge: files created after the backup was taken
-</span><span class="">  350: disappear from the master, and the next sync propagates that to the clients, so
-</span><span class="">  351: copy anything you need to keep out of the tree first.  The server
-</span><span class="">  352: would rehash the restored files on the next session anyway, but
-</span><span class="">  353: C&lt;filesync-admin reindex&gt; rebuilds the index immediately, before any client
-</span><span class="">  354: reconnects; clients then pull the restored versions, merging edits they have not
-</span><span class="">  355: synced as usual.
-</span><span class="">  356: 
-</span><span class="">  357: Before re-enabling the jobs, check that the copy is exact with a read-only
-</span><span class="">  358: comparison against the backup:
-</span><span class="">  359: 
-</span><span class="">  360:     rsync -a --delete --checksum --dry-run --itemize-changes \
-</span><span class="">  361:         /home/foo/backups/FileSync/ /home/foo/FileSync/
-</span><span class="">  362: 
-</span><span class="">  363: No output and exit 0 mean the master matches the backup.  Any line beginning
-</span><span class="">  364: C&lt;&lt; &gt;f &gt;&gt; names a path that still differs, and C&lt;*deleting&gt; names one the
-</span><span class="">  365: rollback should have removed.  The index still describes the pre-rollback tree,
-</span><span class="">  366: so C&lt;filesync-admin verify&gt; may report drift at this point; that is expected.
-</span><span class="">  367: Rebuild it and check it:
-</span><span class="">  368: 
-</span><span class="">  369:     sudo -u filesync filesync-admin reindex documents
-</span><span class="">  370:     sudo -u filesync filesync-admin verify documents --deep
-</span><span class="">  371: 
-</span><span class="">  372: C&lt;reindex&gt; hashes every file in the master and replaces the index atomically; it
-</span><span class="">  373: refuses to run while a sync session holds the repo lock, and it names any paths
-</span><span class="">  374: it could not index.  C&lt;clean&gt; and exit 0 from C&lt;verify&gt; confirm that the master
-</span><span class="">  375: and its index agree.  Re-enable the jobs once that check passes.
-</span><span class="">  376: 
-</span><span class="">  377: To restore just one file or directory, copy that path back instead of mirroring
-</span><span class="">  378: the whole tree, with the jobs paused as above so nothing changes the tree while
-</span><span class="">  379: the copy runs:
-</span><span class="">  380: 
-</span><span class="">  381:     rsync -a --checksum /home/foo/backups/FileSync/notes/plan.txt /home/foo/FileSync/notes/
-</span><span class="">  382:     rsync -a --checksum /home/foo/backups/FileSync/photos/ /home/foo/FileSync/photos/
-</span><span class="">  383: 
-</span><span class="">  384: The trailing slash on the second source copies the directory&#39;s contents; without
-</span><span class="">  385: it rsync would put the directory itself inside the destination.  Add C&lt;--delete&gt;
-</span><span class="">  386: only when that directory should match the backup exactly, since it removes files
-</span><span class="">  387: created after the backup was taken.  Everything outside the restored paths is
-</span><span class="">  388: left alone; refresh the index with C&lt;reindex&gt; as above, or let the next session
-</span><span class="">  389: do it, and clients pull the restored versions.  Check the restored paths with the
-</span><span class="">  390: matching C&lt;rsync --dry-run --itemize-changes&gt; comparison before re-enabling the
-</span><span class="">  391: jobs; no output means they match the backup.
-</span><span class="">  392: 
-</span><span class="">  393: Adjust F&lt;/usr/local/bin/filesync&gt; to where the script was installed, because
-</span><span class="">  394: cron&#39;s default PATH rarely includes a per-user Perl bin directory.
+</span><span class="">  345: C&lt;--checksum&gt; compares the contents, so a restored file is not skipped just
+</span><span class="">  346: because its size and modification time happen to match the newer copy.  This is
+</span><span class="">  347: a rollback rather than a merge: files created after the backup was taken
+</span><span class="">  348: disappear from the master, and the next sync propagates that to the clients, so
+</span><span class="">  349: copy anything you need to keep out of the tree first.  The server
+</span><span class="">  350: would rehash the restored files on the next session anyway, but
+</span><span class="">  351: C&lt;filesync-admin reindex&gt; rebuilds the index immediately, before any client
+</span><span class="">  352: reconnects; clients then pull the restored versions, merging edits they have not
+</span><span class="">  353: synced as usual.
+</span><span class="">  354: 
+</span><span class="">  355: Before re-enabling the jobs, check that the copy is exact with a read-only
+</span><span class="">  356: comparison against the backup:
+</span><span class="">  357: 
+</span><span class="">  358:     rsync -a --delete --checksum --dry-run --itemize-changes \
+</span><span class="">  359:         /home/foo/backups/FileSync/ /home/foo/FileSync/
+</span><span class="">  360: 
+</span><span class="">  361: No output and exit 0 mean the master matches the backup.  Any line beginning
+</span><span class="">  362: C&lt;&lt; &gt;f &gt;&gt; names a path that still differs, and C&lt;*deleting&gt; names one the
+</span><span class="">  363: rollback should have removed.  The index still describes the pre-rollback tree,
+</span><span class="">  364: so C&lt;filesync-admin verify&gt; may report drift at this point; that is expected.
+</span><span class="">  365: Rebuild it and check it:
+</span><span class="">  366: 
+</span><span class="">  367:     sudo -u filesync filesync-admin reindex documents
+</span><span class="">  368:     sudo -u filesync filesync-admin verify documents --deep
+</span><span class="">  369: 
+</span><span class="">  370: C&lt;reindex&gt; hashes every file in the master and replaces the index atomically; it
+</span><span class="">  371: refuses to run while a sync session holds the repo lock, and it names any paths
+</span><span class="">  372: it could not index.  C&lt;clean&gt; and exit 0 from C&lt;verify&gt; confirm that the master
+</span><span class="">  373: and its index agree.  Re-enable the jobs once that check passes.
+</span><span class="">  374: 
+</span><span class="">  375: To restore just one file or directory, copy that path back instead of mirroring
+</span><span class="">  376: the whole tree, with the jobs paused as above so nothing changes the tree while
+</span><span class="">  377: the copy runs:
+</span><span class="">  378: 
+</span><span class="">  379:     rsync -a --checksum /home/foo/backups/FileSync/notes/plan.txt /home/foo/FileSync/notes/
+</span><span class="">  380:     rsync -a --checksum /home/foo/backups/FileSync/photos/ /home/foo/FileSync/photos/
+</span><span class="">  381: 
+</span><span class="">  382: The trailing slash on the second source copies the directory&#39;s contents; without
+</span><span class="">  383: it rsync would put the directory itself inside the destination.  Add C&lt;--delete&gt;
+</span><span class="">  384: only when that directory should match the backup exactly, since it removes files
+</span><span class="">  385: created after the backup was taken.  Everything outside the restored paths is
+</span><span class="">  386: left alone; refresh the index with C&lt;reindex&gt; as above, or let the next session
+</span><span class="">  387: do it, and clients pull the restored versions.  Check the restored paths with the
+</span><span class="">  388: matching C&lt;rsync --dry-run --itemize-changes&gt; comparison before re-enabling the
+</span><span class="">  389: jobs; no output means they match the backup.
+</span><span class="">  390: 
+</span><span class="">  391: Adjust F&lt;/usr/local/bin/filesync&gt; to where the script was installed, because
+</span><span class="">  392: cron&#39;s default PATH rarely includes a per-user Perl bin directory.
+</span><span class="">  393: 
+</span><span class="">  394: =head1 LICENCE
 </span><span class="">  395: 
-</span><span class="">  396: =head1 LICENCE
-</span><span class="">  397: 
-</span><span class="">  398: GPL v2 for personal single-user, single-computer use.  All other users must apply in
-</span><span class="">  399: writing to the author.
+</span><span class="">  396: GPL v2 for personal single-user, single-computer use.  All other users must apply in
+</span><span class="">  397: writing to the author.
+</span><span class="">  398: 
+</span><span class="">  399: =head1 AUTHOR
 </span><span class="">  400: 
-</span><span class="">  401: =head1 AUTHOR
+</span><span class="">  401: Nigel Horne E&lt;lt&gt;njh@nigelhorne.comE&lt;gt&gt;
 </span><span class="">  402: 
-</span><span class="">  403: Nigel Horne E&lt;lt&gt;njh@nigelhorne.comE&lt;gt&gt;
-</span><span class="">  404: 
-</span><span class="">  405: =cut
+</span><span class="">  403: =cut
 </span></pre>
 
 <script>
