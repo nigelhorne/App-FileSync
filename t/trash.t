@@ -29,7 +29,12 @@ my $moved = App::FileSync::Trash::move_to_trash(
 ok($moved, 'move returned a destination');
 ok(-e $moved, 'file now lives in the trash');
 ok(!-e $file, 'file removed from its original place');
-like($moved, qr{/2023/11/14/deep/a\.txt\z}, 'date-bucketed destination');
+is($moved, File::Spec->catfile($trash_root, '2023', '11', '14', 'deep', 'a.txt'),
+    'date-bucketed destination');
+is(App::FileSync::Trash::date_of($moved), '2023-11-14',
+    'a native path yields its date');
+is(App::FileSync::Trash::date_of('C:\\trash\\2023\\11\\14\\a.txt'),
+    '2023-11-14', 'a backslash path yields its date too');
 
 open my $in, '<', $moved or die $!;
 is(do { local $/; <$in> }, "content\n", 'content preserved');
@@ -46,7 +51,7 @@ my $second = App::FileSync::Trash::move_to_trash(
     epoch => $now,
 );
 isnt($second, $moved, 'collision gets a distinct name');
-like($second, qr/\.1\z/, 'collision suffix is added');
+is($second, "$moved.1", 'collision suffix is added');
 ok(-e $moved, 'the first trashed copy survives');
 
 # Versions are listed newest first.
@@ -72,7 +77,8 @@ my $removed = App::FileSync::Trash::prune(
     now  => $now,
 );
 
-ok((grep { m{2023/01/01} } @{$removed}), 'old bucket pruned');
+my $old_bucket = File::Spec->catdir($trash_root, '2023', '01', '01');
+ok((grep { $_ eq $old_bucket } @{$removed}), 'old bucket pruned');
 ok(!-d File::Spec->catdir($trash_root, '2023', '01', '01'), 'old bucket removed from disk');
 ok(-d File::Spec->catdir($trash_root, '2023', '11', '13'), 'recent bucket kept');
 

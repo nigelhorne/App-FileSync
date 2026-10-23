@@ -250,7 +250,8 @@ my $filesync = File::Spec->catfile($Bin, '..', 'bin', 'filesync');
     ok(ref($data) eq 'HASH', 'log --json prints JSON');
     is(scalar @{ $data->{results} }, 1, 'one result per requested repo');
     is($data->{results}[0]{repo}, 'docs', 'the result names the repo');
-    like($data->{results}[0]{path}, qr/logs\/docs\.jsonl\z/, 'the result names its file');
+    like($data->{results}[0]{path}, qr{logs[/\\]docs\.jsonl\z},
+        'the result names its file');
     is(scalar @{ $data->{results}[0]{runs} }, 2, 'both runs are in the JSON');
     is($data->{results}[0]{runs}[0]{exit}, 0, 'the exit code is in the JSON');
     is($data->{results}[0]{runs}[0]{summary}{pushed}, 1, 'the counts are in the JSON');
@@ -407,11 +408,15 @@ my $filesync = File::Spec->catfile($Bin, '..', 'bin', 'filesync');
     my $conflict = $env->sync();
     is($conflict->{exit}, 3, 'the conflict run exits 3');
 
-    # exit 3: a skipped path, with no conflict.
-    symlink 'a.txt', $env->client_path('link') or die "Cannot symlink: $!";
-    my $skipped = $env->sync();
-    is($skipped->{summary}{skipped}, 1, 'the symlink is skipped');
-    is($skipped->{summary}{conflicts}, 0, 'without a conflict');
+    # exit 3: a skipped path, with no conflict.  Creating a symlink needs
+    # privileges on Windows, so where it fails the block still covers the
+    # conflict warning and the lock refusal.
+    my $have_link = eval { symlink 'a.txt', $env->client_path('link'); 1 };
+    if ($have_link) {
+        my $skipped = $env->sync();
+        is($skipped->{summary}{skipped}, 1, 'the symlink is skipped');
+        is($skipped->{summary}{conflicts}, 0, 'without a conflict');
+    }
 
     # exit 2: a lock refusal is not a completed-with-warnings run.
     my $lock = App::FileSync::Lock::acquire(
@@ -421,27 +426,36 @@ my $filesync = File::Spec->catfile($Bin, '..', 'bin', 'filesync');
     $env->sync();
     undef $lock;
 
-    is(scalar @{ $env->log()->{runs} }, 4, 'four attempts are recorded');
+    my $attempts    = $have_link ? 4 : 3;
+    my $warning_runs = $have_link ? 2 : 1;
+
+    is(scalar @{ $env->log()->{runs} }, $attempts, 'every attempt is recorded');
 
     my $with = $env->log(warnings => 1);
-    is(scalar @{ $with->{runs} }, 2, '--warnings selects the two warning runs');
+    is(scalar @{ $with->{runs} }, $warning_runs,
+        '--warnings selects every warning run');
     is($with->{warnings}, 1, 'the filter is echoed');
     ok((grep { ($_->{summary}{conflicts} || 0) > 0 } @{ $with->{runs} }),
         'the conflict run is included');
-    ok((grep { ($_->{summary}{skipped} || 0) > 0 } @{ $with->{runs} }),
-        'the skipped run is included');
+    is(scalar(grep { ($_->{summary}{skipped} || 0) > 0 } @{ $with->{runs} }),
+        $have_link ? 1 : 0, 'the skipped run is included when one was recorded');
     ok(!(grep { !@{ $_->{warnings} || [] } } @{ $with->{runs} }),
         'every selected run carries a warning message');
 
     my $newest = $env->log(warnings => 1, limit => 1);
     is(scalar @{ $newest->{runs} }, 1, 'the limit applies after the filter');
-    is($newest->{runs}[0]{summary}{skipped}, 1, 'and keeps the newest match');
+    is($newest->{runs}[0]{summary}{ $have_link ? 'skipped' : 'conflicts' }, 1,
+        'and keeps the newest match');
 
     my $output = `$^X $filesync log --repo docs --warnings 2>&1`;
     is($?, 0, 'log --warnings exits 0');
     my @lines = grep { /^docs / } split /\n/, $output;
-    is(scalar @lines, 2, 'it prints both warning runs');
-    like($output, qr/warning: link: skipped \(symbolic link\)/, 'with the warning detail');
+    is(scalar @lines, $warning_runs, 'it prints every warning run');
+    like($output,
+        $have_link
+            ? qr/warning: link: skipped \(symbolic link\)/
+            : qr/warning: .*conflict/,
+        'with the warning detail');
     unlike($output, qr/\bexit 0\b/, 'and not the clean runs');
 
     $output = `$^X $filesync log --repo docs --warnings --exit 0 2>&1`;
@@ -450,7 +464,8 @@ my $filesync = File::Spec->catfile($Bin, '..', 'bin', 'filesync');
     $output = `$^X $filesync log --repo docs --warnings --json 2>&1`;
     is($?, 0, '--warnings --json exits 0');
     my $data = App::FileSync::json_decode($output);
-    is(scalar @{ $data->{results}[0]{runs} }, 2, 'the JSON is filtered too');
+    is(scalar @{ $data->{results}[0]{runs} }, $warning_runs,
+        'the JSON is filtered too');
     is($data->{results}[0]{warnings}, 1, 'and echoes the filter');
 }
 
@@ -511,6 +526,161 @@ my $filesync = File::Spec->catfile($Bin, '..', 'bin', 'filesync');
 
     is(scalar(grep { /\bsent \d/ } @lines), 1,
         'exactly one line in the mixed output carries transfer figures');
+}
+
+# The filters see both shapes: an entry without counters must still be
+# selected by --warnings, --exit and -n, and keeps its shorter line.
+{
+    my $env  = TestSync->new_env();
+    my $path = $env->log()->{path};
+
+    my @entries = (
+        {   ts       => $T0 + 1,
+            exit     => 0,
+            summary  => { pulled => 0, pushed => 1, deleted => 0, conflicts => 0, skipped => 0,
+                          bytes_sent => 6, bytes_received => 0 },
+            warnings => [],
+            dry_run  => 0,
+        },
+        {   ts       => $T0 + 2,
+            exit     => 3,
+            summary  => { pulled => 0, pushed => 0, deleted => 0, conflicts => 1, skipped => 0,
+                          bytes_sent => 0, bytes_received => 12 },
+            warnings => ['conflict: notes.txt kept as a copy'],
+            dry_run  => 0,
+        },
+        {   ts       => $T0 + 3,
+            exit     => 3,
+            summary  => { pulled => 0, pushed => 0, deleted => 0, conflicts => 0, skipped => 1 },
+            warnings => ['link: skipped (symbolic link)'],
+            dry_run  => 0,
+        },
+        {   ts       => $T0 + 4,
+            exit     => 0,
+            summary  => { pulled => 1, pushed => 0, deleted => 0, conflicts => 0, skipped => 0 },
+            warnings => [],
+            dry_run  => 0,
+        },
+        {   ts       => $T0 + 5,
+            exit     => 2,
+            error    => "Another sync session holds the lock for repo 'docs'\n",
+            warnings => [],
+            dry_run  => 0,
+        },
+    );
+
+    App::FileSync::write_atomic($path,
+        join('', map { App::FileSync::json_encode($_) . "\n" } @entries));
+
+    my $output = `$^X $filesync log --repo docs 2>&1`;
+    is($?, 0, 'log exits 0 with the five-entry mixed log');
+    my @all = grep { /^docs / } split /\n/, $output;
+    is(scalar @all, 5, 'every entry is printed in log order');
+    like($all[0], qr/sent 6 B, received 0 B/, 'the new clean entry has a suffix');
+    unlike($all[3], qr/sent \d/, 'the old clean entry has none');
+
+    $output = `$^X $filesync log --repo docs --warnings 2>&1`;
+    is($?, 0, '--warnings exits 0 on a mixed log');
+    my @warned = grep { /^docs / } split /\n/, $output;
+    is(scalar @warned, 2, '--warnings selects the new and old warning entries');
+    like($warned[0], qr/conflicts 1/, 'the new warning entry is kept');
+    like($warned[0], qr/sent 0 B, received 12 B/, 'and keeps its transfer suffix');
+    like($warned[1], qr/skipped 1/, 'the old warning entry is kept too');
+    unlike($warned[1], qr/sent \d/, 'and keeps its shorter line');
+    like($output, qr/warning: link: skipped \(symbolic link\)/,
+        'the old entry still shows its warning text');
+
+    $output = `$^X $filesync log --repo docs --exit 0 2>&1`;
+    my @clean = grep { /^docs / } split /\n/, $output;
+    is(scalar @clean, 2, '--exit 0 selects both clean entries');
+    like($clean[0], qr/pushed 1/, 'the new clean entry is first');
+    like($clean[0], qr/sent 6 B/, 'with its transfer suffix');
+    like($clean[1], qr/pulled 1/, 'the old clean entry follows');
+    unlike($clean[1], qr/sent \d/, 'without a suffix');
+    unlike($output, qr/exit 3/, 'and no warning entry is selected');
+
+    $output = `$^X $filesync log --repo docs -n 2 2>&1`;
+    my @recent = grep { /^docs / } split /\n/, $output;
+    is(scalar @recent, 2, '-n keeps the two newest entries');
+    like($recent[0], qr/pulled 1, pushed 0/, 'the old clean entry is first of the pair');
+    unlike($recent[0], qr/sent \d/, 'still without a suffix');
+    like($recent[1], qr/exit 2/, 'and the lock refusal is last');
+
+    $output = `$^X $filesync log --repo docs --warnings -n 1 2>&1`;
+    my @newest = grep { /^docs / } split /\n/, $output;
+    is(scalar @newest, 1, 'the limit applies after the mixed-log filter');
+    like($newest[0], qr/skipped 1/, 'and keeps the newest warning entry');
+    unlike($newest[0], qr/sent \d/, 'which is an old-shape entry');
+
+    $output = `$^X $filesync log --repo docs --warnings --json 2>&1`;
+    is($?, 0, '--warnings --json exits 0 on a mixed log');
+    my $data = App::FileSync::json_decode($output);
+    my $runs = $data->{results}[0]{runs};
+    is(scalar @{$runs}, 2, 'the JSON is filtered to the same two entries');
+    ok(exists $runs->[0]{summary}{bytes_sent}, 'the new entry still has counters');
+    ok(!exists $runs->[1]{summary}{bytes_sent}, 'the old entry has none');
+
+    # A time window cuts across both shapes too, and includes both edges.
+    my $from = $T0 + 3;
+    my $to   = $T0 + 4;
+
+    $output = `$^X $filesync log --repo docs --since $from 2>&1`;
+    is($?, 0, '--since exits 0 on a mixed log');
+    my @after = grep { /^docs / } split /\n/, $output;
+    is(scalar @after, 3, '--since keeps the three newest entries');
+    like($after[0], qr/skipped 1/, 'the old warning entry is first');
+    like($after[1], qr/pulled 1/, 'the old clean entry follows');
+    like($after[2], qr/exit 2/, 'and the lock refusal is last');
+    unlike($output, qr/conflicts 1/, 'the newer warning entry is behind the cutoff');
+    is(scalar(grep { /sent \d/ } @after), 0, 'no entry in the window has counters');
+
+    $output = `$^X $filesync log --repo docs --until $to 2>&1`;
+    is($?, 0, '--until exits 0 on a mixed log');
+    my @before = grep { /^docs / } split /\n/, $output;
+    is(scalar @before, 4, '--until keeps the four oldest entries');
+    like($before[0], qr/sent 6 B, received 0 B/, 'the new clean entry keeps its suffix');
+    like($before[1], qr/conflicts 1/, 'the new warning entry is included');
+    like($before[1], qr/sent 0 B, received 12 B/, 'with its transfer suffix');
+    like($before[2], qr/skipped 1/, 'the old warning entry is included');
+    unlike($before[2], qr/sent \d/, 'without a suffix');
+    like($before[3], qr/pulled 1/, 'the old clean entry is included');
+    unlike($output, qr/exit 2/, 'the lock refusal is after the cutoff');
+    is(scalar(grep { /sent \d/ } @before), 2,
+        'only the two new-shape entries carry counters');
+
+    $output = `$^X $filesync log --repo docs --since $from --until $from 2>&1`;
+    my @edge = grep { /^docs / } split /\n/, $output;
+    is(scalar @edge, 1, 'both cutoffs are inclusive at the same timestamp');
+    like($edge[0], qr/skipped 1/, 'the entry exactly on the boundary is kept');
+    unlike($edge[0], qr/sent \d/, 'and keeps its old shape');
+
+    $output = `$^X $filesync log --repo docs --since $to --until $from 2>&1`;
+    like($output, qr/no runs recorded/, 'a window that ends before it starts is empty');
+
+    # The other selectors still see both shapes once a window is applied.
+    $output = `$^X $filesync log --repo docs --since $from --warnings 2>&1`;
+    my @windowed = grep { /^docs / } split /\n/, $output;
+    is(scalar @windowed, 1, '--warnings within the window keeps the old entry');
+    like($windowed[0], qr/skipped 1/, 'which is the old warning entry');
+
+    $output = `$^X $filesync log --repo docs --until $to --exit 0 2>&1`;
+    my @clean_window = grep { /^docs / } split /\n/, $output;
+    is(scalar @clean_window, 2, '--exit 0 within the window crosses both shapes');
+    like($clean_window[0], qr/sent 6 B/, 'the new clean entry still has counters');
+    like($clean_window[1], qr/pulled 1/, 'the old clean entry follows');
+    unlike($clean_window[1], qr/sent \d/, 'still without a suffix');
+
+    $output = `$^X $filesync log --repo docs --since $from --until $to --json 2>&1`;
+    is($?, 0, 'a mixed-log window works with --json');
+    $data = App::FileSync::json_decode($output);
+    $runs = $data->{results}[0]{runs};
+    is(scalar @{$runs}, 2, 'the JSON is limited to the window');
+    is_deeply([ map { $_->{ts} } @{$runs} ], [ $from, $to ],
+        'the window is the middle pair of entries');
+    ok(!exists $runs->[0]{summary}{bytes_sent}, 'the old warning entry has no counters');
+    ok(!exists $runs->[1]{summary}{bytes_sent}, 'nor does the old clean entry');
+    is($data->{results}[0]{since}, $from, 'the start of the window is echoed');
+    is($data->{results}[0]{until}, $to, 'and so is its end');
 }
 
 done_testing();

@@ -66,7 +66,8 @@ is($result->{summary}{deleted}, 1, 'the deletion was propagated');
 my ($deleted) = grep { $_->{action} eq 'delete' } @{ events() };
 ok($deleted, 'the deletion is journalled');
 is($deleted->{path}, 'dir/b.txt', 'the deleted path is recorded');
-like($deleted->{trash}, qr{dir/b\.txt\z}, 'the journal records where it was trashed');
+like($deleted->{trash}, qr{dir[/\\]b\.txt\z},
+    'the journal records where it was trashed');
 
 # --- a conflict is journalled with both sides -----------------------------
 
@@ -304,7 +305,7 @@ unlike($output, qr/^docs:$/m, 'and nothing was printed before the failure');
 
     my $result = $data->{results}[0];
     is($result->{repo}, 'docs', 'the result names the repo');
-    like($result->{path}, qr{\.filesync/repos/docs/journal\z},
+    like($result->{path}, qr{\.filesync[/\\]repos[/\\]docs[/\\]journal\z},
         'and the journal directory');
     is(scalar @{ $result->{events} }, scalar @{ events() }, 'every event is included');
     is($result->{events}[-1]{action}, 'session', 'events are in journal order');
@@ -351,7 +352,7 @@ unlike($output, qr/^docs:$/m, 'and nothing was printed before the failure');
     is(scalar @{ $data->{results}[0]{events} }, scalar @{ events() },
         'the first repo keeps every event');
     is(scalar @{ $data->{results}[1]{events} }, 1, 'the second repo is queried too');
-    like($data->{results}[1]{path}, qr{repos/notes/journal\z},
+    like($data->{results}[1]{path}, qr{repos[/\\]notes[/\\]journal\z},
         'each result names its own journal directory');
 
     $output = qx{$perl $admin_bin --root $env->{server} log docs notes --json --warnings 2>&1};

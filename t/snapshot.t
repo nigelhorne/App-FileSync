@@ -69,22 +69,32 @@ sub read_file {
     write_file("$root/.filesync-root", "marker\n", $T0);
     make_path("$root/empty");
 
+    # Hardlinks are the Unix default; Windows uses copies (SPEC 6.3).
+    my $mode  = App::FileSync::Snapshot::default_mode();
     my $first = App::FileSync::Snapshot::create(
-        root => $root, date => '2026-10-20', mode => 'hardlink',
+        root => $root, date => '2026-10-20', mode => $mode,
     );
 
     is($first->{created}, 1, 'a snapshot is created');
     is($first->{files}, 2, 'both files are in the snapshot');
-    is($first->{linked}, 2, 'files are hardlinked, not copied');
-    is((stat("$root/a.txt"))[1], (stat("$first->{path}/a.txt"))[1],
-        'the snapshot file shares the inode with the mirror');
+    is($first->{linked}, $mode eq 'hardlink' ? 2 : 0,
+        'files are hardlinked, not copied, when that is the platform default');
+    is($first->{copied}, $mode eq 'copy' ? 2 : 0,
+        'files are copied when copying is the platform default');
+    SKIP: {
+        skip 'inode numbers are not meaningful here', 1
+            unless $mode eq 'hardlink' && $^O ne 'MSWin32';
+
+        is((stat("$root/a.txt"))[1], (stat("$first->{path}/a.txt"))[1],
+            'the snapshot file shares the inode with the mirror');
+    }
     ok(-d "$first->{path}/empty", 'empty directories are captured');
     ok(!-e "$first->{path}/.filesync-root", 'the marker is not part of the snapshot');
     ok(!-e "$first->{path}/.filesync-snapshots", 'the snapshot directory does not contain itself');
     is(read_file("$first->{path}/sub/b.txt"), "bravo\n", 'content is captured');
 
     my $same = App::FileSync::Snapshot::create(
-        root => $root, date => '2026-10-20', mode => 'hardlink',
+        root => $root, date => '2026-10-20', mode => $mode,
     );
     is($same->{created}, 0, 'an existing day is never overwritten');
     ok(-e "$first->{path}/a.txt", 'the first snapshot of the day survives');
@@ -119,8 +129,12 @@ sub read_file {
         root => $root, date => '2026-10-21', mode => 'copy',
     );
     is($copy->{copied}, 2, 'copy mode copies');
-    isnt((stat("$root/a.txt"))[1], (stat("$copy->{path}/a.txt"))[1],
-        'copy mode does not share inodes');
+    SKIP: {
+        skip 'inode numbers are not meaningful here', 1 if $^O eq 'MSWin32';
+
+        isnt((stat("$root/a.txt"))[1], (stat("$copy->{path}/a.txt"))[1],
+            'copy mode does not share inodes');
+    }
     is(read_file("$copy->{path}/a.txt"), "alpha\n", 'copy mode captured the content');
 
     # A whole snapshot can be exported somewhere else.
@@ -135,14 +149,19 @@ sub read_file {
     # A hardlinked snapshot shares the inode, so an in-place edit of the mirror
     # is visible in it; copy mode is independent.  The syncer itself always
     # replaces files, so this only bites when something else edits the mirror.
-    my $linked = App::FileSync::Snapshot::create(
-        root => $root, date => '2026-10-22', mode => 'hardlink',
-    );
-    write_file("$root/a.txt", "edited in place\n", $T0 + 600);
-    is(read_file("$linked->{path}/a.txt"), "edited in place\n",
-        'in-place edits show through a hardlinked snapshot (documented caveat)');
-    is(read_file("$copy->{path}/a.txt"), "alpha\n",
-        'a copy-mode snapshot is unaffected by in-place edits');
+    SKIP: {
+        skip 'hardlinks are not the default here', 2
+            unless App::FileSync::Snapshot::default_mode() eq 'hardlink';
+
+        my $linked = App::FileSync::Snapshot::create(
+            root => $root, date => '2026-10-22', mode => 'hardlink',
+        );
+        write_file("$root/a.txt", "edited in place\n", $T0 + 600);
+        is(read_file("$linked->{path}/a.txt"), "edited in place\n",
+            'in-place edits show through a hardlinked snapshot (documented caveat)');
+        is(read_file("$copy->{path}/a.txt"), "alpha\n",
+            'a copy-mode snapshot is unaffected by in-place edits');
+    }
 }
 
 # ------------------------------------------- snapshots and the replica mirror

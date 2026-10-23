@@ -182,4 +182,109 @@ is($env->read_file('server', 'a.txt'), "master changed\n", 'master content untou
     is($stable->{summary}{pushed}, 0, 'and the replica still pushes nothing');
 }
 
+# The same guard allows deletions up to the percentage limit.  Two of twenty
+# files is exactly the 10% allowance, so this mirror converges without --force.
+{
+    my $env = TestSync->new_env(
+        client_id => 'backup-4', role => 'replica', max_deletes => 500,
+    );
+
+    $env->write_file('server', sprintf('file%02d.txt', $_), "master $_\n", $T0 + $_)
+        for 1 .. 20;
+
+    my $first = $env->sync();
+    is($first->{summary}{pulled}, 20, 'the replica mirrors twenty master files');
+
+    # Deletions at the limit are allowed; only a larger share is refused.
+    unlink $env->server_path('file19.txt');
+    unlink $env->server_path('file20.txt');
+
+    my $allowed = $env->sync();
+    is($allowed->{summary}{deleted}, 2,
+        'a deletion within the percentage limit proceeds without --force');
+    is($allowed->{summary}{pulled}, 0, 'nothing else is transferred');
+    is($allowed->{summary}{pushed}, 0, 'the replica still pushes nothing');
+
+    is_deeply(
+        [ grep { $_ ne '.filesync-root' } @{ $env->tree($env->{client}) } ],
+        [ map { sprintf 'file%02d.txt', $_ } 1 .. 18 ],
+        'the replica mirrors the eighteen files the master kept',
+    );
+    ok(!$env->exists_in('client', 'file19.txt'), 'the first deleted file is gone');
+    ok(!$env->exists_in('client', 'file20.txt'), 'the second deleted file is gone');
+    is($env->read_file('client', 'file18.txt'), "master 18\n",
+        'the surviving files keep their master content');
+
+    my @trash = glob(File::Spec->catfile(
+        $env->{home}, 'trash', '*', '*', '*', 'file19.txt'));
+    ok(@trash, 'the removed file went to the replica trash');
+
+    my $stable = $env->sync();
+    is($stable->{summary}{deleted}, 0, 'the allowed deletion is not repeated');
+    is($stable->{summary}{pulled}, 0, 'nothing is left to pull');
+    is($stable->{summary}{pushed}, 0, 'and nothing is pushed');
+}
+
+# One deletion over the allowance is refused: three of twenty is 15%, above
+# the 10% limit, so the mirror must stay put until --force says otherwise.
+{
+    my $env = TestSync->new_env(
+        client_id => 'backup-5', role => 'replica', max_deletes => 500,
+    );
+
+    $env->write_file('server', sprintf('file%02d.txt', $_), "master $_\n", $T0 + $_)
+        for 1 .. 20;
+
+    my $first = $env->sync();
+    is($first->{summary}{pulled}, 20, 'the replica mirrors twenty master files');
+
+    my $base = $env->meta_path('clients', 'backup-5.json');
+    my $base_before = do {
+        local $/;
+        open my $fh, '<', $base or die "Cannot read $base: $!";
+        <$fh>;
+    };
+
+    unlink $env->server_path('file18.txt');
+    unlink $env->server_path('file19.txt');
+    unlink $env->server_path('file20.txt');
+
+    my $before = $env->snapshot($env->{client});
+
+    my $error;
+    eval { $env->sync(); 1 } or $error = $@;
+    ok($error, 'one deletion over the allowance is refused without --force');
+    like($error, qr/refusing to delete 3 of 20 known files \(limit is 10%\)/,
+        'the refusal names three of twenty and the percentage');
+
+    is_deeply($env->snapshot($env->{client}), $before,
+        'the refused mirror leaves every replica file untouched');
+    ok($env->exists_in('client', 'file20.txt'), 'the last deleted file is still mirrored');
+    is(do {
+        local $/;
+        open my $fh, '<', $base or die "Cannot read $base: $!";
+        <$fh>;
+    }, $base_before, 'the refusal does not advance the stored base');
+
+    ok($env->exists_in('server', 'file17.txt'), 'the master still has the files it kept');
+    ok(!$env->exists_in('server', 'file18.txt'), 'the master deletions are real');
+
+    my $forced = $env->sync(force => 1);
+    is($forced->{summary}{deleted}, 3, '--force performs the three deletions');
+    is($forced->{summary}{pulled}, 0, 'nothing else needs pulling');
+    is($forced->{summary}{pushed}, 0, 'the replica still pushes nothing');
+    is_deeply(
+        [ grep { $_ ne '.filesync-root' } @{ $env->tree($env->{client}) } ],
+        [ map { sprintf 'file%02d.txt', $_ } 1 .. 17 ],
+        'the forced mirror matches the seventeen files the master kept',
+    );
+    is($env->read_file('client', 'file17.txt'), "master 17\n",
+        'the surviving files keep their master content');
+
+    my $stable = $env->sync();
+    is($stable->{summary}{deleted}, 0, 'nothing is left to delete after --force');
+    is($stable->{summary}{pulled}, 0, 'and nothing is left to pull');
+    is($stable->{summary}{pushed}, 0, 'and the replica still pushes nothing');
+}
+
 done_testing();

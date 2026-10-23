@@ -44,7 +44,8 @@ sub slurp {
     my $list = $env->restore(path => 'a.txt', list => 1);
     is(scalar @{ $list->{versions} }, 1, 'one trashed version is listed');
     is($list->{versions}[0]{date}, $today, 'the version is dated today');
-    like($list->{versions}[0]{path}, qr{trash/.*/a\.txt\z}, 'the version path is reported');
+    like($list->{versions}[0]{path}, qr{trash[/\\].*[/\\]a\.txt\z},
+        'the version path is reported');
 
     my $restored = $env->restore(path => 'a.txt');
     is($restored->{to}, $env->client_path('a.txt'), 'the file goes back where it was');

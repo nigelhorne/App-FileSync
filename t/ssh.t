@@ -8,6 +8,11 @@ use FindBin qw($Bin);
 use lib 't/lib';
 use TestSync;
 
+# The stand-in ssh is a shebang script that the transport executes directly,
+# which needs a Unix kernel.  Windows has no real sshd here either.
+plan skip_all => 'the fake ssh helper needs a Unix executable script'
+    if $^O eq 'MSWin32';
+
 use App::FileSync::Config;
 use App::FileSync::Lock;
 use App::FileSync::Store;

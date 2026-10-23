@@ -171,7 +171,9 @@ sub _restore_entry {
 # ".../trash/2026/10/22/a/b.txt" -> "2026-10-22"
 sub date_of {
     my ($path) = @_;
-    return $path =~ m{/(\d{4})/(\d{2})/(\d{2})/} ? "$1-$2-$3" : undef;
+    return $path =~ m{[/\\](\d{4})[/\\](\d{2})[/\\](\d{2})[/\\]}
+        ? "$1-$2-$3"
+        : undef;
 }
 
 sub _children {
