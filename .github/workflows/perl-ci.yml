@@ -188,7 +188,20 @@ jobs:
       - name: Show cpanm build log on failure (Windows)
         if: runner.os == 'Windows' && failure()
         shell: pwsh
-        run: Get-Content "$env:USERPROFILE\.cpanm\work\*\build.log" -Tail 100
+        run: |
+          # One cpanm run writes every distribution's output to a single build
+          # log.  The tail alone shows only the last failure, which is usually
+          # a cascade from the real one, so print the context around each
+          # failed configure/build as well as the end of the log.
+          $log = Get-ChildItem "$env:USERPROFILE\.cpanm\work\*\build.log" |
+            Sort-Object LastWriteTime | Select-Object -Last 1
+          if (-not $log) {
+            Write-Output 'no cpanm build.log found'
+            exit 0
+          }
+          Select-String -Path $log.FullName -Pattern '^-> N/A$|^-> FAIL' -Context 60,2
+          Write-Output '=== tail'
+          Get-Content $log.FullName -Tail 60
 
       - name: Show cpanm build log on failure (non-Windows)
         if: runner.os != 'Windows' && failure()
