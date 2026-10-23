@@ -7,16 +7,18 @@ use Digest::SHA ();
 use File::Basename qw(dirname);
 use File::Path qw(make_path);
 use File::Spec;
+use File::Temp ();
 use Time::HiRes ();
 
 use App::FileSync qw(json_encode validate_relpath validate_client_id validate_repo_name);
+use App::FileSync::Delta;
 use App::FileSync::Merge;
 use App::FileSync::Protocol;
 use App::FileSync::Settings;
 use App::FileSync::Store;
 
 our $CHUNK = 262_144;
-our $PROTO = 1;
+our $PROTO = 2;
 
 sub new {
     my ($class, %args) = @_;
@@ -99,7 +101,7 @@ sub run {
         my $policy = $self->{store}->config();
         $connection->send({
             ok     => 1,
-            proto  => 1,
+            proto  => $PROTO,
             server => { os => $^O },
             repo   => { name => $self->{repo} },
             policy => {
@@ -216,6 +218,20 @@ sub _loop {
             $self->_chunk($message);
         } elsif ($command eq 'chunk_end') {
             $self->_chunk_end($message);
+        } elsif ($command eq 'sig') {
+            $self->_signature($message);
+        } elsif ($command eq 'delta') {
+            $self->_delta_start($message);
+        } elsif ($command eq 'dcopy') {
+            $self->_delta_copy($message);
+        } elsif ($command eq 'dlit') {
+            $self->_delta_literal($message);
+        } elsif ($command eq 'delta_end') {
+            $self->_delta_end($message);
+        } elsif ($command eq 'dsig') {
+            $self->_pull_signature($message);
+        } elsif ($command eq 'dop') {
+            $self->_pull_op($message);
         } elsif ($command eq 'mkdir') {
             $self->_mkdir($message);
         } elsif ($command eq 'del') {
@@ -396,15 +412,13 @@ sub _get {
         close $fh;
     }
 
-    $self->{conn}->send({
+    $self->{conn}->send_data({
         ok   => 1,
-        len  => length($bytes),
         eof  => ($offset + length($bytes) >= $size) ? 1 : 0,
         s    => $size,
         m    => $stat[9],
         mode => $stat[2] & 07777,
-    });
-    $self->{conn}->send_bytes($bytes);
+    }, $bytes);
 
     return 1;
 }
@@ -462,7 +476,8 @@ sub _chunk {
     die "Bad chunk length\n"
         unless defined $length && $length =~ /\A\d+\z/ && $length <= 8 * 1024 * 1024;
 
-    my $bytes = $length ? $self->{conn}->read_bytes($length) : '';
+    my $bytes = $length ? $self->{conn}->read_data($message) : '';
+    die "Chunk for '$path' is too large\n" if length($bytes) > 8 * 1024 * 1024;
 
     print { $upload->{fh} } $bytes or do {
         my $error = $!;
@@ -473,7 +488,7 @@ sub _chunk {
     };
 
     $upload->{sha}->add($bytes);
-    $upload->{got} += $length;
+    $upload->{got} += length($bytes);
 
     $self->{conn}->send({ ok => 1, off => $upload->{got} });
     return 1;
@@ -486,11 +501,21 @@ sub _chunk_end {
     my $upload = delete $self->{uploads}{$path}
         or die "End of data for '$path' without a put\n";
 
+    $self->_commit_upload($path, $upload);
+    $self->{conn}->send({ ok => 1 });
+    return 1;
+}
+
+# Close, verify and install an upload, whether it arrived whole or as a delta.
+sub _commit_upload {
+    my ($self, $path, $upload, %extra) = @_;
+
     close $upload->{fh} or do {
         my $error = $!;
         unlink $upload->{temp};
         die "Cannot close $upload->{temp}: $error\n";
     };
+    close $upload->{old_fh} if $upload->{old_fh};
 
     my $hash = $upload->{sha}->hexdigest();
 
@@ -524,10 +549,265 @@ sub _chunk_end {
         size   => $upload->{got},
         sha256 => $hash,
         result => 'ok',
+        %extra,
     });
 
     $self->{applied}{$path} = 1;
+    return $entry;
+}
+
+# The client holds the new content and asks for a description of the master's
+# current version, so it can send only the blocks that differ.
+sub _signature {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $action = $self->_planned($path)
+        or die "Signature request for unplanned path '$path'\n";
+
+    die "Signature request for '$path' is not in the plan\n"
+        unless $action->{a} eq 'push';
+
+    my $abs = $self->{store}->abs_path($path);
+    my $signature;
+    if (-f $abs && (-s _) >= $App::FileSync::Delta::MIN_SIZE) {
+        $signature = App::FileSync::Delta::signature($abs);
+    }
+
+    unless ($signature) {
+        $self->{conn}->send({ ok => 1, delta => 0 });
+        return 1;
+    }
+
+    $self->{conn}->send_data({
+        ok    => 1,
+        delta => 1,
+        s     => $signature->{size},
+        b     => $signature->{blocklen},
+        n     => scalar @{ $signature->{blocks} },
+    }, App::FileSync::Delta::encode_signature($signature));
+
+    return 1;
+}
+
+sub _delta_start {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $action = $self->_planned($path)
+        or die "Delta write of unplanned path '$path'\n";
+
+    die "Delta write of '$path' is not in the plan\n"
+        unless $action->{a} eq 'push';
+    die "Already receiving '$path'\n" if $self->{uploads}{$path};
+
+    my $hash = $message->{h};
+    die "Bad hash for '$path'\n"
+        unless defined $hash && $hash =~ /\A[0-9a-f]{64}\z/;
+    my $size = $message->{s};
+    die "Bad size for '$path'\n"
+        unless defined $size && $size =~ /\A\d+\z/;
+
+    $self->{store}->ensure_parent($path);
+
+    my $temp = $self->{store}->temp_path($path);
+    open my $fh, '>', $temp or die "Cannot write $temp: $!\n";
+    binmode $fh;
+
+    my $old = $self->{store}->abs_path($path);
+    my $old_fh;
+    if (-f $old) {
+        open $old_fh, '<', $old or die "Cannot read $old: $!\n";
+        binmode $old_fh;
+    } else {
+        $old = undef;
+    }
+
+    $self->{uploads}{$path} = {
+        fh     => $fh,
+        temp   => $temp,
+        sha    => Digest::SHA->new(256),
+        got    => 0,
+        size   => $size + 0,
+        hash   => $hash,
+        mtime  => $message->{m},
+        mode   => $message->{mode},
+        delta  => 1,
+        old    => $old,
+        old_fh => $old_fh,
+    };
+
     $self->{conn}->send({ ok => 1 });
+    return 1;
+}
+
+sub _delta_copy {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $upload = $self->{uploads}{$path}
+        or die "Delta data for '$path' without a delta\n";
+    die "Copy for '$path' outside a delta\n" unless $upload->{delta};
+
+    my ($offset, $length) = ($message->{off}, $message->{len});
+    die "Bad delta copy for '$path'\n"
+        unless defined $offset && $offset =~ /\A\d+\z/
+            && defined $length && $length =~ /\A\d+\z/ && $length > 0;
+
+    my $old_fh = $upload->{old_fh}
+        or die "No master content to copy for '$path'\n";
+    my $old_size = -s $upload->{old};
+    die "Delta copy outside '$path'\n"
+        if $offset + $length > $old_size;
+
+    seek($old_fh, $offset, 0) or die "Cannot seek in $upload->{old}: $!\n";
+    my $bytes = App::FileSync::Delta::read_exact($old_fh, $length, $upload->{old});
+
+    $self->_write_delta($path, $upload, $bytes);
+    $self->{conn}->send({ ok => 1, off => $upload->{got} });
+    return 1;
+}
+
+sub _delta_literal {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $upload = $self->{uploads}{$path}
+        or die "Delta data for '$path' without a delta\n";
+    die "Literal for '$path' outside a delta\n" unless $upload->{delta};
+
+    my $bytes = $self->{conn}->read_data($message);
+    $self->_write_delta($path, $upload, $bytes);
+    $self->{conn}->send({ ok => 1, off => $upload->{got} });
+    return 1;
+}
+
+sub _write_delta {
+    my ($self, $path, $upload, $bytes) = @_;
+
+    my $length = length $bytes;
+    die "Delta for '$path' is larger than announced\n"
+        if $upload->{got} + $length > $upload->{size};
+
+    print { $upload->{fh} } $bytes or do {
+        my $error = $!;
+        close $upload->{fh};
+        unlink $upload->{temp};
+        delete $self->{uploads}{$path};
+        die "Cannot write $upload->{temp}: $error\n";
+    };
+
+    $upload->{sha}->add($bytes);
+    $upload->{got} += $length;
+    return 1;
+}
+
+sub _delta_end {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $upload = delete $self->{uploads}{$path}
+        or die "End of delta for '$path' without a delta\n";
+    die "End of delta for '$path' outside a delta\n" unless $upload->{delta};
+
+    $self->_commit_upload($path, $upload, delta => 1);
+    $self->{conn}->send({ ok => 1, delta => 1 });
+    return 1;
+}
+
+# The client describes its old version; the server spools a delta from the
+# master's current version and serves it one block at a time.
+sub _pull_signature {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $action = $self->_planned($path)
+        or die "Signature upload for unplanned path '$path'\n";
+    die "Signature upload for '$path' is not in the plan\n"
+        unless $action->{a} eq 'pull';
+
+    my $count = $message->{n};
+    my $block = $message->{b};
+    die "Bad signature for '$path'\n"
+        unless defined $count && $count =~ /\A\d+\z/
+            && $count <= 16_384
+            && defined $block && $block =~ /\A\d+\z/
+            && $block >= 1024 && $block <= 1024 * 1024;
+
+    my $bytes  = $self->{conn}->read_data($message);
+    my $blocks = App::FileSync::Delta::decode_signature($bytes, $count);
+
+    my $abs = $self->{store}->abs_path($path);
+    my @stat = Time::HiRes::stat($abs);
+    die "Cannot stat $abs: $!\n" unless @stat;
+
+    if (!-f _ || $stat[7] < $App::FileSync::Delta::MIN_SIZE) {
+        $self->{conn}->send({ ok => 1, delta => 0 });
+        return 1;
+    }
+
+    my $spool = File::Temp->new(UNLINK => 1);
+    binmode $spool;
+    my $stats = App::FileSync::Delta::diff(
+        $abs,
+        { blocklen => $block + 0, blocks => $blocks },
+        $spool,
+    );
+    $spool->flush();
+
+    # Only the literal bytes and record headers go on the wire; compression can
+    # shrink them further, so this is a conservative estimate.
+    my $estimated = $stats->{literal} + 12 * $stats->{ops} + 64;
+    if ($estimated >= $stat[7]) {
+        $self->{conn}->send({ ok => 1, delta => 0 });
+        return 1;
+    }
+
+    seek($spool, 0, 0) or die "Cannot rewind the delta for '$path': $!\n";
+    $self->{pull_deltas}{$path} = {
+        spool => $spool,
+        size  => $stat[7],
+        m     => $stat[9],
+        mode  => $stat[2] & 07777,
+    };
+
+    $self->{conn}->send({
+        ok    => 1,
+        delta => 1,
+        s     => $stat[7],
+        m     => $stat[9],
+        mode  => $stat[2] & 07777,
+        b     => $block + 0,
+    });
+
+    return 1;
+}
+
+sub _pull_op {
+    my ($self, $message) = @_;
+
+    my $path = $message->{p};
+    my $state = $self->{pull_deltas}{$path}
+        or die "Delta read for '$path' without a signature\n";
+
+    my ($type, @rest) = App::FileSync::Delta::read_op($state->{spool});
+    unless ($type) {
+        delete $self->{pull_deltas}{$path};
+        $self->{conn}->send({ ok => 1, done => 1 });
+        return 1;
+    }
+
+    if ($type eq 'copy') {
+        $self->{conn}->send({
+            ok  => 1,
+            op  => 'copy',
+            off => $rest[0],
+            len => $rest[1],
+        });
+        return 1;
+    }
+
+    $self->{conn}->send_data({ ok => 1, op => 'lit' }, $rest[0]);
     return 1;
 }
 
@@ -630,6 +910,7 @@ sub _ack {
     }
 
     $self->{applied}{$path} = 1;
+    delete $self->{pull_deltas}{$path};
     $self->{conn}->send({ ok => 1 });
     return 1;
 }

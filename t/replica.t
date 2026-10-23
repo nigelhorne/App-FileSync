@@ -79,7 +79,7 @@ is($env->read_file('server', 'a.txt'), "master changed\n", 'master content untou
     );
 
     $conn->send({
-        cmd => 'hello', proto => 1, client => 'backup-2', host => 'test', os => $^O,
+        cmd => 'hello', proto => 2, client => 'backup-2', host => 'test', os => $^O,
         role => 'replica', repo => 'docs', case_insensitive => 0, now => time,
     });
     ok($conn->recv()->{ok}, 'the replica session opens');

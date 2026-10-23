@@ -225,6 +225,11 @@ keeps a separate machine holding a replica of that master.  Every run is a short
 process suitable for cron or the Windows Task Scheduler: there is no daemon, no database
 and no web interface.
 
+Only files whose content changed are transferred.  Data frames are deflated when that
+makes them smaller, and files of at least 64 KiB are sent as rsync-style block deltas
+when the other side already holds an older copy, so an edit moves the changed blocks
+rather than the whole file.  C<filesync sync --no-delta> forces whole files.
+
 The design and its rationale are in F<SPEC.md> in the distribution root.
 
 This module holds the pieces shared by the client, the server and the admin tools:

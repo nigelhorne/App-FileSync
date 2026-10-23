@@ -4,8 +4,15 @@ use strict;
 use warnings;
 
 use IO::Handle ();
+use Compress::Raw::Zlib ();
 
 use App::FileSync qw(json_encode json_decode);
+
+# Payloads are raw-deflated when that makes them smaller.  Small payloads and
+# already-compressed data are left alone, so the flag costs more than it saves.
+our $COMPRESS_MIN = 256;
+our $MAX_WIRE     = 64 * 1024 * 1024;
+our $MAX_INFLATED = 64 * 1024 * 1024;
 
 # One connection, strictly one request in flight at a time.
 # Control messages are JSON on one line; binary payloads are announced by "len" and
@@ -63,6 +70,80 @@ sub send_bytes {
         or die "Protocol: cannot write payload: $!\n";
 
     return 1;
+}
+
+# Send a header and its binary payload, compressing the payload when that is
+# worthwhile.  The header carries the wire length and a "z" flag, so a peer
+# that does not know the flag would reject the frame rather than misread it.
+sub send_data {
+    my ($self, $message, $bytes) = @_;
+
+    my ($wire, $compressed) = _deflate(defined $bytes ? $bytes : '');
+
+    my %header = %{ $message || {} };
+    $header{len} = length $wire;
+    $header{z}   = 1 if $compressed;
+
+    $self->send(\%header);
+    $self->send_bytes($wire);
+
+    return 1;
+}
+
+# Read the payload announced by a send_data header, decompressing if needed.
+sub read_data {
+    my ($self, $message) = @_;
+
+    my $length = defined $message->{len} ? $message->{len} : 0;
+    die "Protocol: bad payload length\n"
+        unless $length =~ /\A\d+\z/ && $length <= $MAX_WIRE;
+
+    my $wire = $length ? $self->read_bytes($length) : '';
+    return $message->{z} ? _inflate($wire) : $wire;
+}
+
+sub _deflate {
+    my ($bytes) = @_;
+
+    return ('', 0) unless defined $bytes && length $bytes;
+    return ($bytes, 0) if length($bytes) < $COMPRESS_MIN;
+
+    my ($deflater, $status) = Compress::Raw::Zlib::Deflate->new(
+        -WindowBits => -Compress::Raw::Zlib::MAX_WBITS(),
+        -Level      => 6,
+    );
+    return ($bytes, 0)
+        unless $deflater && $status == Compress::Raw::Zlib::Z_OK();
+
+    my $out = '';
+    $status = $deflater->deflate($bytes, $out);
+    return ($bytes, 0) unless $status == Compress::Raw::Zlib::Z_OK();
+
+    my $tail = '';
+    $status = $deflater->flush($tail);
+    $out .= $tail if $status == Compress::Raw::Zlib::Z_OK();
+
+    return length($out) < length($bytes) ? ($out, 1) : ($bytes, 0);
+}
+
+sub _inflate {
+    my ($wire) = @_;
+
+    my ($inflater, $status) = Compress::Raw::Zlib::Inflate->new(
+        -WindowBits => -Compress::Raw::Zlib::MAX_WBITS(),
+    );
+    die "Protocol: cannot decompress the payload\n"
+        unless $inflater && $status == Compress::Raw::Zlib::Z_OK();
+
+    my $out = '';
+    $status = $inflater->inflate($wire, $out);
+    die "Protocol: corrupt compressed payload\n"
+        unless $status == Compress::Raw::Zlib::Z_OK()
+            || $status == Compress::Raw::Zlib::Z_STREAM_END();
+    die "Protocol: compressed payload expands beyond the limit\n"
+        if length($out) > $MAX_INFLATED;
+
+    return $out;
 }
 
 sub read_line {

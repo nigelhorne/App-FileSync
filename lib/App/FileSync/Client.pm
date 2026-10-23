@@ -7,11 +7,13 @@ use Digest::SHA ();
 use File::Basename qw(dirname);
 use File::Path qw(make_path);
 use File::Spec;
+use File::Temp ();
 use Sys::Hostname ();
 use Time::HiRes ();
 
 use App::FileSync qw(json_encode validate_relpath);
 use App::FileSync::Config;
+use App::FileSync::Delta;
 use App::FileSync::Ignore;
 use App::FileSync::Lock;
 use App::FileSync::Protocol;
@@ -159,7 +161,7 @@ sub _session {
 
     $connection->send({
         cmd              => 'hello',
-        proto            => 1,
+        proto            => 2,
         client           => $client_id,
         host             => Sys::Hostname::hostname(),
         os               => $^O,
@@ -243,11 +245,13 @@ sub _session {
     }
 
     my $summary = {
-        pulled    => 0,
-        pushed    => 0,
-        deleted   => 0,
-        conflicts => 0,
-        skipped   => scalar(keys %{$skipped}),
+        pulled       => 0,
+        pushed       => 0,
+        deleted      => 0,
+        conflicts    => 0,
+        delta_pulled => 0,
+        delta_pushed => 0,
+        skipped      => scalar(keys %{$skipped}),
     };
 
     for my $path (sort keys %{$skipped}) {
@@ -317,6 +321,9 @@ sub _session {
     die 'Server did not accept the end of the session: ' . ($end->{error} || 'unknown') . "\n"
         unless $end->{ok};
 
+    $summary->{delta_pulled} = $self->{delta_pulled} || 0;
+    $summary->{delta_pushed} = $self->{delta_pushed} || 0;
+
     $self->_save_cache(\%after, $summary, { %{$policy}, ignore => \@ignore_patterns });
 
     $self->_prune_local_trash($repo) unless $self->{opts}{no_prune};
@@ -381,6 +388,8 @@ sub _pull {
     my $directory = dirname($abs);
     make_path($directory) unless -d $directory;
 
+    return 1 if $self->_pull_delta($connection, $action, $after, $abs);
+
     my $temp = File::Spec->catfile(
         $directory, '.filesync-tmp-' . $$ . '-' . int(rand(1_000_000))
     );
@@ -401,8 +410,7 @@ sub _pull {
             die "Cannot read $path from the server: " . ($header->{error} || 'unknown error') . "\n";
         }
 
-        my $length = $header->{len} || 0;
-        my $bytes = $length ? $connection->read_bytes($length) : '';
+        my $bytes = $connection->read_data($header);
         print {$out} $bytes or do {
             my $error = $!;
             close $out;
@@ -411,7 +419,7 @@ sub _pull {
         };
 
         $sha->add($bytes);
-        $offset += $length;
+        $offset += length $bytes;
         $size  = $header->{s} if defined $header->{s};
         $mtime = $header->{m} if defined $header->{m};
         $mode  = $header->{mode} if defined $header->{mode};
@@ -488,6 +496,11 @@ sub _push {
     my $mtime = $stat[9];
     my $mode  = $stat[2] & 07777;
 
+    if (!$action->{loser_name}
+        && $self->_push_delta($connection, $path, $abs, $size, $mtime, $mode, $action->{h})) {
+        return 1;
+    }
+
     open my $in, '<', $abs or die "Cannot read $abs: $!\n";
     binmode $in;
 
@@ -519,8 +532,7 @@ sub _push {
         $sha->add($buffer);
         $sent += $read;
 
-        $connection->send({ cmd => 'chunk', p => $path, len => $read });
-        $connection->send_bytes($buffer);
+        $connection->send_data({ cmd => 'chunk', p => $path }, $buffer);
 
         my $reply = $connection->recv();
         die "Server rejected data for $path: " . ($reply->{error} || 'unknown error') . "\n"
@@ -534,6 +546,227 @@ sub _push {
     die "Cannot store $path on the server: " . ($reply->{error} || 'unknown error') . "\n"
         unless $reply->{ok};
 
+    return 1;
+}
+
+# Try to receive only the blocks that differ from the local copy.  Returns 0
+# without touching the connection when a whole-file pull is the right answer.
+sub _pull_delta {
+    my ($self, $connection, $action, $after, $abs) = @_;
+
+    return 0 if $self->{opts}{no_delta};
+    return 0 unless -f $abs && !-l $abs;
+
+    my $path = $action->{p};
+    my $local_size = -s _;
+    return 0 if $local_size < $App::FileSync::Delta::MIN_SIZE;
+
+    my $block = App::FileSync::Delta::block_size($local_size);
+    my $signature = App::FileSync::Delta::signature($abs, $block);
+    return 0 unless $signature;
+
+    $connection->send_data({
+        cmd => 'dsig',
+        p   => $path,
+        s   => $local_size,
+        b   => $block,
+        n   => scalar @{ $signature->{blocks} },
+        (defined $action->{h} ? (h => $action->{h}) : ()),
+    }, App::FileSync::Delta::encode_signature($signature));
+
+    my $reply = $connection->recv();
+    die "Server refused the signature for $path: " . ($reply->{error} || 'unknown error') . "\n"
+        unless $reply->{ok};
+    return 0 unless $reply->{delta};
+
+    my $directory = dirname($abs);
+    make_path($directory) unless -d $directory;
+
+    my $temp = File::Spec->catfile(
+        $directory, '.filesync-tmp-' . $$ . '-' . int(rand(1_000_000))
+    );
+
+    open my $old, '<', $abs or die "Cannot read $abs: $!\n";
+    binmode $old;
+    open my $out, '>', $temp or die "Cannot write $temp: $!\n";
+    binmode $out;
+
+    my $sha = Digest::SHA->new(256);
+    my $written = 0;
+    my $done = 0;
+
+    while (!$done) {
+        $connection->send({ cmd => 'dop', p => $path });
+        my $op = $connection->recv();
+        unless ($op->{ok}) {
+            close $old;
+            close $out;
+            unlink $temp;
+            die "Cannot read $path from the server: " . ($op->{error} || 'unknown error') . "\n";
+        }
+
+        if ($op->{done}) {
+            $done = 1;
+            next;
+        }
+
+        my $bytes;
+        if (($op->{op} || '') eq 'copy') {
+            my ($offset, $length) = ($op->{off}, $op->{len});
+            die "Bad copy instruction for $path\n"
+                unless defined $offset && $offset =~ /\A\d+\z/
+                    && defined $length && $length =~ /\A\d+\z/;
+            die "Copy instruction outside $path\n" if $offset + $length > $local_size;
+
+            seek($old, $offset, 0) or die "Cannot seek in $abs: $!\n";
+            $bytes = $length
+                ? App::FileSync::Delta::read_exact($old, $length, $abs)
+                : '';
+        } elsif (($op->{op} || '') eq 'lit') {
+            $bytes = $connection->read_data($op);
+        } else {
+            close $old;
+            close $out;
+            unlink $temp;
+            die "Unknown delta instruction for $path\n";
+        }
+
+        print {$out} $bytes or do {
+            my $error = $!;
+            close $old;
+            close $out;
+            unlink $temp;
+            die "Cannot write $temp: $error\n";
+        };
+        $sha->add($bytes);
+        $written += length $bytes;
+    }
+
+    close $old;
+    close $out or do {
+        my $error = $!;
+        unlink $temp;
+        die "Cannot close $temp: $error\n";
+    };
+
+    my $got = $sha->hexdigest();
+    my $expected = defined $action->{h} ? $action->{h} : $reply->{h};
+    if (defined $expected && $got ne $expected) {
+        unlink $temp;
+        die "Hash mismatch while copying $path: expected $expected, got $got\n";
+    }
+    if (defined $reply->{s} && $written != $reply->{s}) {
+        unlink $temp;
+        die "Size mismatch while copying $path: expected $reply->{s}, got $written\n";
+    }
+
+    my $mtime = $reply->{m};
+    my $mode  = $reply->{mode};
+    chmod($mode & 07777, $temp) if defined $mode && $^O ne 'MSWin32';
+    Time::HiRes::utime($mtime, $mtime, $temp) if defined $mtime;
+
+    $self->_clear_target($abs);
+
+    rename($temp, $abs) or do {
+        my $error = $!;
+        unlink $temp;
+        die "Cannot move $temp to $abs: $error\n";
+    };
+
+    $connection->send({
+        cmd  => 'ack',
+        p    => $path,
+        h    => $got,
+        s    => $written,
+        m    => $mtime,
+        mode => $mode,
+    });
+    my $accepted = $connection->recv();
+    die "Server did not accept $path: " . ($accepted->{error} || 'unknown error') . "\n"
+        unless $accepted->{ok};
+
+    $after->{$path} = {
+        t    => 'f',
+        s    => $written,
+        m    => $mtime,
+        h    => $got,
+        mode => $mode,
+    };
+    $self->{delta_pulled} = ($self->{delta_pulled} || 0) + 1;
+
+    return 1;
+}
+
+# Ask the server what the master holds and send only the blocks that changed.
+# Returns 0 when a whole-file put is cheaper, or when there is nothing to reuse.
+sub _push_delta {
+    my ($self, $connection, $path, $abs, $size, $mtime, $mode, $hash) = @_;
+
+    return 0 if $self->{opts}{no_delta};
+    return 0 unless defined $hash && $size >= $App::FileSync::Delta::MIN_SIZE;
+
+    $connection->send({ cmd => 'sig', p => $path });
+    my $reply = $connection->recv();
+    die "Server refused the signature for $path: " . ($reply->{error} || 'unknown error') . "\n"
+        unless $reply->{ok};
+    return 0 unless $reply->{delta};
+
+    my $bytes = $connection->read_data($reply);
+    my $blocks = App::FileSync::Delta::decode_signature($bytes, $reply->{n});
+
+    my $spool = File::Temp->new(
+        TEMPLATE => '.filesync-tmp-delta-XXXXXXXX',
+        DIR      => dirname($abs),
+        UNLINK   => 1,
+    );
+    binmode $spool;
+
+    my $stats = App::FileSync::Delta::diff(
+        $abs,
+        { size => $reply->{s}, blocklen => $reply->{b}, blocks => $blocks },
+        $spool,
+    );
+
+    my $estimated = $stats->{literal} + 12 * $stats->{ops} + 64;
+    return 0 if $estimated >= $size;
+
+    $connection->send({
+        cmd  => 'delta',
+        p    => $path,
+        s    => $size,
+        h    => $hash,
+        m    => $mtime,
+        mode => $mode,
+    });
+    my $accepted = $connection->recv();
+    die "Server refused the delta for $path: " . ($accepted->{error} || 'unknown error') . "\n"
+        unless $accepted->{ok};
+
+    seek($spool, 0, 0) or die "Cannot rewind the delta for $path: $!\n";
+
+    while (my ($type, @rest) = App::FileSync::Delta::read_op($spool)) {
+        if ($type eq 'copy') {
+            $connection->send({
+                cmd => 'dcopy',
+                p   => $path,
+                off => $rest[0],
+                len => $rest[1],
+            });
+        } else {
+            $connection->send_data({ cmd => 'dlit', p => $path }, $rest[0]);
+        }
+
+        my $ok = $connection->recv();
+        die "Server rejected delta data for $path: " . ($ok->{error} || 'unknown error') . "\n"
+            unless $ok->{ok};
+    }
+
+    $connection->send({ cmd => 'delta_end', p => $path });
+    my $done = $connection->recv();
+    die "Cannot store $path on the server: " . ($done->{error} || 'unknown error') . "\n"
+        unless $done->{ok};
+
+    $self->{delta_pushed} = ($self->{delta_pushed} || 0) + 1;
     return 1;
 }
 
@@ -701,7 +934,7 @@ sub _record_run {
         dry_run => $result->{dry_run} ? 1 : 0,
         summary => {
             map { $_ => ($summary->{$_} || 0) }
-                qw(pulled pushed deleted conflicts skipped)
+                qw(pulled pushed deleted conflicts skipped delta_pulled delta_pushed)
         },
         warnings => \@warnings,
     };

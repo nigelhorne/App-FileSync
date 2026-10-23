@@ -1,6 +1,7 @@
 # Generated from Makefile.PL using makefilepl2cpanfile
 
 requires 'Carp';
+requires 'Compress::Raw::Zlib';
 requires 'Config::Abstraction';
 requires 'Digest::SHA';
 requires 'Encode';

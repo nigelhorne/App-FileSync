@@ -19,10 +19,10 @@ sub check {
 
 for my $ok (undef, '', '   ',
             'filesync-server',
-            'filesync-server --repo docs --client test-1 --role client --proto 1',
-            'filesync-server --repo=docs --client=test-1 --role=client --proto=1',
-            '/usr/local/bin/filesync-server --repo docs --client test-1 --role client --proto 1',
-            '--repo docs --client test-1 --role client --proto 1') {
+            'filesync-server --repo docs --client test-1 --role client --proto 2',
+            'filesync-server --repo=docs --client=test-1 --role=client --proto=2',
+            '/usr/local/bin/filesync-server --repo docs --client test-1 --role client --proto 2',
+            '--repo docs --client test-1 --role client --proto 2') {
     my ($good, $reason) = check($ok);
     ok($good, 'accepts ' . (defined $ok ? "'$ok'" : 'no command')) or diag($reason);
 }
@@ -32,7 +32,7 @@ my @refused = (
     ['filesync-server --repo docs --client other --role client', qr/pinned to 'test-1'/],
     ['filesync-server --repo docs --client test-1 --role replica', qr/pinned to 'client'/],
     ['filesync-server --repo docs --client test-1 --role client --root /etc', qr/may not set --root/],
-    ['filesync-server --repo docs --client test-1 --role client --proto 2', qr/protocol '2'/],
+    ['filesync-server --repo docs --client test-1 --role client --proto 1', qr/protocol '1'/],
     ['filesync-server --repo docs extra', qr/unexpected argument 'extra'/],
     ['filesync-server --repo', qr/without a value/],
     ['bash -c "cat /etc/shadow"', qr/unexpected program 'bash'/],
@@ -64,7 +64,7 @@ sub run_server_with {
         '--repo', 'docs',
         '--client', 'test-1',
         '--role', 'client',
-        '--proto', '1';
+        '--proto', '2';
 
     my $output = qx{$command </dev/null 2>&1};
     return ($? >> 8, $output);
@@ -76,7 +76,7 @@ like($output, qr/pinned to 'docs'/, 'the refusal explains the pinning');
 unlike($output, qr/Hash mismatch|Manifest/, 'the session never reaches the protocol');
 
 ($code, $output) = run_server_with(
-    'filesync-server --repo docs --client test-1 --role client --proto 1');
+    'filesync-server --repo docs --client test-1 --role client --proto 2');
 isnt($code, 0, 'a matching command is let through to the protocol');
 unlike($output, qr/pinned to|may not set/,
     'a matching command is not refused by the forced-command check');

@@ -7,6 +7,7 @@ lib/App/FileSync/Admin.pm
 lib/App/FileSync/CLI.pm
 lib/App/FileSync/Client.pm
 lib/App/FileSync/Config.pm
+lib/App/FileSync/Delta.pm
 lib/App/FileSync/Ignore.pm
 lib/App/FileSync/Lock.pm
 lib/App/FileSync/Merge.pm
@@ -27,6 +28,7 @@ README.md
 SPEC.md
 t/00-load.t
 t/cli.t
+t/delta.t
 t/forced.t
 t/ignore.t
 t/journal.t

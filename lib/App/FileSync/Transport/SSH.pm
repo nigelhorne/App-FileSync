@@ -8,7 +8,7 @@ use POSIX ();
 
 use App::FileSync qw(validate_client_id validate_repo_name);
 
-our $PROTO = 1;
+our $PROTO = 2;
 
 # Runs filesync-server on the server host over one ssh connection and speaks the
 # wire protocol on its pipes.  The ssh argument list is built here and never

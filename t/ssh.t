@@ -146,7 +146,7 @@ ok((grep { $_ eq 'filesync-server' } @argv), 'the remote command is filesync-ser
 ok(has_pair(\@argv, '--repo', 'docs'), 'the repo is passed to the server');
 ok(has_pair(\@argv, '--client', 'test-1'), 'the client id is passed to the server');
 ok(has_pair(\@argv, '--role', 'client'), 'the role is passed to the server');
-ok(has_pair(\@argv, '--proto', '1'), 'the protocol version is passed to the server');
+ok(has_pair(\@argv, '--proto', '2'), 'the protocol version is passed to the server');
 
 # --- options from the repo configuration ---------------------------------
 
@@ -225,7 +225,7 @@ close $client_lock;
 
 {
     local $ENV{FAKE_SSH_FORCED} =
-        'filesync-server --repo docs --client test-1 --role client --proto 1';
+        'filesync-server --repo docs --client test-1 --role client --proto 2';
     $env->write_file('client', 'notes/forced.txt', "forced\n", 1_700_000_500);
     my $forced = eval { $env->sync() };
     ok($forced, 'a forced command that agrees with the hello still syncs')

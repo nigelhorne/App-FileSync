@@ -7,6 +7,7 @@ use_ok('App::FileSync::Admin');
 use_ok('App::FileSync::Client');
 use_ok('App::FileSync::CLI');
 use_ok('App::FileSync::Config');
+use_ok('App::FileSync::Delta');
 use_ok('App::FileSync::Ignore');
 use_ok('App::FileSync::Lock');
 use_ok('App::FileSync::Merge');

@@ -88,7 +88,7 @@ sub _server_main {
         'proto=i'  => \$proto,
         'forced'   => \$forced,
     ) or die "Usage: filesync-server [--root DIR] --repo NAME --client ID "
-        . "--role client|replica [--proto 1]\n";
+        . "--role client|replica [--proto 2]\n";
 
     die "filesync-server: unexpected arguments: @args\n" if @args;
 
@@ -162,7 +162,7 @@ filesync - keep a directory in step with a master copy
     filesync init --repo NAME --root DIR --transport local --server-root DIR
                   [--remote-repo NAME] [--id ID] [--role client|replica]
     filesync sync   [--repo NAME]... [--dry-run] [--force] [--verbose] [--quiet]
-                    [--json] [--no-prune]
+                    [--json] [--no-prune] [--no-delta]
     filesync status [--repo NAME] [--json]
     filesync log    [--repo NAME] [-n N] [--since YYYY-MM-DD|EPOCH]
                     [--until YYYY-MM-DD|EPOCH] [--exit N]... [--warnings] [--json]
@@ -189,7 +189,7 @@ USAGE
 }
 
 sub _client_version {
-    print "filesync $App::FileSync::VERSION (protocol 1)\n";
+    print "filesync $App::FileSync::VERSION (protocol 2)\n";
     return 0;
 }
 
@@ -306,7 +306,7 @@ sub _client_init {
 sub _client_sync {
     my (@args) = @_;
 
-    my (@repos, $dry_run, $force, $verbose, $quiet, $json, $no_prune, $config_path);
+    my (@repos, $dry_run, $force, $verbose, $quiet, $json, $no_prune, $no_delta, $config_path);
     GetOptionsFromArray(\@args,
         'repo=s@'    => \@repos,
         'dry-run'    => \$dry_run,
@@ -315,6 +315,7 @@ sub _client_sync {
         'quiet'      => \$quiet,
         'json'       => \$json,
         'no-prune'   => \$no_prune,
+        'no-delta'   => \$no_delta,
         'config=s'   => \$config_path,
     ) or die "Usage: filesync sync [--repo NAME] [--dry-run] [--force]\n";
 
@@ -346,6 +347,7 @@ sub _client_sync {
                     dry_run  => $dry_run,
                     force    => $force,
                     no_prune => $no_prune,
+                    no_delta => $no_delta,
                     verbose  => $verbose,
                 },
                 logger => $logger,
