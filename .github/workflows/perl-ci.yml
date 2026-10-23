@@ -154,56 +154,33 @@ jobs:
         shell: cmd
         run: cpanm --notest --reinstall YAML::XS
 
-      # TEMPORARY probe: find which module faults at exit on 5.42 Windows.
-      - name: Probe the shutdown fault (5.42 Windows, temporary)
+      # TEMPORARY probe: does the pure-perl end-of-scope hook avoid the fault?
+      - name: Probe the shutdown fault with PP hooks (5.42 Windows, temporary)
         if: runner.os == 'Windows' && matrix.perl == '5.42'
         shell: pwsh
         run: |
           $env:PATH = "$env:USERPROFILE\perl5\bin;$env:PATH"
           $env:PERL5LIB = "$env:USERPROFILE\perl5\lib\perl5"
+          $env:B_HOOKS_ENDOFSCOPE_IMPLEMENTATION = 'PP'
           $driver = Join-Path $env:RUNNER_TEMP 'probe.pl'
           $code = @'
           use strict;
           use warnings;
 
           printf("perl %vd on %s\n", $^V, $^O);
+          printf("implementation=%s\n", $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} // '(unset)');
 
           my @mods = qw(
-              Log::Abstraction
-              Log::Abstraction::Backend
-              Log::Abstraction::Backend::Array
-              Log::Abstraction::Backend::Code
-              Log::Abstraction::Backend::Fd
-              Log::Abstraction::Backend::File
-              Log::Abstraction::Backend::Journald
-              Log::Abstraction::Backend::LogAny
-              Log::Abstraction::Backend::LogDispatch
-              Log::Abstraction::Backend::Object
-              Log::Abstraction::Backend::Sendmail
-              Log::Abstraction::Backend::Syslog
-              Sub::Private
-              Attribute::Handlers
               B::Hooks::EndOfScope
               namespace::clean
               namespace::autoclean
-              Params::Validate::Strict
-              Sub::Identify
-              Params::Get
-              Return::Set
-              Readonly
-              Readonly::Values::Syslog
-              Sys::Syslog
-              Log::Any
-              Log::Dispatch
-              Log::Log4perl
-              Mail::Sendmail
-              Config::Abstraction
+              Sub::Private
+              Log::Abstraction
               Object::Configure
+              Config::Abstraction
           );
-
           for my $m (@mods) {
-              my $code = qq{print qq{$m } . \$${m}::VERSION . qq{\n}};
-              system($^X, "-M$m", '-e', $code);
+              system($^X, "-M$m", '-e', q{print qq{ok\n}});
               printf("%-48s exit=%s\n", $m, $?);
           }
 
@@ -212,16 +189,10 @@ jobs:
               ['use Sub::Private', 'use Sub::Private; 1'],
               ['Sub::Private block enforce', q{use Sub::Private { mode => q{enforce} }; 1}],
               ['use namespace::clean', 'use namespace::clean; 1'],
-              ['namespace::clean then no', 'use namespace::clean; sub foo { 1 } no namespace::clean; 1'],
-              ['B::Hooks::EndOfScope hook', q{use B::Hooks::EndOfScope qw(on_scope_end); sub noop { on_scope_end { 1 } } 1}],
-              ['Attribute::Handlers', 'use Attribute::Handlers; 1'],
               ['Private attribute', 'use Attribute::Handlers; use Sub::Private; sub f :Private { 1 } 1'],
-              ['Private attribute seperate packages', q{package A; use Attribute::Handlers; package B; use Sub::Private; sub f :Private { 1 } 1}],
               ['Log::Abstraction new+warn', q{use Log::Abstraction; my $l = Log::Abstraction->new(logger => sub { }); $l->warn(q{x}); 1}],
-              ['Log::Abstraction new only', q{use Log::Abstraction; Log::Abstraction->new(logger => sub { }); 1}],
-              ['Config::Abstraction', 'use Config::Abstraction; 1'],
-              ['Object::Configure', 'use Object::Configure; 1'],
               ['App::FileSync', 'use lib q{lib}; use App::FileSync; 1'],
+              ['bin/filesync version', 'system($^X, q{bin/filesync}, q{version}); 1'],
           );
           for my $s (@snips) {
               system($^X, '-e', $s->[1]);
@@ -231,6 +202,9 @@ jobs:
           '@
           Set-Content -Path $driver -Value $code -Encoding ascii
           perl $driver
+          Write-Output '=== cpanm --reinstall DateTime::Locale with PP hooks, no stub'
+          cpanm --reinstall --notest DateTime::Locale 2>&1 | Select-Object -Last 6
+          Write-Output "cpanm exit=$LASTEXITCODE"
           exit 0
 
       - name: Lint and syntax check
