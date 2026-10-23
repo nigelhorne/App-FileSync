@@ -32,6 +32,13 @@ my $filesync = File::Spec->catfile($Bin, '..', 'bin', 'filesync');
     is($log->{runs}[0]{exit}, 0, 'the exit code is recorded');
     is($log->{runs}[0]{summary}{pushed}, 1, 'the summary is recorded');
     is($log->{runs}[0]{summary}{pulled}, 0, 'zero counts are kept');
+    is($log->{runs}[0]{summary}{bytes_sent}, 6, 'the payload bytes sent are recorded');
+    is($log->{runs}[0]{summary}{bytes_received}, 0, 'the payload bytes received are recorded');
+
+    my $output = `$^X $filesync log --repo docs -n 1 2>&1`;
+    is($?, 0, 'log prints the recorded run');
+    like($output, qr/sent 6 B, received 0 B, 0 files by delta/,
+        'the log shows the transfer accounting');
     ok($log->{runs}[0]{ts} > 0, 'a timestamp is recorded');
     ok(!$log->{runs}[0]{dry_run}, 'a real run is not marked as a dry run');
     is_deeply($log->{runs}[0]{warnings}, [], 'a quiet run has no warnings');
@@ -39,6 +46,8 @@ my $filesync = File::Spec->catfile($Bin, '..', 'bin', 'filesync');
     $env->sync();
     is(scalar @{ $env->log()->{runs} }, 2, 'a second run is appended');
     is($env->log()->{runs}[-1]{summary}{pushed}, 0, 'the newest run is last');
+    is($env->log()->{runs}[-1]{summary}{bytes_sent}, 0,
+        'a settled run records no payload bytes');
 
     # A killed run can leave a torn line; the rest of the log still counts.
     open my $fh, '>>', $log->{path} or die $!;
@@ -443,6 +452,65 @@ my $filesync = File::Spec->catfile($Bin, '..', 'bin', 'filesync');
     my $data = App::FileSync::json_decode($output);
     is(scalar @{ $data->{results}[0]{runs} }, 2, 'the JSON is filtered too');
     is($data->{results}[0]{warnings}, 1, 'and echoes the filter');
+}
+
+# Entries recorded before byte accounting keep the shorter line.
+{
+    my $env = TestSync->new_env();
+    $env->write_file('client', 'a.txt', "alpha\n", $T0);
+    $env->sync();
+
+    my $path  = $env->log()->{path};
+    my $entry = App::FileSync::json_decode(App::FileSync::read_text($path));
+    delete $entry->{summary}{bytes_sent};
+    delete $entry->{summary}{bytes_received};
+    App::FileSync::write_atomic($path, App::FileSync::json_encode($entry) . "\n");
+
+    my $output = `$^X $filesync log --repo docs -n 1 2>&1`;
+    is($?, 0, 'log exits 0 with an old entry');
+    like($output, qr/exit 0  pulled 0, pushed 1/, 'the old entry is still shown');
+    unlike($output, qr/sent \d/, 'no transfer suffix is invented');
+    unlike($output, qr/ by delta/, 'and no delta suffix either');
+}
+
+# A log holding both shapes suffixes only the entries that carry counters.
+{
+    my $env = TestSync->new_env();
+    $env->write_file('client', 'a.txt', "alpha\n", $T0);
+    $env->sync();                                  # push: bytes_sent
+
+    $env->write_file('server', 'a.txt', "master edit\n", $T0 + 100);
+    $env->sync();                                  # pull: bytes_received
+
+    my $path = $env->log()->{path};
+    my @entries = map { App::FileSync::json_decode($_) }
+        grep { length }
+        split /\n/, App::FileSync::read_text($path);
+    is(scalar @entries, 2, 'two runs are recorded');
+    ok(defined $entries[0]{summary}{bytes_sent},
+        'the older run was recorded with counters');
+
+    # Make the older entry look like one written before byte accounting.
+    delete $entries[0]{summary}{bytes_sent};
+    delete $entries[0]{summary}{bytes_received};
+    App::FileSync::write_atomic($path,
+        join('', map { App::FileSync::json_encode($_) . "\n" } @entries));
+
+    my $output = `$^X $filesync log --repo docs 2>&1`;
+    is($?, 0, 'log exits 0 with a mixed log');
+    my @lines = grep { /^docs / } split /\n/, $output;
+    is(scalar @lines, 2, 'both runs are printed');
+
+    like($lines[0], qr/pulled 0, pushed 1/, 'the older run is listed first');
+    unlike($lines[0], qr/sent \d/, 'the old entry gets no transfer suffix');
+    unlike($lines[0], qr/ by delta/, 'and no delta suffix');
+
+    like($lines[1], qr/pulled 1, pushed 0/, 'the newer run is listed too');
+    like($lines[1], qr/sent 0 B, received \d+ B, 0 files by delta/,
+        'only the run with counters keeps the transfer suffix');
+
+    is(scalar(grep { /\bsent \d/ } @lines), 1,
+        'exactly one line in the mixed output carries transfer figures');
 }
 
 done_testing();

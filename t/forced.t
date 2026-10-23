@@ -66,7 +66,8 @@ sub run_server_with {
         '--role', 'client',
         '--proto', '2';
 
-    my $output = qx{$command </dev/null 2>&1};
+    my $devnull = File::Spec->devnull;
+    my $output = qx{$command <$devnull 2>&1};
     return ($? >> 8, $output);
 }
 

@@ -6,9 +6,8 @@ use warnings;
 use File::Basename qw(dirname);
 use File::Path qw(make_path);
 use File::Spec;
-use Time::HiRes ();
 
-use App::FileSync qw(json_encode json_decode read_text write_atomic validate_relpath);
+use App::FileSync qw(json_encode json_decode read_text write_atomic validate_relpath set_mtime);
 use App::FileSync::Config;
 use App::FileSync::Ignore;
 use App::FileSync::Lock;
@@ -204,7 +203,7 @@ sub commit_temp {
     my $abs = $self->abs_path($rel);
 
     chmod($mode & 07777, $temp) if defined $mode && $^O ne 'MSWin32';
-    Time::HiRes::utime($mtime, $mtime, $temp) if defined $mtime;
+    set_mtime($temp, $mtime);
 
     $self->clear_target($abs);
 

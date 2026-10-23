@@ -246,6 +246,65 @@ sub verify {
     return $report;
 }
 
+# Rebuild master.json from the tree, hashing every file.  Used after a manual
+# repair (a rollback from a backup, say) so the index describes the restored
+# master without waiting for the next client session.
+sub reindex {
+    my ($self, %args) = @_;
+
+    my $repo = $args{repo};
+    die "Reindex: no repo given\n" unless defined $repo && length $repo;
+
+    my $config = App::FileSync::Config::load_repo($self->{root}, $repo);
+    my $store = App::FileSync::Store->new(
+        root => $self->{root}, repo => $repo, config => $config,
+    );
+
+    # Replacing the index while a session is planning or committing would race
+    # with it, so hold the same lock the server takes.
+    my $lock = $store->acquire_lock();
+    die "Another sync session holds the lock for repo '$repo'\n" unless $lock;
+
+    # Do not reuse the old index: a restored file can keep its size and mtime
+    # while its content differs, which is exactly the case reindex exists for.
+    my ($manifest, $stats, $skipped) = $store->walk_master({});
+
+    my $result = {
+        repo    => $repo,
+        master  => $store->master_dir(),
+        index   => $store->index_path(),
+        files   => $stats->{files},
+        dirs    => $stats->{dirs},
+        bytes   => $stats->{bytes},
+        skipped => $skipped,
+        dry_run => $args{dry_run} ? 1 : 0,
+        written => 0,
+    };
+
+    unless ($args{dry_run}) {
+        $store->save_index($manifest);
+        $store->journal({
+            action  => 'reindex',
+            files   => $stats->{files},
+            dirs    => $stats->{dirs},
+            bytes   => $stats->{bytes},
+            skipped => scalar(keys %{$skipped}),
+            result  => 'ok',
+        });
+        $result->{written} = 1;
+    }
+
+    $self->{logger}->info('reindexed master', {
+        repo    => $repo,
+        files   => $stats->{files},
+        dirs    => $stats->{dirs},
+        skipped => scalar(keys %{$skipped}),
+        dry_run => $args{dry_run} ? 1 : 0,
+    });
+
+    return $result;
+}
+
 # Put a path back from the server trash: into the master by default, or into
 # --to DIR as an export.  The trash entry is kept, so this is repeatable.
 sub restore {

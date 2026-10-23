@@ -31,11 +31,13 @@ t/cli.t
 t/delta.t
 t/forced.t
 t/ignore.t
+t/join.t
 t/journal.t
 t/lib/TestSync.pm
 t/log.t
 t/merge.t
 t/paths.t
+t/reindex.t
 t/replica.t
 t/restore.t
 t/scan.t

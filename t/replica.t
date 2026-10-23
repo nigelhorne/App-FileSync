@@ -117,4 +117,69 @@ is($env->read_file('server', 'a.txt'), "master changed\n", 'master content untou
     $transport->close();
 }
 
+# A replica with a surviving base is stopped by the percentage deletion guard.
+# The absolute limit is set far above the deletion count, so only the share of
+# the base decides; with the base still present, that rule has a baseline.
+{
+    my $env = TestSync->new_env(
+        client_id => 'backup-3', role => 'replica', max_deletes => 500,
+    );
+
+    $env->write_file('server', "file$_.txt", "master $_\n", $T0 + $_)
+        for 1 .. 10;
+
+    my $first = $env->sync();
+    is($first->{summary}{pulled}, 10, 'the replica mirrors all ten master files');
+
+    my $base = $env->meta_path('clients', 'backup-3.json');
+    ok(-e $base, 'the replica keeps its base, so the percentage rule applies');
+    my $base_before = do {
+        local $/;
+        open my $fh, '<', $base or die "Cannot read $base: $!";
+        <$fh>;
+    };
+
+    # The master loses eight of its ten files.
+    unlink $env->server_path("file$_.txt") for 3 .. 10;
+
+    my $before = $env->snapshot($env->{client});
+
+    my $error;
+    eval { $env->sync(); 1 } or $error = $@;
+    ok($error, 'the replica refuses the bulk deletion without --force');
+    like($error, qr/refusing to delete 8 of 10 known files \(limit is 10%\)/,
+        'the refusal names the count, the baseline and the percentage limit');
+
+    is_deeply($env->snapshot($env->{client}), $before,
+        'the refused mirror leaves every replica file untouched');
+    ok($env->exists_in('client', 'file10.txt'),
+        'even the last master-deleted file is still mirrored');
+    is(do {
+        local $/;
+        open my $fh, '<', $base or die "Cannot read $base: $!";
+        <$fh>;
+    }, $base_before, 'the refusal does not advance the stored base');
+
+    ok($env->exists_in('server', 'file1.txt'), 'the master still has the files it kept');
+    ok(!$env->exists_in('server', 'file10.txt'), 'the master deletion is real');
+
+    # --force is the documented escape hatch, and the mirror then converges.
+    my $forced = $env->sync(force => 1);
+    is($forced->{summary}{deleted}, 8, '--force removes the eight master-deleted files');
+    is($forced->{summary}{pulled}, 0, 'nothing else needs pulling');
+    is($forced->{summary}{pushed}, 0, 'the replica still pushes nothing');
+    is_deeply(
+        [ grep { $_ ne '.filesync-root' } @{ $env->tree($env->{client}) } ],
+        [ 'file1.txt', 'file2.txt' ],
+        'the replica mirrors exactly what the master kept',
+    );
+    is($env->read_file('client', 'file2.txt'), "master 2\n",
+        'the surviving files keep their master content');
+
+    my $stable = $env->sync();
+    is($stable->{summary}{deleted}, 0, 'nothing is left to delete after --force');
+    is($stable->{summary}{pulled}, 0, 'and nothing is left to pull');
+    is($stable->{summary}{pushed}, 0, 'and the replica still pushes nothing');
+}
+
 done_testing();

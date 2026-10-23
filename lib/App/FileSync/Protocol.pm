@@ -30,10 +30,14 @@ sub new {
     $out->autoflush(1);
 
     return bless {
-        in     => $in,
-        out    => $out,
-        buffer => '',
-        closed => 0,
+        in             => $in,
+        out            => $out,
+        buffer         => '',
+        closed         => 0,
+        # Payload bytes as they crossed the wire, headers and control
+        # messages excluded: this is the number a transfer report means.
+        sent_bytes     => 0,
+        received_bytes => 0,
     }, $class;
 }
 
@@ -86,6 +90,7 @@ sub send_data {
 
     $self->send(\%header);
     $self->send_bytes($wire);
+    $self->{sent_bytes} += length $wire;
 
     return 1;
 }
@@ -99,6 +104,8 @@ sub read_data {
         unless $length =~ /\A\d+\z/ && $length <= $MAX_WIRE;
 
     my $wire = $length ? $self->read_bytes($length) : '';
+    $self->{received_bytes} += length $wire;
+
     return $message->{z} ? _inflate($wire) : $wire;
 }
 
@@ -186,6 +193,9 @@ sub _fill {
     $self->{buffer} .= $chunk;
     return 1;
 }
+
+sub bytes_sent { $_[0]{sent_bytes} || 0 }
+sub bytes_received { $_[0]{received_bytes} || 0 }
 
 sub close {
     my ($self) = @_;

@@ -11,7 +11,7 @@ use File::Temp ();
 use Sys::Hostname ();
 use Time::HiRes ();
 
-use App::FileSync qw(json_encode validate_relpath);
+use App::FileSync qw(json_encode validate_relpath set_mtime);
 use App::FileSync::Config;
 use App::FileSync::Delta;
 use App::FileSync::Ignore;
@@ -81,7 +81,7 @@ sub sync {
         $self->{logger}->info('sync finished', {
             repo    => $name,
             (map { $_ => ($result->{summary}{$_} || 0) }
-                qw(pulled pushed deleted conflicts skipped)),
+                qw(pulled pushed deleted conflicts skipped bytes_sent bytes_received)),
             exit    => $result->{exit} || 0,
             dry_run => $result->{dry_run} ? 1 : 0,
         });
@@ -269,6 +269,10 @@ sub _session {
         $summary->{deleted}   = scalar grep { $_->{a} =~ /\Adelete_/ } @actions;
         $summary->{conflicts} = scalar grep { $_->{a} eq 'conflict' } @actions;
 
+        # Nothing but headers and control messages has crossed the connection.
+        $summary->{bytes_sent}     = $connection->bytes_sent;
+        $summary->{bytes_received} = $connection->bytes_received;
+
         return {
             repo     => $name,
             ok       => 1,
@@ -321,8 +325,10 @@ sub _session {
     die 'Server did not accept the end of the session: ' . ($end->{error} || 'unknown') . "\n"
         unless $end->{ok};
 
-    $summary->{delta_pulled} = $self->{delta_pulled} || 0;
-    $summary->{delta_pushed} = $self->{delta_pushed} || 0;
+    $summary->{delta_pulled}   = $self->{delta_pulled} || 0;
+    $summary->{delta_pushed}   = $self->{delta_pushed} || 0;
+    $summary->{bytes_sent}     = $connection->bytes_sent;
+    $summary->{bytes_received} = $connection->bytes_received;
 
     $self->_save_cache(\%after, $summary, { %{$policy}, ignore => \@ignore_patterns });
 
@@ -442,7 +448,7 @@ sub _pull {
     }
 
     chmod($mode & 07777, $temp) if defined $mode && $^O ne 'MSWin32';
-    Time::HiRes::utime($mtime, $mtime, $temp) if defined $mtime;
+    set_mtime($temp, $mtime);
 
     $self->_clear_target($abs);
 
@@ -663,7 +669,7 @@ sub _pull_delta {
     my $mtime = $reply->{m};
     my $mode  = $reply->{mode};
     chmod($mode & 07777, $temp) if defined $mode && $^O ne 'MSWin32';
-    Time::HiRes::utime($mtime, $mtime, $temp) if defined $mtime;
+    set_mtime($temp, $mtime);
 
     $self->_clear_target($abs);
 
@@ -934,7 +940,8 @@ sub _record_run {
         dry_run => $result->{dry_run} ? 1 : 0,
         summary => {
             map { $_ => ($summary->{$_} || 0) }
-                qw(pulled pushed deleted conflicts skipped delta_pulled delta_pushed)
+                qw(pulled pushed deleted conflicts skipped delta_pulled delta_pushed
+                   bytes_sent bytes_received)
         },
         warnings => \@warnings,
     };

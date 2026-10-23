@@ -11,13 +11,13 @@ use JSON::PP ();
 use Time::HiRes ();
 use Time::Local ();
 
-our $VERSION = '0.01';
+our $VERSION = '0.001.0';
 
 our @EXPORT_OK = qw(
-    json_encode json_decode
-    validate_relpath validate_repo_name validate_client_id
-    conflict_name format_utc parse_since parse_until
-    write_atomic read_text
+	json_encode json_decode
+	validate_relpath validate_repo_name validate_client_id
+	conflict_name format_utc parse_since parse_until
+	write_atomic read_text set_mtime
 );
 
 # Deliberately utf8(0): paths are byte strings on the wire, and both ends of the
@@ -27,9 +27,9 @@ my $JSON = JSON::PP->new->canonical->allow_nonref;
 sub json_encode { return $JSON->encode($_[0]) }
 
 sub json_decode {
-    my $data = $JSON->decode($_[0]);
-    _to_bytes($data);
-    return $data;
+	my $data = $JSON->decode($_[0]);
+	_to_bytes($data);
+	return $data;
 }
 
 # JSON::PP returns UTF8-flagged strings even though paths are byte strings on
@@ -50,13 +50,32 @@ sub _to_bytes {
 }
 
 sub read_text {
-    my ($path) = @_;
-    open my $fh, '<', $path or die "Cannot read $path: $!\n";
-    binmode $fh;
-    local $/;
-    my $text = <$fh>;
-    close $fh;
-    return defined $text ? $text : '';
+	my ($path) = @_;
+	open my $fh, '<', $path or die "Cannot read $path: $!\n";
+	binmode $fh;
+	local $/;
+	my $text = <$fh>;
+	close $fh;
+	return defined $text ? $text : '';
+}
+
+# Set a file's mtime, keeping sub-second precision where the platform provides
+# it.  Time::HiRes::utime dies as unimplemented on some Windows builds, where
+# the builtin utime still works but stores whole seconds (on FAT, 2-second
+# units), which the 2-second comparison tolerance already allows for.
+sub set_mtime {
+	my ($path, $mtime) = @_;
+	return 1 unless defined $mtime;
+
+	return 1 if eval { Time::HiRes::utime($mtime, $mtime, $path); 1 };
+
+	# Only the "unimplemented" croak is expected; anything else is a real
+	# failure and is reported as it was before this fallback existed.
+	my $error = $@;
+	die $error unless !ref $error && $error =~ /unimplemented/i;
+
+	utime(int($mtime), int($mtime), $path);
+	return 1;
 }
 
 # Replace $path with $data, atomically: temp file in the same directory, then rename.
@@ -228,7 +247,9 @@ and no web interface.
 Only files whose content changed are transferred.  Data frames are deflated when that
 makes them smaller, and files of at least 64 KiB are sent as rsync-style block deltas
 when the other side already holds an older copy, so an edit moves the changed blocks
-rather than the whole file.  C<filesync sync --no-delta> forces whole files.
+rather than the whole file.  C<filesync sync --no-delta> forces whole files.  Each run
+reports the payload bytes it sent and received and how many files moved as a delta, and
+C<filesync log> repeats those figures for past runs.
 
 The design and its rationale are in F<SPEC.md> in the distribution root.
 
@@ -328,9 +349,30 @@ because its size and modification time happen to match the newer copy.  This is
 a rollback rather than a merge: files created after the backup was taken
 disappear from the master, and the next sync propagates that to the clients, so
 copy anything you need to keep out of the tree first.  The server
-rehashes the restored files on the next session, so there is no reindex step;
-clients then pull the restored versions, merging edits they have not synced as
-usual.  Re-enable the jobs once that first sync has finished.
+would rehash the restored files on the next session anyway, but
+C<filesync-admin reindex> rebuilds the index immediately, before any client
+reconnects; clients then pull the restored versions, merging edits they have not
+synced as usual.
+
+Before re-enabling the jobs, check that the copy is exact with a read-only
+comparison against the backup:
+
+    rsync -a --delete --checksum --dry-run --itemize-changes \
+        /home/foo/backups/FileSync/ /home/foo/FileSync/
+
+No output and exit 0 mean the master matches the backup.  Any line beginning
+C<< >f >> names a path that still differs, and C<*deleting> names one the
+rollback should have removed.  The index still describes the pre-rollback tree,
+so C<filesync-admin verify> may report drift at this point; that is expected.
+Rebuild it and check it:
+
+    sudo -u filesync filesync-admin reindex documents
+    sudo -u filesync filesync-admin verify documents --deep
+
+C<reindex> hashes every file in the master and replaces the index atomically; it
+refuses to run while a sync session holds the repo lock, and it names any paths
+it could not index.  C<clean> and exit 0 from C<verify> confirm that the master
+and its index agree.  Re-enable the jobs once that check passes.
 
 To restore just one file or directory, copy that path back instead of mirroring
 the whole tree, with the jobs paused as above so nothing changes the tree while
@@ -343,8 +385,10 @@ The trailing slash on the second source copies the directory's contents; without
 it rsync would put the directory itself inside the destination.  Add C<--delete>
 only when that directory should match the backup exactly, since it removes files
 created after the backup was taken.  Everything outside the restored paths is
-left alone, and the server rehashes them on the next session, so clients pull the
-restored versions without a reindex step.
+left alone; refresh the index with C<reindex> as above, or let the next session
+do it, and clients pull the restored versions.  Check the restored paths with the
+matching C<rsync --dry-run --itemize-changes> comparison before re-enabling the
+jobs; no output means they match the backup.
 
 Adjust F</usr/local/bin/filesync> to where the script was installed, because
 cron's default PATH rarely includes a per-user Perl bin directory.

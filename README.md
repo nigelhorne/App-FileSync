@@ -131,9 +131,36 @@ because its size and modification time happen to match the newer copy.  This is
 a rollback rather than a merge: files created after the backup was taken
 disappear from the master, and the next sync propagates that to the clients, so
 copy anything you need to keep out of the tree first.  The server
-rehashes the restored files on the next session, so there is no reindex step;
-clients then pull the restored versions, merging edits they have not synced as
-usual.  Re-enable the jobs once that first sync has finished.
+would rehash the restored files on the next session anyway, but
+`filesync-admin reindex` rebuilds the index immediately, before any client
+reconnects; clients then pull the restored versions, merging edits they have not
+synced as usual.
+
+Before re-enabling the jobs, check that the copy is exact with a read-only
+comparison against the backup:
+
+```
+rsync -a --delete --checksum --dry-run --itemize-changes \
+    /home/foo/backups/FileSync/ /home/foo/FileSync/
+```
+
+No output and exit 0 mean the master matches the backup.  Any line beginning
+`>f` names a path that still differs, and `*deleting` names one the rollback
+should have removed.  The index still describes the pre-rollback tree, so
+`filesync-admin verify` may report drift at this point; that is expected.
+Rebuild it and check it:
+
+```
+sudo -u filesync filesync-admin reindex documents
+sudo -u filesync filesync-admin verify documents --deep
+```
+
+`reindex` hashes every file in the master and replaces the index atomically; it
+refuses to run while a sync session holds the repo lock, and it names any paths
+it could not index.  `clean` and exit 0 from `verify` confirm that the master
+and its index agree.  Re-enable the jobs once that check passes.  For a script
+that runs both checks, reads their `--json` reports and only then re-enables
+cron, see the recovery automation example in `SPEC.md` §9.
 
 To restore just one file or directory, copy that path back instead of mirroring
 the whole tree, with the jobs paused as above so nothing changes the tree while
@@ -148,8 +175,10 @@ The trailing slash on the second source copies the directory's contents; without
 it rsync would put the directory itself inside the destination.  Add `--delete`
 only when that directory should match the backup exactly, since it removes files
 created after the backup was taken.  Everything outside the restored paths is
-left alone, and the server rehashes them on the next session, so clients pull the
-restored versions without a reindex step.
+left alone; refresh the index with `reindex` as above, or let the next session
+do it, and clients pull the restored versions.  Check the restored paths with the
+matching `rsync --dry-run --itemize-changes` comparison before re-enabling the
+jobs; no output means they match the backup.
 
 Adjust `/usr/local/bin/filesync` to where the script was installed, because
 cron's default PATH rarely includes a per-user Perl bin directory.

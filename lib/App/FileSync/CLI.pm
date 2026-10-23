@@ -19,7 +19,7 @@ use App::FileSync::Settings;
 use App::FileSync::Transport::SSH;
 
 sub run_client {
-    my (@args) = @_;
+	my (@args) = @_;
 
     my $code = eval { _client_dispatch(@args) };
     if (my $error = $@) {
@@ -28,12 +28,12 @@ sub run_client {
         return 1;
     }
 
-    return $code;
+	return $code;
 }
 
 sub _logger {
-    my (%opts) = @_;
-    return App::FileSync::Settings::logger(%opts);
+	my (%opts) = @_;
+	return App::FileSync::Settings::logger(%opts);
 }
 
 # An unusable settings file must not hide the error that says so.
@@ -390,6 +390,9 @@ sub _client_sync {
             $summary->{deleted}   || 0,
             $summary->{conflicts} || 0;
 
+        # A dry run sends no file payloads, so it has nothing to account for.
+        print '  transfer: ', _transfer_report($summary), "\n" unless $dry_run;
+
         next if $quiet;
         for my $warning (@{ $result->{warnings} || [] }) {
             print "  warning: $warning\n";
@@ -455,6 +458,14 @@ sub _client_status {
             print "$entry->{repo}: $entry->{root}\n";
             print "  transport: $entry->{transport}\n";
             print "  last run:  $entry->{last_run}\n";
+
+            # Caches written before the byte counters existed have no transfer
+            # figures; skip the line rather than invent zeros.
+            my $summary = $entry->{last_summary};
+            if (ref($summary) eq 'HASH' && defined $summary->{bytes_sent}) {
+                print '  transfer:  ', _transfer_report($summary), "\n";
+            }
+
             print "  files:     $entry->{files}\n";
         }
     }
@@ -525,7 +536,12 @@ sub _client_log {
                 next;
             }
 
-            printf "%s  %s  exit %d  pulled %d, pushed %d, deleted %d, conflicts %d%s%s\n",
+            # Older entries predate the byte counters; they keep the shorter line.
+            my $transfer = !$run->{dry_run} && defined $summary->{bytes_sent}
+                ? ', ' . _transfer_report($summary)
+                : '';
+
+            printf "%s  %s  exit %d  pulled %d, pushed %d, deleted %d, conflicts %d%s%s%s\n",
                 $name,
                 format_utc($run->{ts}),
                 $run->{exit} || 0,
@@ -534,6 +550,7 @@ sub _client_log {
                 $summary->{deleted}   || 0,
                 $summary->{conflicts} || 0,
                 $summary->{skipped} ? ", skipped $summary->{skipped}" : '',
+                $transfer,
                 $run->{dry_run} ? '  (dry run)' : '';
 
             for my $warning (@{ $run->{warnings} || [] }) {
@@ -935,6 +952,36 @@ sub _format_bytes {
     return sprintf('%.1f GB', $bytes / (1024 * 1024 * 1024));
 }
 
+# Transfer accounting is exact: these bytes are what the peer actually read
+# off the connection, so rounding them would defeat the purpose.
+sub _bytes_exact {
+    my ($bytes) = @_;
+
+    $bytes = 0 unless defined $bytes && $bytes =~ /\A\d+\z/;
+    1 while $bytes =~ s/(\d)(\d{3})\z/$1,$2/;
+
+    return "$bytes B";
+}
+
+# One line of per-run accounting: payload bytes in each direction, then how many
+# files moved as a delta rather than as a whole file.
+sub _transfer_report {
+    my ($summary) = @_;
+
+    my $pulled = $summary->{delta_pulled} || 0;
+    my $pushed = $summary->{delta_pushed} || 0;
+
+    my @delta;
+    push @delta, "$pulled pulled" if $pulled;
+    push @delta, "$pushed pushed" if $pushed;
+
+    return sprintf('sent %s, received %s, %s by delta%s',
+        _bytes_exact($summary->{bytes_sent}),
+        _bytes_exact($summary->{bytes_received}),
+        _plural($pulled + $pushed, 'file'),
+        @delta ? ' (' . join(', ', @delta) . ')' : '');
+}
+
 sub _admin_dispatch {
     my (@args) = @_;
 
@@ -968,6 +1015,7 @@ filesync-admin --root DIR <command>
     client allow ID --repo NAME [--role client|replica]
     client list --repo NAME
     client forget ID --repo NAME
+    reindex NAME [--dry-run] [--json]
     verify NAME [--deep] [--sample N] [--json]
     restore NAME PATH [--to DIR] [--list] [--date YYYY-MM-DD]
     log NAME... [-n N] [--client ID] [--since YYYY-MM-DD|EPOCH]
@@ -995,6 +1043,10 @@ USAGE
 
     if ($group eq 'verify') {
         return _admin_verify($admin, @args);
+    }
+
+    if ($group eq 'reindex') {
+        return _admin_reindex($admin, @args);
     }
 
     if ($group eq 'restore') {
@@ -1180,6 +1232,39 @@ sub _admin_log {
     }
 
     print json_encode({ results => \@results }), "\n" if $json;
+
+    return 0;
+}
+
+sub _admin_reindex {
+    my ($admin, @args) = @_;
+
+    my ($dry_run, $json);
+    GetOptionsFromArray(\@args, 'dry-run' => \$dry_run, 'json' => \$json)
+        or die "Usage: filesync-admin reindex NAME [--dry-run] [--json]\n";
+
+    my $name = shift @args;
+    die "reindex: NAME is required\n" unless defined $name && length $name;
+    die "reindex: unexpected arguments: @args\n" if @args;
+
+    my $result = $admin->reindex(repo => $name, dry_run => $dry_run);
+
+    if ($json) {
+        print json_encode($result), "\n";
+        return 0;
+    }
+
+    printf "%s: %s %s, %s (%s)%s\n",
+        $name,
+        $dry_run ? 'would index' : 'indexed',
+        _plural($result->{files}, 'file'),
+        _plural($result->{dirs}, 'empty dir'),
+        _format_bytes($result->{bytes}),
+        $dry_run ? '; index unchanged' : '; master index written';
+
+    for my $path (sort keys %{ $result->{skipped} || {} }) {
+        print "  skipped: $path ($result->{skipped}{$path})\n";
+    }
 
     return 0;
 }
