@@ -103,6 +103,32 @@ The task runs only while that user is logged on, which suits a Documents
 folder; its run log is still written under `%USERPROFILE%\.filesync\logs`, so
 `filesync log --repo documents --warnings` works there too.
 
+### Perl 5.42 on Windows
+
+On Perl 5.42 for Windows, `filesync`, `filesync-server` and `filesync-admin`
+choose the hook implementation they need for themselves, so there is nothing to
+configure to run them.  `B::Hooks::EndOfScope` 0.28 -- the hook
+`namespace::clean` and `namespace::autoclean` are built on, and which
+`Log::Abstraction` therefore loads through `namespace::clean` -- faults with an
+access violation (0xC0000005) while releasing its XS hook on 5.42 for Windows:
+after a command has done its work, but before the interpreter exits.  A run
+that synced everything correctly would still exit nonzero, so a scheduled task
+or cron entry would report it as a failure.  Before `Log::Abstraction` loads,
+the program sets `B_HOOKS_ENDOFSCOPE_IMPLEMENTATION` to `PP`, which selects the
+module's plain-Perl hook, the one that does not fault.  A value already in the
+environment is left alone, other Perl versions and platforms are untouched, and
+the module has no release that fixes it.
+
+Building the distribution from source on that platform still needs the variable
+in the environment, because `Dist::CheckConflicts` requires
+`namespace::autoclean` before `WriteMakefile` runs, and that happens before any
+of this code is loaded:
+
+```
+set "B_HOOKS_ENDOFSCOPE_IMPLEMENTATION=PP"
+setx B_HOOKS_ENDOFSCOPE_IMPLEMENTATION PP
+```
+
 The master copy on the server is an ordinary directory tree, so it can be
 mirrored to a backup directory from the same crontab:
 

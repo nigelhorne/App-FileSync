@@ -3,6 +3,41 @@ package App::FileSync::Settings;
 use strict;
 use warnings;
 
+# B::Hooks::EndOfScope 0.28 releases its XS scope hook with an access violation
+# (0xC0000005) on Perl 5.42 for Windows, after a command has done its work but
+# before the interpreter exits, so a run that synced everything correctly would
+# still exit nonzero.  Log::Abstraction reaches the hook through
+# namespace::clean, and the implementation has to be chosen before the module
+# loads, hence the BEGIN.  Its plain-Perl hook does not fault.
+sub wants_plain_end_of_scope_hook {
+	my ($os, $version) = @_;
+
+	return 0 unless defined $os && $os eq 'MSWin32';
+	return 0 unless defined $version && $version =~ /\A[0-9.]+\z/;
+
+	# 5.42.x only: later releases may not share the fault, and forcing an
+	# implementation a later B::Hooks::EndOfScope no longer ships would refuse
+	# to load.
+	return ($version >= 5.042 && $version < 5.043) ? 1 : 0;
+}
+
+# Choose that hook for the running interpreter, unless it has already been
+# chosen.  Split from the predicate so the choice can be tested for a platform
+# this test run is not using.
+sub use_plain_end_of_scope_hook {
+	my ($os, $version) = @_;
+
+	return 0 if defined $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION};
+	return 0 unless wants_plain_end_of_scope_hook($os, $version);
+
+	$ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} = 'PP';
+	return 1;
+}
+
+BEGIN {
+	use_plain_end_of_scope_hook($^O, $]);
+}
+
 use Config::Abstraction;
 use File::Basename qw(dirname);
 use File::Path qw(make_path);

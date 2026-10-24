@@ -428,4 +428,77 @@ sub env_name {
     unlike($output, qr/INFO: sync finished/, '--quiet wins over the settings file');
 }
 
+# B::Hooks::EndOfScope 0.28 faults at exit on Perl 5.42 for Windows, so the
+# program picks its plain-Perl hook for itself.  The choice has to be made
+# before Log::Abstraction loads, which a separate process can show.
+{
+    ok(App::FileSync::Settings::wants_plain_end_of_scope_hook('MSWin32', 5.042000),
+        'the first 5.42 release for Windows wants the plain-Perl hook');
+    ok(App::FileSync::Settings::wants_plain_end_of_scope_hook('MSWin32', 5.042003),
+        'a later 5.42 for Windows wants it too');
+    ok(!App::FileSync::Settings::wants_plain_end_of_scope_hook('MSWin32', 5.040000),
+        '5.40 for Windows is left on the XS hook');
+    ok(!App::FileSync::Settings::wants_plain_end_of_scope_hook('MSWin32', 5.044000),
+        'later Perls are left alone');
+    ok(!App::FileSync::Settings::wants_plain_end_of_scope_hook('linux', 5.042003),
+        'other platforms are left alone');
+    ok(!App::FileSync::Settings::wants_plain_end_of_scope_hook('MSWin32', undef),
+        'no version means no override');
+    ok(!App::FileSync::Settings::wants_plain_end_of_scope_hook(undef, 5.042003),
+        'no platform means no override');
+    ok(!App::FileSync::Settings::wants_plain_end_of_scope_hook('MSWin32', 'banana'),
+        'a version that is not a number is not one to force anything for');
+
+    my $lib = File::Spec->catdir($Bin, '..', 'lib');
+    # Run the child through a list so no shell expands the $ENV it manipulates.
+    my $run = sub {
+        my ($code) = @_;
+        open my $fh, '-|', $^X, "-I$lib", '-e', $code
+            or die "Cannot start $^X: $!";
+        local $/;
+        my $out = <$fh>;
+        close $fh;
+        return $out;
+    };
+
+    my $expected = App::FileSync::Settings::wants_plain_end_of_scope_hook($^O, $])
+        ? 'PP' : 'unset';
+    is(
+        $run->(q{BEGIN { delete $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} } }
+            . q{use App::FileSync::Settings; }
+            . q{print defined $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} }
+            . q{? $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} : 'unset'}),
+        $expected,
+        'a fresh process gets the hook its platform needs',
+    );
+
+    is(
+        $run->(q{BEGIN { $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} = 'XS' } }
+            . q{use App::FileSync::Settings; }
+            . q{print $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION}}),
+        'XS',
+        'an implementation the user chose is left alone',
+    );
+
+    is(
+        $run->(q{use App::FileSync::Settings; }
+            . q{delete $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION}; }
+            . q{App::FileSync::Settings::use_plain_end_of_scope_hook('MSWin32', 5.042003); }
+            . q{print defined $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} }
+            . q{? $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} : 'unset'}),
+        'PP',
+        'asking for the hook sets it',
+    );
+
+    is(
+        $run->(q{use App::FileSync::Settings; }
+            . q{delete $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION}; }
+            . q{App::FileSync::Settings::use_plain_end_of_scope_hook('MSWin32', 5.040000); }
+            . q{print defined $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} }
+            . q{? $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} : 'unset'}),
+        'unset',
+        'asking for a platform without the fault sets nothing',
+    );
+}
+
 done_testing();

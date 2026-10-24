@@ -4,6 +4,10 @@ Revision history for App-FileSync
 
         - Build: test on Windows with Perl 5.42 again.  Its B::Hooks::EndOfScope
           faults at exit, so the plain-Perl hook is used there.
+        - filesync, filesync-server and filesync-admin select that hook for
+          themselves on 5.42 for Windows, so it no longer has to be set to run
+          them; an implementation already in the environment is left alone.
+          The CI test step no longer sets it, and so exercises the choice.
 
 0.001.0	Fri Oct 23 03:44:45 PM EDT 2026
         First draft

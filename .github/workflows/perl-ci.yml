@@ -109,6 +109,11 @@ jobs:
       # lets the DateTime-Locale and DateTime configure, which load
       # namespace::autoclean through their Conflicts module, get past
       # check_conflicts().
+      #
+      # App::FileSync::Settings sets the variable for itself on 5.42 Windows, so
+      # the programs and the test run below need nothing.  This step still sets
+      # it because Makefile.PL and the configure scripts it runs are outside the
+      # distribution and load the hook before any of our code.
       - name: Install dependencies (Windows)
         if: runner.os == 'Windows'
         shell: cmd
@@ -154,6 +159,9 @@ jobs:
           eval $(perl -I ~/perl5/lib/perl5 -Mlocal::lib)
           prove -lr t/
 
+      # B_HOOKS_ENDOFSCOPE_IMPLEMENTATION is deliberately not set here, so this
+      # step fails if App::FileSync stops choosing the plain-Perl hook for
+      # itself on 5.42 Windows.
       - name: Run tests (Windows)
         if: runner.os == 'Windows'
         shell: cmd
@@ -161,7 +169,6 @@ jobs:
           @echo off
           set "PATH=%USERPROFILE%\perl5\bin;%PATH%"
           set "PERL5LIB=%USERPROFILE%\perl5\lib\perl5"
-          if "${{ matrix.perl }}" == "5.42" set "B_HOOKS_ENDOFSCOPE_IMPLEMENTATION=PP"
           prove -lr t/
 
       - name: Run Perl::Critic
