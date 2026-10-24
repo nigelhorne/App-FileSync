@@ -28,7 +28,7 @@ use App::FileSync::Lock;
 use App::FileSync::Scan;
 use App::FileSync::Trash;
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 =encoding utf8
 
@@ -121,19 +121,35 @@ sub new {
 
 =head2 root
 
+Documented with L</journal_path> below.
+
 =head2 repo
+
+Documented with L</journal_path> below.
 
 =head2 config
 
+Documented with L</journal_path> below.
+
 =head2 master_dir
+
+Documented with L</journal_path> below.
 
 =head2 meta_dir
 
+Documented with L</journal_path> below.
+
 =head2 index_path
+
+Documented with L</journal_path> below.
 
 =head2 trash_dir
 
+Documented with L</journal_path> below.
+
 =head2 lock_path
+
+Documented with L</journal_path> below.
 
 =head2 journal_path
 
@@ -392,9 +408,15 @@ sub abs_path {
 
 =head2 load_index
 
+Documented with L</save_base> below.
+
 =head2 save_index
 
+Documented with L</save_base> below.
+
 =head2 load_base
+
+Documented with L</save_base> below.
 
 =head2 save_base
 
@@ -732,6 +754,8 @@ sub move_to_trash {
 
 =head2 clean_stale_temps
 
+Documented with L</prune_trash> below.
+
 =head2 prune_trash
 
 Purpose: housekeeping at the start of a session.
@@ -928,5 +952,7 @@ Nigel Horne, C<< <njh at nigelhorne.com> >>
 Copyright 2026 Nigel Horne.
 
 Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

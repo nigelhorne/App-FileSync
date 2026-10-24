@@ -23,7 +23,7 @@ use App::FileSync::Args qw(named);
 use App::FileSync::Constants qw($ROLE_CLIENT $SERVER_PROGRAM);
 use App::FileSync::I18N qw(throw);
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # How far up from this file to look for a checkout's bin/filesync-server:
 # lib/App/FileSync/Transport is four levels, blib/lib/... five.
@@ -126,6 +126,8 @@ sub new {
 }
 
 =head2 reader
+
+Documented with L</writer> below.
 
 =head2 writer
 
@@ -308,9 +310,16 @@ run it can write the server root directly anyway.
 
 =back
 
-=head1 LICENCE
+=head1 AUTHOR
 
-GPL v2 for personal single-user, single-computer use.  All other users must
-apply in writing to the author.
+Nigel Horne, C<< <njh at nigelhorne.com> >>
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright 2026 Nigel Horne.
+
+Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

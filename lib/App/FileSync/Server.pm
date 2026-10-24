@@ -35,7 +35,7 @@ use App::FileSync::Protocol;
 use App::FileSync::Settings;
 use App::FileSync::Store;
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # Package variables for compatibility: the CLI checks $PROTO, and tests may
 # localise $CHUNK.
@@ -261,6 +261,41 @@ Usage:
 	server.proto           the client speaks another protocol  upgrade one side
 	server.pinned          the hello disagrees with the pin    fix the client config
 	server.unknown         an unknown command arrived          upgrade one side
+
+Raised once the session is open.  Each ends the session: the open uploads
+are discarded, the failure is journalled, and the text (without Perl's
+file and line) reaches the client as C<< { ok => 0, fatal => 1, error => ... } >>.
+Most mean a client bug or a hostile client; the resolution is to fix the
+client, or simply to rerun the sync.
+
+	Key                     Meaning
+	server.manifest_list    the manifest is not a list
+	server.manifest_entry   a manifest entry is not an object
+	server.manifest_path    a manifest path is unsafe
+	server.manifest_field   a manifest t, h, s, m or mode field is malformed
+	server.refused          the deletion guard stopped the plan (rerun with --force if intended)
+	server.unplanned        an operation names a path that is not in the plan
+	server.not_planned      the path's planned action does not allow this operation
+	server.bad_field        an off, max, len, s, mode or h field is malformed
+	server.conflict_name    the conflict copy is named other than the plan says
+	server.conflict_unsafe  the planned conflict name is not a safe path
+	server.conflict_same    the planned conflict name equals the path
+	server.conflict_exists  something already exists at the conflict name
+	server.conflict_move    the master's copy could not be moved aside
+	server.bad_ack          an ack disagrees with the planned action
+	server.busy             a second put for a path already being received
+	server.no_put           chunk or chunk_end without a put
+	server.too_large        one chunk is larger than the chunk limit
+	server.overflow         the upload is larger than its announced size
+	server.hash_mismatch    the received content does not have the announced hash
+	server.size_mismatch    the received content does not have the announced size
+	server.no_delta         delta data without a delta start
+	server.bad_copy         a delta copy reaches outside the base file
+	server.bad_signature    a pull signature is malformed
+	server.no_signature     a pull delta operation without a signature
+	server.cannot_stat      a planned file vanished from the master
+	server.not_file         a get for a path that is a directory
+	server.unfinished       done arrived before every planned action completed
 
 =head3 FORMAL SPECIFICATION
 
@@ -1342,9 +1377,16 @@ that rule changes.
 
 =back
 
-=head1 LICENCE
+=head1 AUTHOR
 
-GPL v2 for personal single-user, single-computer use.  All other users must
-apply in writing to the author.
+Nigel Horne, C<< <njh at nigelhorne.com> >>
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright 2026 Nigel Horne.
+
+Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

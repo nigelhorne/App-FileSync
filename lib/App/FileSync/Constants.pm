@@ -10,7 +10,7 @@ use warnings;
 use Exporter qw(import);
 use Readonly;
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # Exit codes: the contract with cron, the Task Scheduler and "--exit N".
 Readonly our $EXIT_OK       => 0;
@@ -136,5 +136,7 @@ Nigel Horne, C<< <njh at nigelhorne.com> >>
 Copyright 2026 Nigel Horne.
 
 Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

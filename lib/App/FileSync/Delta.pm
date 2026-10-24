@@ -24,7 +24,7 @@ use Sub::Private { mode => 'enforce' };
 use App::FileSync::I18N qw(throw os_error);
 use App::FileSync::IO qw(open_file);
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # Tunables (package variables so tests can shrink them with "local").
 our $MIN_SIZE   = 65_536;
@@ -207,6 +207,8 @@ sub signature {
 
 =head2 encode_signature
 
+Documented with L</decode_signature> below.
+
 =head2 decode_signature
 
 Purpose: put a signature's blocks on the wire and take them off again.
@@ -383,6 +385,8 @@ sub diff {
 }
 
 =head2 write_copy
+
+Documented with L</write_literal> below.
 
 =head2 write_literal
 
@@ -846,5 +850,7 @@ Nigel Horne, C<< <njh at nigelhorne.com> >>
 Copyright 2026 Nigel Horne.
 
 Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

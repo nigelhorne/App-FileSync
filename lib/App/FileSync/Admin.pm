@@ -28,7 +28,7 @@ use App::FileSync::Store;
 use App::FileSync::Trash;
 use App::FileSync::Verify;
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # The per-repo metadata directories a new repo starts with.
 Readonly my @META_DIRS => qw(clients trash journal locks);
@@ -1115,9 +1115,16 @@ C<save_repo>.
 
 =back
 
-=head1 LICENCE
+=head1 AUTHOR
 
-GPL v2 for personal single-user, single-computer use.  All other users must
-apply in writing to the author.
+Nigel Horne, C<< <njh at nigelhorne.com> >>
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright 2026 Nigel Horne.
+
+Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

@@ -45,7 +45,7 @@ use App::FileSync::Transport::SSH;
 use App::FileSync::Trash;
 use App::FileSync::Verify;
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # Tunables, kept as package variables so tests can localise them.
 our $CHUNK          = 262_144;
@@ -755,6 +755,8 @@ sub snapshot_restore {
 }
 
 =head2 cache_path
+
+Documented with L</log_path> below.
 
 =head2 log_path
 
@@ -1671,9 +1673,16 @@ a hash mismatch and the next sync retries.
 
 =back
 
-=head1 LICENCE
+=head1 AUTHOR
 
-GPL v2 for personal single-user, single-computer use.  All other users must
-apply in writing to the author.
+Nigel Horne, C<< <njh at nigelhorne.com> >>
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright 2026 Nigel Horne.
+
+Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

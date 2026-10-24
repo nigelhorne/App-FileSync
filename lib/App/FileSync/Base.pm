@@ -14,7 +14,7 @@ use Sub::Protected;
 
 use App::FileSync::I18N ();
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # Raising through _throw should report the subclass's caller, not this file.
 $Carp::Internal{ (__PACKAGE__) }++;
@@ -170,5 +170,7 @@ Nigel Horne, C<< <njh at nigelhorne.com> >>
 Copyright 2026 Nigel Horne.
 
 Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

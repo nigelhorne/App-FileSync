@@ -20,7 +20,7 @@ use App::FileSync::Constants qw(
 );
 use App::FileSync::I18N qw(message);
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # The comparisons below run several times per path in the tree, so they are
 # lexical code references rather than wrapped private subs; see
@@ -438,5 +438,7 @@ Nigel Horne, C<< <njh at nigelhorne.com> >>
 Copyright 2026 Nigel Horne.
 
 Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

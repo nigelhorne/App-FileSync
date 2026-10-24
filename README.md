@@ -218,6 +218,8 @@ Resolution: rename the file on the side that holds it.
 
 ### Validate\_Repo\_Name
 
+Documented with ["validate\_client\_id"](#validate_client_id) below.
+
 ### Validate\_Client\_Id
 
 Purpose: decide whether a repo name or client id is usable as a directory name.
@@ -584,7 +586,11 @@ None.
 
 ### Write\_Atomic
 
+Documented with ["set\_mtime"](#set_mtime) below.
+
 ### Read\_Text
+
+Documented with ["set\_mtime"](#set_mtime) below.
 
 ### Set\_Mtime
 
@@ -596,11 +602,11 @@ On the server, create the master copy and allow the client once.  Then, on each
 client, register the directory and add a cron entry that runs every minute:
 
 ```
-# once, on the client
-filesync init --repo documents --root /home/foo/Documents --server srv
+    # once, on the client
+    filesync init --repo documents --root /home/foo/Documents --server srv
 
-# crontab -e, for foo on each client
-* * * * * /usr/local/bin/filesync sync --repo documents --quiet >/dev/null
+    # crontab -e, for foo on each client
+    * * * * * /usr/local/bin/filesync sync --repo documents --quiet >/dev/null
 ```
 
 The summary line is dropped so cron does not mail on every successful run;
@@ -613,13 +619,13 @@ Windows clients use a scheduled task rather than cron.  With the script in
 command prompt:
 
 ```
-REM once, on the client
-C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync init ^
-  --repo documents --root C:\Users\foo\Documents --server srv
+    REM once, on the client
+    C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync init ^
+      --repo documents --root C:\Users\foo\Documents --server srv
 
-REM then create the task; it runs every minute as the current user
-schtasks /Create /SC MINUTE /MO 1 /TN FileSync /F ^
-  /TR "C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync sync --repo documents --quiet"
+    REM then create the task; it runs every minute as the current user
+    schtasks /Create /SC MINUTE /MO 1 /TN FileSync /F ^
+      /TR "C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync sync --repo documents --quiet"
 ```
 
 The task runs only while that user is logged on, which suits a Documents
@@ -630,9 +636,9 @@ The master copy on the server is an ordinary directory tree, so it can be
 mirrored to a backup directory from the same crontab:
 
 ```
-# crontab -e, for foo on the server
-* * * * * rsync -a --delete --exclude '.filesync-tmp-*' \
-    /home/foo/FileSync/ /home/foo/backups/FileSync/
+    # crontab -e, for foo on the server
+    * * * * * rsync -a --delete --exclude '.filesync-tmp-*' \
+        /home/foo/FileSync/ /home/foo/backups/FileSync/
 ```
 
 Filesync writes each file to a temporary name and renames it into place, so the
@@ -646,7 +652,7 @@ backup job cannot copy a half-restored tree back into the backup.  Let any
 running sync finish, then mirror the backup back:
 
 ```
-rsync -a --delete --checksum /home/foo/backups/FileSync/ /home/foo/FileSync/
+    rsync -a --delete --checksum /home/foo/backups/FileSync/ /home/foo/FileSync/
 ```
 
 `--checksum` compares the contents, so a restored file is not skipped just
@@ -663,8 +669,8 @@ Before re-enabling the jobs, check that the copy is exact with a read-only
 comparison against the backup:
 
 ```
-rsync -a --delete --checksum --dry-run --itemize-changes \
-    /home/foo/backups/FileSync/ /home/foo/FileSync/
+    rsync -a --delete --checksum --dry-run --itemize-changes \
+        /home/foo/backups/FileSync/ /home/foo/FileSync/
 ```
 
 No output and exit 0 mean the master matches the backup.  Any line beginning
@@ -674,8 +680,8 @@ so `filesync-admin verify` may report drift at this point; that is expected.
 Rebuild it and check it:
 
 ```
-sudo -u filesync filesync-admin reindex documents
-sudo -u filesync filesync-admin verify documents --deep
+    sudo -u filesync filesync-admin reindex documents
+    sudo -u filesync filesync-admin verify documents --deep
 ```
 
 `reindex` hashes every file in the master and replaces the index atomically; it
@@ -688,8 +694,8 @@ the whole tree, with the jobs paused as above so nothing changes the tree while
 the copy runs:
 
 ```
-rsync -a --checksum /home/foo/backups/FileSync/notes/plan.txt /home/foo/FileSync/notes/
-rsync -a --checksum /home/foo/backups/FileSync/photos/ /home/foo/FileSync/photos/
+    rsync -a --checksum /home/foo/backups/FileSync/notes/plan.txt /home/foo/FileSync/notes/
+    rsync -a --checksum /home/foo/backups/FileSync/photos/ /home/foo/FileSync/photos/
 ```
 
 The trailing slash on the second source copies the directory's contents; without

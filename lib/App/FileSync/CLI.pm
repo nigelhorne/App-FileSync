@@ -33,7 +33,7 @@ use App::FileSync::Server;
 use App::FileSync::Settings;
 use App::FileSync::Transport::SSH;
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # What the marker file says to anyone who finds it.  File content, not a
 # message: it must not change with the reader's language.
@@ -115,7 +115,11 @@ with warnings, 4 verification found drift.  Admin: 0, 1 and 4.
 
 =head2 run_client
 
+Documented with L</run_server> below.
+
 =head2 run_admin
+
+Documented with L</run_server> below.
 
 =head2 run_server
 
@@ -1412,9 +1416,16 @@ C<never> are data), while the text output is.
 
 =back
 
-=head1 LICENCE
+=head1 AUTHOR
 
-GPL v2 for personal single-user, single-computer use.  All other users must
-apply in writing to the author.
+Nigel Horne, C<< <njh at nigelhorne.com> >>
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright 2026 Nigel Horne.
+
+Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

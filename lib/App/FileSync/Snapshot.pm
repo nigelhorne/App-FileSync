@@ -22,7 +22,7 @@ use App::FileSync::Constants qw($MODE_MASK $ROOT_MARKER $SNAPSHOT_DIR $STALE_TEM
 use App::FileSync::I18N qw(throw os_error);
 use App::FileSync::IO qw(copy_preserving ensure_dir list_dir);
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # Kept for compatibility: the snapshot directory's name.
 our $DIR_NAME = $SNAPSHOT_DIR;
@@ -108,7 +108,11 @@ sub snapshot_root {
 
 =head2 date_for_epoch
 
+Documented with L</default_mode> below.
+
 =head2 is_date
+
+Documented with L</default_mode> below.
 
 =head2 default_mode
 
@@ -692,5 +696,7 @@ Nigel Horne, C<< <njh at nigelhorne.com> >>
 Copyright 2026 Nigel Horne.
 
 Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

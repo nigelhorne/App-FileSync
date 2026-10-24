@@ -7,7 +7,7 @@ package App::FileSync::Platform;
 use strict;
 use warnings;
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 =encoding utf8
 
@@ -164,5 +164,7 @@ Nigel Horne, C<< <njh at nigelhorne.com> >>
 Copyright 2026 Nigel Horne.
 
 Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

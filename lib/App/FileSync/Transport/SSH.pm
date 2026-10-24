@@ -27,7 +27,7 @@ use App::FileSync::Constants qw($PROTOCOL_VERSION $ROLE_CLIENT @ROLES $SERVER_PR
 use App::FileSync::I18N qw(throw);
 use App::FileSync::IO qw(read_text);
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # Kept for compatibility: the protocol version sent as --proto.
 our $PROTO = $PROTOCOL_VERSION;
@@ -214,9 +214,15 @@ sub new {
 
 =head2 reader
 
+Documented with L</exit_status> below.
+
 =head2 writer
 
+Documented with L</exit_status> below.
+
 =head2 command
+
+Documented with L</exit_status> below.
 
 =head2 exit_status
 
@@ -390,6 +396,8 @@ sub error_text {
 
 =head2 valid_server
 
+Documented with L</valid_program> below.
+
 =head2 valid_program
 
 Purpose: check a server address and a remote program path.
@@ -526,9 +534,16 @@ C<~> in C<-i> but not in C<UserKnownHostsFile> on every version.
 
 =back
 
-=head1 LICENCE
+=head1 AUTHOR
 
-GPL v2 for personal single-user, single-computer use.  All other users must
-apply in writing to the author.
+Nigel Horne, C<< <njh at nigelhorne.com> >>
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright 2026 Nigel Horne.
+
+Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

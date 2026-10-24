@@ -26,7 +26,7 @@ use App::FileSync::Args qw(named);
 use App::FileSync::I18N qw(throw);
 use App::FileSync::IO qw(ensure_dir);
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # The hook predicates moved to App::FileSync::Platform, which must load before
 # this module's dependencies; these names are kept for existing callers.
@@ -786,9 +786,16 @@ read per call.
 
 =back
 
-=head1 LICENCE
+=head1 AUTHOR
 
-GPL v2 for personal single-user, single-computer use.  All other users must
-apply in writing to the author.
+Nigel Horne, C<< <njh at nigelhorne.com> >>
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright 2026 Nigel Horne.
+
+Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

@@ -30,40 +30,40 @@ use strict;
 use warnings;
 
 if ($ENV{FAKE_SSH_LOG}) {
-    open my $fh, '>>', $ENV{FAKE_SSH_LOG} or die "log: $!";
-    print {$fh} join("\n", @ARGV), "\n---\n";
-    close $fh;
+	open my $fh, '>>', $ENV{FAKE_SSH_LOG} or die "log: $!";
+	print {$fh} join("\n", @ARGV), "\n---\n";
+	close $fh;
 }
 
 my ($host, $command);
 while (@ARGV) {
-    my $arg = shift @ARGV;
+	my $arg = shift @ARGV;
 
-    if ($arg eq '--') {
-        $host = shift @ARGV;
-        last;
-    }
-    if ($arg !~ /\A-/) {
-        $host = $arg;
-        last;
-    }
-    if ($arg =~ /\A-[oipFl]\z/) {
-        shift @ARGV;
-        next;
-    }
-    next;
+	if ($arg eq '--') {
+		$host = shift @ARGV;
+		last;
+	}
+	if ($arg !~ /\A-/) {
+		$host = $arg;
+		last;
+	}
+	if ($arg =~ /\A-[oipFl]\z/) {
+		shift @ARGV;
+		next;
+	}
+	next;
 }
 
 $command = join ' ', @ARGV;
 
 if ($ENV{FAKE_SSH_FAIL}) {
-    print STDERR $ENV{FAKE_SSH_FAIL}, "\n";
-    exit 255;
+	print STDERR $ENV{FAKE_SSH_FAIL}, "\n";
+	exit 255;
 }
 
 $ENV{SSH_ORIGINAL_COMMAND} = defined $ENV{FAKE_SSH_ORIGINAL}
-    ? $ENV{FAKE_SSH_ORIGINAL}
-    : $command;
+	? $ENV{FAKE_SSH_ORIGINAL}
+	: $command;
 $command = $ENV{FAKE_SSH_FORCED} if defined $ENV{FAKE_SSH_FORCED};
 
 my @tokens = split ' ', $command;
@@ -260,9 +260,9 @@ close $client_lock;
 	open my $settings_fh, '>', $settings_path or die "Cannot write $settings_path: $!";
 	print {$settings_fh} <<'SETTINGS';
 {"App__FileSync":{
-    "ssh_identity": "/home/test/.ssh/filesync_key",
-    "ssh_known_hosts": "/home/test/.ssh/filesync_known_hosts",
-    "server_command": "/opt/filesync/bin/filesync-server"
+	"ssh_identity": "/home/test/.ssh/filesync_key",
+	"ssh_known_hosts": "/home/test/.ssh/filesync_known_hosts",
+	"server_command": "/opt/filesync/bin/filesync-server"
 }}
 SETTINGS
 	close $settings_fh;

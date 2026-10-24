@@ -21,7 +21,7 @@ use App::FileSync::Constants qw($MAX_ID_LENGTH $SECONDS_PER_DAY);
 use App::FileSync::I18N qw(message throw);
 use App::FileSync::IO qw(write_atomic read_text set_mtime);
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 our @EXPORT_OK = qw(
 	json_encode json_decode
@@ -310,6 +310,8 @@ sub validate_relpath {
 }
 
 =head2 validate_repo_name
+
+Documented with L</validate_client_id> below.
 
 =head2 validate_client_id
 
@@ -738,7 +740,11 @@ sub _join_dir :Private {
 
 =head2 write_atomic
 
+Documented with L</set_mtime> below.
+
 =head2 read_text
+
+Documented with L</set_mtime> below.
 
 =head2 set_mtime
 
@@ -755,11 +761,11 @@ __END__
 On the server, create the master copy and allow the client once.  Then, on each
 client, register the directory and add a cron entry that runs every minute:
 
-    # once, on the client
-    filesync init --repo documents --root /home/foo/Documents --server srv
+	# once, on the client
+	filesync init --repo documents --root /home/foo/Documents --server srv
 
-    # crontab -e, for foo on each client
-    * * * * * /usr/local/bin/filesync sync --repo documents --quiet >/dev/null
+	# crontab -e, for foo on each client
+	* * * * * /usr/local/bin/filesync sync --repo documents --quiet >/dev/null
 
 The summary line is dropped so cron does not mail on every successful run;
 diagnostics still go to standard error, so a failure is mailed.  Every attempt,
@@ -770,13 +776,13 @@ Windows clients use a scheduled task rather than cron.  With the script in
 F<C:\filesync> and Strawberry Perl installed, the same job is set up from a
 command prompt:
 
-    REM once, on the client
-    C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync init ^
-      --repo documents --root C:\Users\foo\Documents --server srv
+	REM once, on the client
+	C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync init ^
+	  --repo documents --root C:\Users\foo\Documents --server srv
 
-    REM then create the task; it runs every minute as the current user
-    schtasks /Create /SC MINUTE /MO 1 /TN FileSync /F ^
-      /TR "C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync sync --repo documents --quiet"
+	REM then create the task; it runs every minute as the current user
+	schtasks /Create /SC MINUTE /MO 1 /TN FileSync /F ^
+	  /TR "C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync sync --repo documents --quiet"
 
 The task runs only while that user is logged on, which suits a Documents
 folder; its run log is still written under F<%USERPROFILE%\.filesync\logs>, so
@@ -785,9 +791,9 @@ C<filesync log --repo documents --warnings> works there too.
 The master copy on the server is an ordinary directory tree, so it can be
 mirrored to a backup directory from the same crontab:
 
-    # crontab -e, for foo on the server
-    * * * * * rsync -a --delete --exclude '.filesync-tmp-*' \
-        /home/foo/FileSync/ /home/foo/backups/FileSync/
+	# crontab -e, for foo on the server
+	* * * * * rsync -a --delete --exclude '.filesync-tmp-*' \
+	    /home/foo/FileSync/ /home/foo/backups/FileSync/
 
 Filesync writes each file to a temporary name and renames it into place, so the
 mirror never catches a half-written upload; the exclusion keeps the temporary
@@ -799,7 +805,7 @@ cron lines, or disable the scheduled task) and the server's backup job, so the
 backup job cannot copy a half-restored tree back into the backup.  Let any
 running sync finish, then mirror the backup back:
 
-    rsync -a --delete --checksum /home/foo/backups/FileSync/ /home/foo/FileSync/
+	rsync -a --delete --checksum /home/foo/backups/FileSync/ /home/foo/FileSync/
 
 C<--checksum> compares the contents, so a restored file is not skipped just
 because its size and modification time happen to match the newer copy.  This is
@@ -814,8 +820,8 @@ synced as usual.
 Before re-enabling the jobs, check that the copy is exact with a read-only
 comparison against the backup:
 
-    rsync -a --delete --checksum --dry-run --itemize-changes \
-        /home/foo/backups/FileSync/ /home/foo/FileSync/
+	rsync -a --delete --checksum --dry-run --itemize-changes \
+	    /home/foo/backups/FileSync/ /home/foo/FileSync/
 
 No output and exit 0 mean the master matches the backup.  Any line beginning
 C<< >f >> names a path that still differs, and C<*deleting> names one the
@@ -823,8 +829,8 @@ rollback should have removed.  The index still describes the pre-rollback tree,
 so C<filesync-admin verify> may report drift at this point; that is expected.
 Rebuild it and check it:
 
-    sudo -u filesync filesync-admin reindex documents
-    sudo -u filesync filesync-admin verify documents --deep
+	sudo -u filesync filesync-admin reindex documents
+	sudo -u filesync filesync-admin verify documents --deep
 
 C<reindex> hashes every file in the master and replaces the index atomically; it
 refuses to run while a sync session holds the repo lock, and it names any paths
@@ -835,8 +841,8 @@ To restore just one file or directory, copy that path back instead of mirroring
 the whole tree, with the jobs paused as above so nothing changes the tree while
 the copy runs:
 
-    rsync -a --checksum /home/foo/backups/FileSync/notes/plan.txt /home/foo/FileSync/notes/
-    rsync -a --checksum /home/foo/backups/FileSync/photos/ /home/foo/FileSync/photos/
+	rsync -a --checksum /home/foo/backups/FileSync/notes/plan.txt /home/foo/FileSync/notes/
+	rsync -a --checksum /home/foo/backups/FileSync/photos/ /home/foo/FileSync/photos/
 
 The trailing slash on the second source copies the directory's contents; without
 it rsync would put the directory itself inside the destination.  Add C<--delete>

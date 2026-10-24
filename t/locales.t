@@ -193,10 +193,12 @@ for my $locale ('en_US.UTF-8', 'de_DE.UTF-8', 'ja_JP.UTF-8') {
 use strict;
 use warnings;
 use Errno qw(ENOENT);
+use POSIX qw(setlocale LC_MESSAGES);
 use App::FileSync::IO qw(read_text);
 my $expected = do { local $! = ENOENT; "$!" };
 my $error = eval { read_text($ARGV[0]); 1 } ? 'no error' : "$@";
-print "EXPECTED=$expected\nERROR=$error\n";
+my $in_effect = setlocale(LC_MESSAGES) // 'C';
+print "EXPECTED=$expected\nERROR=$error\nLOCALE=$in_effect\n";
 CHILD
 		local $ENV{LC_ALL} = $locale;
 		local $ENV{FILESYNC_LANG};
@@ -212,12 +214,23 @@ CHILD
 
 		my ($expected) = $output =~ /^EXPECTED=(.*)$/m;
 		my ($error) = $output =~ /^ERROR=(.*)$/m;
+		my ($in_effect) = $output =~ /^LOCALE=(.*)$/m;
 
 		ok(defined $expected && length $expected, 'Perl describes ENOENT');
 		isnt($error, 'no error', 'reading a missing file raises');
 		like($error, qr/\A\QCannot read $missing: \E/, 'the message is the catalogued one (English: no catalogue for this language ships)');
 		like($error, qr/\Q$expected\E/, "it carries Perl's own ENOENT text ($expected)");
 		unlike($error, qr/ at \S+ line \d+.*\n.* at \S+ line \d+/s, 'no stack trace without FILESYNC_TRACE');
+
+		# The checks above hold under any locale, so they always run; this one
+		# shows in the TAP whether they ran under the locale asked for or under
+		# a fallback (perl uses LANG, then C, when LC_ALL names a missing one).
+		my ($name) = split /\./, $locale;
+		SKIP: {
+			skip("$locale is not installed here; the child fell back to " . ($in_effect // 'C'), 1)
+				unless defined $in_effect && $in_effect =~ /\A\Q$name\E/i;
+			pass("the child ran under $locale ($in_effect)");
+		}
 	};
 }
 

@@ -26,7 +26,7 @@ use App::FileSync qw(json_encode json_decode);
 use App::FileSync::Args qw(named);
 use App::FileSync::I18N qw(os_error strip_location);
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # Payloads are raw-deflated when that makes them smaller.  Small payloads and
 # already-compressed data are left alone, so the flag costs more than it saves.
@@ -420,6 +420,8 @@ sub read_data {
 
 =head2 read_line
 
+Documented with L</read_bytes> below.
+
 =head2 read_bytes
 
 Purpose: read up to the next newline, or exactly C<$length> bytes.
@@ -488,6 +490,8 @@ sub read_bytes {
 }
 
 =head2 bytes_sent
+
+Documented with L</bytes_received> below.
 
 =head2 bytes_received
 
@@ -757,5 +761,7 @@ Nigel Horne, C<< <njh at nigelhorne.com> >>
 Copyright 2026 Nigel Horne.
 
 Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

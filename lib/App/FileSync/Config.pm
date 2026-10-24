@@ -22,7 +22,7 @@ use App::FileSync::Constants qw(
 use App::FileSync::I18N qw(throw strip_location);
 use App::FileSync::IO qw(ensure_dir);
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # Patterns that must never enter a manifest; they are excluded on both sides.
 our @DEFAULT_IGNORE = (
@@ -335,6 +335,8 @@ sub save_client {
 }
 
 =head2 repo_meta_dir
+
+Documented with L</repo_config_path> below.
 
 =head2 repo_config_path
 
@@ -650,5 +652,7 @@ Nigel Horne, C<< <njh at nigelhorne.com> >>
 Copyright 2026 Nigel Horne.
 
 Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

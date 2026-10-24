@@ -21,7 +21,7 @@ use App::FileSync::Constants qw($MODE_MASK $TEMP_PREFIX $STALE_TEMP_SECONDS $TYP
 use App::FileSync::I18N qw(message os_error);
 use App::FileSync::IO qw(list_dir);
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # A cached mtime within this much of the file's is the same mtime: JSON
 # round-trips the fractional part with float noise.
@@ -356,5 +356,7 @@ Nigel Horne, C<< <njh at nigelhorne.com> >>
 Copyright 2026 Nigel Horne.
 
 Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut

@@ -1,7 +1,7 @@
 Revision history for App-FileSync
 
 0.001.1
-
+	[ Bug Fixes ]
         - Build: test on Windows with Perl 5.42 again.  Its B::Hooks::EndOfScope
           faults at exit, so the plain-Perl hook is used there.
         - filesync, filesync-server and filesync-admin select that hook for
@@ -32,6 +32,13 @@ Revision history for App-FileSync
         - Internals: new Args, Base, Constants, I18N, IO and Platform modules;
           private subs are enforced with Sub::Private; full POD.
         - Removed the unused POSIX and Encode prerequisites.
+        - Build: requires Perl 5.14; declares ExtUtils::MakeMaker 6.64 as a
+          configure prerequisite so test prerequisites are honoured; the
+          gzip and (on macOS) gtar dist settings are now actually applied;
+          t/ and xt/ are not indexed; bug tracker link added.
+        - $VERSION is a version object (version->declare), so every tool
+          reads 0.001.1 as the dotted version v0.1.1.
+        - Every module and program carries the same GPL v2 licence notice.
 
 0.001.0	Fri Oct 23 03:44:45 PM EDT 2026
         First draft

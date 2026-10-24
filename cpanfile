@@ -1,5 +1,7 @@
 # Generated from Makefile.PL using makefilepl2cpanfile
 
+requires 'perl', '5.014';
+
 requires 'Carp';
 requires 'Compress::Raw::Zlib';
 requires 'Config::Abstraction';
@@ -12,6 +14,7 @@ requires 'File::Copy';
 requires 'File::Path';
 requires 'File::Spec';
 requires 'File::Temp';
+requires 'FindBin';
 requires 'Getopt::Long';
 requires 'IO::Handle';
 requires 'IPC::Open3';
@@ -30,10 +33,16 @@ requires 'Sys::Hostname';
 requires 'Time::HiRes';
 requires 'Time::Local';
 requires 'autodie', '2.37';
+requires 'version', '0.77';
+
+on 'configure' => sub {
+	requires 'ExtUtils::MakeMaker', '6.64';
+};
 
 on 'test' => sub {
+	requires 'Errno';
+	requires 'File::Find';
 	requires 'File::Temp';
-	requires 'Test::Deep';
 	requires 'Test::Exception';
 	requires 'Test::Mockingbird::TimeTravel', '0.14';
 	requires 'Test::Most';

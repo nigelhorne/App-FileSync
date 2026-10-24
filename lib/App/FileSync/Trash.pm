@@ -24,7 +24,7 @@ use App::FileSync::Constants qw($MODE_MASK $TRASH_DAYS $SECONDS_PER_DAY);
 use App::FileSync::I18N qw(throw os_error);
 use App::FileSync::IO qw(copy_preserving ensure_dir list_dir);
 
-our $VERSION = '0.001.1';
+use version; our $VERSION = version->declare('0.001.1');
 
 # The three levels of a day bucket.
 Readonly my $YEAR  => qr/\A\d{4}\z/;
@@ -563,5 +563,7 @@ Nigel Horne, C<< <njh at nigelhorne.com> >>
 Copyright 2026 Nigel Horne.
 
 Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut
