@@ -1,6 +1,5 @@
 # Generated from Makefile.PL using makefilepl2cpanfile
 
-requires 'autodie', '2.37';
 requires 'Carp';
 requires 'Compress::Raw::Zlib';
 requires 'Config::Abstraction';
@@ -30,6 +29,7 @@ requires 'Sub::Protected', '0.03';
 requires 'Sys::Hostname';
 requires 'Time::HiRes';
 requires 'Time::Local';
+requires 'autodie', '2.37';
 
 on 'test' => sub {
 	requires 'File::Temp';
