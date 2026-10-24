@@ -7,7 +7,8 @@ Revision history for App-FileSync
         - filesync, filesync-server and filesync-admin select that hook for
           themselves on 5.42 for Windows, so it no longer has to be set to run
           them; an implementation already in the environment is left alone.
-          The CI test step no longer sets it, and so exercises the choice.
+          A test checks the choice in a child process that starts without the
+          variable.
 
 0.001.0	Fri Oct 23 03:44:45 PM EDT 2026
         First draft

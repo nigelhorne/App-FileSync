@@ -413,5 +413,3 @@ If you use it,
 please let me know.
 
 =cut
-
-1;

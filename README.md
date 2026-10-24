@@ -119,14 +119,19 @@ module's plain-Perl hook, the one that does not fault.  A value already in the
 environment is left alone, other Perl versions and platforms are untouched, and
 the module has no release that fixes it.
 
-Building the distribution from source on that platform still needs the variable
-in the environment, because `Dist::CheckConflicts` requires
-`namespace::autoclean` before `WriteMakefile` runs, and that happens before any
-of this code is loaded:
+Building this distribution from source needs no variable either: `perl
+Makefile.PL` loads neither the hook nor `namespace::clean`, so the configure, the
+build and the test run are all unaffected.
+
+Installing dependencies from source in the same step is the one case that can
+still need it.  Their `Makefile.PL` scripts run as separate processes that
+nothing here can reach, and a distribution that loads `namespace::autoclean` in
+its own configure -- the DateTime family does, through `Dist::CheckConflicts`
+-- has to be given the variable itself:
 
 ```
 set "B_HOOKS_ENDOFSCOPE_IMPLEMENTATION=PP"
-setx B_HOOKS_ENDOFSCOPE_IMPLEMENTATION PP
+cpanm --installdeps .
 ```
 
 The master copy on the server is an ordinary directory tree, so it can be
