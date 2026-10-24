@@ -1,6 +1,6 @@
 Revision history for App-FileSync
 
-0.001.1
+0.001.1 Sat Oct 24 09:52:47 AM EDT 2026
 	[ Bug Fixes ]
         - Build: test on Windows with Perl 5.42 again.  Its B::Hooks::EndOfScope
           faults at exit, so the plain-Perl hook is used there.
