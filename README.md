@@ -2,13 +2,17 @@
 
 App::FileSync - cron-driven file synchronisation without a daemon
 
+## Version
+
+0.001.1
+
 ## Synopsis
 
 ```
-filesync init --repo documents --root ~/Documents \
-    --transport local --server-root /srv/filesync --remote-repo documents
-filesync sync --repo documents --dry-run
-filesync sync --repo documents
+    filesync init --repo documents --root ~/Documents \
+            --transport local --server-root /srv/filesync --remote-repo documents
+    filesync sync --repo documents --dry-run
+    filesync sync --repo documents
 ```
 
 ## Description
@@ -25,6 +29,9 @@ rather than the whole file.  `filesync sync --no-delta` forces whole files.  Eac
 reports the payload bytes it sent and received and how many files moved as a delta, and
 `filesync log` repeats those figures for past runs.
 
+Every message the tools print is looked up in a catalogue
+([App::FileSync::I18N](https://metacpan.org/pod/App%3A%3AFileSync%3A%3AI18N)), so a translation is one new catalogue.
+
 This module holds the pieces shared by the client, the server and the admin tools:
 byte-transparent JSON, path validation, conflict-copy naming and atomic file writes.
 
@@ -32,40 +39,556 @@ byte-transparent JSON, path validation, conflict-copy naming and atomic file wri
 
 ### Json\_Encode
 
+Purpose: encode a structure as one line of canonical JSON.
+
+Args: `$data`, any JSON-encodable value.
+
+Returns: the JSON text, keys sorted, with no trailing newline.
+
+Side Effects: none.
+
+Usage:
+
+```
+    print {$fh} json_encode($event), "\n";
+```
+
+#### Example
+
+```perl
+    print json_encode({ b => 1, a => [ 'x' ] }), "\n";      # {"a":["x"],"b":1}
+```
+
+#### Api Specification
+
+##### Input
+
+```perl
+    [ { name => 'data', type => 'scalar', optional => 1 } ]
+```
+
+##### Output
+
+```perl
+    { type => 'string', min => 1 }
+```
+
+#### Messages
+
+JSON::PP's own error for a value it cannot encode (a code reference, say).
+
+#### Formal Specification
+
+```
+    json_encode : VALUE → TEXT
+    json_decode(json_encode(v)) = v
+```
+
 ### Json\_Decode
 
-Encode and decode a structure as a single line of JSON.  Paths are byte strings and are
-not treated as UTF-8 by these functions.
+Purpose: decode one JSON document, keeping strings as byte strings.
+
+Args: `$text`.
+
+Returns: the decoded structure.  Strings that fit in bytes are downgraded, so a
+path read back from JSON names the same file as the bytes it was written from.
+
+Side Effects: none.
+
+Usage:
+
+```perl
+    my $config = json_decode(read_text($path));
+```
+
+#### Example
+
+```perl
+    my $entry = json_decode('{"p":"caf\u00e9.txt"}');
+    print length($entry->{p}), "\n";        # 8 (bytes), not 9
+```
+
+#### Api Specification
+
+##### Input
+
+```perl
+    [ { name => 'text', type => 'string' } ]
+```
+
+##### Output
+
+```perl
+    { type => 'scalar', optional => 1 }
+```
+
+#### Messages
+
+JSON::PP's own error for malformed JSON.
+
+#### Formal Specification
+
+```
+    json_decode : TEXT ↛ VALUE
+    ∀ s : STRING in result • ¬ utf8_flag(s) ∨ ∃ c ∈ s • ord c > 255
+```
 
 ### Validate\_Relpath
 
-Returns `(1, undef)` for a safe relative path, or `(0, $reason)`.  Absolute paths,
-backslashes, control characters, empty, `.` and `..` components, and paths longer than
-4096 bytes or with a component longer than 255 bytes are rejected.
+Purpose: decide whether a path is safe to join to a sync root.
+
+Args: `$path`, a relative path as it travels on the wire.
+
+Returns: a two-element list `(1, undef)` for a usable path, or
+`(0, $reason)` where `$reason` is a translated explanation.  (A list rather
+than a reference because every caller destructures it at once, and it is
+called once per path in the tree.)
+
+Side Effects: none.
+
+Usage:
+
+```perl
+    my ($ok, $reason) = validate_relpath($path);
+```
+
+#### Example
+
+```perl
+    my ($ok, $why) = validate_relpath('notes/../secret');
+    print "$why\n" unless $ok;      # parent path component
+```
+
+#### Api Specification
+
+##### Input
+
+```perl
+    [ { name => 'path', type => 'scalar', optional => 1 } ]
+```
+
+##### Output
+
+```perl
+    { type => 'arrayref', min => 2, max => 2 }
+```
+
+#### Messages
+
+```
+    Key                       Meaning
+    path.missing              no path was given
+    path.not_text             the path is a reference
+    path.empty                the path is empty
+    path.too_long             longer than 4096 bytes
+    path.absolute             starts with /
+    path.drive                starts with a drive letter
+    path.backslash            contains a backslash
+    path.nul                  contains a NUL byte
+    path.control              contains a control character
+    path.empty_component      contains //, or starts or ends with /
+    path.dot_component        has a . component
+    path.parent_component     has a .. component
+    path.component_too_long   a component is longer than 255 bytes
+```
+
+Resolution: rename the file on the side that holds it.
+
+#### Formal Specification
+
+```
+    SafePath == { p : seq BYTE |
+            0 < #p ≤ 4096 ∧ head p ≠ '/' ∧ ¬ drive(p) ∧
+            '\' ∉ ran p ∧ ran p ∩ CONTROL = ∅ ∧
+            ∀ c : split('/', p) • c ∉ {⟨⟩, ".", ".."} ∧ #c ≤ 255 }
+    validate_relpath(p) = (1, ⊥)        if p ∈ SafePath
+                        = (0, reason)   otherwise
+```
+
+#### Pseudocode
+
+```
+    reject undef, references and empty strings
+    reject paths over 4096 bytes
+    reject absolute, drive-relative, backslash, NUL and control characters
+    for each "/"-separated component:
+            reject empty, ".", ".." and components over 255 bytes
+    accept
+```
 
 ### Validate\_Repo\_Name
 
 ### Validate\_Client\_Id
 
-Return `(1, undef)` for a name usable as a directory name (`[A-Za-z0-9][A-Za-z0-9._-]*`,
-at most 64 characters), or `(0, $reason)`.
+Purpose: decide whether a repo name or client id is usable as a directory name.
 
-### Conflict\_Name
+Args: `$value`.
+
+Returns: `(1, undef)`, or `(0, $reason)` with a translated reason.  The
+alphabet is `[A-Za-z0-9][A-Za-z0-9._-]*`, at most 64 characters.
+
+Side Effects: none.
+
+Usage:
 
 ```perl
-my $name = conflict_name('notes.txt', 'laptop-1', time);
+    my ($ok, $reason) = validate_client_id($id);
 ```
 
-Returns the conflict-copy name for a losing version: the original name with
-`.conflict-<client>-<timestamp>` inserted before the extension.
+#### Example
+
+```perl
+    my ($ok, $why) = validate_repo_name('../etc');
+    print "$why\n"; # bad repo name '../etc'
+```
+
+#### Api Specification
+
+##### Input
+
+```perl
+    [ { name => 'value', type => 'scalar', optional => 1 } ]
+```
+
+##### Output
+
+```perl
+    { type => 'arrayref', min => 2, max => 2 }
+```
+
+#### Messages
+
+```perl
+    Key           Meaning                         Resolution
+    id.missing    no value was given              supply one
+    id.not_text   the value is a reference        pass a string
+    id.empty      the value is empty              supply one
+    id.too_long   longer than 64 characters       shorten it
+    id.bad        outside the allowed alphabet    use letters, digits, . _ -
+```
+
+#### Formal Specification
+
+```
+    Id == { s : seq CHAR | 0 < #s ≤ 64 ∧ head s ∈ ALNUM ∧ ran s ⊆ ALNUM ∪ {'.','_','-'} }
+    validate(s) = (1, ⊥) if s ∈ Id, (0, reason) otherwise
+```
+
+### Parse\_Since
+
+Purpose: the start of a time window.
+
+Args: `$value` (`YYYY-MM-DD` or an epoch), optional `$option` naming the
+command-line option for the error message (default `--since`).
+
+Returns: the epoch, or `undef` when `$value` is undef.  A date means
+midnight UTC that day.
+
+Side Effects: none.
+
+Usage:
+
+```perl
+    my $since = parse_since($opts{since});
+```
+
+#### Example
+
+```
+    print parse_since('2026-10-22'), "\n";  # 1792627200
+```
+
+#### Api Specification
+
+##### Input
+
+```perl
+    [
+            { name => 'value',  type => 'string', optional => 1 },
+            { name => 'option', type => 'string', optional => 1 },
+    ]
+```
+
+##### Output
+
+```perl
+    { type => 'integer', optional => 1, min => 0 }
+```
+
+#### Messages
+
+```perl
+    Key        Meaning                              Resolution
+    when.bad   neither a date nor an epoch          use YYYY-MM-DD or digits
+```
+
+#### Formal Specification
+
+```
+    parse_since : (DATE ∪ ℕ ∪ {⊥}) ↛ ℕ ∪ {⊥}
+    parse_since(n) = n ; parse_since(d) = midnight_utc(d) ; parse_since(⊥) = ⊥
+```
+
+### Parse\_Until
+
+Purpose: the end of a time window.
+
+Args: as for ["parse\_since"](#parse_since) (default option name `--until`).
+
+Returns: the epoch, or `undef`.  A date means the last second of that day, so
+`--until 2026-10-22` includes that day's runs.
+
+Side Effects: none.
+
+Usage:
+
+```perl
+    my $until = parse_until($opts{until});
+```
+
+#### Example
+
+```
+    print parse_until('2026-10-22'), "\n";  # 1792713599
+```
+
+#### Api Specification
+
+##### Input
+
+```perl
+    [
+            { name => 'value',  type => 'string', optional => 1 },
+            { name => 'option', type => 'string', optional => 1 },
+    ]
+```
+
+##### Output
+
+```perl
+    { type => 'integer', optional => 1, min => 0 }
+```
+
+#### Messages
+
+```perl
+    Key        Meaning                              Resolution
+    when.bad   neither a date nor an epoch          use YYYY-MM-DD or digits
+```
+
+#### Formal Specification
+
+```
+    parse_until(n) = n ; parse_until(d) = midnight_utc(d) + 86399 ; parse_until(⊥) = ⊥
+```
 
 ### Format\_Utc
 
-Formats an epoch as `YYYYMMDDTHHMMSSZ`.
+Purpose: a compact UTC timestamp.
+
+Args: optional `$epoch` (default now).
+
+Returns: `YYYYMMDDTHHMMSSZ`.
+
+Side Effects: none.
+
+Usage:
+
+```perl
+    my $stamp = format_utc($run->{ts});
+```
+
+#### Example
+
+```
+    print format_utc(0), "\n";      # 19700101T000000Z
+```
+
+#### Api Specification
+
+##### Input
+
+```perl
+    [ { name => 'epoch', type => 'number', optional => 1 } ]
+```
+
+##### Output
+
+```perl
+    { type => 'string', matches => qr/\A\d{8}T\d{6}Z\z/ }
+```
+
+#### Messages
+
+None.
+
+#### Formal Specification
+
+```
+    format_utc : ℕ → STAMP
+    format_utc(e) = yyyy mm dd 'T' HH MM SS 'Z' of gmtime(e)
+```
+
+### Split\_Name
+
+Purpose: split a relative path into directory, stem and extension.
+
+Args: `$path`.
+
+Returns: an arrayref `[ $dir, $stem, $ext ]`; `$dir` has no trailing slash
+and is empty at the top level, `$ext` includes its dot and is empty when there
+is none.  A leading dot (`.profile`) is part of the stem.
+
+Side Effects: none.
+
+Usage:
+
+```perl
+    my ($dir, $stem, $ext) = @{ split_name('a/b/report.txt') };
+```
+
+#### Example
+
+```perl
+    my $parts = split_name('notes/plan.v2.txt');    # ['notes', 'plan.v2', '.txt']
+```
+
+#### Api Specification
+
+##### Input
+
+```perl
+    [ { name => 'path', type => 'string', min => 1 } ]
+```
+
+##### Output
+
+```perl
+    { type => 'arrayref', min => 3, max => 3 }
+```
+
+#### Messages
+
+None.
+
+#### Formal Specification
+
+```
+    split_name(p) = (d, s, e) where p = d ⁀ "/" ⁀ s ⁀ e ∨ (d = ⟨⟩ ∧ p = s ⁀ e)
+                    e = ⟨⟩ ∨ (head e = '.' ∧ '.' ∉ ran(tail e)) ; s ≠ ⟨⟩
+```
+
+### Name\_With\_Suffix
+
+Purpose: make a name unique by numbering it before its extension.
+
+Args: `$path`, `$suffix` (a number).
+
+Returns: `report-2.txt` for `report.txt` and 2, keeping the directory.
+
+Side Effects: none.
+
+Usage:
+
+```perl
+    my $candidate = name_with_suffix($loser_name, $n);
+```
+
+#### Example
+
+```
+    print name_with_suffix('a/b.txt', 3), "\n";     # a/b-3.txt
+```
+
+#### Api Specification
+
+##### Input
+
+```perl
+    [
+            { name => 'path',   type => 'string', min => 1 },
+            { name => 'suffix', type => 'integer', min => 1 },
+    ]
+```
+
+##### Output
+
+```perl
+    { type => 'string', min => 1 }
+```
+
+#### Messages
+
+None.
+
+#### Formal Specification
+
+```
+    let (d, s, e) = split_name(p)
+    name_with_suffix(p, n) = join(d, s ⁀ "-" ⁀ n ⁀ e)
+```
+
+### Conflict\_Name
+
+Purpose: the name a losing version is kept under.
+
+Args: `$path`, `$client_id` (may be undef), `$epoch` (default now).
+
+Returns: the original name with `.conflict-CLIENT-TIMESTAMP` inserted before
+the extension, kept within 200 bytes so it fits common filesystems.
+
+Side Effects: none.
+
+Usage:
+
+```perl
+    my $name = conflict_name('notes.txt', 'laptop-1', time);
+```
+
+#### Example
+
+```
+    print conflict_name('report.txt', 'laptop-1', 1_792_664_100), "\n";
+    # report.conflict-laptop-1-20261022T101500Z.txt
+```
+
+#### Api Specification
+
+##### Input
+
+```perl
+    [
+            { name => 'path',      type => 'string', min => 1 },
+            { name => 'client_id', type => 'string', optional => 1 },
+            { name => 'epoch',     type => 'number', optional => 1 },
+    ]
+```
+
+##### Output
+
+```perl
+    { type => 'string', min => 1 }
+```
+
+#### Messages
+
+None.
+
+#### Formal Specification
+
+```
+    let (d, s, e) = split_name(p) ; id = sanitise(c) ; t = format_utc(when)
+    let room = max(16, 200 − #(".conflict-" ⁀ id ⁀ "-" ⁀ t ⁀ e))
+    conflict_name(p, c, when) = join(d, s[1..room] ⁀ ".conflict-" ⁀ id ⁀ "-" ⁀ t ⁀ e)
+```
 
 ### Write\_Atomic
 
-Writes a file through a temporary file in the same directory and renames it into place.
+### Read\_Text
+
+### Set\_Mtime
+
+Re-exported from [App::FileSync::IO](https://metacpan.org/pod/App%3A%3AFileSync%3A%3AIO), where they are documented.
 
 ## Examples
 
@@ -102,37 +625,6 @@ schtasks /Create /SC MINUTE /MO 1 /TN FileSync /F ^
 The task runs only while that user is logged on, which suits a Documents
 folder; its run log is still written under `%USERPROFILE%\.filesync\logs`, so
 `filesync log --repo documents --warnings` works there too.
-
-### Perl 5.42 on Windows
-
-On Perl 5.42 for Windows, `filesync`, `filesync-server` and `filesync-admin`
-choose the hook implementation they need for themselves, so there is nothing to
-configure to run them.  `B::Hooks::EndOfScope` 0.28 -- the hook
-`namespace::clean` and `namespace::autoclean` are built on, and which
-`Log::Abstraction` therefore loads through `namespace::clean` -- faults with an
-access violation (0xC0000005) while releasing its XS hook on 5.42 for Windows:
-after a command has done its work, but before the interpreter exits.  A run
-that synced everything correctly would still exit nonzero, so a scheduled task
-or cron entry would report it as a failure.  Before `Log::Abstraction` loads,
-the program sets `B_HOOKS_ENDOFSCOPE_IMPLEMENTATION` to `PP`, which selects the
-module's plain-Perl hook, the one that does not fault.  A value already in the
-environment is left alone, other Perl versions and platforms are untouched, and
-the module has no release that fixes it.
-
-Building this distribution from source needs no variable either: `perl
-Makefile.PL` loads neither the hook nor `namespace::clean`, so the configure, the
-build and the test run are all unaffected.
-
-Installing dependencies from source in the same step is the one case that can
-still need it.  Their `Makefile.PL` scripts run as separate processes that
-nothing here can reach, and a distribution that loads `namespace::autoclean` in
-its own configure -- the DateTime family does, through `Dist::CheckConflicts`
--- has to be given the variable itself:
-
-```
-set "B_HOOKS_ENDOFSCOPE_IMPLEMENTATION=PP"
-cpanm --installdeps .
-```
 
 The master copy on the server is an ordinary directory tree, so it can be
 mirrored to a backup directory from the same crontab:
@@ -212,8 +704,60 @@ jobs; no output means they match the backup.
 Adjust `/usr/local/bin/filesync` to where the script was installed, because
 cron's default PATH rarely includes a per-user Perl bin directory.
 
+## Limitations
+
+These are the design weaknesses a reviewer should weigh before relying on the
+tool.  None of them loses data silently; most cost time or space.
+
+- **One master.**  The topology is a star around one server.  The replica
+is a pull-only mirror, not a failover: if the server is lost, clients stop
+until an administrator points them at a rebuilt master.
+- **Every run exchanges the whole manifest.**  The client sends one entry
+per file and the server answers with the whole plan as a single JSON line, so
+a run costs O(files) in time, memory and bandwidth even when nothing changed.
+A tree of a million files means a plan message of the order of a hundred
+megabytes.  A change journal or Merkle summary would remove that, at the cost
+of the "everything is inspectable with cat" property.
+- **No line-length cap on the wire.**  Because of the previous point, a
+control message cannot be bounded without breaking large trees.  The peer is
+authenticated by ssh and pinned by the forced command, so this is a resource
+risk from a misbehaving client, not from the network.
+- **Lock-step protocol.**  One request is in flight at a time and each
+256 KiB chunk waits for its acknowledgement, so throughput is bound by the
+round-trip time on a high-latency link.
+- **Clock-dependent tie-breaks.**  When both sides changed a file, the
+newer mtime wins (the master wins ties within 2 seconds).  A client with a
+wrong clock picks the wrong winner; the loser is still kept as a conflict copy.
+- **No fsync.**  Renames are atomic between processes but not durable
+across a power cut; see ["LIMITATIONS" in App::FileSync::IO](https://metacpan.org/pod/App%3A%3AFileSync%3A%3AIO#LIMITATIONS).
+- **Pure-Perl deltas are bounded.**  Only the first 8 MiB after the
+unchanged prefix are scanned for moved blocks; later changes go as literals.
+See [App::FileSync::Delta](https://metacpan.org/pod/App%3A%3AFileSync%3A%3ADelta).
+- **What is not synced.**  Symlinks, devices, sockets, extended attributes,
+ACLs and ownership.  Permission bits are carried only between POSIX systems.
+- **Names.**  Unicode normalisation is not reconciled, so the same name
+in NFC (Linux) and NFD (older macOS) is two different files.  A
+case-insensitive client cannot hold two master paths that differ only in case.
+- **Encapsulation costs.**  Private methods use [Sub::Private](https://metacpan.org/pod/Sub%3A%3APrivate) in
+`enforce` mode, which costs about 1.4 microseconds per call (measured on
+5.40).  Helpers that run per file or per JSON value (the merge comparisons,
+the JSON byte downgrade, the rolling checksum) are therefore lexical code
+references: private by scope, with no wrapper.  Both Sub::Private and
+[Sub::Protected](https://metacpan.org/pod/Sub%3A%3AProtected) are bypassed while `HARNESS_ACTIVE` is set.
+- **Validation costs.**  [Params::Validate::Strict](https://metacpan.org/pod/Params%3A%3AValidate%3A%3AStrict) costs about 11
+microseconds per call, so it guards the public entry points that run a few
+times per command (constructors, admin and client operations).  Functions that
+run per path or per protocol frame (["validate\_relpath"](#validate_relpath), the protocol
+methods, the scanner) check their arguments by hand.
+- **Errors carry locations.**  Library errors are raised with `croak` and
+so end with `at FILE line N.`; the commands strip that before printing, and
+`FILESYNC_TRACE=1` turns every error into a full stack trace instead.
+- **English only.**  The catalogue mechanism supports other languages,
+plural forms and gender, but only the English catalogue ships.
+
 ## See Also
 
+- [App::FileSync::I18N](https://metacpan.org/pod/App%3A%3AFileSync%3A%3AI18N) - the message catalogue
 - [Test Dashboard](https://nigelhorne.github.io/App-FileSync/coverage/)
 
 ## Author

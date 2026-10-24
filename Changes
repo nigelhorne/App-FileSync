@@ -9,6 +9,29 @@ Revision history for App-FileSync
           them; an implementation already in the environment is left alone.
           A test checks the choice in a child process that starts without the
           variable.
+        - Security: an ssh server of the form "-v@host" (or a program name
+          starting with "-") is refused; it was passed to ssh as an option.
+        - Security: client and repo names that are not plain ids ("../x",
+          over 64 characters) are refused by the server, admin and client.
+        - Server: a conflict copy is kept under the planned name whether or
+          not the client names it, and any other name is refused; acks are
+          accepted only for actions the client applies; get validates its
+          offset and caps its size; an upload larger than announced is
+          refused and discarded.
+        - Ignore: building a matcher no longer modifies the caller's pattern
+          list (which turned "!keep.tmp" into "keep.tmp" and could delete the
+          file remotely); "/top" anchors to the root; "build/" matches at any
+          depth.
+        - Trash: same-day versions sort numerically and are no longer capped
+          at .99.  Each client repo has its own local trash; restore still
+          finds files in the old shared one.
+        - Admin: journal_read works when the server root contains spaces.
+        - All messages come from a catalogue (App::FileSync::I18N::en) and can
+          be translated; errors no longer show Perl file and line numbers
+          unless FILESYNC_TRACE is set.
+        - Internals: new Args, Base, Constants, I18N, IO and Platform modules;
+          private subs are enforced with Sub::Private; full POD.
+        - Removed the unused POSIX and Encode prerequisites.
 
 0.001.0	Fri Oct 23 03:44:45 PM EDT 2026
         First draft
