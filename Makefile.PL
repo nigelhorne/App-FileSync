@@ -3,8 +3,8 @@ use warnings;
 use ExtUtils::MakeMaker 6.64;
 
 my $dist = {
-	COMPRESS => 'gzip -9f',
-	SUFFIX   => 'gz',
+	COMPRESS => 'gzip -9f',	# Compress tarball using gzip
+	SUFFIX => 'gz',	# File suffix for tarball
 };
 
 if ($^O eq 'darwin') {
@@ -19,6 +19,7 @@ WriteMakefile(
 	LICENSE            => 'gpl_2',
 	MIN_PERL_VERSION   => '5.014',	# s///r
 	EXE_FILES          => [ 'bin/filesync', 'bin/filesync-server', 'bin/filesync-admin' ],
+	clean		=> { FILES => 'App-FileSync-*' },
 	dist               => $dist,
 	CONFIGURE_REQUIRES => {
 		'ExtUtils::MakeMaker' => '6.64',	# first to honour TEST_REQUIRES
