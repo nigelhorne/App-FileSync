@@ -293,7 +293,7 @@ a.intra-dot:hover { color: #7700bb; }
 <div class="nav"><a href="../../../index.html">Index</a>
  <a href="FileSync/Settings.pm.html">Next ➡</a></div><div class='summary'>
 <strong>Structural Coverage (Approximate)</strong><p>
-TER1 (Statement): 95.79%<br>
+TER1 (Statement): 95.92%<br>
 TER2 (Branch): 89.58%<br>
 TER3 (LCSAJ): 100.0% (1/1)<br>
 Approximate LCSAJ segments: 49<br>
@@ -362,7 +362,7 @@ Approximate LCSAJ segments: 49<br>
 </span><span class="">   21: use App::FileSync::I18N qw(message throw);
 </span><span class="">   22: use App::FileSync::IO qw(write_atomic read_text set_mtime);
 </span><span class="">   23: 
-</span><span class="">   24: our $VERSION = &#39;0.001.1&#39;;
+</span><span class="">   24: use version; our $VERSION = version-&gt;declare(&#39;0.001.1&#39;);
 </span><span class="">   25: 
 </span><span class="">   26: our @EXPORT_OK = qw(
 </span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   27: 	json_encode json_decode
@@ -450,7 +450,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 								</div>
 							</li></ul></details>
 <span class="">   69: 		utf8::encode($_[0]) unless utf8::downgrade($_[0], 1);
-</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">   70: 	}
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">   70: 	}
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -479,7 +479,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </span><span class="">   75: 
 </span><span class="">   76: =head1 NAME
 </span><span class="">   77: 
-</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">   78: App::FileSync - cron-driven file synchronisation without a daemon
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">   78: App::FileSync - cron-driven file synchronisation without a daemon
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -528,7 +528,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </span><span class="">  103: C&lt;filesync log&gt; repeats those figures for past runs.
 </span><span class="">  104: 
 </span><span class="">  105: Every message the tools print is looked up in a catalogue
-</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  106: (L&lt;App::FileSync::I18N&gt;), so a translation is one new catalogue.
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  106: (L&lt;App::FileSync::I18N&gt;), so a translation is one new catalogue.
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -598,7 +598,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </span><span class="">  152: sub json_encode {
 </span><span class="">  153: 	my ($data) = @_;
 </span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  154: 
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  155: 	return $JSON-&gt;encode($data);
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  155: 	return $JSON-&gt;encode($data);
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -648,7 +648,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </span><span class="">  181: 
 </span><span class="">  182: 	[ { name =&gt; &#39;text&#39;, type =&gt; &#39;string&#39; } ]
 </span><span class="">  183: 
-</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  184: =head4 OUTPUT
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  184: =head4 OUTPUT
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -857,635 +857,641 @@ is( func(VALUE_AT_BOUNDARY), EXPECTED, &#39;Test boundary behaviour&#39; );
 </span><span class="">  311: 
 </span><span class="">  312: =head2 validate_repo_name
 </span><span class="">  313: 
-</span><span class="">  314: =head2 validate_client_id
+</span><span class="">  314: Documented with L&lt;/validate_client_id&gt; below.
 </span><span class="">  315: 
-</span><span class="">  316: Purpose: decide whether a repo name or client id is usable as a directory name.
+</span><span class="">  316: =head2 validate_client_id
 </span><span class="">  317: 
-</span><span class="">  318: Args: C&lt;$value&gt;.
+</span><span class="">  318: Purpose: decide whether a repo name or client id is usable as a directory name.
 </span><span class="">  319: 
-</span><span class="">  320: Returns: C&lt;(1, undef)&gt;, or C&lt;(0, $reason)&gt; with a translated reason.  The
-</span><span class="">  321: alphabet is C&lt;[A-Za-z0-9][A-Za-z0-9._-]*&gt;, at most 64 characters.
-</span><span class="">  322: 
-</span><span class="">  323: Side Effects: none.
+</span><span class="">  320: Args: C&lt;$value&gt;.
+</span><span class="">  321: 
+</span><span class="">  322: Returns: C&lt;(1, undef)&gt;, or C&lt;(0, $reason)&gt; with a translated reason.  The
+</span><span class="">  323: alphabet is C&lt;[A-Za-z0-9][A-Za-z0-9._-]*&gt;, at most 64 characters.
 </span><span class="">  324: 
-</span><span class="">  325: Usage:
+</span><span class="">  325: Side Effects: none.
 </span><span class="">  326: 
-</span><span class="">  327: 	my ($ok, $reason) = validate_client_id($id);
+</span><span class="">  327: Usage:
 </span><span class="">  328: 
-</span><span class="">  329: =head3 EXAMPLE
+</span><span class="">  329: 	my ($ok, $reason) = validate_client_id($id);
 </span><span class="">  330: 
-</span><span class="">  331: 	my ($ok, $why) = validate_repo_name(&#39;../etc&#39;);
-</span><span class="">  332: 	print &quot;$why\n&quot;;	# bad repo name &#39;../etc&#39;
-</span><span class="">  333: 
-</span><span class="">  334: =head3 API SPECIFICATION
+</span><span class="">  331: =head3 EXAMPLE
+</span><span class="">  332: 
+</span><span class="">  333: 	my ($ok, $why) = validate_repo_name(&#39;../etc&#39;);
+</span><span class="">  334: 	print &quot;$why\n&quot;;	# bad repo name &#39;../etc&#39;
 </span><span class="">  335: 
-</span><span class="">  336: =head4 INPUT
+</span><span class="">  336: =head3 API SPECIFICATION
 </span><span class="">  337: 
-</span><span class="">  338: 	[ { name =&gt; &#39;value&#39;, type =&gt; &#39;scalar&#39;, optional =&gt; 1 } ]
+</span><span class="">  338: =head4 INPUT
 </span><span class="">  339: 
-</span><span class="">  340: =head4 OUTPUT
+</span><span class="">  340: 	[ { name =&gt; &#39;value&#39;, type =&gt; &#39;scalar&#39;, optional =&gt; 1 } ]
 </span><span class="">  341: 
-</span><span class="">  342: 	{ type =&gt; &#39;arrayref&#39;, min =&gt; 2, max =&gt; 2 }
+</span><span class="">  342: =head4 OUTPUT
 </span><span class="">  343: 
-</span><span class="">  344: =head3 MESSAGES
+</span><span class="">  344: 	{ type =&gt; &#39;arrayref&#39;, min =&gt; 2, max =&gt; 2 }
 </span><span class="">  345: 
-</span><span class="">  346: 	Key           Meaning                         Resolution
-</span><span class="">  347: 	id.missing    no value was given              supply one
-</span><span class="">  348: 	id.not_text   the value is a reference        pass a string
-</span><span class="">  349: 	id.empty      the value is empty              supply one
-</span><span class="">  350: 	id.too_long   longer than 64 characters       shorten it
-</span><span class="">  351: 	id.bad        outside the allowed alphabet    use letters, digits, . _ -
-</span><span class="">  352: 
-</span><span class="">  353: =head3 FORMAL SPECIFICATION
+</span><span class="">  346: =head3 MESSAGES
+</span><span class="">  347: 
+</span><span class="">  348: 	Key           Meaning                         Resolution
+</span><span class="">  349: 	id.missing    no value was given              supply one
+</span><span class="">  350: 	id.not_text   the value is a reference        pass a string
+</span><span class="">  351: 	id.empty      the value is empty              supply one
+</span><span class="">  352: 	id.too_long   longer than 64 characters       shorten it
+</span><span class="">  353: 	id.bad        outside the allowed alphabet    use letters, digits, . _ -
 </span><span class="">  354: 
-</span><span class="">  355: 	Id == { s : seq CHAR | 0 &lt; #s &acirc;&#137;&curren; 64 &acirc;&#136;&sect; head s &acirc;&#136;&#136; ALNUM &acirc;&#136;&sect; ran s &acirc;&#138;&#134; ALNUM &acirc;&#136;&ordf; {&#39;.&#39;,&#39;_&#39;,&#39;-&#39;} }
-</span><span class="">  356: 	validate(s) = (1, &acirc;&#138;&yen;) if s &acirc;&#136;&#136; Id, (0, reason) otherwise
-</span><span class="">  357: 
-</span><span class="">  358: =cut
+</span><span class="">  355: =head3 FORMAL SPECIFICATION
+</span><span class="">  356: 
+</span><span class="">  357: 	Id == { s : seq CHAR | 0 &lt; #s &acirc;&#137;&curren; 64 &acirc;&#136;&sect; head s &acirc;&#136;&#136; ALNUM &acirc;&#136;&sect; ran s &acirc;&#138;&#134; ALNUM &acirc;&#136;&ordf; {&#39;.&#39;,&#39;_&#39;,&#39;-&#39;} }
+</span><span class="">  358: 	validate(s) = (1, &acirc;&#138;&yen;) if s &acirc;&#136;&#136; Id, (0, reason) otherwise
 </span><span class="">  359: 
-</span><span class="">  360: sub validate_repo_name {
-</span><span class="">  361: 	my ($value) = @_;
-</span><span class="">  362: 
-</span><span class="">  363: 	return _validate_id(&#39;id.repo_name&#39;, $value);
-</span><span class="">  364: }
-</span><span class="">  365: 
-</span><span class="">  366: sub validate_client_id {
-</span><span class="">  367: 	my ($value) = @_;
-</span><span class="">  368: 
-</span><span class="">  369: 	return _validate_id(&#39;id.client_id&#39;, $value);
-</span><span class="">  370: }
-</span><span class="">  371: 
-</span><span class="">  372: # _validate_id
-</span><span class="">  373: # Purpose:     shared check for repo names and client ids.
-</span><span class="">  374: # Entry:       $what_key is the catalogue key naming the kind of id;
-</span><span class="">  375: #              $value is the candidate.
-</span><span class="">  376: # Exit:        returns (1, undef) or (0, translated reason).
-</span><span class="">  377: # Side effects: none.
-</span><span class="">  378: sub _validate_id :Private {
-</span><span class="">  379: 	my ($what_key, $value) = @_;
-</span><span class="">  380: 
-</span><span class="">  381: 	my $problem =
-</span><span class="">  382: 		  !defined $value                    ? &#39;id.missing&#39;
-</span><span class="">  383: 		: ref $value                         ? &#39;id.not_text&#39;
-</span><span class="">  384: 		: !length $value                     ? &#39;id.empty&#39;
-</span><span class="">  385: 		: length($value) &gt; $MAX_ID_LENGTH    ? &#39;id.too_long&#39;
-</span><span class="">  386: 		: $value !~ $ID_PATTERN              ? &#39;id.bad&#39;
-</span><span class="">  387: 		: undef;
-</span><span class="">  388: 
-</span><span class="">  389: 	return defined $problem
-</span><span class="">  390: 		? (0, message($problem, { what =&gt; message($what_key), value =&gt; $value }))
-</span><span class="">  391: 		: (1, undef);
-</span><span class="">  392: }
-</span><span class="">  393: 
-</span><span class="">  394: =head2 parse_since
+</span><span class="">  360: =cut
+</span><span class="">  361: 
+</span><span class="">  362: sub validate_repo_name {
+</span><span class="">  363: 	my ($value) = @_;
+</span><span class="">  364: 
+</span><span class="">  365: 	return _validate_id(&#39;id.repo_name&#39;, $value);
+</span><span class="">  366: }
+</span><span class="">  367: 
+</span><span class="">  368: sub validate_client_id {
+</span><span class="">  369: 	my ($value) = @_;
+</span><span class="">  370: 
+</span><span class="">  371: 	return _validate_id(&#39;id.client_id&#39;, $value);
+</span><span class="">  372: }
+</span><span class="">  373: 
+</span><span class="">  374: # _validate_id
+</span><span class="">  375: # Purpose:     shared check for repo names and client ids.
+</span><span class="">  376: # Entry:       $what_key is the catalogue key naming the kind of id;
+</span><span class="">  377: #              $value is the candidate.
+</span><span class="">  378: # Exit:        returns (1, undef) or (0, translated reason).
+</span><span class="">  379: # Side effects: none.
+</span><span class="">  380: sub _validate_id :Private {
+</span><span class="">  381: 	my ($what_key, $value) = @_;
+</span><span class="">  382: 
+</span><span class="">  383: 	my $problem =
+</span><span class="">  384: 		  !defined $value                    ? &#39;id.missing&#39;
+</span><span class="">  385: 		: ref $value                         ? &#39;id.not_text&#39;
+</span><span class="">  386: 		: !length $value                     ? &#39;id.empty&#39;
+</span><span class="">  387: 		: length($value) &gt; $MAX_ID_LENGTH    ? &#39;id.too_long&#39;
+</span><span class="">  388: 		: $value !~ $ID_PATTERN              ? &#39;id.bad&#39;
+</span><span class="">  389: 		: undef;
+</span><span class="">  390: 
+</span><span class="">  391: 	return defined $problem
+</span><span class="">  392: 		? (0, message($problem, { what =&gt; message($what_key), value =&gt; $value }))
+</span><span class="">  393: 		: (1, undef);
+</span><span class="">  394: }
 </span><span class="">  395: 
-</span><span class="">  396: Purpose: the start of a time window.
+</span><span class="">  396: =head2 parse_since
 </span><span class="">  397: 
-</span><span class="">  398: Args: C&lt;$value&gt; (C&lt;YYYY-MM-DD&gt; or an epoch), optional C&lt;$option&gt; naming the
-</span><span class="">  399: command-line option for the error message (default C&lt;--since&gt;).
-</span><span class="">  400: 
-</span><span class="">  401: Returns: the epoch, or C&lt;undef&gt; when C&lt;$value&gt; is undef.  A date means
-</span><span class="">  402: midnight UTC that day.
-</span><span class="">  403: 
-</span><span class="">  404: Side Effects: none.
+</span><span class="">  398: Purpose: the start of a time window.
+</span><span class="">  399: 
+</span><span class="">  400: Args: C&lt;$value&gt; (C&lt;YYYY-MM-DD&gt; or an epoch), optional C&lt;$option&gt; naming the
+</span><span class="">  401: command-line option for the error message (default C&lt;--since&gt;).
+</span><span class="">  402: 
+</span><span class="">  403: Returns: the epoch, or C&lt;undef&gt; when C&lt;$value&gt; is undef.  A date means
+</span><span class="">  404: midnight UTC that day.
 </span><span class="">  405: 
-</span><span class="">  406: Usage:
+</span><span class="">  406: Side Effects: none.
 </span><span class="">  407: 
-</span><span class="">  408: 	my $since = parse_since($opts{since});
+</span><span class="">  408: Usage:
 </span><span class="">  409: 
-</span><span class="">  410: =head3 EXAMPLE
+</span><span class="">  410: 	my $since = parse_since($opts{since});
 </span><span class="">  411: 
-</span><span class="">  412: 	print parse_since(&#39;2026-10-22&#39;), &quot;\n&quot;;	# 1792627200
+</span><span class="">  412: =head3 EXAMPLE
 </span><span class="">  413: 
-</span><span class="">  414: =head3 API SPECIFICATION
+</span><span class="">  414: 	print parse_since(&#39;2026-10-22&#39;), &quot;\n&quot;;	# 1792627200
 </span><span class="">  415: 
-</span><span class="">  416: =head4 INPUT
+</span><span class="">  416: =head3 API SPECIFICATION
 </span><span class="">  417: 
-</span><span class="">  418: 	[
-</span><span class="">  419: 		{ name =&gt; &#39;value&#39;,  type =&gt; &#39;string&#39;, optional =&gt; 1 },
-</span><span class="">  420: 		{ name =&gt; &#39;option&#39;, type =&gt; &#39;string&#39;, optional =&gt; 1 },
-</span><span class="">  421: 	]
-</span><span class="">  422: 
-</span><span class="">  423: =head4 OUTPUT
+</span><span class="">  418: =head4 INPUT
+</span><span class="">  419: 
+</span><span class="">  420: 	[
+</span><span class="">  421: 		{ name =&gt; &#39;value&#39;,  type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  422: 		{ name =&gt; &#39;option&#39;, type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  423: 	]
 </span><span class="">  424: 
-</span><span class="">  425: 	{ type =&gt; &#39;integer&#39;, optional =&gt; 1, min =&gt; 0 }
+</span><span class="">  425: =head4 OUTPUT
 </span><span class="">  426: 
-</span><span class="">  427: =head3 MESSAGES
+</span><span class="">  427: 	{ type =&gt; &#39;integer&#39;, optional =&gt; 1, min =&gt; 0 }
 </span><span class="">  428: 
-</span><span class="">  429: 	Key        Meaning                              Resolution
-</span><span class="">  430: 	when.bad   neither a date nor an epoch          use YYYY-MM-DD or digits
-</span><span class="">  431: 
-</span><span class="">  432: =head3 FORMAL SPECIFICATION
+</span><span class="">  429: =head3 MESSAGES
+</span><span class="">  430: 
+</span><span class="">  431: 	Key        Meaning                              Resolution
+</span><span class="">  432: 	when.bad   neither a date nor an epoch          use YYYY-MM-DD or digits
 </span><span class="">  433: 
-</span><span class="">  434: 	parse_since : (DATE &acirc;&#136;&ordf; &acirc;&#132;&#149; &acirc;&#136;&ordf; {&acirc;&#138;&yen;}) &acirc;&#134;&#155; &acirc;&#132;&#149; &acirc;&#136;&ordf; {&acirc;&#138;&yen;}
-</span><span class="">  435: 	parse_since(n) = n ; parse_since(d) = midnight_utc(d) ; parse_since(&acirc;&#138;&yen;) = &acirc;&#138;&yen;
-</span><span class="">  436: 
-</span><span class="">  437: =cut
+</span><span class="">  434: =head3 FORMAL SPECIFICATION
+</span><span class="">  435: 
+</span><span class="">  436: 	parse_since : (DATE &acirc;&#136;&ordf; &acirc;&#132;&#149; &acirc;&#136;&ordf; {&acirc;&#138;&yen;}) &acirc;&#134;&#155; &acirc;&#132;&#149; &acirc;&#136;&ordf; {&acirc;&#138;&yen;}
+</span><span class="">  437: 	parse_since(n) = n ; parse_since(d) = midnight_utc(d) ; parse_since(&acirc;&#138;&yen;) = &acirc;&#138;&yen;
 </span><span class="">  438: 
-</span><span class="">  439: sub parse_since {
-</span><span class="">  440: 	my ($value, $option) = @_;
-</span><span class="">  441: 
-</span><span class="">  442: 	my ($epoch) = @{ _parse_when($value, $option || &#39;--since&#39;) };
-</span><span class="">  443: 	return $epoch;
-</span><span class="">  444: }
-</span><span class="">  445: 
-</span><span class="">  446: =head2 parse_until
+</span><span class="">  439: =cut
+</span><span class="">  440: 
+</span><span class="">  441: sub parse_since {
+</span><span class="">  442: 	my ($value, $option) = @_;
+</span><span class="">  443: 
+</span><span class="">  444: 	my ($epoch) = @{ _parse_when($value, $option || &#39;--since&#39;) };
+</span><span class="">  445: 	return $epoch;
+</span><span class="">  446: }
 </span><span class="">  447: 
-</span><span class="">  448: Purpose: the end of a time window.
+</span><span class="">  448: =head2 parse_until
 </span><span class="">  449: 
-</span><span class="">  450: Args: as for L&lt;/parse_since&gt; (default option name C&lt;--until&gt;).
+</span><span class="">  450: Purpose: the end of a time window.
 </span><span class="">  451: 
-</span><span class="">  452: Returns: the epoch, or C&lt;undef&gt;.  A date means the last second of that day, so
-</span><span class="">  453: C&lt;--until 2026-10-22&gt; includes that day&#39;s runs.
-</span><span class="">  454: 
-</span><span class="">  455: Side Effects: none.
+</span><span class="">  452: Args: as for L&lt;/parse_since&gt; (default option name C&lt;--until&gt;).
+</span><span class="">  453: 
+</span><span class="">  454: Returns: the epoch, or C&lt;undef&gt;.  A date means the last second of that day, so
+</span><span class="">  455: C&lt;--until 2026-10-22&gt; includes that day&#39;s runs.
 </span><span class="">  456: 
-</span><span class="">  457: Usage:
+</span><span class="">  457: Side Effects: none.
 </span><span class="">  458: 
-</span><span class="">  459: 	my $until = parse_until($opts{until});
+</span><span class="">  459: Usage:
 </span><span class="">  460: 
-</span><span class="">  461: =head3 EXAMPLE
+</span><span class="">  461: 	my $until = parse_until($opts{until});
 </span><span class="">  462: 
-</span><span class="">  463: 	print parse_until(&#39;2026-10-22&#39;), &quot;\n&quot;;	# 1792713599
+</span><span class="">  463: =head3 EXAMPLE
 </span><span class="">  464: 
-</span><span class="">  465: =head3 API SPECIFICATION
+</span><span class="">  465: 	print parse_until(&#39;2026-10-22&#39;), &quot;\n&quot;;	# 1792713599
 </span><span class="">  466: 
-</span><span class="">  467: =head4 INPUT
+</span><span class="">  467: =head3 API SPECIFICATION
 </span><span class="">  468: 
-</span><span class="">  469: 	[
-</span><span class="">  470: 		{ name =&gt; &#39;value&#39;,  type =&gt; &#39;string&#39;, optional =&gt; 1 },
-</span><span class="">  471: 		{ name =&gt; &#39;option&#39;, type =&gt; &#39;string&#39;, optional =&gt; 1 },
-</span><span class="">  472: 	]
-</span><span class="">  473: 
-</span><span class="">  474: =head4 OUTPUT
+</span><span class="">  469: =head4 INPUT
+</span><span class="">  470: 
+</span><span class="">  471: 	[
+</span><span class="">  472: 		{ name =&gt; &#39;value&#39;,  type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  473: 		{ name =&gt; &#39;option&#39;, type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  474: 	]
 </span><span class="">  475: 
-</span><span class="">  476: 	{ type =&gt; &#39;integer&#39;, optional =&gt; 1, min =&gt; 0 }
+</span><span class="">  476: =head4 OUTPUT
 </span><span class="">  477: 
-</span><span class="">  478: =head3 MESSAGES
+</span><span class="">  478: 	{ type =&gt; &#39;integer&#39;, optional =&gt; 1, min =&gt; 0 }
 </span><span class="">  479: 
-</span><span class="">  480: 	Key        Meaning                              Resolution
-</span><span class="">  481: 	when.bad   neither a date nor an epoch          use YYYY-MM-DD or digits
-</span><span class="">  482: 
-</span><span class="">  483: =head3 FORMAL SPECIFICATION
+</span><span class="">  480: =head3 MESSAGES
+</span><span class="">  481: 
+</span><span class="">  482: 	Key        Meaning                              Resolution
+</span><span class="">  483: 	when.bad   neither a date nor an epoch          use YYYY-MM-DD or digits
 </span><span class="">  484: 
-</span><span class="">  485: 	parse_until(n) = n ; parse_until(d) = midnight_utc(d) + 86399 ; parse_until(&acirc;&#138;&yen;) = &acirc;&#138;&yen;
+</span><span class="">  485: =head3 FORMAL SPECIFICATION
 </span><span class="">  486: 
-</span><span class="">  487: =cut
+</span><span class="">  487: 	parse_until(n) = n ; parse_until(d) = midnight_utc(d) + 86399 ; parse_until(&acirc;&#138;&yen;) = &acirc;&#138;&yen;
 </span><span class="">  488: 
-</span><span class="">  489: sub parse_until {
-</span><span class="">  490: 	my ($value, $option) = @_;
-</span><span class="">  491: 
-</span><span class="">  492: 	my ($epoch, $is_date) = @{ _parse_when($value, $option || &#39;--until&#39;) };
-</span><span class="">  493: 	return (defined $epoch &amp;&amp; $is_date) ? $epoch + $SECONDS_PER_DAY - 1 : $epoch;
-</span><span class="">  494: }
-</span><span class="">  495: 
-</span><span class="">  496: # _parse_when
-</span><span class="">  497: # Purpose:     parse &quot;YYYY-MM-DD&quot; or an epoch.
-</span><span class="">  498: # Entry:       $value may be undef; $option names the option for errors.
-</span><span class="">  499: # Exit:        returns [ $epoch_or_undef, $is_date ]; a date cutoff means a
-</span><span class="">  500: #              different instant at each end of a range, hence the flag.
-</span><span class="">  501: # Side effects: raises when.bad for anything else.
-</span><span class="">  502: sub _parse_when :Private {
-</span><span class="">  503: 	my ($value, $option) = @_;
-</span><span class="">  504: 
-</span><span class="">  505: 	my $parsed =
-</span><span class="">  506: 		  !defined $value                          ? [ undef, 0 ]
-</span><span class="">  507: 		: $value =~ /\A\d+\z/                      ? [ $value + 0, 0 ]
-</span><span class="">  508: 		: $value =~ /\A(\d{4})-(\d{2})-(\d{2})\z/  ? [ Time::Local::timegm(0, 0, 0, $3, $2 - 1, $1), 1 ]
-</span><span class="">  509: 		: undef;
-</span><span class="">  510: 
-</span><span class="">  511: 	throw(&#39;when.bad&#39;, { option =&gt; $option, value =&gt; $value }) unless $parsed;
-</span><span class="">  512: 	return $parsed;
-</span><span class="">  513: }
-</span><span class="">  514: 
-</span><span class="">  515: =head2 format_utc
+</span><span class="">  489: =cut
+</span><span class="">  490: 
+</span><span class="">  491: sub parse_until {
+</span><span class="">  492: 	my ($value, $option) = @_;
+</span><span class="">  493: 
+</span><span class="">  494: 	my ($epoch, $is_date) = @{ _parse_when($value, $option || &#39;--until&#39;) };
+</span><span class="">  495: 	return (defined $epoch &amp;&amp; $is_date) ? $epoch + $SECONDS_PER_DAY - 1 : $epoch;
+</span><span class="">  496: }
+</span><span class="">  497: 
+</span><span class="">  498: # _parse_when
+</span><span class="">  499: # Purpose:     parse &quot;YYYY-MM-DD&quot; or an epoch.
+</span><span class="">  500: # Entry:       $value may be undef; $option names the option for errors.
+</span><span class="">  501: # Exit:        returns [ $epoch_or_undef, $is_date ]; a date cutoff means a
+</span><span class="">  502: #              different instant at each end of a range, hence the flag.
+</span><span class="">  503: # Side effects: raises when.bad for anything else.
+</span><span class="">  504: sub _parse_when :Private {
+</span><span class="">  505: 	my ($value, $option) = @_;
+</span><span class="">  506: 
+</span><span class="">  507: 	my $parsed =
+</span><span class="">  508: 		  !defined $value                          ? [ undef, 0 ]
+</span><span class="">  509: 		: $value =~ /\A\d+\z/                      ? [ $value + 0, 0 ]
+</span><span class="">  510: 		: $value =~ /\A(\d{4})-(\d{2})-(\d{2})\z/  ? [ Time::Local::timegm(0, 0, 0, $3, $2 - 1, $1), 1 ]
+</span><span class="">  511: 		: undef;
+</span><span class="">  512: 
+</span><span class="">  513: 	throw(&#39;when.bad&#39;, { option =&gt; $option, value =&gt; $value }) unless $parsed;
+</span><span class="">  514: 	return $parsed;
+</span><span class="">  515: }
 </span><span class="">  516: 
-</span><span class="">  517: Purpose: a compact UTC timestamp.
+</span><span class="">  517: =head2 format_utc
 </span><span class="">  518: 
-</span><span class="">  519: Args: optional C&lt;$epoch&gt; (default now).
+</span><span class="">  519: Purpose: a compact UTC timestamp.
 </span><span class="">  520: 
-</span><span class="">  521: Returns: C&lt;YYYYMMDDTHHMMSSZ&gt;.
+</span><span class="">  521: Args: optional C&lt;$epoch&gt; (default now).
 </span><span class="">  522: 
-</span><span class="">  523: Side Effects: none.
+</span><span class="">  523: Returns: C&lt;YYYYMMDDTHHMMSSZ&gt;.
 </span><span class="">  524: 
-</span><span class="">  525: Usage:
+</span><span class="">  525: Side Effects: none.
 </span><span class="">  526: 
-</span><span class="">  527: 	my $stamp = format_utc($run-&gt;{ts});
+</span><span class="">  527: Usage:
 </span><span class="">  528: 
-</span><span class="">  529: =head3 EXAMPLE
+</span><span class="">  529: 	my $stamp = format_utc($run-&gt;{ts});
 </span><span class="">  530: 
-</span><span class="">  531: 	print format_utc(0), &quot;\n&quot;;	# 19700101T000000Z
+</span><span class="">  531: =head3 EXAMPLE
 </span><span class="">  532: 
-</span><span class="">  533: =head3 API SPECIFICATION
+</span><span class="">  533: 	print format_utc(0), &quot;\n&quot;;	# 19700101T000000Z
 </span><span class="">  534: 
-</span><span class="">  535: =head4 INPUT
+</span><span class="">  535: =head3 API SPECIFICATION
 </span><span class="">  536: 
-</span><span class="">  537: 	[ { name =&gt; &#39;epoch&#39;, type =&gt; &#39;number&#39;, optional =&gt; 1 } ]
+</span><span class="">  537: =head4 INPUT
 </span><span class="">  538: 
-</span><span class="">  539: =head4 OUTPUT
+</span><span class="">  539: 	[ { name =&gt; &#39;epoch&#39;, type =&gt; &#39;number&#39;, optional =&gt; 1 } ]
 </span><span class="">  540: 
-</span><span class="">  541: 	{ type =&gt; &#39;string&#39;, matches =&gt; qr/\A\d{8}T\d{6}Z\z/ }
+</span><span class="">  541: =head4 OUTPUT
 </span><span class="">  542: 
-</span><span class="">  543: =head3 MESSAGES
+</span><span class="">  543: 	{ type =&gt; &#39;string&#39;, matches =&gt; qr/\A\d{8}T\d{6}Z\z/ }
 </span><span class="">  544: 
-</span><span class="">  545: None.
+</span><span class="">  545: =head3 MESSAGES
 </span><span class="">  546: 
-</span><span class="">  547: =head3 FORMAL SPECIFICATION
+</span><span class="">  547: None.
 </span><span class="">  548: 
-</span><span class="">  549: 	format_utc : &acirc;&#132;&#149; &acirc;&#134;&#146; STAMP
-</span><span class="">  550: 	format_utc(e) = yyyy mm dd &#39;T&#39; HH MM SS &#39;Z&#39; of gmtime(e)
-</span><span class="">  551: 
-</span><span class="">  552: =cut
+</span><span class="">  549: =head3 FORMAL SPECIFICATION
+</span><span class="">  550: 
+</span><span class="">  551: 	format_utc : &acirc;&#132;&#149; &acirc;&#134;&#146; STAMP
+</span><span class="">  552: 	format_utc(e) = yyyy mm dd &#39;T&#39; HH MM SS &#39;Z&#39; of gmtime(e)
 </span><span class="">  553: 
-</span><span class="">  554: sub format_utc {
-</span><span class="">  555: 	my ($epoch) = @_;
-</span><span class="">  556: 
-</span><span class="">  557: 	my @t = gmtime(defined $epoch ? $epoch : time);
-</span><span class="">  558: 	return sprintf(&#39;%04d%02d%02dT%02d%02d%02dZ&#39;,
-</span><span class="">  559: 		$t[5] + 1900, $t[4] + 1, $t[3], $t[2], $t[1], $t[0]);
-</span><span class="">  560: }
-</span><span class="">  561: 
-</span><span class="">  562: =head2 split_name
+</span><span class="">  554: =cut
+</span><span class="">  555: 
+</span><span class="">  556: sub format_utc {
+</span><span class="">  557: 	my ($epoch) = @_;
+</span><span class="">  558: 
+</span><span class="">  559: 	my @t = gmtime(defined $epoch ? $epoch : time);
+</span><span class="">  560: 	return sprintf(&#39;%04d%02d%02dT%02d%02d%02dZ&#39;,
+</span><span class="">  561: 		$t[5] + 1900, $t[4] + 1, $t[3], $t[2], $t[1], $t[0]);
+</span><span class="">  562: }
 </span><span class="">  563: 
-</span><span class="">  564: Purpose: split a relative path into directory, stem and extension.
+</span><span class="">  564: =head2 split_name
 </span><span class="">  565: 
-</span><span class="">  566: Args: C&lt;$path&gt;.
+</span><span class="">  566: Purpose: split a relative path into directory, stem and extension.
 </span><span class="">  567: 
-</span><span class="">  568: Returns: an arrayref C&lt;[ $dir, $stem, $ext ]&gt;; C&lt;$dir&gt; has no trailing slash
-</span><span class="">  569: and is empty at the top level, C&lt;$ext&gt; includes its dot and is empty when there
-</span><span class="">  570: is none.  A leading dot (C&lt;.profile&gt;) is part of the stem.
-</span><span class="">  571: 
-</span><span class="">  572: Side Effects: none.
+</span><span class="">  568: Args: C&lt;$path&gt;.
+</span><span class="">  569: 
+</span><span class="">  570: Returns: an arrayref C&lt;[ $dir, $stem, $ext ]&gt;; C&lt;$dir&gt; has no trailing slash
+</span><span class="">  571: and is empty at the top level, C&lt;$ext&gt; includes its dot and is empty when there
+</span><span class="">  572: is none.  A leading dot (C&lt;.profile&gt;) is part of the stem.
 </span><span class="">  573: 
-</span><span class="">  574: Usage:
+</span><span class="">  574: Side Effects: none.
 </span><span class="">  575: 
-</span><span class="">  576: 	my ($dir, $stem, $ext) = @{ split_name(&#39;a/b/report.txt&#39;) };
+</span><span class="">  576: Usage:
 </span><span class="">  577: 
-</span><span class="">  578: =head3 EXAMPLE
+</span><span class="">  578: 	my ($dir, $stem, $ext) = @{ split_name(&#39;a/b/report.txt&#39;) };
 </span><span class="">  579: 
-</span><span class="">  580: 	my $parts = split_name(&#39;notes/plan.v2.txt&#39;);	# [&#39;notes&#39;, &#39;plan.v2&#39;, &#39;.txt&#39;]
+</span><span class="">  580: =head3 EXAMPLE
 </span><span class="">  581: 
-</span><span class="">  582: =head3 API SPECIFICATION
+</span><span class="">  582: 	my $parts = split_name(&#39;notes/plan.v2.txt&#39;);	# [&#39;notes&#39;, &#39;plan.v2&#39;, &#39;.txt&#39;]
 </span><span class="">  583: 
-</span><span class="">  584: =head4 INPUT
+</span><span class="">  584: =head3 API SPECIFICATION
 </span><span class="">  585: 
-</span><span class="">  586: 	[ { name =&gt; &#39;path&#39;, type =&gt; &#39;string&#39;, min =&gt; 1 } ]
+</span><span class="">  586: =head4 INPUT
 </span><span class="">  587: 
-</span><span class="">  588: =head4 OUTPUT
+</span><span class="">  588: 	[ { name =&gt; &#39;path&#39;, type =&gt; &#39;string&#39;, min =&gt; 1 } ]
 </span><span class="">  589: 
-</span><span class="">  590: 	{ type =&gt; &#39;arrayref&#39;, min =&gt; 3, max =&gt; 3 }
+</span><span class="">  590: =head4 OUTPUT
 </span><span class="">  591: 
-</span><span class="">  592: =head3 MESSAGES
+</span><span class="">  592: 	{ type =&gt; &#39;arrayref&#39;, min =&gt; 3, max =&gt; 3 }
 </span><span class="">  593: 
-</span><span class="">  594: None.
+</span><span class="">  594: =head3 MESSAGES
 </span><span class="">  595: 
-</span><span class="">  596: =head3 FORMAL SPECIFICATION
+</span><span class="">  596: None.
 </span><span class="">  597: 
-</span><span class="">  598: 	split_name(p) = (d, s, e) where p = d &acirc;&#129;&#128; &quot;/&quot; &acirc;&#129;&#128; s &acirc;&#129;&#128; e &acirc;&#136;&uml; (d = &acirc;&#159;&uml;&acirc;&#159;&copy; &acirc;&#136;&sect; p = s &acirc;&#129;&#128; e)
-</span><span class="">  599: 	                e = &acirc;&#159;&uml;&acirc;&#159;&copy; &acirc;&#136;&uml; (head e = &#39;.&#39; &acirc;&#136;&sect; &#39;.&#39; &acirc;&#136;&#137; ran(tail e)) ; s &acirc;&#137;&nbsp; &acirc;&#159;&uml;&acirc;&#159;&copy;
-</span><span class="">  600: 
-</span><span class="">  601: =cut
+</span><span class="">  598: =head3 FORMAL SPECIFICATION
+</span><span class="">  599: 
+</span><span class="">  600: 	split_name(p) = (d, s, e) where p = d &acirc;&#129;&#128; &quot;/&quot; &acirc;&#129;&#128; s &acirc;&#129;&#128; e &acirc;&#136;&uml; (d = &acirc;&#159;&uml;&acirc;&#159;&copy; &acirc;&#136;&sect; p = s &acirc;&#129;&#128; e)
+</span><span class="">  601: 	                e = &acirc;&#159;&uml;&acirc;&#159;&copy; &acirc;&#136;&uml; (head e = &#39;.&#39; &acirc;&#136;&sect; &#39;.&#39; &acirc;&#136;&#137; ran(tail e)) ; s &acirc;&#137;&nbsp; &acirc;&#159;&uml;&acirc;&#159;&copy;
 </span><span class="">  602: 
-</span><span class="">  603: sub split_name {
-</span><span class="">  604: 	my ($path) = @_;
-</span><span class="">  605: 
-</span><span class="">  606: 	my ($dir, $base) = $path =~ m{\A(.*)/([^/]+)\z} ? ($1, $2) : (&#39;&#39;, $path);
-</span><span class="">  607: 	my ($stem, $ext) = $base =~ /\A(.+)(\.[^.]+)\z/ ? ($1, $2) : ($base, &#39;&#39;);
-</span><span class="">  608: 
-</span><span class="">  609: 	return [ $dir, $stem, $ext ];
-</span><span class="">  610: }
-</span><span class="">  611: 
-</span><span class="">  612: =head2 name_with_suffix
+</span><span class="">  603: =cut
+</span><span class="">  604: 
+</span><span class="">  605: sub split_name {
+</span><span class="">  606: 	my ($path) = @_;
+</span><span class="">  607: 
+</span><span class="">  608: 	my ($dir, $base) = $path =~ m{\A(.*)/([^/]+)\z} ? ($1, $2) : (&#39;&#39;, $path);
+</span><span class="">  609: 	my ($stem, $ext) = $base =~ /\A(.+)(\.[^.]+)\z/ ? ($1, $2) : ($base, &#39;&#39;);
+</span><span class="">  610: 
+</span><span class="">  611: 	return [ $dir, $stem, $ext ];
+</span><span class="">  612: }
 </span><span class="">  613: 
-</span><span class="">  614: Purpose: make a name unique by numbering it before its extension.
+</span><span class="">  614: =head2 name_with_suffix
 </span><span class="">  615: 
-</span><span class="">  616: Args: C&lt;$path&gt;, C&lt;$suffix&gt; (a number).
+</span><span class="">  616: Purpose: make a name unique by numbering it before its extension.
 </span><span class="">  617: 
-</span><span class="">  618: Returns: C&lt;report-2.txt&gt; for C&lt;report.txt&gt; and 2, keeping the directory.
+</span><span class="">  618: Args: C&lt;$path&gt;, C&lt;$suffix&gt; (a number).
 </span><span class="">  619: 
-</span><span class="">  620: Side Effects: none.
+</span><span class="">  620: Returns: C&lt;report-2.txt&gt; for C&lt;report.txt&gt; and 2, keeping the directory.
 </span><span class="">  621: 
-</span><span class="">  622: Usage:
+</span><span class="">  622: Side Effects: none.
 </span><span class="">  623: 
-</span><span class="">  624: 	my $candidate = name_with_suffix($loser_name, $n);
+</span><span class="">  624: Usage:
 </span><span class="">  625: 
-</span><span class="">  626: =head3 EXAMPLE
+</span><span class="">  626: 	my $candidate = name_with_suffix($loser_name, $n);
 </span><span class="">  627: 
-</span><span class="">  628: 	print name_with_suffix(&#39;a/b.txt&#39;, 3), &quot;\n&quot;;	# a/b-3.txt
+</span><span class="">  628: =head3 EXAMPLE
 </span><span class="">  629: 
-</span><span class="">  630: =head3 API SPECIFICATION
+</span><span class="">  630: 	print name_with_suffix(&#39;a/b.txt&#39;, 3), &quot;\n&quot;;	# a/b-3.txt
 </span><span class="">  631: 
-</span><span class="">  632: =head4 INPUT
+</span><span class="">  632: =head3 API SPECIFICATION
 </span><span class="">  633: 
-</span><span class="">  634: 	[
-</span><span class="">  635: 		{ name =&gt; &#39;path&#39;,   type =&gt; &#39;string&#39;, min =&gt; 1 },
-</span><span class="">  636: 		{ name =&gt; &#39;suffix&#39;, type =&gt; &#39;integer&#39;, min =&gt; 1 },
-</span><span class="">  637: 	]
-</span><span class="">  638: 
-</span><span class="">  639: =head4 OUTPUT
+</span><span class="">  634: =head4 INPUT
+</span><span class="">  635: 
+</span><span class="">  636: 	[
+</span><span class="">  637: 		{ name =&gt; &#39;path&#39;,   type =&gt; &#39;string&#39;, min =&gt; 1 },
+</span><span class="">  638: 		{ name =&gt; &#39;suffix&#39;, type =&gt; &#39;integer&#39;, min =&gt; 1 },
+</span><span class="">  639: 	]
 </span><span class="">  640: 
-</span><span class="">  641: 	{ type =&gt; &#39;string&#39;, min =&gt; 1 }
+</span><span class="">  641: =head4 OUTPUT
 </span><span class="">  642: 
-</span><span class="">  643: =head3 MESSAGES
+</span><span class="">  643: 	{ type =&gt; &#39;string&#39;, min =&gt; 1 }
 </span><span class="">  644: 
-</span><span class="">  645: None.
+</span><span class="">  645: =head3 MESSAGES
 </span><span class="">  646: 
-</span><span class="">  647: =head3 FORMAL SPECIFICATION
+</span><span class="">  647: None.
 </span><span class="">  648: 
-</span><span class="">  649: 	let (d, s, e) = split_name(p)
-</span><span class="">  650: 	name_with_suffix(p, n) = join(d, s &acirc;&#129;&#128; &quot;-&quot; &acirc;&#129;&#128; n &acirc;&#129;&#128; e)
-</span><span class="">  651: 
-</span><span class="">  652: =cut
+</span><span class="">  649: =head3 FORMAL SPECIFICATION
+</span><span class="">  650: 
+</span><span class="">  651: 	let (d, s, e) = split_name(p)
+</span><span class="">  652: 	name_with_suffix(p, n) = join(d, s &acirc;&#129;&#128; &quot;-&quot; &acirc;&#129;&#128; n &acirc;&#129;&#128; e)
 </span><span class="">  653: 
-</span><span class="">  654: sub name_with_suffix {
-</span><span class="">  655: 	my ($path, $suffix) = @_;
-</span><span class="">  656: 
-</span><span class="">  657: 	my ($dir, $stem, $ext) = @{ split_name($path) };
-</span><span class="">  658: 	return _join_dir($dir, &quot;$stem-$suffix$ext&quot;);
-</span><span class="">  659: }
-</span><span class="">  660: 
-</span><span class="">  661: =head2 conflict_name
+</span><span class="">  654: =cut
+</span><span class="">  655: 
+</span><span class="">  656: sub name_with_suffix {
+</span><span class="">  657: 	my ($path, $suffix) = @_;
+</span><span class="">  658: 
+</span><span class="">  659: 	my ($dir, $stem, $ext) = @{ split_name($path) };
+</span><span class="">  660: 	return _join_dir($dir, &quot;$stem-$suffix$ext&quot;);
+</span><span class="">  661: }
 </span><span class="">  662: 
-</span><span class="">  663: Purpose: the name a losing version is kept under.
+</span><span class="">  663: =head2 conflict_name
 </span><span class="">  664: 
-</span><span class="">  665: Args: C&lt;$path&gt;, C&lt;$client_id&gt; (may be undef), C&lt;$epoch&gt; (default now).
+</span><span class="">  665: Purpose: the name a losing version is kept under.
 </span><span class="">  666: 
-</span><span class="">  667: Returns: the original name with C&lt;.conflict-CLIENT-TIMESTAMP&gt; inserted before
-</span><span class="">  668: the extension, kept within 200 bytes so it fits common filesystems.
-</span><span class="">  669: 
-</span><span class="">  670: Side Effects: none.
+</span><span class="">  667: Args: C&lt;$path&gt;, C&lt;$client_id&gt; (may be undef), C&lt;$epoch&gt; (default now).
+</span><span class="">  668: 
+</span><span class="">  669: Returns: the original name with C&lt;.conflict-CLIENT-TIMESTAMP&gt; inserted before
+</span><span class="">  670: the extension, kept within 200 bytes so it fits common filesystems.
 </span><span class="">  671: 
-</span><span class="">  672: Usage:
+</span><span class="">  672: Side Effects: none.
 </span><span class="">  673: 
-</span><span class="">  674: 	my $name = conflict_name(&#39;notes.txt&#39;, &#39;laptop-1&#39;, time);
+</span><span class="">  674: Usage:
 </span><span class="">  675: 
-</span><span class="">  676: =head3 EXAMPLE
+</span><span class="">  676: 	my $name = conflict_name(&#39;notes.txt&#39;, &#39;laptop-1&#39;, time);
 </span><span class="">  677: 
-</span><span class="">  678: 	print conflict_name(&#39;report.txt&#39;, &#39;laptop-1&#39;, 1_792_664_100), &quot;\n&quot;;
-</span><span class="">  679: 	# report.conflict-laptop-1-20261022T101500Z.txt
-</span><span class="">  680: 
-</span><span class="">  681: =head3 API SPECIFICATION
+</span><span class="">  678: =head3 EXAMPLE
+</span><span class="">  679: 
+</span><span class="">  680: 	print conflict_name(&#39;report.txt&#39;, &#39;laptop-1&#39;, 1_792_664_100), &quot;\n&quot;;
+</span><span class="">  681: 	# report.conflict-laptop-1-20261022T101500Z.txt
 </span><span class="">  682: 
-</span><span class="">  683: =head4 INPUT
+</span><span class="">  683: =head3 API SPECIFICATION
 </span><span class="">  684: 
-</span><span class="">  685: 	[
-</span><span class="">  686: 		{ name =&gt; &#39;path&#39;,      type =&gt; &#39;string&#39;, min =&gt; 1 },
-</span><span class="">  687: 		{ name =&gt; &#39;client_id&#39;, type =&gt; &#39;string&#39;, optional =&gt; 1 },
-</span><span class="">  688: 		{ name =&gt; &#39;epoch&#39;,     type =&gt; &#39;number&#39;, optional =&gt; 1 },
-</span><span class="">  689: 	]
-</span><span class="">  690: 
-</span><span class="">  691: =head4 OUTPUT
+</span><span class="">  685: =head4 INPUT
+</span><span class="">  686: 
+</span><span class="">  687: 	[
+</span><span class="">  688: 		{ name =&gt; &#39;path&#39;,      type =&gt; &#39;string&#39;, min =&gt; 1 },
+</span><span class="">  689: 		{ name =&gt; &#39;client_id&#39;, type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  690: 		{ name =&gt; &#39;epoch&#39;,     type =&gt; &#39;number&#39;, optional =&gt; 1 },
+</span><span class="">  691: 	]
 </span><span class="">  692: 
-</span><span class="">  693: 	{ type =&gt; &#39;string&#39;, min =&gt; 1 }
+</span><span class="">  693: =head4 OUTPUT
 </span><span class="">  694: 
-</span><span class="">  695: =head3 MESSAGES
+</span><span class="">  695: 	{ type =&gt; &#39;string&#39;, min =&gt; 1 }
 </span><span class="">  696: 
-</span><span class="">  697: None.
+</span><span class="">  697: =head3 MESSAGES
 </span><span class="">  698: 
-</span><span class="">  699: =head3 FORMAL SPECIFICATION
+</span><span class="">  699: None.
 </span><span class="">  700: 
-</span><span class="">  701: 	let (d, s, e) = split_name(p) ; id = sanitise(c) ; t = format_utc(when)
-</span><span class="">  702: 	let room = max(16, 200 &acirc;&#136;&#146; #(&quot;.conflict-&quot; &acirc;&#129;&#128; id &acirc;&#129;&#128; &quot;-&quot; &acirc;&#129;&#128; t &acirc;&#129;&#128; e))
-</span><span class="">  703: 	conflict_name(p, c, when) = join(d, s[1..room] &acirc;&#129;&#128; &quot;.conflict-&quot; &acirc;&#129;&#128; id &acirc;&#129;&#128; &quot;-&quot; &acirc;&#129;&#128; t &acirc;&#129;&#128; e)
-</span><span class="">  704: 
-</span><span class="">  705: =cut
+</span><span class="">  701: =head3 FORMAL SPECIFICATION
+</span><span class="">  702: 
+</span><span class="">  703: 	let (d, s, e) = split_name(p) ; id = sanitise(c) ; t = format_utc(when)
+</span><span class="">  704: 	let room = max(16, 200 &acirc;&#136;&#146; #(&quot;.conflict-&quot; &acirc;&#129;&#128; id &acirc;&#129;&#128; &quot;-&quot; &acirc;&#129;&#128; t &acirc;&#129;&#128; e))
+</span><span class="">  705: 	conflict_name(p, c, when) = join(d, s[1..room] &acirc;&#129;&#128; &quot;.conflict-&quot; &acirc;&#129;&#128; id &acirc;&#129;&#128; &quot;-&quot; &acirc;&#129;&#128; t &acirc;&#129;&#128; e)
 </span><span class="">  706: 
-</span><span class="">  707: sub conflict_name {
-</span><span class="">  708: 	my ($path, $client_id, $epoch) = @_;
-</span><span class="">  709: 
-</span><span class="">  710: 	my ($dir, $stem, $ext) = @{ split_name($path) };
+</span><span class="">  707: =cut
+</span><span class="">  708: 
+</span><span class="">  709: sub conflict_name {
+</span><span class="">  710: 	my ($path, $client_id, $epoch) = @_;
 </span><span class="">  711: 
-</span><span class="">  712: 	# The id lands in a file name, so anything outside the id alphabet is
-</span><span class="">  713: 	# flattened rather than trusted.
-</span><span class="">  714: 	my $id = defined $client_id ? $client_id : $UNKNOWN_CLIENT;
-</span><span class="">  715: 	$id =~ s/[^A-Za-z0-9._-]+/_/g;
-</span><span class="">  716: 	$id = $UNKNOWN_CLIENT unless length $id;
-</span><span class="">  717: 
-</span><span class="">  718: 	my $tail = &quot;.conflict-$id-&quot; . format_utc($epoch) . $ext;
+</span><span class="">  712: 	my ($dir, $stem, $ext) = @{ split_name($path) };
+</span><span class="">  713: 
+</span><span class="">  714: 	# The id lands in a file name, so anything outside the id alphabet is
+</span><span class="">  715: 	# flattened rather than trusted.
+</span><span class="">  716: 	my $id = defined $client_id ? $client_id : $UNKNOWN_CLIENT;
+</span><span class="">  717: 	$id =~ s/[^A-Za-z0-9._-]+/_/g;
+</span><span class="">  718: 	$id = $UNKNOWN_CLIENT unless length $id;
 </span><span class="">  719: 
-</span><span class="">  720: 	# Keep the whole name inside the 255-byte limit of common filesystems.
-</span><span class="">  721: 	my $room = $CONFLICT_NAME_BYTES - length($tail);
-</span><span class="">  722: 	$room = $MIN_STEM_BYTES if $room &lt; $MIN_STEM_BYTES;
-</span><span class="">  723: 	$stem = substr($stem, 0, $room) if length($stem) &gt; $room;
-</span><span class="">  724: 
-</span><span class="">  725: 	return _join_dir($dir, $stem . $tail);
-</span><span class="">  726: }
-</span><span class="">  727: 
-</span><span class="">  728: # _join_dir
-</span><span class="">  729: # Purpose:     put a relative directory and a name back together.
-</span><span class="">  730: # Entry:       $dir may be empty (top level).
-</span><span class="">  731: # Exit:        returns &quot;dir/name&quot; or &quot;name&quot;.
-</span><span class="">  732: # Side effects: none.
-</span><span class="">  733: sub _join_dir :Private {
-</span><span class="">  734: 	my ($dir, $name) = @_;
-</span><span class="">  735: 
-</span><span class="">  736: 	return length($dir) ? &quot;$dir/$name&quot; : $name;
-</span><span class="">  737: }
-</span><span class="">  738: 
-</span><span class="">  739: =head2 write_atomic
+</span><span class="">  720: 	my $tail = &quot;.conflict-$id-&quot; . format_utc($epoch) . $ext;
+</span><span class="">  721: 
+</span><span class="">  722: 	# Keep the whole name inside the 255-byte limit of common filesystems.
+</span><span class="">  723: 	my $room = $CONFLICT_NAME_BYTES - length($tail);
+</span><span class="">  724: 	$room = $MIN_STEM_BYTES if $room &lt; $MIN_STEM_BYTES;
+</span><span class="">  725: 	$stem = substr($stem, 0, $room) if length($stem) &gt; $room;
+</span><span class="">  726: 
+</span><span class="">  727: 	return _join_dir($dir, $stem . $tail);
+</span><span class="">  728: }
+</span><span class="">  729: 
+</span><span class="">  730: # _join_dir
+</span><span class="">  731: # Purpose:     put a relative directory and a name back together.
+</span><span class="">  732: # Entry:       $dir may be empty (top level).
+</span><span class="">  733: # Exit:        returns &quot;dir/name&quot; or &quot;name&quot;.
+</span><span class="">  734: # Side effects: none.
+</span><span class="">  735: sub _join_dir :Private {
+</span><span class="">  736: 	my ($dir, $name) = @_;
+</span><span class="">  737: 
+</span><span class="">  738: 	return length($dir) ? &quot;$dir/$name&quot; : $name;
+</span><span class="">  739: }
 </span><span class="">  740: 
-</span><span class="">  741: =head2 read_text
+</span><span class="">  741: =head2 write_atomic
 </span><span class="">  742: 
-</span><span class="">  743: =head2 set_mtime
+</span><span class="">  743: Documented with L&lt;/set_mtime&gt; below.
 </span><span class="">  744: 
-</span><span class="">  745: Re-exported from L&lt;App::FileSync::IO&gt;, where they are documented.
+</span><span class="">  745: =head2 read_text
 </span><span class="">  746: 
-</span><span class="">  747: =cut
+</span><span class="">  747: Documented with L&lt;/set_mtime&gt; below.
 </span><span class="">  748: 
-</span><span class="">  749: 1;
+</span><span class="">  749: =head2 set_mtime
 </span><span class="">  750: 
-</span><span class="">  751: __END__
+</span><span class="">  751: Re-exported from L&lt;App::FileSync::IO&gt;, where they are documented.
 </span><span class="">  752: 
-</span><span class="">  753: =head1 EXAMPLES
+</span><span class="">  753: =cut
 </span><span class="">  754: 
-</span><span class="">  755: On the server, create the master copy and allow the client once.  Then, on each
-</span><span class="">  756: client, register the directory and add a cron entry that runs every minute:
-</span><span class="">  757: 
-</span><span class="">  758:     # once, on the client
-</span><span class="">  759:     filesync init --repo documents --root /home/foo/Documents --server srv
+</span><span class="">  755: 1;
+</span><span class="">  756: 
+</span><span class="">  757: __END__
+</span><span class="">  758: 
+</span><span class="">  759: =head1 EXAMPLES
 </span><span class="">  760: 
-</span><span class="">  761:     # crontab -e, for foo on each client
-</span><span class="">  762:     * * * * * /usr/local/bin/filesync sync --repo documents --quiet &gt;/dev/null
+</span><span class="">  761: On the server, create the master copy and allow the client once.  Then, on each
+</span><span class="">  762: client, register the directory and add a cron entry that runs every minute:
 </span><span class="">  763: 
-</span><span class="">  764: The summary line is dropped so cron does not mail on every successful run;
-</span><span class="">  765: diagnostics still go to standard error, so a failure is mailed.  Every attempt,
-</span><span class="">  766: successful or not, is also appended to F&lt;~/.filesync/logs/documents.jsonl&gt;, and
-</span><span class="">  767: C&lt;filesync log --repo documents --exit 1&gt; lists the ones that failed.
-</span><span class="">  768: 
-</span><span class="">  769: Windows clients use a scheduled task rather than cron.  With the script in
-</span><span class="">  770: F&lt;C:\filesync&gt; and Strawberry Perl installed, the same job is set up from a
-</span><span class="">  771: command prompt:
-</span><span class="">  772: 
-</span><span class="">  773:     REM once, on the client
-</span><span class="">  774:     C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync init ^
-</span><span class="">  775:       --repo documents --root C:\Users\foo\Documents --server srv
-</span><span class="">  776: 
-</span><span class="">  777:     REM then create the task; it runs every minute as the current user
-</span><span class="">  778:     schtasks /Create /SC MINUTE /MO 1 /TN FileSync /F ^
-</span><span class="">  779:       /TR &quot;C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync sync --repo documents --quiet&quot;
-</span><span class="">  780: 
-</span><span class="">  781: The task runs only while that user is logged on, which suits a Documents
-</span><span class="">  782: folder; its run log is still written under F&lt;%USERPROFILE%\.filesync\logs&gt;, so
-</span><span class="">  783: C&lt;filesync log --repo documents --warnings&gt; works there too.
-</span><span class="">  784: 
-</span><span class="">  785: The master copy on the server is an ordinary directory tree, so it can be
-</span><span class="">  786: mirrored to a backup directory from the same crontab:
-</span><span class="">  787: 
-</span><span class="">  788:     # crontab -e, for foo on the server
-</span><span class="">  789:     * * * * * rsync -a --delete --exclude &#39;.filesync-tmp-*&#39; \
-</span><span class="">  790:         /home/foo/FileSync/ /home/foo/backups/FileSync/
-</span><span class="">  791: 
-</span><span class="">  792: Filesync writes each file to a temporary name and renames it into place, so the
-</span><span class="">  793: mirror never catches a half-written upload; the exclusion keeps the temporary
-</span><span class="">  794: files themselves out of the backup.  C&lt;--delete&gt; makes the copy a mirror: a
-</span><span class="">  795: deletion that reaches the master also removes the backed-up file.
-</span><span class="">  796: 
-</span><span class="">  797: To restore the master from that backup, stop the client jobs (comment out their
-</span><span class="">  798: cron lines, or disable the scheduled task) and the server&#39;s backup job, so the
-</span><span class="">  799: backup job cannot copy a half-restored tree back into the backup.  Let any
-</span><span class="">  800: running sync finish, then mirror the backup back:
-</span><span class="">  801: 
-</span><span class="">  802:     rsync -a --delete --checksum /home/foo/backups/FileSync/ /home/foo/FileSync/
-</span><span class="">  803: 
-</span><span class="">  804: C&lt;--checksum&gt; compares the contents, so a restored file is not skipped just
-</span><span class="">  805: because its size and modification time happen to match the newer copy.  This is
-</span><span class="">  806: a rollback rather than a merge: files created after the backup was taken
-</span><span class="">  807: disappear from the master, and the next sync propagates that to the clients, so
-</span><span class="">  808: copy anything you need to keep out of the tree first.  The server
-</span><span class="">  809: would rehash the restored files on the next session anyway, but
-</span><span class="">  810: C&lt;filesync-admin reindex&gt; rebuilds the index immediately, before any client
-</span><span class="">  811: reconnects; clients then pull the restored versions, merging edits they have not
-</span><span class="">  812: synced as usual.
-</span><span class="">  813: 
-</span><span class="">  814: Before re-enabling the jobs, check that the copy is exact with a read-only
-</span><span class="">  815: comparison against the backup:
-</span><span class="">  816: 
-</span><span class="">  817:     rsync -a --delete --checksum --dry-run --itemize-changes \
-</span><span class="">  818:         /home/foo/backups/FileSync/ /home/foo/FileSync/
+</span><span class="">  764: 	# once, on the client
+</span><span class="">  765: 	filesync init --repo documents --root /home/foo/Documents --server srv
+</span><span class="">  766: 
+</span><span class="">  767: 	# crontab -e, for foo on each client
+</span><span class="">  768: 	* * * * * /usr/local/bin/filesync sync --repo documents --quiet &gt;/dev/null
+</span><span class="">  769: 
+</span><span class="">  770: The summary line is dropped so cron does not mail on every successful run;
+</span><span class="">  771: diagnostics still go to standard error, so a failure is mailed.  Every attempt,
+</span><span class="">  772: successful or not, is also appended to F&lt;~/.filesync/logs/documents.jsonl&gt;, and
+</span><span class="">  773: C&lt;filesync log --repo documents --exit 1&gt; lists the ones that failed.
+</span><span class="">  774: 
+</span><span class="">  775: Windows clients use a scheduled task rather than cron.  With the script in
+</span><span class="">  776: F&lt;C:\filesync&gt; and Strawberry Perl installed, the same job is set up from a
+</span><span class="">  777: command prompt:
+</span><span class="">  778: 
+</span><span class="">  779: 	REM once, on the client
+</span><span class="">  780: 	C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync init ^
+</span><span class="">  781: 	  --repo documents --root C:\Users\foo\Documents --server srv
+</span><span class="">  782: 
+</span><span class="">  783: 	REM then create the task; it runs every minute as the current user
+</span><span class="">  784: 	schtasks /Create /SC MINUTE /MO 1 /TN FileSync /F ^
+</span><span class="">  785: 	  /TR &quot;C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync sync --repo documents --quiet&quot;
+</span><span class="">  786: 
+</span><span class="">  787: The task runs only while that user is logged on, which suits a Documents
+</span><span class="">  788: folder; its run log is still written under F&lt;%USERPROFILE%\.filesync\logs&gt;, so
+</span><span class="">  789: C&lt;filesync log --repo documents --warnings&gt; works there too.
+</span><span class="">  790: 
+</span><span class="">  791: The master copy on the server is an ordinary directory tree, so it can be
+</span><span class="">  792: mirrored to a backup directory from the same crontab:
+</span><span class="">  793: 
+</span><span class="">  794: 	# crontab -e, for foo on the server
+</span><span class="">  795: 	* * * * * rsync -a --delete --exclude &#39;.filesync-tmp-*&#39; \
+</span><span class="">  796: 	    /home/foo/FileSync/ /home/foo/backups/FileSync/
+</span><span class="">  797: 
+</span><span class="">  798: Filesync writes each file to a temporary name and renames it into place, so the
+</span><span class="">  799: mirror never catches a half-written upload; the exclusion keeps the temporary
+</span><span class="">  800: files themselves out of the backup.  C&lt;--delete&gt; makes the copy a mirror: a
+</span><span class="">  801: deletion that reaches the master also removes the backed-up file.
+</span><span class="">  802: 
+</span><span class="">  803: To restore the master from that backup, stop the client jobs (comment out their
+</span><span class="">  804: cron lines, or disable the scheduled task) and the server&#39;s backup job, so the
+</span><span class="">  805: backup job cannot copy a half-restored tree back into the backup.  Let any
+</span><span class="">  806: running sync finish, then mirror the backup back:
+</span><span class="">  807: 
+</span><span class="">  808: 	rsync -a --delete --checksum /home/foo/backups/FileSync/ /home/foo/FileSync/
+</span><span class="">  809: 
+</span><span class="">  810: C&lt;--checksum&gt; compares the contents, so a restored file is not skipped just
+</span><span class="">  811: because its size and modification time happen to match the newer copy.  This is
+</span><span class="">  812: a rollback rather than a merge: files created after the backup was taken
+</span><span class="">  813: disappear from the master, and the next sync propagates that to the clients, so
+</span><span class="">  814: copy anything you need to keep out of the tree first.  The server
+</span><span class="">  815: would rehash the restored files on the next session anyway, but
+</span><span class="">  816: C&lt;filesync-admin reindex&gt; rebuilds the index immediately, before any client
+</span><span class="">  817: reconnects; clients then pull the restored versions, merging edits they have not
+</span><span class="">  818: synced as usual.
 </span><span class="">  819: 
-</span><span class="">  820: No output and exit 0 mean the master matches the backup.  Any line beginning
-</span><span class="">  821: C&lt;&lt; &gt;f &gt;&gt; names a path that still differs, and C&lt;*deleting&gt; names one the
-</span><span class="">  822: rollback should have removed.  The index still describes the pre-rollback tree,
-</span><span class="">  823: so C&lt;filesync-admin verify&gt; may report drift at this point; that is expected.
-</span><span class="">  824: Rebuild it and check it:
+</span><span class="">  820: Before re-enabling the jobs, check that the copy is exact with a read-only
+</span><span class="">  821: comparison against the backup:
+</span><span class="">  822: 
+</span><span class="">  823: 	rsync -a --delete --checksum --dry-run --itemize-changes \
+</span><span class="">  824: 	    /home/foo/backups/FileSync/ /home/foo/FileSync/
 </span><span class="">  825: 
-</span><span class="">  826:     sudo -u filesync filesync-admin reindex documents
-</span><span class="">  827:     sudo -u filesync filesync-admin verify documents --deep
-</span><span class="">  828: 
-</span><span class="">  829: C&lt;reindex&gt; hashes every file in the master and replaces the index atomically; it
-</span><span class="">  830: refuses to run while a sync session holds the repo lock, and it names any paths
-</span><span class="">  831: it could not index.  C&lt;clean&gt; and exit 0 from C&lt;verify&gt; confirm that the master
-</span><span class="">  832: and its index agree.  Re-enable the jobs once that check passes.
-</span><span class="">  833: 
-</span><span class="">  834: To restore just one file or directory, copy that path back instead of mirroring
-</span><span class="">  835: the whole tree, with the jobs paused as above so nothing changes the tree while
-</span><span class="">  836: the copy runs:
-</span><span class="">  837: 
-</span><span class="">  838:     rsync -a --checksum /home/foo/backups/FileSync/notes/plan.txt /home/foo/FileSync/notes/
-</span><span class="">  839:     rsync -a --checksum /home/foo/backups/FileSync/photos/ /home/foo/FileSync/photos/
-</span><span class="">  840: 
-</span><span class="">  841: The trailing slash on the second source copies the directory&#39;s contents; without
-</span><span class="">  842: it rsync would put the directory itself inside the destination.  Add C&lt;--delete&gt;
-</span><span class="">  843: only when that directory should match the backup exactly, since it removes files
-</span><span class="">  844: created after the backup was taken.  Everything outside the restored paths is
-</span><span class="">  845: left alone; refresh the index with C&lt;reindex&gt; as above, or let the next session
-</span><span class="">  846: do it, and clients pull the restored versions.  Check the restored paths with the
-</span><span class="">  847: matching C&lt;rsync --dry-run --itemize-changes&gt; comparison before re-enabling the
-</span><span class="">  848: jobs; no output means they match the backup.
-</span><span class="">  849: 
-</span><span class="">  850: Adjust F&lt;/usr/local/bin/filesync&gt; to where the script was installed, because
-</span><span class="">  851: cron&#39;s default PATH rarely includes a per-user Perl bin directory.
-</span><span class="">  852: 
-</span><span class="">  853: =head1 LIMITATIONS
-</span><span class="">  854: 
-</span><span class="">  855: These are the design weaknesses a reviewer should weigh before relying on the
-</span><span class="">  856: tool.  None of them loses data silently; most cost time or space.
-</span><span class="">  857: 
-</span><span class="">  858: =over 4
-</span><span class="">  859: 
-</span><span class="">  860: =item * B&lt;One master.&gt;  The topology is a star around one server.  The replica
-</span><span class="">  861: is a pull-only mirror, not a failover: if the server is lost, clients stop
-</span><span class="">  862: until an administrator points them at a rebuilt master.
+</span><span class="">  826: No output and exit 0 mean the master matches the backup.  Any line beginning
+</span><span class="">  827: C&lt;&lt; &gt;f &gt;&gt; names a path that still differs, and C&lt;*deleting&gt; names one the
+</span><span class="">  828: rollback should have removed.  The index still describes the pre-rollback tree,
+</span><span class="">  829: so C&lt;filesync-admin verify&gt; may report drift at this point; that is expected.
+</span><span class="">  830: Rebuild it and check it:
+</span><span class="">  831: 
+</span><span class="">  832: 	sudo -u filesync filesync-admin reindex documents
+</span><span class="">  833: 	sudo -u filesync filesync-admin verify documents --deep
+</span><span class="">  834: 
+</span><span class="">  835: C&lt;reindex&gt; hashes every file in the master and replaces the index atomically; it
+</span><span class="">  836: refuses to run while a sync session holds the repo lock, and it names any paths
+</span><span class="">  837: it could not index.  C&lt;clean&gt; and exit 0 from C&lt;verify&gt; confirm that the master
+</span><span class="">  838: and its index agree.  Re-enable the jobs once that check passes.
+</span><span class="">  839: 
+</span><span class="">  840: To restore just one file or directory, copy that path back instead of mirroring
+</span><span class="">  841: the whole tree, with the jobs paused as above so nothing changes the tree while
+</span><span class="">  842: the copy runs:
+</span><span class="">  843: 
+</span><span class="">  844: 	rsync -a --checksum /home/foo/backups/FileSync/notes/plan.txt /home/foo/FileSync/notes/
+</span><span class="">  845: 	rsync -a --checksum /home/foo/backups/FileSync/photos/ /home/foo/FileSync/photos/
+</span><span class="">  846: 
+</span><span class="">  847: The trailing slash on the second source copies the directory&#39;s contents; without
+</span><span class="">  848: it rsync would put the directory itself inside the destination.  Add C&lt;--delete&gt;
+</span><span class="">  849: only when that directory should match the backup exactly, since it removes files
+</span><span class="">  850: created after the backup was taken.  Everything outside the restored paths is
+</span><span class="">  851: left alone; refresh the index with C&lt;reindex&gt; as above, or let the next session
+</span><span class="">  852: do it, and clients pull the restored versions.  Check the restored paths with the
+</span><span class="">  853: matching C&lt;rsync --dry-run --itemize-changes&gt; comparison before re-enabling the
+</span><span class="">  854: jobs; no output means they match the backup.
+</span><span class="">  855: 
+</span><span class="">  856: Adjust F&lt;/usr/local/bin/filesync&gt; to where the script was installed, because
+</span><span class="">  857: cron&#39;s default PATH rarely includes a per-user Perl bin directory.
+</span><span class="">  858: 
+</span><span class="">  859: =head1 LIMITATIONS
+</span><span class="">  860: 
+</span><span class="">  861: These are the design weaknesses a reviewer should weigh before relying on the
+</span><span class="">  862: tool.  None of them loses data silently; most cost time or space.
 </span><span class="">  863: 
-</span><span class="">  864: =item * B&lt;Every run exchanges the whole manifest.&gt;  The client sends one entry
-</span><span class="">  865: per file and the server answers with the whole plan as a single JSON line, so
-</span><span class="">  866: a run costs O(files) in time, memory and bandwidth even when nothing changed.
-</span><span class="">  867: A tree of a million files means a plan message of the order of a hundred
-</span><span class="">  868: megabytes.  A change journal or Merkle summary would remove that, at the cost
-</span><span class="">  869: of the &quot;everything is inspectable with cat&quot; property.
-</span><span class="">  870: 
-</span><span class="">  871: =item * B&lt;No line-length cap on the wire.&gt;  Because of the previous point, a
-</span><span class="">  872: control message cannot be bounded without breaking large trees.  The peer is
-</span><span class="">  873: authenticated by ssh and pinned by the forced command, so this is a resource
-</span><span class="">  874: risk from a misbehaving client, not from the network.
-</span><span class="">  875: 
-</span><span class="">  876: =item * B&lt;Lock-step protocol.&gt;  One request is in flight at a time and each
-</span><span class="">  877: 256 KiB chunk waits for its acknowledgement, so throughput is bound by the
-</span><span class="">  878: round-trip time on a high-latency link.
-</span><span class="">  879: 
-</span><span class="">  880: =item * B&lt;Clock-dependent tie-breaks.&gt;  When both sides changed a file, the
-</span><span class="">  881: newer mtime wins (the master wins ties within 2 seconds).  A client with a
-</span><span class="">  882: wrong clock picks the wrong winner; the loser is still kept as a conflict copy.
-</span><span class="">  883: 
-</span><span class="">  884: =item * B&lt;No fsync.&gt;  Renames are atomic between processes but not durable
-</span><span class="">  885: across a power cut; see L&lt;App::FileSync::IO/LIMITATIONS&gt;.
-</span><span class="">  886: 
-</span><span class="">  887: =item * B&lt;Pure-Perl deltas are bounded.&gt;  Only the first 8 MiB after the
-</span><span class="">  888: unchanged prefix are scanned for moved blocks; later changes go as literals.
-</span><span class="">  889: See L&lt;App::FileSync::Delta&gt;.
-</span><span class="">  890: 
-</span><span class="">  891: =item * B&lt;What is not synced.&gt;  Symlinks, devices, sockets, extended attributes,
-</span><span class="">  892: ACLs and ownership.  Permission bits are carried only between POSIX systems.
-</span><span class="">  893: 
-</span><span class="">  894: =item * B&lt;Names.&gt;  Unicode normalisation is not reconciled, so the same name
-</span><span class="">  895: in NFC (Linux) and NFD (older macOS) is two different files.  A
-</span><span class="">  896: case-insensitive client cannot hold two master paths that differ only in case.
-</span><span class="">  897: 
-</span><span class="">  898: =item * B&lt;Encapsulation costs.&gt;  Private methods use L&lt;Sub::Private&gt; in
-</span><span class="">  899: C&lt;enforce&gt; mode, which costs about 1.4 microseconds per call (measured on
-</span><span class="">  900: 5.40).  Helpers that run per file or per JSON value (the merge comparisons,
-</span><span class="">  901: the JSON byte downgrade, the rolling checksum) are therefore lexical code
-</span><span class="">  902: references: private by scope, with no wrapper.  Both Sub::Private and
-</span><span class="">  903: L&lt;Sub::Protected&gt; are bypassed while C&lt;HARNESS_ACTIVE&gt; is set.
-</span><span class="">  904: 
-</span><span class="">  905: =item * B&lt;Validation costs.&gt;  L&lt;Params::Validate::Strict&gt; costs about 11
-</span><span class="">  906: microseconds per call, so it guards the public entry points that run a few
-</span><span class="">  907: times per command (constructors, admin and client operations).  Functions that
-</span><span class="">  908: run per path or per protocol frame (L&lt;/validate_relpath&gt;, the protocol
-</span><span class="">  909: methods, the scanner) check their arguments by hand.
+</span><span class="">  864: =over 4
+</span><span class="">  865: 
+</span><span class="">  866: =item * B&lt;One master.&gt;  The topology is a star around one server.  The replica
+</span><span class="">  867: is a pull-only mirror, not a failover: if the server is lost, clients stop
+</span><span class="">  868: until an administrator points them at a rebuilt master.
+</span><span class="">  869: 
+</span><span class="">  870: =item * B&lt;Every run exchanges the whole manifest.&gt;  The client sends one entry
+</span><span class="">  871: per file and the server answers with the whole plan as a single JSON line, so
+</span><span class="">  872: a run costs O(files) in time, memory and bandwidth even when nothing changed.
+</span><span class="">  873: A tree of a million files means a plan message of the order of a hundred
+</span><span class="">  874: megabytes.  A change journal or Merkle summary would remove that, at the cost
+</span><span class="">  875: of the &quot;everything is inspectable with cat&quot; property.
+</span><span class="">  876: 
+</span><span class="">  877: =item * B&lt;No line-length cap on the wire.&gt;  Because of the previous point, a
+</span><span class="">  878: control message cannot be bounded without breaking large trees.  The peer is
+</span><span class="">  879: authenticated by ssh and pinned by the forced command, so this is a resource
+</span><span class="">  880: risk from a misbehaving client, not from the network.
+</span><span class="">  881: 
+</span><span class="">  882: =item * B&lt;Lock-step protocol.&gt;  One request is in flight at a time and each
+</span><span class="">  883: 256 KiB chunk waits for its acknowledgement, so throughput is bound by the
+</span><span class="">  884: round-trip time on a high-latency link.
+</span><span class="">  885: 
+</span><span class="">  886: =item * B&lt;Clock-dependent tie-breaks.&gt;  When both sides changed a file, the
+</span><span class="">  887: newer mtime wins (the master wins ties within 2 seconds).  A client with a
+</span><span class="">  888: wrong clock picks the wrong winner; the loser is still kept as a conflict copy.
+</span><span class="">  889: 
+</span><span class="">  890: =item * B&lt;No fsync.&gt;  Renames are atomic between processes but not durable
+</span><span class="">  891: across a power cut; see L&lt;App::FileSync::IO/LIMITATIONS&gt;.
+</span><span class="">  892: 
+</span><span class="">  893: =item * B&lt;Pure-Perl deltas are bounded.&gt;  Only the first 8 MiB after the
+</span><span class="">  894: unchanged prefix are scanned for moved blocks; later changes go as literals.
+</span><span class="">  895: See L&lt;App::FileSync::Delta&gt;.
+</span><span class="">  896: 
+</span><span class="">  897: =item * B&lt;What is not synced.&gt;  Symlinks, devices, sockets, extended attributes,
+</span><span class="">  898: ACLs and ownership.  Permission bits are carried only between POSIX systems.
+</span><span class="">  899: 
+</span><span class="">  900: =item * B&lt;Names.&gt;  Unicode normalisation is not reconciled, so the same name
+</span><span class="">  901: in NFC (Linux) and NFD (older macOS) is two different files.  A
+</span><span class="">  902: case-insensitive client cannot hold two master paths that differ only in case.
+</span><span class="">  903: 
+</span><span class="">  904: =item * B&lt;Encapsulation costs.&gt;  Private methods use L&lt;Sub::Private&gt; in
+</span><span class="">  905: C&lt;enforce&gt; mode, which costs about 1.4 microseconds per call (measured on
+</span><span class="">  906: 5.40).  Helpers that run per file or per JSON value (the merge comparisons,
+</span><span class="">  907: the JSON byte downgrade, the rolling checksum) are therefore lexical code
+</span><span class="">  908: references: private by scope, with no wrapper.  Both Sub::Private and
+</span><span class="">  909: L&lt;Sub::Protected&gt; are bypassed while C&lt;HARNESS_ACTIVE&gt; is set.
 </span><span class="">  910: 
-</span><span class="">  911: =item * B&lt;Errors carry locations.&gt;  Library errors are raised with C&lt;croak&gt; and
-</span><span class="">  912: so end with C&lt;at FILE line N.&gt;; the commands strip that before printing, and
-</span><span class="">  913: C&lt;FILESYNC_TRACE=1&gt; turns every error into a full stack trace instead.
-</span><span class="">  914: 
-</span><span class="">  915: =item * B&lt;English only.&gt;  The catalogue mechanism supports other languages,
-</span><span class="">  916: plural forms and gender, but only the English catalogue ships.
-</span><span class="">  917: 
-</span><span class="">  918: =back
-</span><span class="">  919: 
-</span><span class="">  920: =head1 SEE ALSO
-</span><span class="">  921: 
-</span><span class="">  922: =over 4
+</span><span class="">  911: =item * B&lt;Validation costs.&gt;  L&lt;Params::Validate::Strict&gt; costs about 11
+</span><span class="">  912: microseconds per call, so it guards the public entry points that run a few
+</span><span class="">  913: times per command (constructors, admin and client operations).  Functions that
+</span><span class="">  914: run per path or per protocol frame (L&lt;/validate_relpath&gt;, the protocol
+</span><span class="">  915: methods, the scanner) check their arguments by hand.
+</span><span class="">  916: 
+</span><span class="">  917: =item * B&lt;Errors carry locations.&gt;  Library errors are raised with C&lt;croak&gt; and
+</span><span class="">  918: so end with C&lt;at FILE line N.&gt;; the commands strip that before printing, and
+</span><span class="">  919: C&lt;FILESYNC_TRACE=1&gt; turns every error into a full stack trace instead.
+</span><span class="">  920: 
+</span><span class="">  921: =item * B&lt;English only.&gt;  The catalogue mechanism supports other languages,
+</span><span class="">  922: plural forms and gender, but only the English catalogue ships.
 </span><span class="">  923: 
-</span><span class="">  924: =item * L&lt;App::FileSync::I18N&gt; - the message catalogue
+</span><span class="">  924: =back
 </span><span class="">  925: 
-</span><span class="">  926: =item * L&lt;Test Dashboard|https://nigelhorne.github.io/App-FileSync/coverage/&gt;
+</span><span class="">  926: =head1 SEE ALSO
 </span><span class="">  927: 
-</span><span class="">  928: =back
+</span><span class="">  928: =over 4
 </span><span class="">  929: 
-</span><span class="">  930: =head1 AUTHOR
+</span><span class="">  930: =item * L&lt;App::FileSync::I18N&gt; - the message catalogue
 </span><span class="">  931: 
-</span><span class="">  932: Nigel Horne, C&lt;&lt; &lt;njh at nigelhorne.com&gt; &gt;&gt;
+</span><span class="">  932: =item * L&lt;Test Dashboard|https://nigelhorne.github.io/App-FileSync/coverage/&gt;
 </span><span class="">  933: 
-</span><span class="">  934: =head1 LICENCE AND COPYRIGHT
+</span><span class="">  934: =back
 </span><span class="">  935: 
-</span><span class="">  936: Copyright 2026 Nigel Horne.
+</span><span class="">  936: =head1 AUTHOR
 </span><span class="">  937: 
-</span><span class="">  938: Usage is subject to the GPL2 licence terms.
-</span><span class="">  939: If you use it,
-</span><span class="">  940: please let me know.
+</span><span class="">  938: Nigel Horne, C&lt;&lt; &lt;njh at nigelhorne.com&gt; &gt;&gt;
+</span><span class="">  939: 
+</span><span class="">  940: =head1 LICENCE AND COPYRIGHT
 </span><span class="">  941: 
-</span><span class="">  942: =cut
+</span><span class="">  942: Copyright 2026 Nigel Horne.
+</span><span class="">  943: 
+</span><span class="">  944: Usage is subject to the GPL2 licence terms.
+</span><span class="">  945: If you use it,
+</span><span class="">  946: please let me know.
+</span><span class="">  947: 
+</span><span class="">  948: =cut
 </span></pre>
 
 <script>

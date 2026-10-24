@@ -293,7 +293,7 @@ a.intra-dot:hover { color: #7700bb; }
 <div class="nav"><a href="../FileSync.pm.html">⬅ Previous</a> <a href="../../../../index.html">Index</a>
 </div><div class='summary'>
 <strong>Structural Coverage (Approximate)</strong><p>
-TER1 (Statement): 98.82%<br>
+TER1 (Statement): 98.84%<br>
 TER2 (Branch): 88.00%<br>
 TER3 (LCSAJ): 83.3% (5/6)<br>
 Approximate LCSAJ segments: 51<br>
@@ -367,7 +367,7 @@ Approximate LCSAJ segments: 51<br>
 </span><span class="">   26: use App::FileSync::I18N qw(throw);
 </span><span class="">   27: use App::FileSync::IO qw(ensure_dir);
 </span><span class="">   28: 
-</span><span class="">   29: our $VERSION = &#39;0.001.1&#39;;
+</span><span class="">   29: use version; our $VERSION = version-&gt;declare(&#39;0.001.1&#39;);
 </span><span class="">   30: 
 </span><span class="">   31: # The hook predicates moved to App::FileSync::Platform, which must load before
 </span><span class="">   32: # this module&#39;s dependencies; these names are kept for existing callers.
@@ -410,7 +410,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 								</div>
 							</li></ul></details>
 <span class="">   50: 	crit critical fatal alert emerg emergency panic
-</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">   51: );
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">   51: );
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -676,7 +676,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </span><span class="">  272: 	return $settings;
 </span><span class="">  273: }
 </span><span class="">  274: 
-</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  275: =head2 explain
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  275: =head2 explain
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -751,7 +751,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  305: 
 </span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  306: =head4 INPUT
 </span><span class="">  307: 
-</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  308: 	{
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  308: 	{
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -812,7 +812,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </span><span class="">  345: 
 </span><span class="">  346: sub explain {
 </span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">347 → 355 → 362</span></span>  347: 	my $args = named(\@_, {%FILE_ARGS}, &#39;Settings::explain&#39;);
-</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  348: 
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  348: 
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -856,7 +856,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  368: 			for my $layer (@layers) {
 </span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  369: 				my ($explanation, $section, $file_label) = @{$layer};
 </span><span class="">  370: 				my $entry = _pick($explanation, $section, $key) or next;
-</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  371: 				$row{source} = $entry-&gt;{type};
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  371: 				$row{source} = $entry-&gt;{type};
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -1295,12 +1295,19 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </span><span class="">  786: 
 </span><span class="">  787: =back
 </span><span class="">  788: 
-</span><span class="">  789: =head1 LICENCE
+</span><span class="">  789: =head1 AUTHOR
 </span><span class="">  790: 
-</span><span class="">  791: GPL v2 for personal single-user, single-computer use.  All other users must
-</span><span class="">  792: apply in writing to the author.
-</span><span class="">  793: 
-</span><span class="">  794: =cut
+</span><span class="">  791: Nigel Horne, C&lt;&lt; &lt;njh at nigelhorne.com&gt; &gt;&gt;
+</span><span class="">  792: 
+</span><span class="">  793: =head1 LICENCE AND COPYRIGHT
+</span><span class="">  794: 
+</span><span class="">  795: Copyright 2026 Nigel Horne.
+</span><span class="">  796: 
+</span><span class="">  797: Usage is subject to the GPL2 licence terms.
+</span><span class="">  798: If you use it,
+</span><span class="">  799: please let me know.
+</span><span class="">  800: 
+</span><span class="">  801: =cut
 </span></pre>
 
 <script>

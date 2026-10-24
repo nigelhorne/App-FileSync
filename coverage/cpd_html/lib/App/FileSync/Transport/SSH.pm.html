@@ -290,7 +290,7 @@ a.intra-dot:hover { color: #7700bb; }
 <body>
 <button class="toggle" onclick="toggleTheme()">🌙 Toggle Theme</button>
 <div class="nav">&larr; <a href="Local.pm.html">lib/App/FileSync/Transport/Local.pm</a> &nbsp; <a href="../../../../../index.html">&uarr; Dashboard</a> &nbsp; &nbsp;
-<a href="https://github.com/nigelhorne/App-FileSync/blob/2ccb9580960b0f46c64956b0ee79f6fa7b839217/lib/App/FileSync/Transport/SSH.pm" target="_blank">View on GitHub &#128269;</a></div>
+<a href="https://github.com/nigelhorne/App-FileSync/blob/2ca6888a5345cdb7c2f0df89b91ac9c46adc04a3/lib/App/FileSync/Transport/SSH.pm" target="_blank">View on GitHub &#128269;</a></div>
 <h1>lib/App/FileSync/Transport/SSH.pm &mdash; Duplicate Code Regions</h1>
 <div class="legend cpd-legend">
   <span class="cpd-dot">&#9670;</span> Amber lines duplicate code in another file &mdash; hover for location.<br>
@@ -326,7 +326,7 @@ a.intra-dot:hover { color: #7700bb; }
    27: use App::FileSync::I18N qw(throw);
    28: use App::FileSync::IO qw(read_text);
    29: 
-   30: our $VERSION = '0.001.1';
+   30: use version; our $VERSION = version-&gt;declare('0.001.1');
    31: 
    32: # Kept for compatibility: the protocol version sent as --proto.
    33: our $PROTO = $PROTOCOL_VERSION;
@@ -513,314 +513,329 @@ a.intra-dot:hover { color: #7700bb; }
   214: 
   215: =head2 reader
   216: 
-  217: =head2 writer
+  217: Documented with L&lt;/exit_status&gt; below.
   218: 
-  219: =head2 command
+  219: =head2 writer
   220: 
-  221: =head2 exit_status
+  221: Documented with L&lt;/exit_status&gt; below.
   222: 
-  223: Purpose: the session's pipes, the argv that was run, and ssh's exit status.
+  223: =head2 command
   224: 
-  225: Args: none.
+  225: Documented with L&lt;/exit_status&gt; below.
   226: 
-  227: Returns: the read and write handles; a copy of the argv (for C&lt;--verbose&gt; and
-  228: tests); the exit status after L&lt;/close&gt; (undef before).
-  229: 
-  230: Side Effects: none.
-  231: 
-  232: Usage:
-  233: 
-  234: 	my $argv = $transport-&gt;command;
+  227: =head2 exit_status
+  228: 
+  229: Purpose: the session's pipes, the argv that was run, and ssh's exit status.
+  230: 
+  231: Args: none.
+  232: 
+  233: Returns: the read and write handles; a copy of the argv (for C&lt;--verbose&gt; and
+  234: tests); the exit status after L&lt;/close&gt; (undef before).
   235: 
-  236: =head3 EXAMPLE
+  236: Side Effects: none.
   237: 
-  238: 	print "ran: @{ $transport-&gt;command }\n";
+  238: Usage:
   239: 
-  240: =head3 API SPECIFICATION
+  240: 	my $argv = $transport-&gt;command;
   241: 
-  242: =head4 INPUT
+  242: =head3 EXAMPLE
   243: 
-  244: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
+  244: 	print "ran: @{ $transport-&gt;command }\n";
   245: 
-  246: =head4 OUTPUT
+  246: =head3 API SPECIFICATION
   247: 
-  248: 	{ type =&gt; 'scalar' }
+  248: =head4 INPUT
   249: 
-  250: =head3 MESSAGES
+  250: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
   251: 
-  252: None.
+  252: =head4 OUTPUT
   253: 
-  254: =head3 FORMAL SPECIFICATION
+  254: 	{ type =&gt; 'scalar' }
   255: 
-  256: 	command = copy(self.command) ; exit_status = self.status
+  256: =head3 MESSAGES
   257: 
-  258: =cut
+  258: None.
   259: 
-  260: sub reader {
-  261: 	my ($self) = @_;
-  262: 
-  263: 	return $self-&gt;{reader};
-<span class="dup-line">  264: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>}</span><span class="dup-line">  265: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a></span><span class="dup-line">  266: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>sub writer {</span><span class="dup-line">  267: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>	my ($self) = @_;</span><span class="dup-line">  268: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a></span><span class="dup-line">  269: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>	return $self-&gt;{writer};</span><span class="dup-line">  270: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>}</span><span class="dup-line">  271: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a></span><span class="dup-line">  272: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>sub command {</span><span class="dup-line">  273: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>	my ($self) = @_;</span>  274: 
-  275: 	return [ @{ $self-&gt;{command} } ];
-  276: }
-  277: 
-  278: sub exit_status {
-  279: 	my ($self) = @_;
-  280: 
-  281: 	return $self-&gt;{status};
+  260: =head3 FORMAL SPECIFICATION
+  261: 
+  262: 	command = copy(self.command) ; exit_status = self.status
+  263: 
+  264: =cut
+  265: 
+  266: sub reader {
+  267: 	my ($self) = @_;
+  268: 
+  269: 	return $self-&gt;{reader};
+<span class="dup-line">  270: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 174" target="_blank">&#9670;</a>}</span><span class="dup-line">  271: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 174" target="_blank">&#9670;</a></span><span class="dup-line">  272: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 174" target="_blank">&#9670;</a>sub writer {</span><span class="dup-line">  273: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 174" target="_blank">&#9670;</a>	my ($self) = @_;</span><span class="dup-line">  274: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 174" target="_blank">&#9670;</a></span><span class="dup-line">  275: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 174" target="_blank">&#9670;</a>	return $self-&gt;{writer};</span><span class="dup-line">  276: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 174" target="_blank">&#9670;</a>}</span><span class="dup-line">  277: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 174" target="_blank">&#9670;</a></span><span class="dup-line">  278: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 174" target="_blank">&#9670;</a>sub command {</span><span class="dup-line">  279: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 174" target="_blank">&#9670;</a>	my ($self) = @_;</span>  280: 
+  281: 	return [ @{ $self-&gt;{command} } ];
   282: }
   283: 
-  284: =head2 close
-  285: 
-  286: Purpose: end the ssh session.
-  287: 
-  288: Args: none.
+  284: sub exit_status {
+  285: 	my ($self) = @_;
+  286: 
+  287: 	return $self-&gt;{status};
+  288: }
   289: 
-  290: Returns: 1 when ssh exited 0, else 0.  Repeated calls return 1.
+  290: =head2 close
   291: 
-  292: Side Effects: closes both pipes, reaps ssh, records its exit status and
-  293: signal, and reads what it wrote to standard error.
-  294: 
-  295: Usage:
-  296: 
-  297: 	$transport-&gt;close or warn $transport-&gt;error_text, "\n";
-  298: 
-  299: =head3 EXAMPLE
+  292: Purpose: end the ssh session.
+  293: 
+  294: Args: none.
+  295: 
+  296: Returns: 1 when ssh exited 0, else 0.  Repeated calls return 1.
+  297: 
+  298: Side Effects: closes both pipes, reaps ssh, records its exit status and
+  299: signal, and reads what it wrote to standard error.
   300: 
-  301: 	unless ($transport-&gt;close) {
-  302: 		printf "ssh exited %d: %s\n", $transport-&gt;exit_status, $transport-&gt;error_text;
-  303: 	}
+  301: Usage:
+  302: 
+  303: 	$transport-&gt;close or warn $transport-&gt;error_text, "\n";
   304: 
-  305: =head3 API SPECIFICATION
+  305: =head3 EXAMPLE
   306: 
-  307: =head4 INPUT
-  308: 
-  309: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
+  307: 	unless ($transport-&gt;close) {
+  308: 		printf "ssh exited %d: %s\n", $transport-&gt;exit_status, $transport-&gt;error_text;
+  309: 	}
   310: 
-  311: =head4 OUTPUT
+  311: =head3 API SPECIFICATION
   312: 
-  313: 	{ type =&gt; 'integer', memberof =&gt; [ 0, 1 ] }
+  313: =head4 INPUT
   314: 
-  315: =head3 MESSAGES
+  315: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
   316: 
-  317: None.
+  317: =head4 OUTPUT
   318: 
-  319: =head3 FORMAL SPECIFICATION
+  319: 	{ type =&gt; 'integer', memberof =&gt; [ 0, 1 ] }
   320: 
-  321: 	close = 1 ⇔ closed ∨ exit(ssh) = 0
+  321: =head3 MESSAGES
   322: 
-  323: =cut
+  323: None.
   324: 
-  325: sub close {	## no critic (Subroutines::ProhibitBuiltinHomonyms, Subroutines::ProhibitAmbiguousNames) -- transport interface
-  326: 	my ($self) = @_;
-  327: 
-  328: 	return 1 if $self-&gt;{closed}++;
-  329: 
-  330: 	for my $handle (grep { defined } @{$self}{qw(writer reader)}) {
-  331: 		CORE::close($handle);
-  332: 	}
+  325: =head3 FORMAL SPECIFICATION
+  326: 
+  327: 	close = 1 ⇔ closed ∨ exit(ssh) = 0
+  328: 
+  329: =cut
+  330: 
+  331: sub close {	## no critic (Subroutines::ProhibitBuiltinHomonyms, Subroutines::ProhibitAmbiguousNames) -- transport interface
+  332: 	my ($self) = @_;
   333: 
-  334: 	if ($self-&gt;{pid}) {
-  335: 		waitpid($self-&gt;{pid}, 0);
-  336: 		my $status = $?;
-  337: 		@{$self}{qw(status signal pid)} = ($status &gt;&gt; 8, $status &amp; 127, 0);
+  334: 	return 1 if $self-&gt;{closed}++;
+  335: 
+  336: 	for my $handle (grep { defined } @{$self}{qw(writer reader)}) {
+  337: 		CORE::close($handle);
   338: 	}
-  339: 	$self-&gt;{stderr} = _slurp($self-&gt;{error_path});
-  340: 
-  341: 	return ($self-&gt;{status} || 0) == 0 ? 1 : 0;
-  342: }
-  343: 
-  344: =head2 error_text
-  345: 
-  346: Purpose: what ssh or the remote shell said, for when the protocol failed.
-  347: 
-  348: Args: none.
+  339: 
+  340: 	if ($self-&gt;{pid}) {
+  341: 		waitpid($self-&gt;{pid}, 0);
+  342: 		my $status = $?;
+  343: 		@{$self}{qw(status signal pid)} = ($status &gt;&gt; 8, $status &amp; 127, 0);
+  344: 	}
+  345: 	$self-&gt;{stderr} = _slurp($self-&gt;{error_path});
+  346: 
+  347: 	return ($self-&gt;{status} || 0) == 0 ? 1 : 0;
+  348: }
   349: 
-  350: Returns: the text, trimmed, with blank lines collapsed.
+  350: =head2 error_text
   351: 
-  352: Side Effects: reads the error file if L&lt;/close&gt; has not yet.
+  352: Purpose: what ssh or the remote shell said, for when the protocol failed.
   353: 
-  354: Usage:
+  354: Args: none.
   355: 
-  356: 	my $why = $transport-&gt;error_text;
+  356: Returns: the text, trimmed, with blank lines collapsed.
   357: 
-  358: =head3 EXAMPLE
+  358: Side Effects: reads the error file if L&lt;/close&gt; has not yet.
   359: 
-  360: 	print $transport-&gt;error_text, "\n";	# "Permission denied (publickey)."
+  360: Usage:
   361: 
-  362: =head3 API SPECIFICATION
+  362: 	my $why = $transport-&gt;error_text;
   363: 
-  364: =head4 INPUT
+  364: =head3 EXAMPLE
   365: 
-  366: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
+  366: 	print $transport-&gt;error_text, "\n";	# "Permission denied (publickey)."
   367: 
-  368: =head4 OUTPUT
+  368: =head3 API SPECIFICATION
   369: 
-  370: 	{ type =&gt; 'string' }
+  370: =head4 INPUT
   371: 
-  372: =head3 MESSAGES
+  372: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
   373: 
-  374: None.
+  374: =head4 OUTPUT
   375: 
-  376: =head3 FORMAL SPECIFICATION
+  376: 	{ type =&gt; 'string' }
   377: 
-  378: 	error_text = squeeze(trim(stderr))
+  378: =head3 MESSAGES
   379: 
-  380: =cut
+  380: None.
   381: 
-  382: sub error_text {
-  383: 	my ($self) = @_;
-  384: 
-  385: 	my $text = length $self-&gt;{stderr} ? $self-&gt;{stderr} : _slurp($self-&gt;{error_path});
-  386: 	$text =~ s/\A\s+|\s+\z//g;
-  387: 	$text =~ s/\n+/\n/g;
-  388: 	return $text;
-  389: }
+  382: =head3 FORMAL SPECIFICATION
+  383: 
+  384: 	error_text = squeeze(trim(stderr))
+  385: 
+  386: =cut
+  387: 
+  388: sub error_text {
+  389: 	my ($self) = @_;
   390: 
-  391: =head2 valid_server
-  392: 
-  393: =head2 valid_program
-  394: 
-  395: Purpose: check a server address and a remote program path.
+  391: 	my $text = length $self-&gt;{stderr} ? $self-&gt;{stderr} : _slurp($self-&gt;{error_path});
+  392: 	$text =~ s/\A\s+|\s+\z//g;
+  393: 	$text =~ s/\n+/\n/g;
+  394: 	return $text;
+  395: }
   396: 
-  397: Args: the value.
+  397: =head2 valid_server
   398: 
-  399: Returns: 1 or 0.
+  399: Documented with L&lt;/valid_program&gt; below.
   400: 
-  401: A server is C&lt;user@host&gt;, C&lt;host&gt; or C&lt;user@[ipv6]&gt;; the user and host must
-  402: start with a letter or digit, so neither can be read as an ssh option (a
-  403: leading C&lt;-&gt;) and nothing can split into another word.  A program is a path of
-  404: letters, digits, C&lt;.&gt;, C&lt;_&gt;, C&lt;/&gt; and C&lt;-&gt;, not starting with C&lt;-&gt;.
-  405: 
-  406: Side Effects: none.
-  407: 
-  408: Usage:
-  409: 
-  410: 	die "bad server\n" unless App::FileSync::Transport::SSH::valid_server($server);
-  411: 
-  412: =head3 EXAMPLE
+  401: =head2 valid_program
+  402: 
+  403: Purpose: check a server address and a remote program path.
+  404: 
+  405: Args: the value.
+  406: 
+  407: Returns: 1 or 0.
+  408: 
+  409: A server is C&lt;user@host&gt;, C&lt;host&gt; or C&lt;user@[ipv6]&gt;; the user and host must
+  410: start with a letter or digit, so neither can be read as an ssh option (a
+  411: leading C&lt;-&gt;) and nothing can split into another word.  A program is a path of
+  412: letters, digits, C&lt;.&gt;, C&lt;_&gt;, C&lt;/&gt; and C&lt;-&gt;, not starting with C&lt;-&gt;.
   413: 
-  414: 	App::FileSync::Transport::SSH::valid_server('filesync@files.example.com');	# 1
-  415: 	App::FileSync::Transport::SSH::valid_server('-oProxyCommand=sh');		# 0
-  416: 	App::FileSync::Transport::SSH::valid_server('-v@host');				# 0
+  414: Side Effects: none.
+  415: 
+  416: Usage:
   417: 
-  418: =head3 API SPECIFICATION
+  418: 	die "bad server\n" unless App::FileSync::Transport::SSH::valid_server($server);
   419: 
-  420: =head4 INPUT
+  420: =head3 EXAMPLE
   421: 
-  422: 	[ { name =&gt; 'value', type =&gt; 'string', optional =&gt; 1 } ]
-  423: 
-  424: =head4 OUTPUT
+  422: 	App::FileSync::Transport::SSH::valid_server('filesync@files.example.com');	# 1
+  423: 	App::FileSync::Transport::SSH::valid_server('-oProxyCommand=sh');		# 0
+  424: 	App::FileSync::Transport::SSH::valid_server('-v@host');				# 0
   425: 
-  426: 	{ type =&gt; 'integer', memberof =&gt; [ 0, 1 ] }
+  426: =head3 API SPECIFICATION
   427: 
-  428: =head3 MESSAGES
+  428: =head4 INPUT
   429: 
-  430: None.
+  430: 	[ { name =&gt; 'value', type =&gt; 'string', optional =&gt; 1 } ]
   431: 
-  432: =head3 FORMAL SPECIFICATION
+  432: =head4 OUTPUT
   433: 
-  434: 	valid_server(v) ⇔ v ∈ SERVER
-  435: 	valid_program(v) ⇔ v ∈ PROGRAM
-  436: 
-  437: =cut
-  438: 
-  439: sub valid_server {
-  440: 	my ($value) = @_;
+  434: 	{ type =&gt; 'integer', memberof =&gt; [ 0, 1 ] }
+  435: 
+  436: =head3 MESSAGES
+  437: 
+  438: None.
+  439: 
+  440: =head3 FORMAL SPECIFICATION
   441: 
-  442: 	return (defined $value &amp;&amp; $value =~ $SERVER) ? 1 : 0;
-  443: }
+  442: 	valid_server(v) ⇔ v ∈ SERVER
+  443: 	valid_program(v) ⇔ v ∈ PROGRAM
   444: 
-  445: sub valid_program {
-  446: 	my ($value) = @_;
-  447: 
-  448: 	return (defined $value &amp;&amp; $value =~ $PROGRAM) ? 1 : 0;
-  449: }
-  450: 
-  451: # _spawn
-  452: # Purpose:     start ssh with stderr going to a temporary file.
-  453: # Entry:       $command is the full argv.
-  454: # Exit:        returns { pid, writer, reader, errors, error_path }.
-  455: # Side effects: creates the error file (removed when the object goes) and
-  456: #              starts the process.  IPC::Open3 rather than fork/exec: on
-  457: #              Windows fork() is a pseudo-process whose pipe handles are
-  458: #              not always duplicated, which leaves a full-duplex session
-  459: #              waiting on a pipe end that never closes.
-  460: sub _spawn :Private {
-  461: 	my ($command) = @_;
-  462: 
-  463: 	my $errors = File::Temp-&gt;new(UNLINK =&gt; 1);
-  464: 	my $error_path = $errors-&gt;filename;
-  465: 	open my $err_fh, '&gt;', $error_path;
-  466: 
-  467: 	my ($writer, $reader);
-  468: 	my $pid = IPC::Open3::open3($writer, $reader, '&gt;&amp;' . fileno($err_fh), @{$command});
-  469: 	CORE::close($err_fh);
+  445: =cut
+  446: 
+  447: sub valid_server {
+  448: 	my ($value) = @_;
+  449: 
+  450: 	return (defined $value &amp;&amp; $value =~ $SERVER) ? 1 : 0;
+  451: }
+  452: 
+  453: sub valid_program {
+  454: 	my ($value) = @_;
+  455: 
+  456: 	return (defined $value &amp;&amp; $value =~ $PROGRAM) ? 1 : 0;
+  457: }
+  458: 
+  459: # _spawn
+  460: # Purpose:     start ssh with stderr going to a temporary file.
+  461: # Entry:       $command is the full argv.
+  462: # Exit:        returns { pid, writer, reader, errors, error_path }.
+  463: # Side effects: creates the error file (removed when the object goes) and
+  464: #              starts the process.  IPC::Open3 rather than fork/exec: on
+  465: #              Windows fork() is a pseudo-process whose pipe handles are
+  466: #              not always duplicated, which leaves a full-duplex session
+  467: #              waiting on a pipe end that never closes.
+  468: sub _spawn :Private {
+  469: 	my ($command) = @_;
   470: 
-  471: 	return { pid =&gt; $pid, writer =&gt; $writer, reader =&gt; $reader, errors =&gt; $errors, error_path =&gt; $error_path };
-  472: }
-  473: 
-  474: # _check
-  475: # Purpose:     refuse an unsafe or out-of-range argument.
-  476: # Entry:       $ok is the result of the check.
-  477: # Exit:        returns 1.
-  478: # Side effects: raises transport.bad_value naming the field.
-  479: sub _check :Private {
-  480: 	my ($field, $value, $ok) = @_;
+  471: 	my $errors = File::Temp-&gt;new(UNLINK =&gt; 1);
+  472: 	my $error_path = $errors-&gt;filename;
+  473: 	open my $err_fh, '&gt;', $error_path;
+  474: 
+  475: 	my ($writer, $reader);
+  476: 	my $pid = IPC::Open3::open3($writer, $reader, '&gt;&amp;' . fileno($err_fh), @{$command});
+  477: 	CORE::close($err_fh);
+  478: 
+  479: 	return { pid =&gt; $pid, writer =&gt; $writer, reader =&gt; $reader, errors =&gt; $errors, error_path =&gt; $error_path };
+  480: }
   481: 
-  482: 	throw('transport.bad_value', { field =&gt; $field, value =&gt; $value }) unless $ok;
-  483: 	return 1;
-  484: }
-  485: 
-  486: # _given
-  487: # Purpose:     treat an empty string like an absent value.
-  488: # Entry:       any scalar.
-  489: # Exit:        returns the value, or undef if undefined or empty.
-  490: # Side effects: none.
-  491: sub _given :Private {
-  492: 	my ($value) = @_;
+  482: # _check
+  483: # Purpose:     refuse an unsafe or out-of-range argument.
+  484: # Entry:       $ok is the result of the check.
+  485: # Exit:        returns 1.
+  486: # Side effects: raises transport.bad_value naming the field.
+  487: sub _check :Private {
+  488: 	my ($field, $value, $ok) = @_;
+  489: 
+  490: 	throw('transport.bad_value', { field =&gt; $field, value =&gt; $value }) unless $ok;
+  491: 	return 1;
+  492: }
   493: 
-  494: 	return (defined $value &amp;&amp; length $value) ? $value : undef;
-  495: }
-  496: 
-  497: # _slurp
-  498: # Purpose:     the error file's contents.
-  499: # Entry:       $path may be undef or gone.
-  500: # Exit:        returns the text, or ''.
-  501: # Side effects: reads the file; an unreadable one is treated as empty
-  502: #              (there is nothing better to report).
-  503: sub _slurp :Private {
-  504: 	my ($path) = @_;
-  505: 
-  506: 	return '' unless defined $path &amp;&amp; -e $path;
-  507: 	my $text = eval { read_text($path) };
-  508: 	return defined $text ? $text : '';
-  509: }
-  510: 
-  511: 1;
-  512: 
-  513: __END__
-  514: 
-  515: =head1 LIMITATIONS
-  516: 
-  517: =over 4
+  494: # _given
+  495: # Purpose:     treat an empty string like an absent value.
+  496: # Entry:       any scalar.
+  497: # Exit:        returns the value, or undef if undefined or empty.
+  498: # Side effects: none.
+  499: sub _given :Private {
+  500: 	my ($value) = @_;
+  501: 
+  502: 	return (defined $value &amp;&amp; length $value) ? $value : undef;
+  503: }
+  504: 
+  505: # _slurp
+  506: # Purpose:     the error file's contents.
+  507: # Entry:       $path may be undef or gone.
+  508: # Exit:        returns the text, or ''.
+  509: # Side effects: reads the file; an unreadable one is treated as empty
+  510: #              (there is nothing better to report).
+  511: sub _slurp :Private {
+  512: 	my ($path) = @_;
+  513: 
+  514: 	return '' unless defined $path &amp;&amp; -e $path;
+  515: 	my $text = eval { read_text($path) };
+  516: 	return defined $text ? $text : '';
+  517: }
   518: 
-  519: =item * C&lt;extra_args&gt; are passed to ssh unchecked apart from embedded NULs and
-  520: newlines: they are the user's own options, and can therefore do anything ssh
-  521: options can (C&lt;-o ProxyCommand=...&gt; included).  Only trusted configuration
-  522: should set them.
-  523: 
-  524: =item * C&lt;known_hosts&gt; and C&lt;identity&gt; are not tilde-expanded here; ssh expands
-  525: C&lt;~&gt; in C&lt;-i&gt; but not in C&lt;UserKnownHostsFile&gt; on every version.
+  519: 1;
+  520: 
+  521: __END__
+  522: 
+  523: =head1 LIMITATIONS
+  524: 
+  525: =over 4
   526: 
-  527: =back
-  528: 
-  529: =head1 LICENCE
-  530: 
-  531: GPL v2 for personal single-user, single-computer use.  All other users must
-  532: apply in writing to the author.
-  533: 
-  534: =cut
+  527: =item * C&lt;extra_args&gt; are passed to ssh unchecked apart from embedded NULs and
+  528: newlines: they are the user's own options, and can therefore do anything ssh
+  529: options can (C&lt;-o ProxyCommand=...&gt; included).  Only trusted configuration
+  530: should set them.
+  531: 
+  532: =item * C&lt;known_hosts&gt; and C&lt;identity&gt; are not tilde-expanded here; ssh expands
+  533: C&lt;~&gt; in C&lt;-i&gt; but not in C&lt;UserKnownHostsFile&gt; on every version.
+  534: 
+  535: =back
+  536: 
+  537: =head1 AUTHOR
+  538: 
+  539: Nigel Horne, C&lt;&lt; &lt;njh at nigelhorne.com&gt; &gt;&gt;
+  540: 
+  541: =head1 LICENCE AND COPYRIGHT
+  542: 
+  543: Copyright 2026 Nigel Horne.
+  544: 
+  545: Usage is subject to the GPL2 licence terms.
+  546: If you use it,
+  547: please let me know.
+  548: 
+  549: =cut
 </pre>
 
 <script>

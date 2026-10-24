@@ -32,21 +32,21 @@ https://pjcj.net
 , @App::FileSync::Server::ROLES)</td></tr>
 <tr><td class="h"><a id="L200">200</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $ok</td></tr>
 <tr><td class="h"><a id="L202">202</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $args-&gt;{&#39;connection&#39;}</td></tr>
-<tr><td class="h"><a id="L297">297</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ($self-&gt;{&#39;lock&#39;})</td></tr>
-<tr><td class="h"><a id="L305">305</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $self-&gt;{&#39;dry_run&#39;}</td></tr>
-<tr><td class="h"><a id="L322">322</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $ok</td></tr>
-<tr><td class="h"><a id="L331">331</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$self-&gt;{&#39;refusal&#39;} ? :</td></tr>
-<tr><td class="h"><a id="L408">408</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $original ? :</td></tr>
-<tr><td class="h"><a id="L409">409</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless @tokens</td></tr>
-<tr><td class="h"><a id="L411">411</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ($tokens[0] =~ /\A--/)</td></tr>
-<tr><td class="h"><a id="L413">413</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $program =~ m[(?:\A|/)\Q$App::FileSync::Server::SERVER_PROGRAM\E\z]</td></tr>
-<tr><td class="h"><a id="L419">419</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $token =~ /\A--([a-z][a-z-]*)(?:=(.*))?\z/s</td></tr>
-<tr><td class="h"><a id="L423">423</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless (defined $value)</td></tr>
-<tr><td class="h"><a id="L424">424</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless @tokens</td></tr>
-<tr><td class="h"><a id="L428">428</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless my $field = $FORCED_FLAGS{$flag}</td></tr>
-<tr><td class="h"><a id="L430">430</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if ($field eq &quot;proto&quot;)</td></tr>
-<tr><td class="h"><a id="L431">431</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $value eq $PROTO</td></tr>
-<tr><td class="h"><a id="L436">436</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless defined $expected and $value eq $expected</td></tr>
+<tr><td class="h"><a id="L332">332</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ($self-&gt;{&#39;lock&#39;})</td></tr>
+<tr><td class="h"><a id="L340">340</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $self-&gt;{&#39;dry_run&#39;}</td></tr>
+<tr><td class="h"><a id="L357">357</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $ok</td></tr>
+<tr><td class="h"><a id="L366">366</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$self-&gt;{&#39;refusal&#39;} ? :</td></tr>
+<tr><td class="h"><a id="L443">443</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $original ? :</td></tr>
+<tr><td class="h"><a id="L444">444</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless @tokens</td></tr>
+<tr><td class="h"><a id="L446">446</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ($tokens[0] =~ /\A--/)</td></tr>
+<tr><td class="h"><a id="L448">448</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $program =~ m[(?:\A|/)\Q$App::FileSync::Server::SERVER_PROGRAM\E\z]</td></tr>
+<tr><td class="h"><a id="L454">454</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $token =~ /\A--([a-z][a-z-]*)(?:=(.*))?\z/s</td></tr>
+<tr><td class="h"><a id="L458">458</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless (defined $value)</td></tr>
+<tr><td class="h"><a id="L459">459</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless @tokens</td></tr>
+<tr><td class="h"><a id="L463">463</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless my $field = $FORCED_FLAGS{$flag}</td></tr>
+<tr><td class="h"><a id="L465">465</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if ($field eq &quot;proto&quot;)</td></tr>
+<tr><td class="h"><a id="L466">466</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $value eq $PROTO</td></tr>
+<tr><td class="h"><a id="L471">471</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless defined $expected and $value eq $expected</td></tr>
 </table>
 </body>
 </html>

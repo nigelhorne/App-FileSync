@@ -290,7 +290,7 @@ a.intra-dot:hover { color: #7700bb; }
 <body>
 <button class="toggle" onclick="toggleTheme()">🌙 Toggle Theme</button>
 <div class="nav"><a href="../../../../../index.html">&uarr; Dashboard</a> &nbsp; <a href="SSH.pm.html">lib/App/FileSync/Transport/SSH.pm</a> &rarr; &nbsp; &nbsp;
-<a href="https://github.com/nigelhorne/App-FileSync/blob/2ccb9580960b0f46c64956b0ee79f6fa7b839217/lib/App/FileSync/Transport/Local.pm" target="_blank">View on GitHub &#128269;</a></div>
+<a href="https://github.com/nigelhorne/App-FileSync/blob/2ca6888a5345cdb7c2f0df89b91ac9c46adc04a3/lib/App/FileSync/Transport/Local.pm" target="_blank">View on GitHub &#128269;</a></div>
 <h1>lib/App/FileSync/Transport/Local.pm &mdash; Duplicate Code Regions</h1>
 <div class="legend cpd-legend">
   <span class="cpd-dot">&#9670;</span> Amber lines duplicate code in another file &mdash; hover for location.<br>
@@ -322,7 +322,7 @@ a.intra-dot:hover { color: #7700bb; }
    23: use App::FileSync::Constants qw($ROLE_CLIENT $SERVER_PROGRAM);
    24: use App::FileSync::I18N qw(throw);
    25: 
-   26: our $VERSION = '0.001.1';
+   26: use version; our $VERSION = version-&gt;declare('0.001.1');
    27: 
    28: # How far up from this file to look for a checkout's bin/filesync-server:
    29: # lib/App/FileSync/Transport is four levels, blib/lib/... five.
@@ -426,193 +426,202 @@ a.intra-dot:hover { color: #7700bb; }
   127: 
   128: =head2 reader
   129: 
-  130: =head2 writer
+  130: Documented with L&lt;/writer&gt; below.
   131: 
-  132: Purpose: the pipes to and from the server.
+  132: =head2 writer
   133: 
-  134: Args: none.
+  134: Purpose: the pipes to and from the server.
   135: 
-  136: Returns: the read handle (server's stdout) or write handle (its stdin).
+  136: Args: none.
   137: 
-  138: Side Effects: none.
+  138: Returns: the read handle (server's stdout) or write handle (its stdin).
   139: 
-  140: Usage:
+  140: Side Effects: none.
   141: 
-  142: 	my $in = $transport-&gt;reader;
+  142: Usage:
   143: 
-  144: =head3 EXAMPLE
+  144: 	my $in = $transport-&gt;reader;
   145: 
-  146: 	App::FileSync::Protocol-&gt;new(in =&gt; $t-&gt;reader, out =&gt; $t-&gt;writer);
+  146: =head3 EXAMPLE
   147: 
-  148: =head3 API SPECIFICATION
+  148: 	App::FileSync::Protocol-&gt;new(in =&gt; $t-&gt;reader, out =&gt; $t-&gt;writer);
   149: 
-  150: =head4 INPUT
+  150: =head3 API SPECIFICATION
   151: 
-  152: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
+  152: =head4 INPUT
   153: 
-  154: =head4 OUTPUT
+  154: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
   155: 
-  156: 	{ type =&gt; 'object' }
+  156: =head4 OUTPUT
   157: 
-  158: =head3 MESSAGES
+  158: 	{ type =&gt; 'object' }
   159: 
-  160: None.
+  160: =head3 MESSAGES
   161: 
-  162: =head3 FORMAL SPECIFICATION
+  162: None.
   163: 
-  164: 	reader = self.reader ; writer = self.writer
+  164: =head3 FORMAL SPECIFICATION
   165: 
-  166: =cut
+  166: 	reader = self.reader ; writer = self.writer
   167: 
-  168: sub reader {
-  169: 	my ($self) = @_;
-  170: 
-  171: 	return $self-&gt;{reader};
-  172: }
-  173: 
-  174: sub writer {
-  175: 	my ($self) = @_;
-  176: 
-  177: 	return $self-&gt;{writer};
-  178: }
-  179: 
-  180: =head2 close
+  168: =cut
+  169: 
+  170: sub reader {
+  171: 	my ($self) = @_;
+  172: 
+  173: 	return $self-&gt;{reader};
+  174: }
+  175: 
+  176: sub writer {
+  177: 	my ($self) = @_;
+  178: 
+  179: 	return $self-&gt;{writer};
+  180: }
   181: 
-  182: Purpose: end the session's process.
+  182: =head2 close
   183: 
-  184: Args: none.
+  184: Purpose: end the session's process.
   185: 
-  186: Returns: 1.  Repeated calls do nothing.
+  186: Args: none.
   187: 
-  188: Side Effects: closes both pipes (the server sees end of file) and reaps the
-  189: child.
-  190: 
-  191: Usage:
+  188: Returns: 1.  Repeated calls do nothing.
+  189: 
+  190: Side Effects: closes both pipes (the server sees end of file) and reaps the
+  191: child.
   192: 
-  193: 	$transport-&gt;close;
+  193: Usage:
   194: 
-  195: =head3 EXAMPLE
+  195: 	$transport-&gt;close;
   196: 
-  197: 	$transport-&gt;close;	# safe to call twice
+  197: =head3 EXAMPLE
   198: 
-  199: =head3 API SPECIFICATION
+  199: 	$transport-&gt;close;	# safe to call twice
   200: 
-  201: =head4 INPUT
+  201: =head3 API SPECIFICATION
   202: 
-  203: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
+  203: =head4 INPUT
   204: 
-  205: =head4 OUTPUT
+  205: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
   206: 
-  207: 	{ type =&gt; 'integer', memberof =&gt; [ 1 ] }
+  207: =head4 OUTPUT
   208: 
-  209: =head3 MESSAGES
+  209: 	{ type =&gt; 'integer', memberof =&gt; [ 1 ] }
   210: 
-  211: None.
+  211: =head3 MESSAGES
   212: 
-  213: =head3 FORMAL SPECIFICATION
+  213: None.
   214: 
-  215: 	closed' = 1 ∧ child ∉ processes'
+  215: =head3 FORMAL SPECIFICATION
   216: 
-  217: =cut
+  217: 	closed' = 1 ∧ child ∉ processes'
   218: 
-  219: sub close {	## no critic (Subroutines::ProhibitBuiltinHomonyms, Subroutines::ProhibitAmbiguousNames) -- transport interface
-  220: 	my ($self) = @_;
-  221: 
-  222: 	return 1 if $self-&gt;{closed}++;
+  219: =cut
+  220: 
+  221: sub close {	## no critic (Subroutines::ProhibitBuiltinHomonyms, Subroutines::ProhibitAmbiguousNames) -- transport interface
+  222: 	my ($self) = @_;
   223: 
-  224: 	# Pipe close failures mean the child already went; reaping still matters.
-  225: 	for my $handle (grep { defined } @{$self}{qw(writer reader)}) {
-  226: 		CORE::close($handle);
-  227: 	}
-  228: 	waitpid($self-&gt;{pid}, 0) if $self-&gt;{pid};
-  229: 
-  230: 	return 1;
-  231: }
-  232: 
-  233: =head2 error_text
+  224: 	return 1 if $self-&gt;{closed}++;
+  225: 
+  226: 	# Pipe close failures mean the child already went; reaping still matters.
+  227: 	for my $handle (grep { defined } @{$self}{qw(writer reader)}) {
+  228: 		CORE::close($handle);
+  229: 	}
+  230: 	waitpid($self-&gt;{pid}, 0) if $self-&gt;{pid};
+  231: 
+  232: 	return 1;
+  233: }
   234: 
-  235: Purpose: what the transport itself said, for when the protocol failed.
+  235: =head2 error_text
   236: 
-  237: Args: none.
+  237: Purpose: what the transport itself said, for when the protocol failed.
   238: 
-  239: Returns: an empty string: the local server writes its diagnostics to this
-  240: process's own standard error, which the user already sees.
-  241: 
-  242: Side Effects: none.
+  239: Args: none.
+  240: 
+  241: Returns: an empty string: the local server writes its diagnostics to this
+  242: process's own standard error, which the user already sees.
   243: 
-  244: Usage:
+  244: Side Effects: none.
   245: 
-  246: 	my $text = $transport-&gt;error_text;
+  246: Usage:
   247: 
-  248: =head3 EXAMPLE
+  248: 	my $text = $transport-&gt;error_text;
   249: 
-  250: 	print $transport-&gt;error_text, "\n";
+  250: =head3 EXAMPLE
   251: 
-  252: =head3 API SPECIFICATION
+  252: 	print $transport-&gt;error_text, "\n";
   253: 
-  254: =head4 INPUT
+  254: =head3 API SPECIFICATION
   255: 
-  256: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
+  256: =head4 INPUT
   257: 
-  258: =head4 OUTPUT
+  258: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
   259: 
-  260: 	{ type =&gt; 'string' }
+  260: =head4 OUTPUT
   261: 
-  262: =head3 MESSAGES
+  262: 	{ type =&gt; 'string' }
   263: 
-  264: None.
+  264: =head3 MESSAGES
   265: 
-  266: =head3 FORMAL SPECIFICATION
+  266: None.
   267: 
-  268: 	error_text = ""
+  268: =head3 FORMAL SPECIFICATION
   269: 
-  270: =cut
+  270: 	error_text = ""
   271: 
-  272: sub error_text {
-  273: 	return '';
-  274: }
-  275: 
-  276: # _default_server_bin
-  277: # Purpose:     find the server program when none is configured.
-  278: # Entry:       none.
-  279: # Exit:        returns FILESYNC_SERVER_BIN, a bin/filesync-server found by
-  280: #              walking up from this file (a checkout, or blib under
-  281: #              "make test"), or the bare name (installed, on the PATH).
-  282: # Side effects: none.
-  283: sub _default_server_bin :Private {
-  284: 	my $configured = $ENV{FILESYNC_SERVER_BIN};
-  285: 	return $configured if defined $configured &amp;&amp; length $configured;
-  286: 
-  287: 	my $directory = dirname(__FILE__);
-  288: 	for (1 .. $SEARCH_DEPTH) {
-  289: 		my $candidate = File::Spec-&gt;catfile($directory, 'bin', $SERVER_PROGRAM);
-  290: 		return $candidate if -f $candidate;
-  291: 		$directory = dirname($directory);
-  292: 	}
-  293: 
-  294: 	return $SERVER_PROGRAM;
-  295: }
-  296: 
-  297: 1;
+  272: =cut
+  273: 
+  274: sub error_text {
+  275: 	return '';
+  276: }
+  277: 
+  278: # _default_server_bin
+  279: # Purpose:     find the server program when none is configured.
+  280: # Entry:       none.
+  281: # Exit:        returns FILESYNC_SERVER_BIN, a bin/filesync-server found by
+  282: #              walking up from this file (a checkout, or blib under
+  283: #              "make test"), or the bare name (installed, on the PATH).
+  284: # Side effects: none.
+  285: sub _default_server_bin :Private {
+  286: 	my $configured = $ENV{FILESYNC_SERVER_BIN};
+  287: 	return $configured if defined $configured &amp;&amp; length $configured;
+  288: 
+  289: 	my $directory = dirname(__FILE__);
+  290: 	for (1 .. $SEARCH_DEPTH) {
+  291: 		my $candidate = File::Spec-&gt;catfile($directory, 'bin', $SERVER_PROGRAM);
+  292: 		return $candidate if -f $candidate;
+  293: 		$directory = dirname($directory);
+  294: 	}
+  295: 
+  296: 	return $SERVER_PROGRAM;
+  297: }
   298: 
-  299: __END__
+  299: 1;
   300: 
-  301: =head1 LIMITATIONS
+  301: __END__
   302: 
-  303: =over 4
+  303: =head1 LIMITATIONS
   304: 
-  305: =item * The child runs with this process's privileges: a local transport
-  306: cannot enforce the separation an SSH forced command gives, so anyone who can
-  307: run it can write the server root directly anyway.
-  308: 
-  309: =back
+  305: =over 4
+  306: 
+  307: =item * The child runs with this process's privileges: a local transport
+  308: cannot enforce the separation an SSH forced command gives, so anyone who can
+  309: run it can write the server root directly anyway.
   310: 
-  311: =head1 LICENCE
+  311: =back
   312: 
-  313: GPL v2 for personal single-user, single-computer use.  All other users must
-  314: apply in writing to the author.
-  315: 
-  316: =cut
+  313: =head1 AUTHOR
+  314: 
+  315: Nigel Horne, C&lt;&lt; &lt;njh at nigelhorne.com&gt; &gt;&gt;
+  316: 
+  317: =head1 LICENCE AND COPYRIGHT
+  318: 
+  319: Copyright 2026 Nigel Horne.
+  320: 
+  321: Usage is subject to the GPL2 licence terms.
+  322: If you use it,
+  323: please let me know.
+  324: 
+  325: =cut
 </pre>
 
 <script>

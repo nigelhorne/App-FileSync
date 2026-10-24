@@ -20,7 +20,7 @@ https://pjcj.net
 <h1>File Coverage</h1>
 <table>
 <tr><td class="h" align="right">File:</td><td align="left">blib/lib/App/FileSync/Store.pm</td></tr>
-<tr><td class="h" align="right">Coverage:</td><td align="left" class="c2">91.0%</td></tr>
+<tr><td class="h" align="right">Coverage:</td><td align="left" class="c2">91.1%</td></tr>
 </table>
 <div><br/></div>
 <table>
@@ -29,26 +29,26 @@ https://pjcj.net
 <tr><td class="h">2</td><td colspan="6"></td></tr><tr><td class="h">3</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The server&#39;s view of one repo: the master tree, its index (master.json), the</td></tr>
 <tr><td class="h">4</td><td></td><td></td><td></td><td></td><td></td><td class="s"># per-client bases, the trash, the journal and the session lock, all under</td></tr>
 <tr><td class="h">5</td><td></td><td></td><td></td><td></td><td></td><td class="s"># ROOT/master/REPO and ROOT/.filesync/repos/REPO.</td></tr>
-<tr><td class="h">6</td><td colspan="6"></td></tr><tr><td class="h">7</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L7">314</a></div></td><td><div>354</div><div>205</div><div>1856</div></td><td class="s">use App::FileSync::Platform;</td></tr>
-<tr><td class="h">8</td><td colspan="6"></td></tr><tr><td class="h">9</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L9">314</a></div></td><td><div>299</div><div>194</div><div>1357</div></td><td class="s">use strict;</td></tr>
-<tr><td class="h">10</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L10">314</a></div></td><td><div>311</div><div>172</div><div>4533</div></td><td class="s">use warnings;</td></tr>
-<tr><td class="h">11</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L11">314</a></div></td><td><div>289</div><div>195</div><div>704</div></td><td class="s">use autodie qw(:all);</td></tr>
-<tr><td class="h">12</td><td colspan="6"></td></tr><tr><td class="h">13</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L13">314</a></div></td><td><div>409608</div><div>219</div><div>4442</div></td><td class="s">use File::Basename qw(dirname);</td></tr>
-<tr><td class="h">14</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L14">314</a></div></td><td><div>339</div><div>202</div><div>2534</div></td><td class="s">use File::Spec;</td></tr>
-<tr><td class="h">15</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L15">314</a></div></td><td><div>306</div><div>209</div><div>854</div></td><td class="s">use Sub::Private { mode =&gt; &#39;enforce&#39; };</td></tr>
-<tr><td class="h">16</td><td colspan="6"></td></tr><tr><td class="h">17</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L17">314</a></div></td><td><div>25213</div><div>178</div><div>735</div></td><td class="s">use parent -norequire, &#39;App::FileSync::Base&#39;;</td></tr>
-<tr><td class="h">18</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L18">314</a></div></td><td><div>3959</div><div>195</div><div>2361</div></td><td class="s">use App::FileSync::Base;</td></tr>
-<tr><td class="h">19</td><td colspan="6"></td></tr><tr><td class="h">20</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L20">314</a></div></td><td><div>391</div><div>215</div><div>5826</div></td><td class="s">use App::FileSync qw(json_encode json_decode read_text write_atomic validate_relpath validate_client_id validate_repo_name);</td></tr>
-<tr><td class="h">21</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L21">314</a></div></td><td><div>332</div><div>197</div><div>2673</div></td><td class="s">use App::FileSync::Args qw(named);</td></tr>
-<tr><td class="h">22</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L22">314</a></div></td><td><div>344</div><div>170</div><div>2043</div></td><td class="s">use App::FileSync::Config;</td></tr>
-<tr><td class="h">23</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L23">314</a></div></td><td><div>4310</div><div>2252</div><div>10343</div></td><td class="s">use App::FileSync::Constants qw($STALE_TEMP_SECONDS $TRASH_DAYS);</td></tr>
-<tr><td class="h">24</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L24">314</a></div></td><td><div>810</div><div>509</div><div>3367</div></td><td class="s">use App::FileSync::I18N qw(strip_location throw);</td></tr>
-<tr><td class="h">25</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L25">314</a></div></td><td><div>319</div><div>192</div><div>3603</div></td><td class="s">use App::FileSync::IO qw(append_line ensure_dir install_file);</td></tr>
-<tr><td class="h">26</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L26">314</a></div></td><td><div>324</div><div>174</div><div>1640</div></td><td class="s">use App::FileSync::Ignore;</td></tr>
-<tr><td class="h">27</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L27">314</a></div></td><td><div>30357</div><div>17558</div><div>41573</div></td><td class="s">use App::FileSync::Lock;</td></tr>
-<tr><td class="h">28</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L28">314</a></div></td><td><div>47283</div><div>277</div><div>2312</div></td><td class="s">use App::FileSync::Scan;</td></tr>
-<tr><td class="h">29</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L29">314</a></div></td><td><div>34141</div><div>275</div><div>109482</div></td><td class="s">use App::FileSync::Trash;</td></tr>
-<tr><td class="h">30</td><td colspan="6"></td></tr><tr><td class="h">31</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $VERSION = &#39;0.001.1&#39;;</td></tr>
+<tr><td class="h">6</td><td colspan="6"></td></tr><tr><td class="h">7</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L7">314</a></div></td><td><div>829</div><div>292</div><div>4586</div></td><td class="s">use App::FileSync::Platform;</td></tr>
+<tr><td class="h">8</td><td colspan="6"></td></tr><tr><td class="h">9</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L9">314</a></div></td><td><div>6052</div><div>2758</div><div>4454</div></td><td class="s">use strict;</td></tr>
+<tr><td class="h">10</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L10">314</a></div></td><td><div>1028</div><div>768</div><div>7113</div></td><td class="s">use warnings;</td></tr>
+<tr><td class="h">11</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L11">314</a></div></td><td><div>698</div><div>248</div><div>1075</div></td><td class="s">use autodie qw(:all);</td></tr>
+<tr><td class="h">12</td><td colspan="6"></td></tr><tr><td class="h">13</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L13">314</a></div></td><td><div>686276</div><div>317</div><div>7887</div></td><td class="s">use File::Basename qw(dirname);</td></tr>
+<tr><td class="h">14</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L14">314</a></div></td><td><div>651</div><div>270</div><div>4330</div></td><td class="s">use File::Spec;</td></tr>
+<tr><td class="h">15</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L15">314</a></div></td><td><div>507</div><div>256</div><div>1189</div></td><td class="s">use Sub::Private { mode =&gt; &#39;enforce&#39; };</td></tr>
+<tr><td class="h">16</td><td colspan="6"></td></tr><tr><td class="h">17</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L17">314</a></div></td><td><div>36631</div><div>279</div><div>1041</div></td><td class="s">use parent -norequire, &#39;App::FileSync::Base&#39;;</td></tr>
+<tr><td class="h">18</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L18">314</a></div></td><td><div>6732</div><div>248</div><div>4534</div></td><td class="s">use App::FileSync::Base;</td></tr>
+<tr><td class="h">19</td><td colspan="6"></td></tr><tr><td class="h">20</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L20">314</a></div></td><td><div>555</div><div>243</div><div>9819</div></td><td class="s">use App::FileSync qw(json_encode json_decode read_text write_atomic validate_relpath validate_client_id validate_repo_name);</td></tr>
+<tr><td class="h">21</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L21">314</a></div></td><td><div>559</div><div>265</div><div>4850</div></td><td class="s">use App::FileSync::Args qw(named);</td></tr>
+<tr><td class="h">22</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L22">314</a></div></td><td><div>719</div><div>340</div><div>3900</div></td><td class="s">use App::FileSync::Config;</td></tr>
+<tr><td class="h">23</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L23">314</a></div></td><td><div>558</div><div>505</div><div>15637</div></td><td class="s">use App::FileSync::Constants qw($STALE_TEMP_SECONDS $TRASH_DAYS);</td></tr>
+<tr><td class="h">24</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L24">314</a></div></td><td><div>703</div><div>275</div><div>6773</div></td><td class="s">use App::FileSync::I18N qw(strip_location throw);</td></tr>
+<tr><td class="h">25</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L25">314</a></div></td><td><div>549</div><div>4661</div><div>10109</div></td><td class="s">use App::FileSync::IO qw(append_line ensure_dir install_file);</td></tr>
+<tr><td class="h">26</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L26">314</a></div></td><td><div>1733</div><div>756</div><div>3086</div></td><td class="s">use App::FileSync::Ignore;</td></tr>
+<tr><td class="h">27</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L27">314</a></div></td><td><div>44829</div><div>392</div><div>4514</div></td><td class="s">use App::FileSync::Lock;</td></tr>
+<tr><td class="h">28</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L28">314</a></div></td><td><div>49767</div><div>424</div><div>4978</div></td><td class="s">use App::FileSync::Scan;</td></tr>
+<tr><td class="h">29</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L29">314</a></div></td><td><div>51852</div><div>429</div><div>4987</div></td><td class="s">use App::FileSync::Trash;</td></tr>
+<tr><td class="h">30</td><td colspan="6"></td></tr><tr><td class="h">31</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L31">314</a></div></td><td><div>665</div><div>238</div><div>563</div></td><td class="s">use version; our $VERSION = version-&gt;declare(&#39;0.001.1&#39;);</td></tr>
 <tr><td class="h">32</td><td colspan="6"></td></tr><tr><td class="h">33</td><td></td><td></td><td></td><td></td><td></td><td class="s">=encoding utf8</td></tr>
 <tr><td class="h">34</td><td colspan="6"></td></tr><tr><td class="h">35 - 95</td><td colspan="5"></td><td class="s"><pre>=head1 NAME
 
@@ -112,8 +112,8 @@ Usage:
 
 =cut</pre></td></tr>
 <tr><td class="h">96</td><td colspan="6"></td></tr><tr><td class="h">97</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub new {</td></tr>
-<tr><td class="h">98</td><td><div class="c3">384</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L98">384</a></div></td><td><div>1974</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $class = shift;</td></tr>
-<tr><td class="h">99</td><td><div class="c3">384</div></td><td></td><td></td><td></td><td><div>2651</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = named(\@_, {</td></tr>
+<tr><td class="h">98</td><td><div class="c3">384</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L98">384</a></div></td><td><div>2891</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $class = shift;</td></tr>
+<tr><td class="h">99</td><td><div class="c3">384</div></td><td></td><td></td><td></td><td><div>3385</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = named(\@_, {</td></tr>
 <tr><td class="h">100</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, min =&gt; 1 },</td></tr>
 <tr><td class="h">101</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, min =&gt; 1 },</td></tr>
 <tr><td class="h">102</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;hashref&#39;, optional =&gt; 1 },</td></tr>
@@ -121,32 +121,48 @@ Usage:
 <tr><td class="h">104</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}, &#39;Store-&gt;new&#39;);</td></tr>
 <tr><td class="h">105</td><td colspan="6"></td></tr><tr><td class="h">106</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The name becomes a directory under the root, so it must be a plain id</td></tr>
 <tr><td class="h">107</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# before any path is built from it.</td></tr>
-<tr><td class="h">108</td><td><div class="c3">384</div></td><td></td><td></td><td></td><td><div>896</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($ok, $reason) = validate_repo_name($args-&gt;{repo});</td></tr>
-<tr><td class="h">109</td><td><div class="c3">384</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L109">100</a></div></td><td></td><td></td><td><div>533</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;store.bad_repo&#39;, { reason =&gt; $reason }) unless $ok;</td></tr>
-<tr><td class="h">110</td><td colspan="6"></td></tr><tr><td class="h">111</td><td><div class="c3">383</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Store-pm--condition.html#L111">67</a></div></td><td></td><td><div>1284</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = $args-&gt;{config} || App::FileSync::Config::load_repo($args-&gt;{root}, $args-&gt;{repo});</td></tr>
+<tr><td class="h">108</td><td><div class="c3">384</div></td><td></td><td></td><td></td><td><div>1231</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($ok, $reason) = validate_repo_name($args-&gt;{repo});</td></tr>
+<tr><td class="h">109</td><td><div class="c3">384</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L109">100</a></div></td><td></td><td></td><td><div>678</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;store.bad_repo&#39;, { reason =&gt; $reason }) unless $ok;</td></tr>
+<tr><td class="h">110</td><td colspan="6"></td></tr><tr><td class="h">111</td><td><div class="c3">383</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Store-pm--condition.html#L111">67</a></div></td><td></td><td><div>1672</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = $args-&gt;{config} || App::FileSync::Config::load_repo($args-&gt;{root}, $args-&gt;{repo});</td></tr>
 <tr><td class="h">112</td><td colspan="6"></td></tr><tr><td class="h">113</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return bless {</td></tr>
 <tr><td class="h">114</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $args-&gt;{root},</td></tr>
 <tr><td class="h">115</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $args-&gt;{repo},</td></tr>
 <tr><td class="h">116</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;language =&gt; $args-&gt;{language},</td></tr>
 <tr><td class="h">117</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config&nbsp;&nbsp;&nbsp;=&gt; $config,</td></tr>
-<tr><td class="h">118</td><td><div class="c3">383</div></td><td></td><td></td><td></td><td><div>2725</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore&nbsp;&nbsp;&nbsp;=&gt; App::FileSync::Ignore-&gt;new(patterns =&gt; $config-&gt;{ignore}),</td></tr>
+<tr><td class="h">118</td><td><div class="c3">383</div></td><td></td><td></td><td></td><td><div>2695</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore&nbsp;&nbsp;&nbsp;=&gt; App::FileSync::Ignore-&gt;new(patterns =&gt; $config-&gt;{ignore}),</td></tr>
 <tr><td class="h">119</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}, $class;</td></tr>
 <tr><td class="h">120</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">121</td><td colspan="6"></td></tr><tr><td class="h">122 - 180</td><td colspan="5"></td><td class="s"><pre>=head2 root
+<tr><td class="h">121</td><td colspan="6"></td></tr><tr><td class="h">122 - 196</td><td colspan="5"></td><td class="s"><pre>=head2 root
+
+Documented with L&lt;/journal_path&gt; below.
 
 =head2 repo
 
+Documented with L&lt;/journal_path&gt; below.
+
 =head2 config
+
+Documented with L&lt;/journal_path&gt; below.
 
 =head2 master_dir
 
+Documented with L&lt;/journal_path&gt; below.
+
 =head2 meta_dir
+
+Documented with L&lt;/journal_path&gt; below.
 
 =head2 index_path
 
+Documented with L&lt;/journal_path&gt; below.
+
 =head2 trash_dir
 
+Documented with L&lt;/journal_path&gt; below.
+
 =head2 lock_path
+
+Documented with L&lt;/journal_path&gt; below.
 
 =head2 journal_path
 
@@ -191,45 +207,45 @@ None.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;journal_path = meta_dir / &quot;journal&quot; / yyyy-mm(now) &acirc;&#129;&#128; &quot;.jsonl&quot;
 
 =cut</pre></td></tr>
-<tr><td class="h">181</td><td colspan="6"></td></tr><tr><td class="h">182</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub root {</td></tr>
-<tr><td class="h">183</td><td><div class="c0">0</div></td><td></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L183">0</a></div></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">184</td><td colspan="6"></td></tr><tr><td class="h">185</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;{root};</td></tr>
-<tr><td class="h">186</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">187</td><td colspan="6"></td></tr><tr><td class="h">188</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub repo {</td></tr>
-<tr><td class="h">189</td><td><div class="c0">0</div></td><td></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L189">0</a></div></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">190</td><td colspan="6"></td></tr><tr><td class="h">191</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;{repo};</td></tr>
-<tr><td class="h">192</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">193</td><td colspan="6"></td></tr><tr><td class="h">194</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub config {</td></tr>
-<tr><td class="h">195</td><td><div class="c3">520</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L195">520</a></div></td><td><div>444</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">196</td><td colspan="6"></td></tr><tr><td class="h">197</td><td><div class="c3">520</div></td><td></td><td></td><td></td><td><div>1116</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;{config};</td></tr>
-<tr><td class="h">198</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">199</td><td colspan="6"></td></tr><tr><td class="h">200</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub master_dir {</td></tr>
-<tr><td class="h">201</td><td><div class="c3">1701</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L201">1701</a></div></td><td><div>951</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">202</td><td colspan="6"></td></tr><tr><td class="h">203</td><td><div class="c3">1701</div></td><td></td><td></td><td></td><td><div>7447</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catdir($self-&gt;{root}, &#39;master&#39;, $self-&gt;{repo});</td></tr>
-<tr><td class="h">204</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">205</td><td colspan="6"></td></tr><tr><td class="h">206</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub meta_dir {</td></tr>
-<tr><td class="h">207</td><td><div class="c3">1736</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L207">1736</a></div></td><td><div>1070</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">208</td><td colspan="6"></td></tr><tr><td class="h">209</td><td><div class="c3">1736</div></td><td></td><td></td><td></td><td><div>2398</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::Config::repo_meta_dir($self-&gt;{root}, $self-&gt;{repo});</td></tr>
-<tr><td class="h">210</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">211</td><td colspan="6"></td></tr><tr><td class="h">212</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub index_path {</td></tr>
-<tr><td class="h">213</td><td><div class="c3">420</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L213">420</a></div></td><td><div>444</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">214</td><td colspan="6"></td></tr><tr><td class="h">215</td><td><div class="c3">420</div></td><td></td><td></td><td></td><td><div>653</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile($self-&gt;meta_dir(), &#39;master.json&#39;);</td></tr>
-<tr><td class="h">216</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">217</td><td colspan="6"></td></tr><tr><td class="h">218</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub trash_dir {</td></tr>
-<tr><td class="h">219</td><td><div class="c3">192</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L219">192</a></div></td><td><div>367</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">220</td><td colspan="6"></td></tr><tr><td class="h">221</td><td><div class="c3">192</div></td><td></td><td></td><td></td><td><div>227</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catdir($self-&gt;meta_dir(), &#39;trash&#39;);</td></tr>
-<tr><td class="h">222</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">223</td><td colspan="6"></td></tr><tr><td class="h">224</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub lock_path {</td></tr>
-<tr><td class="h">225</td><td><div class="c3">181</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L225">181</a></div></td><td><div>242</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">226</td><td colspan="6"></td></tr><tr><td class="h">227</td><td><div class="c3">181</div></td><td></td><td></td><td></td><td><div>410</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile($self-&gt;meta_dir(), &#39;locks&#39;, &#39;repo.lock&#39;);</td></tr>
-<tr><td class="h">228</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">229</td><td colspan="6"></td></tr><tr><td class="h">230</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub journal_path {</td></tr>
-<tr><td class="h">231</td><td><div class="c3">542</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L231">542</a></div></td><td><div>475</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">232</td><td colspan="6"></td></tr><tr><td class="h">233</td><td><div class="c3">542</div></td><td></td><td></td><td></td><td><div>1094</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @t = gmtime();</td></tr>
-<tr><td class="h">234</td><td><div class="c3">542</div></td><td></td><td></td><td></td><td><div>583</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile($self-&gt;meta_dir(), &#39;journal&#39;,</td></tr>
-<tr><td class="h">235</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sprintf(&#39;%04d-%02d.jsonl&#39;, $t[5] + 1900, $t[4] + 1));</td></tr>
-<tr><td class="h">236</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">237</td><td colspan="6"></td></tr><tr><td class="h">238 - 279</td><td colspan="5"></td><td class="s"><pre>=head2 base_path
+<tr><td class="h">197</td><td colspan="6"></td></tr><tr><td class="h">198</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub root {</td></tr>
+<tr><td class="h">199</td><td><div class="c0">0</div></td><td></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L199">0</a></div></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">200</td><td colspan="6"></td></tr><tr><td class="h">201</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;{root};</td></tr>
+<tr><td class="h">202</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">203</td><td colspan="6"></td></tr><tr><td class="h">204</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub repo {</td></tr>
+<tr><td class="h">205</td><td><div class="c0">0</div></td><td></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L205">0</a></div></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">206</td><td colspan="6"></td></tr><tr><td class="h">207</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;{repo};</td></tr>
+<tr><td class="h">208</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">209</td><td colspan="6"></td></tr><tr><td class="h">210</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub config {</td></tr>
+<tr><td class="h">211</td><td><div class="c3">520</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L211">520</a></div></td><td><div>755</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">212</td><td colspan="6"></td></tr><tr><td class="h">213</td><td><div class="c3">520</div></td><td></td><td></td><td></td><td><div>1939</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;{config};</td></tr>
+<tr><td class="h">214</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">215</td><td colspan="6"></td></tr><tr><td class="h">216</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub master_dir {</td></tr>
+<tr><td class="h">217</td><td><div class="c3">1701</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L217">1701</a></div></td><td><div>1397</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">218</td><td colspan="6"></td></tr><tr><td class="h">219</td><td><div class="c3">1701</div></td><td></td><td></td><td></td><td><div>13398</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catdir($self-&gt;{root}, &#39;master&#39;, $self-&gt;{repo});</td></tr>
+<tr><td class="h">220</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">221</td><td colspan="6"></td></tr><tr><td class="h">222</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub meta_dir {</td></tr>
+<tr><td class="h">223</td><td><div class="c3">1736</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L223">1736</a></div></td><td><div>1587</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">224</td><td colspan="6"></td></tr><tr><td class="h">225</td><td><div class="c3">1736</div></td><td></td><td></td><td></td><td><div>3169</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::Config::repo_meta_dir($self-&gt;{root}, $self-&gt;{repo});</td></tr>
+<tr><td class="h">226</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">227</td><td colspan="6"></td></tr><tr><td class="h">228</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub index_path {</td></tr>
+<tr><td class="h">229</td><td><div class="c3">420</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L229">420</a></div></td><td><div>603</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">230</td><td colspan="6"></td></tr><tr><td class="h">231</td><td><div class="c3">420</div></td><td></td><td></td><td></td><td><div>728</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile($self-&gt;meta_dir(), &#39;master.json&#39;);</td></tr>
+<tr><td class="h">232</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">233</td><td colspan="6"></td></tr><tr><td class="h">234</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub trash_dir {</td></tr>
+<tr><td class="h">235</td><td><div class="c3">192</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L235">192</a></div></td><td><div>518</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">236</td><td colspan="6"></td></tr><tr><td class="h">237</td><td><div class="c3">192</div></td><td></td><td></td><td></td><td><div>310</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catdir($self-&gt;meta_dir(), &#39;trash&#39;);</td></tr>
+<tr><td class="h">238</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">239</td><td colspan="6"></td></tr><tr><td class="h">240</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub lock_path {</td></tr>
+<tr><td class="h">241</td><td><div class="c3">181</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L241">181</a></div></td><td><div>280</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">242</td><td colspan="6"></td></tr><tr><td class="h">243</td><td><div class="c3">181</div></td><td></td><td></td><td></td><td><div>494</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile($self-&gt;meta_dir(), &#39;locks&#39;, &#39;repo.lock&#39;);</td></tr>
+<tr><td class="h">244</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">245</td><td colspan="6"></td></tr><tr><td class="h">246</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub journal_path {</td></tr>
+<tr><td class="h">247</td><td><div class="c3">542</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L247">542</a></div></td><td><div>559</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">248</td><td colspan="6"></td></tr><tr><td class="h">249</td><td><div class="c3">542</div></td><td></td><td></td><td></td><td><div>1285</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @t = gmtime();</td></tr>
+<tr><td class="h">250</td><td><div class="c3">542</div></td><td></td><td></td><td></td><td><div>762</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile($self-&gt;meta_dir(), &#39;journal&#39;,</td></tr>
+<tr><td class="h">251</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sprintf(&#39;%04d-%02d.jsonl&#39;, $t[5] + 1900, $t[4] + 1));</td></tr>
+<tr><td class="h">252</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">253</td><td colspan="6"></td></tr><tr><td class="h">254 - 295</td><td colspan="5"></td><td class="s"><pre>=head2 base_path
 
 Purpose: where a client&#39;s base (its state at its last sync) is stored.
 
@@ -271,15 +287,15 @@ Usage:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base_path(client) = meta_dir / &quot;clients&quot; / client &acirc;&#129;&#128; &quot;.json&quot;
 
 =cut</pre></td></tr>
-<tr><td class="h">280</td><td colspan="6"></td></tr><tr><td class="h">281</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub base_path {</td></tr>
-<tr><td class="h">282</td><td><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L282">314</a></div></td><td><div>412</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $client) = @_;</td></tr>
-<tr><td class="h">283</td><td colspan="6"></td></tr><tr><td class="h">284</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The id becomes a file name, so it must not be able to climb out of the</td></tr>
-<tr><td class="h">285</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# clients directory.</td></tr>
-<tr><td class="h">286</td><td><div class="c3">314</div></td><td></td><td></td><td></td><td><div>494</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($ok, $reason) = validate_client_id($client);</td></tr>
-<tr><td class="h">287</td><td><div class="c3">314</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L287">100</a></div></td><td></td><td></td><td><div>405</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;_throw(&#39;store.bad_client&#39;, { reason =&gt; $reason }) unless $ok;</td></tr>
-<tr><td class="h">288</td><td colspan="6"></td></tr><tr><td class="h">289</td><td><div class="c3">313</div></td><td></td><td></td><td></td><td><div>495</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile($self-&gt;meta_dir(), &#39;clients&#39;, &quot;$client.json&quot;);</td></tr>
-<tr><td class="h">290</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">291</td><td colspan="6"></td></tr><tr><td class="h">292 - 329</td><td colspan="5"></td><td class="s"><pre>=head2 acquire_lock
+<tr><td class="h">296</td><td colspan="6"></td></tr><tr><td class="h">297</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub base_path {</td></tr>
+<tr><td class="h">298</td><td><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L298">314</a></div></td><td><div>504</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $client) = @_;</td></tr>
+<tr><td class="h">299</td><td colspan="6"></td></tr><tr><td class="h">300</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The id becomes a file name, so it must not be able to climb out of the</td></tr>
+<tr><td class="h">301</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# clients directory.</td></tr>
+<tr><td class="h">302</td><td><div class="c3">314</div></td><td></td><td></td><td></td><td><div>693</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($ok, $reason) = validate_client_id($client);</td></tr>
+<tr><td class="h">303</td><td><div class="c3">314</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L303">100</a></div></td><td></td><td></td><td><div>541</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;_throw(&#39;store.bad_client&#39;, { reason =&gt; $reason }) unless $ok;</td></tr>
+<tr><td class="h">304</td><td colspan="6"></td></tr><tr><td class="h">305</td><td><div class="c3">313</div></td><td></td><td></td><td></td><td><div>594</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile($self-&gt;meta_dir(), &#39;clients&#39;, &quot;$client.json&quot;);</td></tr>
+<tr><td class="h">306</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">307</td><td colspan="6"></td></tr><tr><td class="h">308 - 345</td><td colspan="5"></td><td class="s"><pre>=head2 acquire_lock
 
 Purpose: take the repo&#39;s session lock without waiting.
 
@@ -317,11 +333,11 @@ Usage:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acquire_lock = Lock::acquire(lock_path, nonblock)
 
 =cut</pre></td></tr>
-<tr><td class="h">330</td><td colspan="6"></td></tr><tr><td class="h">331</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub acquire_lock {</td></tr>
-<tr><td class="h">332</td><td><div class="c3">177</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L332">177</a></div></td><td><div>222</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">333</td><td colspan="6"></td></tr><tr><td class="h">334</td><td><div class="c3">177</div></td><td></td><td></td><td></td><td><div>390</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::Lock::acquire(path =&gt; $self-&gt;lock_path(), nonblock =&gt; 1);</td></tr>
-<tr><td class="h">335</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">336</td><td colspan="6"></td></tr><tr><td class="h">337 - 380</td><td colspan="5"></td><td class="s"><pre>=head2 abs_path
+<tr><td class="h">346</td><td colspan="6"></td></tr><tr><td class="h">347</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub acquire_lock {</td></tr>
+<tr><td class="h">348</td><td><div class="c3">177</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L348">177</a></div></td><td><div>244</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">349</td><td colspan="6"></td></tr><tr><td class="h">350</td><td><div class="c3">177</div></td><td></td><td></td><td></td><td><div>527</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::Lock::acquire(path =&gt; $self-&gt;lock_path(), nonblock =&gt; 1);</td></tr>
+<tr><td class="h">351</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">352</td><td colspan="6"></td></tr><tr><td class="h">353 - 396</td><td colspan="5"></td><td class="s"><pre>=head2 abs_path
 
 Purpose: the absolute path in the master for a relative path.
 
@@ -365,18 +381,24 @@ Usage:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abs_path(rel) = master / rel
 
 =cut</pre></td></tr>
-<tr><td class="h">381</td><td colspan="6"></td></tr><tr><td class="h">382</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub abs_path {</td></tr>
-<tr><td class="h">383</td><td><div class="c3">661</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L383">661</a></div></td><td><div>418</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $rel) = @_;</td></tr>
-<tr><td class="h">384</td><td colspan="6"></td></tr><tr><td class="h">385</td><td><div class="c3">661</div></td><td></td><td></td><td></td><td><div>523</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($ok, $reason) = validate_relpath($rel);</td></tr>
-<tr><td class="h">386</td><td><div class="c3">661</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L386">50</a></div></td><td></td><td></td><td><div>413</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;_throw(&#39;path.unsafe&#39;, { path =&gt; $rel, reason =&gt; $reason }) unless $ok;</td></tr>
-<tr><td class="h">387</td><td colspan="6"></td></tr><tr><td class="h">388</td><td><div class="c3">661</div></td><td></td><td></td><td></td><td><div>713</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;_assert_no_symlinked_parent($rel);</td></tr>
-<tr><td class="h">389</td><td colspan="6"></td></tr><tr><td class="h">390</td><td><div class="c3">661</div></td><td></td><td></td><td></td><td><div>415</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile($self-&gt;master_dir(), split m{/}, $rel);</td></tr>
-<tr><td class="h">391</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">392</td><td colspan="6"></td></tr><tr><td class="h">393 - 446</td><td colspan="5"></td><td class="s"><pre>=head2 load_index
+<tr><td class="h">397</td><td colspan="6"></td></tr><tr><td class="h">398</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub abs_path {</td></tr>
+<tr><td class="h">399</td><td><div class="c3">661</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L399">661</a></div></td><td><div>591</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $rel) = @_;</td></tr>
+<tr><td class="h">400</td><td colspan="6"></td></tr><tr><td class="h">401</td><td><div class="c3">661</div></td><td></td><td></td><td></td><td><div>833</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($ok, $reason) = validate_relpath($rel);</td></tr>
+<tr><td class="h">402</td><td><div class="c3">661</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L402">50</a></div></td><td></td><td></td><td><div>670</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;_throw(&#39;path.unsafe&#39;, { path =&gt; $rel, reason =&gt; $reason }) unless $ok;</td></tr>
+<tr><td class="h">403</td><td colspan="6"></td></tr><tr><td class="h">404</td><td><div class="c3">661</div></td><td></td><td></td><td></td><td><div>1100</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;_assert_no_symlinked_parent($rel);</td></tr>
+<tr><td class="h">405</td><td colspan="6"></td></tr><tr><td class="h">406</td><td><div class="c3">661</div></td><td></td><td></td><td></td><td><div>668</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile($self-&gt;master_dir(), split m{/}, $rel);</td></tr>
+<tr><td class="h">407</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">408</td><td colspan="6"></td></tr><tr><td class="h">409 - 468</td><td colspan="5"></td><td class="s"><pre>=head2 load_index
+
+Documented with L&lt;/save_base&gt; below.
 
 =head2 save_index
 
+Documented with L&lt;/save_base&gt; below.
+
 =head2 load_base
+
+Documented with L&lt;/save_base&gt; below.
 
 =head2 save_base
 
@@ -426,23 +448,23 @@ Usage:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;save(p, e): FS&#39;(p) = json(&acirc;&#159;&uml;version &acirc;&#134;&brvbar; 1, entries &acirc;&#134;&brvbar; e&acirc;&#159;&copy;) &acirc;&#129;&#128; &quot;\n&quot;
 
 =cut</pre></td></tr>
-<tr><td class="h">447</td><td colspan="6"></td></tr><tr><td class="h">448</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub load_index {</td></tr>
-<tr><td class="h">449</td><td><div class="c3">189</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L449">189</a></div></td><td><div>962398</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">450</td><td colspan="6"></td></tr><tr><td class="h">451</td><td><div class="c3">189</div></td><td></td><td></td><td></td><td><div>408</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;_load_entries($self-&gt;index_path());</td></tr>
-<tr><td class="h">452</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">453</td><td colspan="6"></td></tr><tr><td class="h">454</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub save_index {</td></tr>
-<tr><td class="h">455</td><td><div class="c3">225</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L455">225</a></div></td><td><div>278</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $entries) = @_;</td></tr>
-<tr><td class="h">456</td><td colspan="6"></td></tr><tr><td class="h">457</td><td><div class="c3">225</div></td><td></td><td></td><td></td><td><div>498</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;_save_entries($self-&gt;index_path(), $entries);</td></tr>
-<tr><td class="h">458</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">459</td><td colspan="6"></td></tr><tr><td class="h">460</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub load_base {</td></tr>
-<tr><td class="h">461</td><td><div class="c3">167</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L461">167</a></div></td><td><div>260</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $client) = @_;</td></tr>
-<tr><td class="h">462</td><td colspan="6"></td></tr><tr><td class="h">463</td><td><div class="c3">167</div></td><td></td><td></td><td></td><td><div>381</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;_load_entries($self-&gt;base_path($client));</td></tr>
-<tr><td class="h">464</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">465</td><td colspan="6"></td></tr><tr><td class="h">466</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub save_base {</td></tr>
-<tr><td class="h">467</td><td><div class="c3">143</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L467">143</a></div></td><td><div>228</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $client, $entries) = @_;</td></tr>
-<tr><td class="h">468</td><td colspan="6"></td></tr><tr><td class="h">469</td><td><div class="c3">143</div></td><td></td><td></td><td></td><td><div>290</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;_save_entries($self-&gt;base_path($client), $entries);</td></tr>
-<tr><td class="h">470</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">471</td><td colspan="6"></td></tr><tr><td class="h">472 - 514</td><td colspan="5"></td><td class="s"><pre>=head2 walk_master
+<tr><td class="h">469</td><td colspan="6"></td></tr><tr><td class="h">470</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub load_index {</td></tr>
+<tr><td class="h">471</td><td><div class="c3">189</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L471">189</a></div></td><td><div>1809729</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">472</td><td colspan="6"></td></tr><tr><td class="h">473</td><td><div class="c3">189</div></td><td></td><td></td><td></td><td><div>475</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;_load_entries($self-&gt;index_path());</td></tr>
+<tr><td class="h">474</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">475</td><td colspan="6"></td></tr><tr><td class="h">476</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub save_index {</td></tr>
+<tr><td class="h">477</td><td><div class="c3">225</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L477">225</a></div></td><td><div>362</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $entries) = @_;</td></tr>
+<tr><td class="h">478</td><td colspan="6"></td></tr><tr><td class="h">479</td><td><div class="c3">225</div></td><td></td><td></td><td></td><td><div>764</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;_save_entries($self-&gt;index_path(), $entries);</td></tr>
+<tr><td class="h">480</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">481</td><td colspan="6"></td></tr><tr><td class="h">482</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub load_base {</td></tr>
+<tr><td class="h">483</td><td><div class="c3">167</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L483">167</a></div></td><td><div>301</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $client) = @_;</td></tr>
+<tr><td class="h">484</td><td colspan="6"></td></tr><tr><td class="h">485</td><td><div class="c3">167</div></td><td></td><td></td><td></td><td><div>438</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;_load_entries($self-&gt;base_path($client));</td></tr>
+<tr><td class="h">486</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">487</td><td colspan="6"></td></tr><tr><td class="h">488</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub save_base {</td></tr>
+<tr><td class="h">489</td><td><div class="c3">143</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L489">143</a></div></td><td><div>324</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $client, $entries) = @_;</td></tr>
+<tr><td class="h">490</td><td colspan="6"></td></tr><tr><td class="h">491</td><td><div class="c3">143</div></td><td></td><td></td><td></td><td><div>376</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;_save_entries($self-&gt;base_path($client), $entries);</td></tr>
+<tr><td class="h">492</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">493</td><td colspan="6"></td></tr><tr><td class="h">494 - 536</td><td colspan="5"></td><td class="s"><pre>=head2 walk_master
 
 Purpose: scan the master, reusing indexed hashes where size and mtime match.
 
@@ -485,17 +507,17 @@ Usage:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;walk_master(c) = scan(master_dir, ignore, c)
 
 =cut</pre></td></tr>
-<tr><td class="h">515</td><td colspan="6"></td></tr><tr><td class="h">516</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub walk_master {</td></tr>
-<tr><td class="h">517</td><td><div class="c3">174</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L517">174</a></div></td><td><div>238</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $cache) = @_;</td></tr>
-<tr><td class="h">518</td><td colspan="6"></td></tr><tr><td class="h">519</td><td><div class="c3">174</div></td><td></td><td></td><td></td><td><div>369</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $master = $self-&gt;master_dir();</td></tr>
-<tr><td class="h">520</td><td><div class="c3">174</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L520">50</a></div></td><td></td><td></td><td><div>943</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;_throw(&#39;store.no_master&#39;, { path =&gt; $master }) unless -d $master;</td></tr>
-<tr><td class="h">521</td><td colspan="6"></td></tr><tr><td class="h">522</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::Scan::scan(</td></tr>
-<tr><td class="h">523</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;=&gt; $master,</td></tr>
-<tr><td class="h">524</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore =&gt; $self-&gt;{ignore},</td></tr>
-<tr><td class="h">525</td><td><div class="c3">174</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Store-pm--condition.html#L525">50</a></div></td><td></td><td><div>614</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cache&nbsp;&nbsp;=&gt; $cache || {},</td></tr>
-<tr><td class="h">526</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
-<tr><td class="h">527</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">528</td><td colspan="6"></td></tr><tr><td class="h">529 - 568</td><td colspan="5"></td><td class="s"><pre>=head2 ensure_parent
+<tr><td class="h">537</td><td colspan="6"></td></tr><tr><td class="h">538</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub walk_master {</td></tr>
+<tr><td class="h">539</td><td><div class="c3">174</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L539">174</a></div></td><td><div>302</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $cache) = @_;</td></tr>
+<tr><td class="h">540</td><td colspan="6"></td></tr><tr><td class="h">541</td><td><div class="c3">174</div></td><td></td><td></td><td></td><td><div>433</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $master = $self-&gt;master_dir();</td></tr>
+<tr><td class="h">542</td><td><div class="c3">174</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L542">50</a></div></td><td></td><td></td><td><div>1341</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;_throw(&#39;store.no_master&#39;, { path =&gt; $master }) unless -d $master;</td></tr>
+<tr><td class="h">543</td><td colspan="6"></td></tr><tr><td class="h">544</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::Scan::scan(</td></tr>
+<tr><td class="h">545</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;=&gt; $master,</td></tr>
+<tr><td class="h">546</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore =&gt; $self-&gt;{ignore},</td></tr>
+<tr><td class="h">547</td><td><div class="c3">174</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Store-pm--condition.html#L547">50</a></div></td><td></td><td><div>796</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cache&nbsp;&nbsp;=&gt; $cache || {},</td></tr>
+<tr><td class="h">548</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
+<tr><td class="h">549</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">550</td><td colspan="6"></td></tr><tr><td class="h">551 - 590</td><td colspan="5"></td><td class="s"><pre>=head2 ensure_parent
 
 Purpose: create the directory a master path will be written into.
 
@@ -535,11 +557,11 @@ As for L&lt;/abs_path&gt;, plus C&lt;io.mkdir&gt;.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isdir&#39;(dirname(abs_path(rel)))
 
 =cut</pre></td></tr>
-<tr><td class="h">569</td><td colspan="6"></td></tr><tr><td class="h">570</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub ensure_parent {</td></tr>
-<tr><td class="h">571</td><td><div class="c3">181</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L571">181</a></div></td><td><div>152</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $rel) = @_;</td></tr>
-<tr><td class="h">572</td><td colspan="6"></td></tr><tr><td class="h">573</td><td><div class="c3">181</div></td><td></td><td></td><td></td><td><div>207</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ensure_dir(dirname($self-&gt;abs_path($rel)));</td></tr>
-<tr><td class="h">574</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">575</td><td colspan="6"></td></tr><tr><td class="h">576 - 618</td><td colspan="5"></td><td class="s"><pre>=head2 temp_file
+<tr><td class="h">591</td><td colspan="6"></td></tr><tr><td class="h">592</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub ensure_parent {</td></tr>
+<tr><td class="h">593</td><td><div class="c3">181</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L593">181</a></div></td><td><div>192</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $rel) = @_;</td></tr>
+<tr><td class="h">594</td><td colspan="6"></td></tr><tr><td class="h">595</td><td><div class="c3">181</div></td><td></td><td></td><td></td><td><div>324</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ensure_dir(dirname($self-&gt;abs_path($rel)));</td></tr>
+<tr><td class="h">596</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">597</td><td colspan="6"></td></tr><tr><td class="h">598 - 640</td><td colspan="5"></td><td class="s"><pre>=head2 temp_file
 
 Purpose: an exclusive temporary file beside a master path.
 
@@ -582,11 +604,11 @@ As for L&lt;/abs_path&gt;, plus C&lt;io.temp&gt;.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp_file(rel) = App::FileSync::IO::temp_file(dirname(abs_path(rel)))
 
 =cut</pre></td></tr>
-<tr><td class="h">619</td><td colspan="6"></td></tr><tr><td class="h">620</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub temp_file {</td></tr>
-<tr><td class="h">621</td><td><div class="c3">176</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L621">176</a></div></td><td><div>138</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $rel) = @_;</td></tr>
-<tr><td class="h">622</td><td colspan="6"></td></tr><tr><td class="h">623</td><td><div class="c3">176</div></td><td></td><td></td><td></td><td><div>163</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::IO::temp_file(dirname($self-&gt;abs_path($rel)));</td></tr>
-<tr><td class="h">624</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">625</td><td colspan="6"></td></tr><tr><td class="h">626 - 668</td><td colspan="5"></td><td class="s"><pre>=head2 commit_temp
+<tr><td class="h">641</td><td colspan="6"></td></tr><tr><td class="h">642</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub temp_file {</td></tr>
+<tr><td class="h">643</td><td><div class="c3">176</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L643">176</a></div></td><td><div>210</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $rel) = @_;</td></tr>
+<tr><td class="h">644</td><td colspan="6"></td></tr><tr><td class="h">645</td><td><div class="c3">176</div></td><td></td><td></td><td></td><td><div>229</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::IO::temp_file(dirname($self-&gt;abs_path($rel)));</td></tr>
+<tr><td class="h">646</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">647</td><td colspan="6"></td></tr><tr><td class="h">648 - 690</td><td colspan="5"></td><td class="s"><pre>=head2 commit_temp
 
 Purpose: move a verified temporary file into the master.
 
@@ -629,11 +651,11 @@ As for L&lt;App::FileSync::IO/install_file&gt; and L&lt;/abs_path&gt;.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commit_temp(rel, t, m, mode) = install_file(t, abs_path(rel), m, mode)
 
 =cut</pre></td></tr>
-<tr><td class="h">669</td><td colspan="6"></td></tr><tr><td class="h">670</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub commit_temp {</td></tr>
-<tr><td class="h">671</td><td><div class="c3">174</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L671">174</a></div></td><td><div>236</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $rel, $temp, $mtime, $mode) = @_;</td></tr>
-<tr><td class="h">672</td><td colspan="6"></td></tr><tr><td class="h">673</td><td><div class="c3">174</div></td><td></td><td></td><td></td><td><div>209</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return install_file($temp, $self-&gt;abs_path($rel), $mtime, $mode);</td></tr>
-<tr><td class="h">674</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">675</td><td colspan="6"></td></tr><tr><td class="h">676 - 717</td><td colspan="5"></td><td class="s"><pre>=head2 move_to_trash
+<tr><td class="h">691</td><td colspan="6"></td></tr><tr><td class="h">692</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub commit_temp {</td></tr>
+<tr><td class="h">693</td><td><div class="c3">174</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L693">174</a></div></td><td><div>276</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $rel, $temp, $mtime, $mode) = @_;</td></tr>
+<tr><td class="h">694</td><td colspan="6"></td></tr><tr><td class="h">695</td><td><div class="c3">174</div></td><td></td><td></td><td></td><td><div>287</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return install_file($temp, $self-&gt;abs_path($rel), $mtime, $mode);</td></tr>
+<tr><td class="h">696</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">697</td><td colspan="6"></td></tr><tr><td class="h">698 - 739</td><td colspan="5"></td><td class="s"><pre>=head2 move_to_trash
 
 Purpose: move a master path into the repo&#39;s trash.
 
@@ -675,18 +697,20 @@ As for L&lt;App::FileSync::Trash/move_to_trash&gt; and L&lt;/abs_path&gt;.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abs_path(rel) &acirc;&#136;&#136; dom FS &acirc;&#135;&#146; result = Trash::move_to_trash(abs_path(rel), rel, trash_dir, epoch)
 
 =cut</pre></td></tr>
-<tr><td class="h">718</td><td colspan="6"></td></tr><tr><td class="h">719</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub move_to_trash {</td></tr>
-<tr><td class="h">720</td><td><div class="c3">17</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L720">17</a></div></td><td><div>18</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $rel, $epoch) = @_;</td></tr>
-<tr><td class="h">721</td><td colspan="6"></td></tr><tr><td class="h">722</td><td><div class="c3">17</div></td><td></td><td></td><td></td><td><div>22</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $abs = $self-&gt;abs_path($rel);</td></tr>
-<tr><td class="h">723</td><td><div class="c3">17</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L723">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Store-pm--condition.html#L723">33</a></div></td><td></td><td><div>77</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return undef unless -e $abs || -l $abs; ## no critic (Subroutines::ProhibitExplicitReturnUndef)</td></tr>
-<tr><td class="h">724</td><td colspan="6"></td></tr><tr><td class="h">725</td><td><div class="c3">17</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L725">50</a></div></td><td></td><td></td><td><div>24</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::Trash::move_to_trash(</td></tr>
-<tr><td class="h">726</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;src&nbsp;&nbsp;&nbsp;=&gt; $abs,</td></tr>
-<tr><td class="h">727</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rel&nbsp;&nbsp;&nbsp;=&gt; $rel,</td></tr>
-<tr><td class="h">728</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;=&gt; $self-&gt;trash_dir(),</td></tr>
-<tr><td class="h">729</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;epoch =&gt; defined $epoch ? $epoch : time,</td></tr>
-<tr><td class="h">730</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
-<tr><td class="h">731</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">732</td><td colspan="6"></td></tr><tr><td class="h">733 - 780</td><td colspan="5"></td><td class="s"><pre>=head2 clean_stale_temps
+<tr><td class="h">740</td><td colspan="6"></td></tr><tr><td class="h">741</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub move_to_trash {</td></tr>
+<tr><td class="h">742</td><td><div class="c3">17</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L742">17</a></div></td><td><div>23</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $rel, $epoch) = @_;</td></tr>
+<tr><td class="h">743</td><td colspan="6"></td></tr><tr><td class="h">744</td><td><div class="c3">17</div></td><td></td><td></td><td></td><td><div>28</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $abs = $self-&gt;abs_path($rel);</td></tr>
+<tr><td class="h">745</td><td><div class="c3">17</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L745">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Store-pm--condition.html#L745">33</a></div></td><td></td><td><div>126</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return undef unless -e $abs || -l $abs; ## no critic (Subroutines::ProhibitExplicitReturnUndef)</td></tr>
+<tr><td class="h">746</td><td colspan="6"></td></tr><tr><td class="h">747</td><td><div class="c3">17</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L747">50</a></div></td><td></td><td></td><td><div>36</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::Trash::move_to_trash(</td></tr>
+<tr><td class="h">748</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;src&nbsp;&nbsp;&nbsp;=&gt; $abs,</td></tr>
+<tr><td class="h">749</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rel&nbsp;&nbsp;&nbsp;=&gt; $rel,</td></tr>
+<tr><td class="h">750</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;=&gt; $self-&gt;trash_dir(),</td></tr>
+<tr><td class="h">751</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;epoch =&gt; defined $epoch ? $epoch : time,</td></tr>
+<tr><td class="h">752</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
+<tr><td class="h">753</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">754</td><td colspan="6"></td></tr><tr><td class="h">755 - 804</td><td colspan="5"></td><td class="s"><pre>=head2 clean_stale_temps
+
+Documented with L&lt;/prune_trash&gt; below.
 
 =head2 prune_trash
 
@@ -734,24 +758,24 @@ None.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prune_trash = Trash::prune(trash_dir, days)
 
 =cut</pre></td></tr>
-<tr><td class="h">781</td><td colspan="6"></td></tr><tr><td class="h">782</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub clean_stale_temps {</td></tr>
-<tr><td class="h">783</td><td><div class="c3">167</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L783">167</a></div></td><td><div>224</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, %args) = @_;</td></tr>
-<tr><td class="h">784</td><td colspan="6"></td></tr><tr><td class="h">785</td><td><div class="c3">167</div></td><td></td><td></td><td></td><td><div>346</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $master = $self-&gt;master_dir();</td></tr>
-<tr><td class="h">786</td><td><div class="c3">167</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L786">50</a></div></td><td></td><td></td><td><div>674</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0 unless -d $master;</td></tr>
-<tr><td class="h">787</td><td colspan="6"></td></tr><tr><td class="h">788</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::Scan::clean_stale_temps(</td></tr>
-<tr><td class="h">789</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $master,</td></tr>
-<tr><td class="h">790</td><td><div class="c3">167</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L790">50</a></div></td><td></td><td></td><td><div>580</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_age =&gt; defined $args{max_age} ? $args{max_age} : $STALE_TEMP_SECONDS,</td></tr>
-<tr><td class="h">791</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
-<tr><td class="h">792</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">793</td><td colspan="6"></td></tr><tr><td class="h">794</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub prune_trash {</td></tr>
-<tr><td class="h">795</td><td><div class="c3">161</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L795">161</a></div></td><td><div>202</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, %args) = @_;</td></tr>
-<tr><td class="h">796</td><td colspan="6"></td></tr><tr><td class="h">797</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::Trash::prune(</td></tr>
-<tr><td class="h">798</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $self-&gt;trash_dir(),</td></tr>
-<tr><td class="h">799</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;days&nbsp;&nbsp;&nbsp;&nbsp;=&gt; defined $args{days} ? $args{days} : ($self-&gt;{config}{trash_days} || $TRASH_DAYS),</td></tr>
-<tr><td class="h">800</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dry_run =&gt; $args{dry_run},</td></tr>
-<tr><td class="h">801</td><td><div class="c3">161</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L801">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Store-pm--condition.html#L801">33</a></div></td><td></td><td><div>324</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
-<tr><td class="h">802</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">803</td><td colspan="6"></td></tr><tr><td class="h">804 - 844</td><td colspan="5"></td><td class="s"><pre>=head2 journal
+<tr><td class="h">805</td><td colspan="6"></td></tr><tr><td class="h">806</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub clean_stale_temps {</td></tr>
+<tr><td class="h">807</td><td><div class="c3">167</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L807">167</a></div></td><td><div>341</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, %args) = @_;</td></tr>
+<tr><td class="h">808</td><td colspan="6"></td></tr><tr><td class="h">809</td><td><div class="c3">167</div></td><td></td><td></td><td></td><td><div>432</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $master = $self-&gt;master_dir();</td></tr>
+<tr><td class="h">810</td><td><div class="c3">167</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L810">50</a></div></td><td></td><td></td><td><div>1012</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0 unless -d $master;</td></tr>
+<tr><td class="h">811</td><td colspan="6"></td></tr><tr><td class="h">812</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::Scan::clean_stale_temps(</td></tr>
+<tr><td class="h">813</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $master,</td></tr>
+<tr><td class="h">814</td><td><div class="c3">167</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L814">50</a></div></td><td></td><td></td><td><div>806</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_age =&gt; defined $args{max_age} ? $args{max_age} : $STALE_TEMP_SECONDS,</td></tr>
+<tr><td class="h">815</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
+<tr><td class="h">816</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">817</td><td colspan="6"></td></tr><tr><td class="h">818</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub prune_trash {</td></tr>
+<tr><td class="h">819</td><td><div class="c3">161</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L819">161</a></div></td><td><div>264</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, %args) = @_;</td></tr>
+<tr><td class="h">820</td><td colspan="6"></td></tr><tr><td class="h">821</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return App::FileSync::Trash::prune(</td></tr>
+<tr><td class="h">822</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $self-&gt;trash_dir(),</td></tr>
+<tr><td class="h">823</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;days&nbsp;&nbsp;&nbsp;&nbsp;=&gt; defined $args{days} ? $args{days} : ($self-&gt;{config}{trash_days} || $TRASH_DAYS),</td></tr>
+<tr><td class="h">824</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dry_run =&gt; $args{dry_run},</td></tr>
+<tr><td class="h">825</td><td><div class="c3">161</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Store-pm--branch.html#L825">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Store-pm--condition.html#L825">33</a></div></td><td></td><td><div>382</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
+<tr><td class="h">826</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">827</td><td colspan="6"></td></tr><tr><td class="h">828 - 868</td><td colspan="5"></td><td class="s"><pre>=head2 journal
 
 Purpose: append an event to this month&#39;s journal.
 
@@ -792,54 +816,54 @@ Usage:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FS&#39;(journal_path) = FS(journal_path) &acirc;&#129;&#128; json({ts &acirc;&#134;&brvbar; now} &acirc;&#138;&#149; event) &acirc;&#129;&#128; &quot;\n&quot;
 
 =cut</pre></td></tr>
-<tr><td class="h">845</td><td colspan="6"></td></tr><tr><td class="h">846</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub journal {</td></tr>
-<tr><td class="h">847</td><td><div class="c3">542</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L847">542</a></div></td><td><div>490</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $event) = @_;</td></tr>
-<tr><td class="h">848</td><td colspan="6"></td></tr><tr><td class="h">849</td><td><div class="c3">542</div><div class="c3">542</div></td><td></td><td></td><td></td><td><div>1113</div><div>1253</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;append_line($self-&gt;journal_path(), json_encode({ ts =&gt; time, %{$event} }));</td></tr>
-<tr><td class="h">850</td><td><div class="c3">542</div></td><td></td><td></td><td></td><td><div>862</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;</td></tr>
-<tr><td class="h">851</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">852</td><td colspan="6"></td></tr><tr><td class="h">853</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _assert_no_symlinked_parent</td></tr>
-<tr><td class="h">854</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refuse to write through a symlinked directory in the master.</td></tr>
-<tr><td class="h">855</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$rel has passed validate_relpath.</td></tr>
-<tr><td class="h">856</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns 1.</td></tr>
-<tr><td class="h">857</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: raises store.symlink.&nbsp;&nbsp;Stops at the first missing directory:</td></tr>
-<tr><td class="h">858</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nothing below it can be a symlink yet.</td></tr>
-<tr><td class="h">859</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _assert_no_symlinked_parent :Private {</td></tr>
-<tr><td class="h">860</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $rel) = @_;</td></tr>
-<tr><td class="h">861</td><td colspan="6"></td></tr><tr><td class="h">862</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @parts = split m{/}, $rel;</td></tr>
-<tr><td class="h">863</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pop @parts;</td></tr>
-<tr><td class="h">864</td><td colspan="6"></td></tr><tr><td class="h">865</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $current = $self-&gt;master_dir();</td></tr>
-<tr><td class="h">866</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $part (@parts) {</td></tr>
-<tr><td class="h">867</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$current = File::Spec-&gt;catfile($current, $part);</td></tr>
-<tr><td class="h">868</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last unless -e $current || -l $current;</td></tr>
-<tr><td class="h">869</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;_throw(&#39;store.symlink&#39;, { path =&gt; $current }) if -l $current;</td></tr>
-<tr><td class="h">870</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">871</td><td colspan="6"></td></tr><tr><td class="h">872</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;</td></tr>
-<tr><td class="h">873</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L873">314</a></div></td><td><div>404</div><div>152</div><div>2288</div></td><td class="s">}</td></tr>
-<tr><td class="h">874</td><td colspan="6"></td></tr><tr><td class="h">875</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _load_entries</td></tr>
-<tr><td class="h">876</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;read an index or base file.</td></tr>
-<tr><td class="h">877</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$path may not exist.</td></tr>
-<tr><td class="h">878</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns the entries hashref (empty for a missing file or one</td></tr>
-<tr><td class="h">879</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;without an entries hash).</td></tr>
-<tr><td class="h">880</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: raises config.parse for a corrupt file.</td></tr>
-<tr><td class="h">881</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _load_entries :Private {</td></tr>
-<tr><td class="h">882</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $path) = @_;</td></tr>
-<tr><td class="h">883</td><td colspan="6"></td></tr><tr><td class="h">884</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return {} unless -e $path;</td></tr>
-<tr><td class="h">885</td><td colspan="6"></td></tr><tr><td class="h">886</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $text = read_text($path);</td></tr>
-<tr><td class="h">887</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $document = eval { json_decode($text) };</td></tr>
-<tr><td class="h">888</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;_throw(&#39;config.parse&#39;, { path =&gt; $path, error =&gt; strip_location($@) }) if $@;</td></tr>
-<tr><td class="h">889</td><td colspan="6"></td></tr><tr><td class="h">890</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (ref($document) eq &#39;HASH&#39; &amp;&amp; ref($document-&gt;{entries}) eq &#39;HASH&#39;) ? $document-&gt;{entries} : {};</td></tr>
-<tr><td class="h">891</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L891">314</a></div></td><td><div>64531</div><div>155</div><div>1074</div></td><td class="s">}</td></tr>
-<tr><td class="h">892</td><td colspan="6"></td></tr><tr><td class="h">893</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _save_entries</td></tr>
-<tr><td class="h">894</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write an index or base file.</td></tr>
-<tr><td class="h">895</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$entries may be undef (written as empty).</td></tr>
-<tr><td class="h">896</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns 1.</td></tr>
-<tr><td class="h">897</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: replaces $path atomically.</td></tr>
-<tr><td class="h">898</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _save_entries :Private {</td></tr>
-<tr><td class="h">899</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $path, $entries) = @_;</td></tr>
-<tr><td class="h">900</td><td colspan="6"></td></tr><tr><td class="h">901</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write_atomic($path, json_encode({ version =&gt; 1, entries =&gt; $entries || {} }) . &quot;\n&quot;);</td></tr>
-<tr><td class="h">902</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;</td></tr>
-<tr><td class="h">903</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L903">314</a></div></td><td><div>51830</div><div>174</div><div>870</div></td><td class="s">}</td></tr>
-<tr><td class="h">904</td><td colspan="6"></td></tr><tr><td class="h">905</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
-<tr><td class="h">906</td><td colspan="6"></td></tr></table>
+<tr><td class="h">869</td><td colspan="6"></td></tr><tr><td class="h">870</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub journal {</td></tr>
+<tr><td class="h">871</td><td><div class="c3">542</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L871">542</a></div></td><td><div>640</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $event) = @_;</td></tr>
+<tr><td class="h">872</td><td colspan="6"></td></tr><tr><td class="h">873</td><td><div class="c3">542</div><div class="c3">542</div></td><td></td><td></td><td></td><td><div>961</div><div>1747</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;append_line($self-&gt;journal_path(), json_encode({ ts =&gt; time, %{$event} }));</td></tr>
+<tr><td class="h">874</td><td><div class="c3">542</div></td><td></td><td></td><td></td><td><div>1255</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;</td></tr>
+<tr><td class="h">875</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">876</td><td colspan="6"></td></tr><tr><td class="h">877</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _assert_no_symlinked_parent</td></tr>
+<tr><td class="h">878</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refuse to write through a symlinked directory in the master.</td></tr>
+<tr><td class="h">879</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$rel has passed validate_relpath.</td></tr>
+<tr><td class="h">880</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns 1.</td></tr>
+<tr><td class="h">881</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: raises store.symlink.&nbsp;&nbsp;Stops at the first missing directory:</td></tr>
+<tr><td class="h">882</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nothing below it can be a symlink yet.</td></tr>
+<tr><td class="h">883</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _assert_no_symlinked_parent :Private {</td></tr>
+<tr><td class="h">884</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $rel) = @_;</td></tr>
+<tr><td class="h">885</td><td colspan="6"></td></tr><tr><td class="h">886</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @parts = split m{/}, $rel;</td></tr>
+<tr><td class="h">887</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pop @parts;</td></tr>
+<tr><td class="h">888</td><td colspan="6"></td></tr><tr><td class="h">889</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $current = $self-&gt;master_dir();</td></tr>
+<tr><td class="h">890</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $part (@parts) {</td></tr>
+<tr><td class="h">891</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$current = File::Spec-&gt;catfile($current, $part);</td></tr>
+<tr><td class="h">892</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last unless -e $current || -l $current;</td></tr>
+<tr><td class="h">893</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;_throw(&#39;store.symlink&#39;, { path =&gt; $current }) if -l $current;</td></tr>
+<tr><td class="h">894</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">895</td><td colspan="6"></td></tr><tr><td class="h">896</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;</td></tr>
+<tr><td class="h">897</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L897">314</a></div></td><td><div>217171</div><div>276</div><div>3843</div></td><td class="s">}</td></tr>
+<tr><td class="h">898</td><td colspan="6"></td></tr><tr><td class="h">899</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _load_entries</td></tr>
+<tr><td class="h">900</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;read an index or base file.</td></tr>
+<tr><td class="h">901</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$path may not exist.</td></tr>
+<tr><td class="h">902</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns the entries hashref (empty for a missing file or one</td></tr>
+<tr><td class="h">903</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;without an entries hash).</td></tr>
+<tr><td class="h">904</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: raises config.parse for a corrupt file.</td></tr>
+<tr><td class="h">905</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _load_entries :Private {</td></tr>
+<tr><td class="h">906</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $path) = @_;</td></tr>
+<tr><td class="h">907</td><td colspan="6"></td></tr><tr><td class="h">908</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return {} unless -e $path;</td></tr>
+<tr><td class="h">909</td><td colspan="6"></td></tr><tr><td class="h">910</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $text = read_text($path);</td></tr>
+<tr><td class="h">911</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $document = eval { json_decode($text) };</td></tr>
+<tr><td class="h">912</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;_throw(&#39;config.parse&#39;, { path =&gt; $path, error =&gt; strip_location($@) }) if $@;</td></tr>
+<tr><td class="h">913</td><td colspan="6"></td></tr><tr><td class="h">914</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (ref($document) eq &#39;HASH&#39; &amp;&amp; ref($document-&gt;{entries}) eq &#39;HASH&#39;) ? $document-&gt;{entries} : {};</td></tr>
+<tr><td class="h">915</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L915">314</a></div></td><td><div>115798</div><div>263</div><div>2619</div></td><td class="s">}</td></tr>
+<tr><td class="h">916</td><td colspan="6"></td></tr><tr><td class="h">917</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _save_entries</td></tr>
+<tr><td class="h">918</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write an index or base file.</td></tr>
+<tr><td class="h">919</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$entries may be undef (written as empty).</td></tr>
+<tr><td class="h">920</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns 1.</td></tr>
+<tr><td class="h">921</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: replaces $path atomically.</td></tr>
+<tr><td class="h">922</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _save_entries :Private {</td></tr>
+<tr><td class="h">923</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self, $path, $entries) = @_;</td></tr>
+<tr><td class="h">924</td><td colspan="6"></td></tr><tr><td class="h">925</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write_atomic($path, json_encode({ version =&gt; 1, entries =&gt; $entries || {} }) . &quot;\n&quot;);</td></tr>
+<tr><td class="h">926</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;</td></tr>
+<tr><td class="h">927</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Store-pm--subroutine.html#L927">314</a></div></td><td><div>96872</div><div>262</div><div>2353</div></td><td class="s">}</td></tr>
+<tr><td class="h">928</td><td colspan="6"></td></tr><tr><td class="h">929</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
+<tr><td class="h">930</td><td colspan="6"></td></tr></table>
 </body>
 </html>

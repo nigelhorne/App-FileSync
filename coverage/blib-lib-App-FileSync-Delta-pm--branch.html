@@ -30,23 +30,23 @@ https://pjcj.net
 <tr><td class="h"><a id="L191">191</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $path and length $path and -f $path</td></tr>
 <tr><td class="h"><a id="L193">193</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $size &gt;= $MIN_SIZE</td></tr>
 <tr><td class="h"><a id="L195">195</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless defined $block and $block &gt; 0</td></tr>
-<tr><td class="h"><a id="L261">261</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $signature-&gt;{&#39;blocks&#39;}</td></tr>
-<tr><td class="h"><a id="L267">267</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $count</td></tr>
-<tr><td class="h"><a id="L268">268</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $count =~ /\A\d+\z/</td></tr>
-<tr><td class="h"><a id="L270">270</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">defined $bytes ? :</td></tr>
-<tr><td class="h"><a id="L271">271</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $length == $count * $RECORD_BYTES</td></tr>
-<tr><td class="h"><a id="L357">357</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $out</td></tr>
-<tr><td class="h"><a id="L358">358</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless my $block = $signature-&gt;{&#39;blocklen&#39;}</td></tr>
-<tr><td class="h"><a id="L436">436</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless print {$out;} $COPY . pack(&quot;NN&quot;, $offset, $length)</td></tr>
-<tr><td class="h"><a id="L443">443</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">if (defined $bytes and length $bytes)</td></tr>
-<tr><td class="h"><a id="L444">444</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless print {$out;} $LIT . pack(&quot;N&quot;, length $bytes) . $bytes</td></tr>
-<tr><td class="h"><a id="L498">498</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless length $type</td></tr>
-<tr><td class="h"><a id="L499">499</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $type eq $COPY or $type eq $LIT</td></tr>
-<tr><td class="h"><a id="L501">501</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $type eq $COPY</td></tr>
-<tr><td class="h"><a id="L504">504</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">$length ? :</td></tr>
-<tr><td class="h"><a id="L561">561</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$type eq &#39;copy&#39; ? :</td></tr>
-<tr><td class="h"><a id="L562">562</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless print {$out;} $bytes</td></tr>
-<tr><td class="h"><a id="L621">621</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless length $chunk</td></tr>
+<tr><td class="h"><a id="L263">263</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $signature-&gt;{&#39;blocks&#39;}</td></tr>
+<tr><td class="h"><a id="L269">269</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $count</td></tr>
+<tr><td class="h"><a id="L270">270</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $count =~ /\A\d+\z/</td></tr>
+<tr><td class="h"><a id="L272">272</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">defined $bytes ? :</td></tr>
+<tr><td class="h"><a id="L273">273</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $length == $count * $RECORD_BYTES</td></tr>
+<tr><td class="h"><a id="L359">359</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $out</td></tr>
+<tr><td class="h"><a id="L360">360</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless my $block = $signature-&gt;{&#39;blocklen&#39;}</td></tr>
+<tr><td class="h"><a id="L440">440</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless print {$out;} $COPY . pack(&quot;NN&quot;, $offset, $length)</td></tr>
+<tr><td class="h"><a id="L447">447</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">if (defined $bytes and length $bytes)</td></tr>
+<tr><td class="h"><a id="L448">448</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless print {$out;} $LIT . pack(&quot;N&quot;, length $bytes) . $bytes</td></tr>
+<tr><td class="h"><a id="L502">502</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless length $type</td></tr>
+<tr><td class="h"><a id="L503">503</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $type eq $COPY or $type eq $LIT</td></tr>
+<tr><td class="h"><a id="L505">505</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $type eq $COPY</td></tr>
+<tr><td class="h"><a id="L508">508</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">$length ? :</td></tr>
+<tr><td class="h"><a id="L565">565</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$type eq &#39;copy&#39; ? :</td></tr>
+<tr><td class="h"><a id="L566">566</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless print {$out;} $bytes</td></tr>
+<tr><td class="h"><a id="L625">625</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless length $chunk</td></tr>
 </table>
 </body>
 </html>
