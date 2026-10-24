@@ -37,16 +37,16 @@ sub json_decode {
 # every non-ASCII file "disappears".  Downgrade back to the original bytes;
 # only a genuine wide character string is encoded as UTF-8.
 sub _to_bytes {
-    # Work through @_ aliases: copying the scalar would rewrite the copy only.
-    if (ref($_[0]) eq 'HASH') {
-        _to_bytes($_) for values %{ $_[0] };
-    } elsif (ref($_[0]) eq 'ARRAY') {
-        _to_bytes($_) for @{ $_[0] };
-    } elsif (defined($_[0]) && !ref($_[0]) && utf8::is_utf8($_[0])) {
-        utf8::encode($_[0]) unless utf8::downgrade($_[0], 1);
-    }
+	# Work through @_ aliases: copying the scalar would rewrite the copy only.
+	if (ref($_[0]) eq 'HASH') {
+		_to_bytes($_) for values %{ $_[0] };
+	} elsif (ref($_[0]) eq 'ARRAY') {
+		_to_bytes($_) for @{ $_[0] };
+	} elsif (defined($_[0]) && !ref($_[0]) && utf8::is_utf8($_[0])) {
+		utf8::encode($_[0]) unless utf8::downgrade($_[0], 1);
+	}
 
-    return 1;
+	return 1;
 }
 
 sub read_text {
@@ -80,29 +80,30 @@ sub set_mtime {
 
 # Replace $path with $data, atomically: temp file in the same directory, then rename.
 sub write_atomic {
-    my ($path, $data) = @_;
+	my ($path, $data) = @_;
 
-    my $dir = dirname($path);
-    make_path($dir) unless -d $dir;
+	my $dir = dirname($path);
+	make_path($dir) unless -d $dir;
 
-    my $tmp = File::Spec->catfile($dir, '.filesync-tmp-' . $$ . '-' . int(rand(1_000_000)));
-    open my $fh, '>', $tmp or die "Cannot write $tmp: $!\n";
-    binmode $fh;
+	my $tmp = File::Spec->catfile($dir, '.filesync-tmp-' . $$ . '-' . int(rand(1_000_000)));
+	open my $fh, '>', $tmp or die "Cannot write $tmp: $!";
+	binmode $fh;
+
     print {$fh} $data or do {
         my $error = $!;
         close $fh;
         unlink $tmp;
-        die "Cannot write $tmp: $error\n";
+        die "Cannot write $tmp: $error";
     };
-    close $fh or die "Cannot close $tmp: $!\n";
+    close $fh or die "Cannot close $tmp: $!";
 
     rename $tmp, $path or do {
         my $error = $!;
         unlink $tmp;
-        die "Cannot rename $tmp to $path: $error\n";
+        die "Cannot rename $tmp to $path: $error";
     };
 
-    return 1;
+	return 1;
 }
 
 # Returns (1, undef) for a usable relative path, (0, reason) otherwise.
@@ -112,7 +113,7 @@ our $MAX_PATH_BYTES      = 4096;
 our $MAX_COMPONENT_BYTES = 255;
 
 sub validate_relpath {
-    my ($path) = @_;
+	my ($path) = @_;
 
     return (0, 'missing path') unless defined $path;
     return (0, 'path is not text') if ref $path;
@@ -170,9 +171,9 @@ sub _parse_when {
 
 # Start of the window: a date means midnight UTC that day.
 sub parse_since {
-    my ($value, $option) = @_;
-    my ($epoch) = _parse_when($value, $option || '--since');
-    return $epoch;
+	my ($value, $option) = @_;
+	my ($epoch) = _parse_when($value, $option || '--since');
+	return $epoch;
 }
 
 # End of the window: a date means the last second of that day, so "--until
@@ -218,8 +219,8 @@ sub conflict_name {
     $room = 16 if $room < 16;
     $stem = substr($stem, 0, $room) if length($stem) > $room;
 
-    my $name = "$stem.conflict-$id-$stamp$ext";
-    return length($dir) ? "$dir/$name" : $name;
+	my $name = "$stem.conflict-$id-$stamp$ext";
+	return length($dir) ? "$dir/$name" : $name;
 }
 
 1;
@@ -391,13 +392,26 @@ jobs; no output means they match the backup.
 Adjust F</usr/local/bin/filesync> to where the script was installed, because
 cron's default PATH rarely includes a per-user Perl bin directory.
 
-=head1 LICENCE
+=head1 SEE ALSO
 
-GPL v2 for personal single-user, single-computer use.  All other users must apply in
-writing to the author.
+=over 4
+
+=item * L<Test Dashboard|https://nigelhorne.github.io/App-FileSync/coverage/>
+
+=back
 
 =head1 AUTHOR
 
-Nigel Horne E<lt>njh@nigelhorne.comE<gt>
+Nigel Horne, C<< <njh at nigelhorne.com> >>
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright 2026 Nigel Horne.
+
+Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
 
 =cut
+
+1;

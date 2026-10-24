@@ -21,12 +21,12 @@ use App::FileSync::Transport::SSH;
 sub run_client {
 	my (@args) = @_;
 
-    my $code = eval { _client_dispatch(@args) };
-    if (my $error = $@) {
-        chomp $error;
-        _report_error($error);
-        return 1;
-    }
+	my $code = eval { _client_dispatch(@args) };
+	if (my $error = $@) {
+		chomp $error;
+		_report_error($error);
+		return 1;
+	}
 
 	return $code;
 }
@@ -38,7 +38,7 @@ sub _logger {
 
 # An unusable settings file must not hide the error that says so.
 sub _report_error {
-    my ($error) = @_;
+	my ($error) = @_;
 
     my $logger = eval { _logger() };
     if ($logger) {

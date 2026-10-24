@@ -207,11 +207,18 @@ jobs; no output means they match the backup.
 Adjust `/usr/local/bin/filesync` to where the script was installed, because
 cron's default PATH rarely includes a per-user Perl bin directory.
 
-## Licence
+## See Also
 
-GPL v2 for personal single-user, single-computer use.  All other users must apply in
-writing to the author.
+- [Test Dashboard](https://nigelhorne.github.io/App-FileSync/coverage/)
 
 ## Author
 
-Nigel Horne <njh@nigelhorne.com>
+Nigel Horne, `<njh at nigelhorne.com>`
+
+## Licence and Copyright
+
+Copyright 2026 Nigel Horne.
+
+Usage is subject to the GPL2 licence terms.
+If you use it,
+please let me know.
