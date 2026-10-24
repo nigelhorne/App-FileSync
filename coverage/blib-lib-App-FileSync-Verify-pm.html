@@ -20,142 +20,230 @@ https://pjcj.net
 <h1>File Coverage</h1>
 <table>
 <tr><td class="h" align="right">File:</td><td align="left">blib/lib/App/FileSync/Verify.pm</td></tr>
-<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">74.1%</td></tr>
+<tr><td class="h" align="right">Coverage:</td><td align="left" class="c2">97.8%</td></tr>
 </table>
 <div><br/></div>
 <table>
 <tr><th>line</th><th>stmt</th><th>bran</th><th>cond</th><th>sub</th><th>time</th><th>code</th></tr>
 <tr><td class="h">1</td><td></td><td></td><td></td><td></td><td></td><td class="s">package App::FileSync::Verify;</td></tr>
-<tr><td class="h">2</td><td colspan="6"></td></tr><tr><td class="h">3</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L3">297</a></div></td><td><div>691</div><div>248</div><div>3931</div></td><td class="s">use strict;</td></tr>
-<tr><td class="h">4</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L4">297</a></div></td><td><div>426</div><div>216</div><div>5119</div></td><td class="s">use warnings;</td></tr>
-<tr><td class="h">5</td><td colspan="6"></td></tr><tr><td class="h">6</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L6">297</a></div></td><td><div>451</div><div>235</div><div>1594</div></td><td class="s">use Digest::SHA ();</td></tr>
-<tr><td class="h">7</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L7">297</a></div></td><td><div>371</div><div>214</div><div>2581</div></td><td class="s">use File::Spec;</td></tr>
-<tr><td class="h">8</td><td colspan="6"></td></tr><tr><td class="h">9</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L9">297</a></div></td><td><div>450</div><div>256</div><div>130659</div></td><td class="s">use App::FileSync::Scan;</td></tr>
-<tr><td class="h">10</td><td colspan="6"></td></tr><tr><td class="h">11</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Compare a tree with the record of what it should hold (the server index, or the</td></tr>
-<tr><td class="h">12</td><td></td><td></td><td></td><td></td><td></td><td class="s"># client&#39;s cached base).&nbsp;&nbsp;Returns a report; it never writes anything.</td></tr>
-<tr><td class="h">13</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
-<tr><td class="h">14</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Without &quot;deep&quot;, entries whose size and mtime still match are trusted, which is</td></tr>
-<tr><td class="h">15</td><td></td><td></td><td></td><td></td><td></td><td class="s"># what makes a verify of a large tree cheap.&nbsp;&nbsp;&quot;--deep&quot; rehashes everything, and</td></tr>
-<tr><td class="h">16</td><td></td><td></td><td></td><td></td><td></td><td class="s"># &quot;sample&quot; rehashes that many matching files at random.</td></tr>
-<tr><td class="h">17</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub verify {</td></tr>
-<tr><td class="h">18</td><td><div class="c3">25</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L18">25</a></div></td><td><div>78</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my (%args) = @_;</td></tr>
-<tr><td class="h">19</td><td colspan="6"></td></tr><tr><td class="h">20</td><td><div class="c3">25</div></td><td></td><td></td><td></td><td><div>27</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $root = $args{root};</td></tr>
-<tr><td class="h">21</td><td><div class="c3">25</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L21">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Verify-pm--condition.html#L21">33</a></div></td><td></td><td><div>64</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;Verify: no root given\n&quot; unless defined $root &amp;&amp; length $root;</td></tr>
-<tr><td class="h">22</td><td><div class="c3">25</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L22">50</a></div></td><td></td><td></td><td><div>134</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;Verify: $root is not a directory\n&quot; unless -d $root;</td></tr>
-<tr><td class="h">23</td><td colspan="6"></td></tr><tr><td class="h">24</td><td><div class="c3">25</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Verify-pm--condition.html#L24">50</a></div></td><td></td><td><div>43</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $entries = $args{entries} || {};</td></tr>
-<tr><td class="h">25</td><td><div class="c3">25</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L25">100</a></div></td><td></td><td></td><td><div>30</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $deep&nbsp;&nbsp;&nbsp;&nbsp;= $args{deep} ? 1 : 0;</td></tr>
-<tr><td class="h">26</td><td colspan="6"></td></tr><tr><td class="h">27</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($manifest, $stats) = App::FileSync::Scan::scan(</td></tr>
-<tr><td class="h">28</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;=&gt; $root,</td></tr>
-<tr><td class="h">29</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore =&gt; $args{ignore},</td></tr>
-<tr><td class="h">30</td><td><div class="c3">25</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L30">100</a></div></td><td></td><td></td><td><div>85</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cache&nbsp;&nbsp;=&gt; $deep ? {} : $entries,</td></tr>
-<tr><td class="h">31</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
-<tr><td class="h">32</td><td colspan="6"></td></tr><tr><td class="h">33</td><td><div class="c3">25</div></td><td></td><td></td><td></td><td><div>38</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my (@modified, @missing, @extra);</td></tr>
-<tr><td class="h">34</td><td><div class="c3">25</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my %seen;</td></tr>
-<tr><td class="h">35</td><td colspan="6"></td></tr><tr><td class="h">36</td><td><div class="c3">25</div><div class="c3">25</div></td><td></td><td></td><td></td><td><div>22</div><div>51</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;for my $path (sort keys %{$entries}) {</td></tr>
-<tr><td class="h">37</td><td><div class="c3">43</div></td><td></td><td></td><td></td><td><div>28</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $entry = $entries-&gt;{$path};</td></tr>
-<tr><td class="h">38</td><td><div class="c3">43</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L38">50</a></div></td><td></td><td></td><td><div>60</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next unless ref($entry) eq &#39;HASH&#39;;</td></tr>
-<tr><td class="h">39</td><td colspan="6"></td></tr><tr><td class="h">40</td><td><div class="c3">43</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L40">50</a></div></td><td></td><td></td><td><div>49</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $type = defined $entry-&gt;{t} ? $entry-&gt;{t} : &#39;f&#39;;</td></tr>
-<tr><td class="h">41</td><td><div class="c3">43</div></td><td></td><td></td><td></td><td><div>24</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $found = $manifest-&gt;{$path};</td></tr>
-<tr><td class="h">42</td><td colspan="6"></td></tr><tr><td class="h">43</td><td><div class="c3">43</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L43">100</a></div></td><td></td><td></td><td><div>41</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (!$found) {</td></tr>
-<tr><td class="h">44</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The scanner only reports directories that are empty, so an empty</td></tr>
-<tr><td class="h">45</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# directory that has since gained a file is not missing.</td></tr>
-<tr><td class="h">46</td><td><div class="c3">4</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L46">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Verify-pm--condition.html#L46">33</a></div></td><td></td><td><div>8</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ($type eq &#39;d&#39; &amp;&amp; -d File::Spec-&gt;catfile($root, split m{/}, $path)) {</td></tr>
-<tr><td class="h">47</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next;</td></tr>
-<tr><td class="h">48</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">49</td><td colspan="6"></td></tr><tr><td class="h">50</td><td><div class="c3">4</div></td><td></td><td></td><td></td><td><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @missing, { p =&gt; $path, t =&gt; $type };</td></tr>
-<tr><td class="h">51</td><td><div class="c3">4</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$seen{$path} = 1;</td></tr>
-<tr><td class="h">52</td><td><div class="c3">4</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next;</td></tr>
-<tr><td class="h">53</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">54</td><td colspan="6"></td></tr><tr><td class="h">55</td><td><div class="c3">39</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L55">50</a></div></td><td></td><td></td><td><div>65</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $found_type = defined $found-&gt;{t} ? $found-&gt;{t} : &#39;f&#39;;</td></tr>
-<tr><td class="h">56</td><td><div class="c3">39</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L56">50</a></div></td><td></td><td></td><td><div>43</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ($type ne $found_type) {</td></tr>
-<tr><td class="h">57</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @modified, { p =&gt; $path, reason =&gt; &#39;type changed&#39; };</td></tr>
-<tr><td class="h">58</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$seen{$path} = 1;</td></tr>
-<tr><td class="h">59</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next;</td></tr>
-<tr><td class="h">60</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">61</td><td colspan="6"></td></tr><tr><td class="h">62</td><td><div class="c3">39</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L62">100</a></div></td><td></td><td></td><td><div>46</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next if $found_type eq &#39;d&#39;;</td></tr>
-<tr><td class="h">63</td><td colspan="6"></td></tr><tr><td class="h">64</td><td><div class="c3">30</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L64">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Verify-pm--condition.html#L64">33</a></div></td><td></td><td><div>84</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next unless defined $entry-&gt;{h} &amp;&amp; defined $found-&gt;{h};</td></tr>
-<tr><td class="h">65</td><td><div class="c3">30</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L65">100</a></div></td><td></td><td></td><td><div>62</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next if $entry-&gt;{h} eq $found-&gt;{h};</td></tr>
-<tr><td class="h">66</td><td colspan="6"></td></tr><tr><td class="h">67</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @modified, {</td></tr>
-<tr><td class="h">68</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $path,</td></tr>
-<tr><td class="h">69</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expected =&gt; $entry-&gt;{h},</td></tr>
-<tr><td class="h">70</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;got&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $found-&gt;{h},</td></tr>
-<tr><td class="h">71</td><td><div class="c3">11</div></td><td></td><td></td><td></td><td><div>40</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
-<tr><td class="h">72</td><td><div class="c3">11</div></td><td></td><td></td><td></td><td><div>16</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$seen{$path} = 1;</td></tr>
-<tr><td class="h">73</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">74</td><td colspan="6"></td></tr><tr><td class="h">75</td><td><div class="c3">25</div><div class="c3">25</div></td><td></td><td></td><td></td><td><div>24</div><div>45</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;for my $path (sort keys %{$manifest}) {</td></tr>
-<tr><td class="h">76</td><td><div class="c3">50</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L76">100</a></div></td><td></td><td></td><td><div>55</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next if $entries-&gt;{$path};</td></tr>
-<tr><td class="h">77</td><td><div class="c3">11</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L77">50</a></div></td><td></td><td></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next if $seen{$path};</td></tr>
-<tr><td class="h">78</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @extra, {</td></tr>
-<tr><td class="h">79</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p =&gt; $path,</td></tr>
-<tr><td class="h">80</td><td><div class="c3">11</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L80">50</a></div></td><td></td><td></td><td><div>21</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t =&gt; defined $manifest-&gt;{$path}{t} ? $manifest-&gt;{$path}{t} : &#39;f&#39;,</td></tr>
-<tr><td class="h">81</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
-<tr><td class="h">82</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">83</td><td colspan="6"></td></tr><tr><td class="h">84</td><td><div class="c3">25</div></td><td></td><td></td><td></td><td><div>22</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $sampled = 0;</td></tr>
-<tr><td class="h">85</td><td><div class="c3">25</div></td><td></td><td></td><td></td><td><div>22</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $sample = $args{sample};</td></tr>
-<tr><td class="h">86</td><td><div class="c3">25</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L86">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Verify-pm--condition.html#L86">50</a></div></td><td></td><td><div>47</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;if (defined $sample &amp;&amp; $sample &gt; 0 &amp;&amp; !$deep) {</td></tr>
-<tr><td class="h">87</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @candidates = grep {</td></tr>
-<tr><td class="h">88</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$entries-&gt;{$_}</td></tr>
-<tr><td class="h">89</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;&amp; ref($entries-&gt;{$_}) eq &#39;HASH&#39;</td></tr>
-<tr><td class="h">90</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;&amp; (defined $entries-&gt;{$_}{t} ? $entries-&gt;{$_}{t} : &#39;f&#39;) eq &#39;f&#39;</td></tr>
-<tr><td class="h">91</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;&amp; $manifest-&gt;{$_}</td></tr>
-<tr><td class="h">92</td><td><div class="c3">3</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L92">50</a></div><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L92">50</a></div><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L92">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Verify-pm--condition.html#L92">20</a></div></td><td></td><td><div>35</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;&amp; (defined $manifest-&gt;{$_}{t} ? $manifest-&gt;{$_}{t} : &#39;f&#39;) eq &#39;f&#39;</td></tr>
-<tr><td class="h">93</td><td><div class="c3">2</div><div class="c3">2</div></td><td></td><td></td><td></td><td><div>2</div><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} sort keys %{$entries};</td></tr>
-<tr><td class="h">94</td><td colspan="6"></td></tr><tr><td class="h">95</td><td><div class="c3">2</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L95">50</a></div></td><td></td><td></td><td><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $wanted = $sample &gt; @candidates ? scalar @candidates : $sample;</td></tr>
-<tr><td class="h">96</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $path (_sample(\@candidates, $wanted)) {</td></tr>
-<tr><td class="h">97</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $got = _hash(File::Spec-&gt;catfile($root, split m{/}, $path));</td></tr>
-<tr><td class="h">98</td><td><div class="c3">2</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L98">50</a></div></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next unless defined $got;</td></tr>
-<tr><td class="h">99</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$sampled++;</td></tr>
-<tr><td class="h">100</td><td><div class="c3">2</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L100">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Verify-pm--condition.html#L100">33</a></div></td><td></td><td><div>8</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next if !defined $entries-&gt;{$path}{h} || $got eq $entries-&gt;{$path}{h};</td></tr>
-<tr><td class="h">101</td><td><div class="c0">0</div></td><td><div class="c0" title="-/-"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L101">0</a></div></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next if $seen{$path};</td></tr>
-<tr><td class="h">102</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @modified, {</td></tr>
-<tr><td class="h">103</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $path,</td></tr>
-<tr><td class="h">104</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expected =&gt; $entries-&gt;{$path}{h},</td></tr>
-<tr><td class="h">105</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;got&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $got,</td></tr>
-<tr><td class="h">106</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sampled&nbsp;&nbsp;=&gt; 1,</td></tr>
-<tr><td class="h">107</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
-<tr><td class="h">108</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$seen{$path} = 1;</td></tr>
-<tr><td class="h">109</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">110</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">111</td><td colspan="6"></td></tr><tr><td class="h">112</td><td><div class="c3">25</div><div class="c0">0</div></td><td></td><td></td><td></td><td><div>30</div><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;@modified = sort { $a-&gt;{p} cmp $b-&gt;{p} } @modified;</td></tr>
-<tr><td class="h">113</td><td><div class="c3">25</div><div class="c0">0</div></td><td></td><td></td><td></td><td><div>24</div><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;@missing&nbsp;&nbsp;= sort { $a-&gt;{p} cmp $b-&gt;{p} } @missing;</td></tr>
-<tr><td class="h">114</td><td><div class="c3">25</div><div class="c3">7</div></td><td></td><td></td><td></td><td><div>30</div><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;@extra&nbsp;&nbsp;&nbsp;&nbsp;= sort { $a-&gt;{p} cmp $b-&gt;{p} } @extra;</td></tr>
-<tr><td class="h">115</td><td colspan="6"></td></tr><tr><td class="h">116</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $files = scalar grep {</td></tr>
-<tr><td class="h">117</td><td><div class="c3">50</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L117">50</a></div></td><td></td><td></td><td><div>71</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(defined $manifest-&gt;{$_}{t} ? $manifest-&gt;{$_}{t} : &#39;f&#39;) eq &#39;f&#39;</td></tr>
-<tr><td class="h">118</td><td><div class="c3">25</div><div class="c3">25</div></td><td></td><td></td><td></td><td><div>18</div><div>25</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;} keys %{$manifest};</td></tr>
-<tr><td class="h">119</td><td colspan="6"></td></tr><tr><td class="h">120</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return {</td></tr>
-<tr><td class="h">121</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $root,</td></tr>
-<tr><td class="h">122</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; (@modified || @missing || @extra) ? 0 : 1,</td></tr>
-<tr><td class="h">123</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deep&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $deep,</td></tr>
-<tr><td class="h">124</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;files&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $files,</td></tr>
-<tr><td class="h">125</td><td><div class="c3">25</div></td><td></td><td></td><td></td><td><div>190</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;known&nbsp;&nbsp;&nbsp;&nbsp;=&gt; scalar(keys %{$entries}),</td></tr>
-<tr><td class="h">126</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rehashed =&gt; $stats-&gt;{hashed} + $sampled,</td></tr>
-<tr><td class="h">127</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trusted&nbsp;&nbsp;=&gt; $stats-&gt;{cached},</td></tr>
-<tr><td class="h">128</td><td><div class="c3">25</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L128">100</a></div></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--condition.html#L128">100</a></div></td><td></td><td><div>73</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sampled&nbsp;&nbsp;=&gt; $sampled,</td></tr>
-<tr><td class="h">129</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modified =&gt; \@modified,</td></tr>
-<tr><td class="h">130</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing&nbsp;&nbsp;=&gt; \@missing,</td></tr>
-<tr><td class="h">131</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extra&nbsp;&nbsp;&nbsp;&nbsp;=&gt; \@extra,</td></tr>
-<tr><td class="h">132</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
-<tr><td class="h">133</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">134</td><td colspan="6"></td></tr><tr><td class="h">135</td><td></td><td></td><td></td><td></td><td></td><td class="s"># A partial Fisher-Yates shuffle; only the first $count entries are needed.</td></tr>
-<tr><td class="h">136</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _sample {</td></tr>
-<tr><td class="h">137</td><td><div class="c3">2</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L137">2</a></div></td><td><div>2</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($items, $count) = @_;</td></tr>
-<tr><td class="h">138</td><td colspan="6"></td></tr><tr><td class="h">139</td><td><div class="c3">2</div><div class="c3">2</div></td><td></td><td></td><td></td><td><div>2</div><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my @copy = @{$items};</td></tr>
-<tr><td class="h">140</td><td><div class="c3">2</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L140">50</a></div></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return () if $count &lt;= 0;</td></tr>
-<tr><td class="h">141</td><td><div class="c3">2</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L141">50</a></div></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$count = @copy if $count &gt; @copy;</td></tr>
-<tr><td class="h">142</td><td colspan="6"></td></tr><tr><td class="h">143</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;for my $i (0 .. $count - 1) {</td></tr>
-<tr><td class="h">144</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>13</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $j = $i + int(rand(@copy - $i));</td></tr>
-<tr><td class="h">145</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@copy[ $i, $j ] = @copy[ $j, $i ];</td></tr>
-<tr><td class="h">146</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">147</td><td colspan="6"></td></tr><tr><td class="h">148</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return @copy[ 0 .. $count - 1 ];</td></tr>
-<tr><td class="h">149</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">150</td><td colspan="6"></td></tr><tr><td class="h">151</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _hash {</td></tr>
-<tr><td class="h">152</td><td><div class="c3">2</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L152">2</a></div></td><td><div>2</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($path) = @_;</td></tr>
-<tr><td class="h">153</td><td colspan="6"></td></tr><tr><td class="h">154</td><td><div class="c3">2</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L154">50</a></div></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return undef unless -f $path;</td></tr>
-<tr><td class="h">155</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $sha = Digest::SHA-&gt;new(256);</td></tr>
-<tr><td class="h">156</td><td><div class="c3">2</div><div class="c3">2</div><div class="c3">2</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L156">50</a></div></td><td></td><td></td><td><div>21</div><div>5</div><div>106</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;eval { $sha-&gt;addfile($path, &#39;b&#39;); 1 } or return undef;</td></tr>
-<tr><td class="h">157</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>14</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $sha-&gt;hexdigest();</td></tr>
-<tr><td class="h">158</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">159</td><td colspan="6"></td></tr><tr><td class="h">160</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
-</table>
+<tr><td class="h">2</td><td colspan="6"></td></tr><tr><td class="h">3</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Compare a tree with the record of what it should hold (the server index, or</td></tr>
+<tr><td class="h">4</td><td></td><td></td><td></td><td></td><td></td><td class="s"># the client&#39;s cached base) and report the differences.&nbsp;&nbsp;Read-only.</td></tr>
+<tr><td class="h">5</td><td colspan="6"></td></tr><tr><td class="h">6</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L6">314</a></div></td><td><div>301</div><div>162</div><div>1593</div></td><td class="s">use App::FileSync::Platform;</td></tr>
+<tr><td class="h">7</td><td colspan="6"></td></tr><tr><td class="h">8</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L8">314</a></div></td><td><div>265</div><div>151</div><div>1269</div></td><td class="s">use strict;</td></tr>
+<tr><td class="h">9</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L9">314</a></div></td><td><div>243</div><div>155</div><div>3945</div></td><td class="s">use warnings;</td></tr>
+<tr><td class="h">10</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L10">314</a></div></td><td><div>244</div><div>151</div><div>439</div></td><td class="s">use autodie qw(:all);</td></tr>
+<tr><td class="h">11</td><td colspan="6"></td></tr><tr><td class="h">12</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L12">314</a></div></td><td><div>391639</div><div>190</div><div>3093</div></td><td class="s">use File::Spec;</td></tr>
+<tr><td class="h">13</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L13">314</a></div></td><td><div>314</div><div>3023</div><div>6689</div></td><td class="s">use List::Util 1.54 qw(sample);</td></tr>
+<tr><td class="h">14</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L14">314</a></div></td><td><div>265</div><div>161</div><div>683</div></td><td class="s">use Sub::Private { mode =&gt; &#39;enforce&#39; };</td></tr>
+<tr><td class="h">15</td><td colspan="6"></td></tr><tr><td class="h">16</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L16">314</a></div></td><td><div>21328</div><div>174</div><div>2879</div></td><td class="s">use App::FileSync::Args qw(named);</td></tr>
+<tr><td class="h">17</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L17">314</a></div></td><td><div>308</div><div>159</div><div>7810</div></td><td class="s">use App::FileSync::Constants qw($TYPE_FILE $TYPE_DIR);</td></tr>
+<tr><td class="h">18</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L18">314</a></div></td><td><div>276</div><div>154</div><div>2797</div></td><td class="s">use App::FileSync::I18N qw(message throw);</td></tr>
+<tr><td class="h">19</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L19">314</a></div></td><td><div>283</div><div>202</div><div>2492</div></td><td class="s">use App::FileSync::IO qw(sha256_file);</td></tr>
+<tr><td class="h">20</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L20">314</a></div></td><td><div>320</div><div>260</div><div>79880</div></td><td class="s">use App::FileSync::Scan;</td></tr>
+<tr><td class="h">21</td><td colspan="6"></td></tr><tr><td class="h">22</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $VERSION = &#39;0.001.1&#39;;</td></tr>
+<tr><td class="h">23</td><td colspan="6"></td></tr><tr><td class="h">24</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The type of a manifest entry; older entries without &quot;t&quot; are files.&nbsp;&nbsp;Lexical</td></tr>
+<tr><td class="h">25</td><td></td><td></td><td></td><td></td><td></td><td class="s"># because it runs several times per path.</td></tr>
+<tr><td class="h">26</td><td></td><td></td><td></td><td></td><td></td><td class="s">my $type_of = sub {</td></tr>
+<tr><td class="h">27</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($entry) = @_;</td></tr>
+<tr><td class="h">28</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (ref($entry) eq &#39;HASH&#39; &amp;&amp; defined $entry-&gt;{t}) ? $entry-&gt;{t} : $TYPE_FILE;</td></tr>
+<tr><td class="h">29</td><td></td><td></td><td></td><td></td><td></td><td class="s">};</td></tr>
+<tr><td class="h">30</td><td colspan="6"></td></tr><tr><td class="h">31</td><td></td><td></td><td></td><td></td><td></td><td class="s">=encoding utf8</td></tr>
+<tr><td class="h">32</td><td colspan="6"></td></tr><tr><td class="h">33 - 125</td><td colspan="5"></td><td class="s"><pre>=head1 NAME
+
+App::FileSync::Verify - check a tree against its recorded manifest
+
+=head1 SYNOPSIS
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $report = App::FileSync::Verify::verify(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root =&gt; $master, entries =&gt; $index, ignore =&gt; $ignore, sample =&gt; 50,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print $report-&gt;{ok} ? &quot;clean\n&quot; : &quot;drift\n&quot;;
+
+=head1 FUNCTIONS
+
+=head2 verify
+
+Purpose: report where a tree no longer matches its record.
+
+Args: C&lt;root&gt; (required, a directory), C&lt;entries&gt; (the recorded manifest),
+C&lt;ignore&gt; (an L&lt;App::FileSync::Ignore&gt;), C&lt;deep&gt; (rehash every file),
+C&lt;sample&gt; (without C&lt;deep&gt;, rehash this many unchanged-looking files chosen at
+random).
+
+Without C&lt;deep&gt;, entries whose size and mtime still match are trusted, which
+is what makes a verify of a large tree cheap.
+
+Returns: a hashref:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root, ok (1 when nothing differs), deep, files (regular files found),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;known (entries in the record), rehashed, trusted, sampled,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modified =&gt; [ { p, expected, got } | { p, reason } | { p, expected, got, sampled } ],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing&nbsp;&nbsp;=&gt; [ { p, t } ],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extra&nbsp;&nbsp;&nbsp;&nbsp;=&gt; [ { p, t } ]
+
+Each list is sorted by path.
+
+Side Effects: reads files; never writes.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $report = App::FileSync::Verify::verify(root =&gt; $root, entries =&gt; $base, deep =&gt; 1);
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $report = App::FileSync::Verify::verify(root =&gt; &#39;/srv/filesync/master/docs&#39;, entries =&gt; $index);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print &quot;missing: $_-&gt;{p}\n&quot; for @{ $report-&gt;{missing} };
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, min =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;entries =&gt; { type =&gt; &#39;hashref&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore&nbsp;&nbsp;=&gt; { type =&gt; &#39;object&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deep&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;boolean&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sample&nbsp;&nbsp;=&gt; { type =&gt; &#39;integer&#39;, min =&gt; 0, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type =&gt; &#39;hashref&#39;,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;schema =&gt; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;integer&#39;, min =&gt; 0, max =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modified =&gt; { type =&gt; &#39;arrayref&#39; },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing&nbsp;&nbsp;=&gt; { type =&gt; &#39;arrayref&#39; },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extra&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;arrayref&#39; },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verify.no_root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root is not a directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check the path
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verify.type_changed&nbsp;&nbsp;&nbsp;&nbsp;(a reason in &quot;modified&quot;)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a file became a directory or back
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let M = scan(root).manifest ; E = entries
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing&nbsp;&nbsp;= { p &acirc;&#136;&#136; dom E | p &acirc;&#136;&#137; dom M &acirc;&#136;&sect; &Acirc;&not;(E(p).t = d &acirc;&#136;&sect; isdir(root/p)) }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modified = { p &acirc;&#136;&#136; dom E &acirc;&#136;&copy; dom M | E(p).t &acirc;&#137;&nbsp; M(p).t &acirc;&#136;&uml; (E(p).t = f &acirc;&#136;&sect; E(p).h &acirc;&#137;&nbsp; M(p).h) }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extra&nbsp;&nbsp;&nbsp;&nbsp;= dom M \ dom E \ (missing &acirc;&#136;&ordf; modified)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok &acirc;&#135;&#148; missing = modified = extra = &acirc;&#136;&#133;
+
+=head3 PSEUDOCODE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scan the tree, reusing recorded hashes unless deep
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for each recorded path: missing, type changed, or hash differs
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;every scanned path not recorded is extra
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if sampling: rehash that many trusted files and add any that differ
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sort the three lists and count
+
+=cut</pre></td></tr>
+<tr><td class="h">126</td><td colspan="6"></td></tr><tr><td class="h">127</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub verify {</td></tr>
+<tr><td class="h">128</td><td><div class="c3">25</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L128">25</a></div></td><td><div>162</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = named(\@_, {</td></tr>
+<tr><td class="h">129</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, min =&gt; 1 },</td></tr>
+<tr><td class="h">130</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;entries =&gt; { type =&gt; &#39;hashref&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">131</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore&nbsp;&nbsp;=&gt; { type =&gt; &#39;object&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">132</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deep&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;boolean&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">133</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sample&nbsp;&nbsp;=&gt; { type =&gt; &#39;integer&#39;, min =&gt; 0, optional =&gt; 1 },</td></tr>
+<tr><td class="h">134</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}, &#39;Verify::verify&#39;);</td></tr>
+<tr><td class="h">135</td><td colspan="6"></td></tr><tr><td class="h">136</td><td><div class="c3">25</div></td><td></td><td></td><td></td><td><div>32</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $root = $args-&gt;{root};</td></tr>
+<tr><td class="h">137</td><td><div class="c3">25</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L137">50</a></div></td><td></td><td></td><td><div>110</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;verify.no_root&#39;, { root =&gt; $root }) unless -d $root;</td></tr>
+<tr><td class="h">138</td><td colspan="6"></td></tr><tr><td class="h">139</td><td><div class="c3">25</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Verify-pm--condition.html#L139">50</a></div></td><td></td><td><div>37</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $entries = $args-&gt;{entries} || {};</td></tr>
+<tr><td class="h">140</td><td><div class="c3">25</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L140">100</a></div></td><td></td><td></td><td><div>27</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $deep&nbsp;&nbsp;&nbsp;&nbsp;= $args-&gt;{deep} ? 1 : 0;</td></tr>
+<tr><td class="h">141</td><td colspan="6"></td></tr><tr><td class="h">142</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $scan = App::FileSync::Scan::scan(</td></tr>
+<tr><td class="h">143</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;=&gt; $root,</td></tr>
+<tr><td class="h">144</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore =&gt; $args-&gt;{ignore},</td></tr>
+<tr><td class="h">145</td><td><div class="c3">25</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L145">100</a></div></td><td></td><td></td><td><div>57</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cache&nbsp;&nbsp;=&gt; $deep ? {} : $entries,</td></tr>
+<tr><td class="h">146</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
+<tr><td class="h">147</td><td><div class="c3">25</div></td><td></td><td></td><td></td><td><div>23</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $manifest = $scan-&gt;{manifest};</td></tr>
+<tr><td class="h">148</td><td colspan="6"></td></tr><tr><td class="h">149</td><td><div class="c3">25</div></td><td></td><td></td><td></td><td><div>35</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $found = _compare($root, $entries, $manifest);</td></tr>
+<tr><td class="h">150</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $sampled = ($deep || !$args-&gt;{sample})</td></tr>
+<tr><td class="h">151</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? 0</td></tr>
+<tr><td class="h">152</td><td><div class="c3">25</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L152">100</a></div></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--condition.html#L152">100</a></div></td><td></td><td><div>82</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: _sample_check($root, $entries, $manifest, $args-&gt;{sample}, $found);</td></tr>
+<tr><td class="h">153</td><td colspan="6"></td></tr><tr><td class="h">154</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my %sorted = map {</td></tr>
+<tr><td class="h">155</td><td><div class="c3">25</div><div class="c3">75</div></td><td></td><td></td><td></td><td><div>26</div><div>46</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $list = $found-&gt;{$_};</td></tr>
+<tr><td class="h">156</td><td><div class="c3">75</div><div class="c3">7</div><div class="c3">75</div></td><td></td><td></td><td></td><td><div>41</div><div>11</div><div>93</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$_ =&gt; [ sort { $a-&gt;{p} cmp $b-&gt;{p} } @{$list} ];</td></tr>
+<tr><td class="h">157</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} qw(modified missing extra);</td></tr>
+<tr><td class="h">158</td><td colspan="6"></td></tr><tr><td class="h">159</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return {</td></tr>
+<tr><td class="h">160</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $root,</td></tr>
+<tr><td class="h">161</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; (@{ $sorted{modified} } || @{ $sorted{missing} } || @{ $sorted{extra} }) ? 0 : 1,</td></tr>
+<tr><td class="h">162</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deep&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $deep,</td></tr>
+<tr><td class="h">163</td><td><div class="c3">50</div><div class="c3">25</div></td><td></td><td></td><td></td><td><div>54</div><div>19</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;files&nbsp;&nbsp;&nbsp;&nbsp;=&gt; scalar(grep { $type_of-&gt;($manifest-&gt;{$_}) eq $TYPE_FILE } keys %{$manifest}),</td></tr>
+<tr><td class="h">164</td><td><div class="c3">25</div></td><td></td><td></td><td></td><td><div>197</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;known&nbsp;&nbsp;&nbsp;&nbsp;=&gt; scalar(keys %{$entries}),</td></tr>
+<tr><td class="h">165</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rehashed =&gt; $scan-&gt;{stats}{hashed} + $sampled,</td></tr>
+<tr><td class="h">166</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trusted&nbsp;&nbsp;=&gt; $scan-&gt;{stats}{cached},</td></tr>
+<tr><td class="h">167</td><td><div class="c3">25</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Verify-pm--branch.html#L167">100</a></div></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--condition.html#L167">100</a></div></td><td></td><td><div>23</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sampled&nbsp;&nbsp;=&gt; $sampled,</td></tr>
+<tr><td class="h">168</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%sorted,</td></tr>
+<tr><td class="h">169</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
+<tr><td class="h">170</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">171</td><td colspan="6"></td></tr><tr><td class="h">172</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _compare</td></tr>
+<tr><td class="h">173</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compare the record with what the scan found.</td></tr>
+<tr><td class="h">174</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$entries is the record; $manifest the fresh scan.</td></tr>
+<tr><td class="h">175</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns { modified, missing, extra, seen } (lists unsorted;</td></tr>
+<tr><td class="h">176</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seen is the set of paths already reported).</td></tr>
+<tr><td class="h">177</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none; stats one directory per recorded empty dir that is gone</td></tr>
+<tr><td class="h">178</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from the manifest.</td></tr>
+<tr><td class="h">179</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _compare :Private {</td></tr>
+<tr><td class="h">180</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($root, $entries, $manifest) = @_;</td></tr>
+<tr><td class="h">181</td><td colspan="6"></td></tr><tr><td class="h">182</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my (%found, %seen);</td></tr>
+<tr><td class="h">183</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@found{qw(modified missing extra)} = ([], [], []);</td></tr>
+<tr><td class="h">184</td><td colspan="6"></td></tr><tr><td class="h">185</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $path (sort keys %{$entries}) {</td></tr>
+<tr><td class="h">186</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $entry = $entries-&gt;{$path};</td></tr>
+<tr><td class="h">187</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next unless ref($entry) eq &#39;HASH&#39;;</td></tr>
+<tr><td class="h">188</td><td colspan="6"></td></tr><tr><td class="h">189</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $type = $type_of-&gt;($entry);</td></tr>
+<tr><td class="h">190</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $have = $manifest-&gt;{$path};</td></tr>
+<tr><td class="h">191</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $problem;</td></tr>
+<tr><td class="h">192</td><td colspan="6"></td></tr><tr><td class="h">193</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (!$have) {</td></tr>
+<tr><td class="h">194</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The scanner only reports directories that are empty, so an empty</td></tr>
+<tr><td class="h">195</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# directory that has since gained a file is not missing.</td></tr>
+<tr><td class="h">196</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next if $type eq $TYPE_DIR &amp;&amp; -d File::Spec-&gt;catfile($root, split m{/}, $path);</td></tr>
+<tr><td class="h">197</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @{ $found{missing} }, { p =&gt; $path, t =&gt; $type };</td></tr>
+<tr><td class="h">198</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} elsif ($type ne $type_of-&gt;($have)) {</td></tr>
+<tr><td class="h">199</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @{ $found{modified} }, { p =&gt; $path, reason =&gt; message(&#39;verify.type_changed&#39;) };</td></tr>
+<tr><td class="h">200</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} elsif ($type eq $TYPE_FILE &amp;&amp; defined $entry-&gt;{h} &amp;&amp; defined $have-&gt;{h} &amp;&amp; $entry-&gt;{h} ne $have-&gt;{h}) {</td></tr>
+<tr><td class="h">201</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @{ $found{modified} }, { p =&gt; $path, expected =&gt; $entry-&gt;{h}, got =&gt; $have-&gt;{h} };</td></tr>
+<tr><td class="h">202</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} else {</td></tr>
+<tr><td class="h">203</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next;</td></tr>
+<tr><td class="h">204</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">205</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$seen{$path} = 1;</td></tr>
+<tr><td class="h">206</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">207</td><td colspan="6"></td></tr><tr><td class="h">208</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $path (sort keys %{$manifest}) {</td></tr>
+<tr><td class="h">209</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next if $entries-&gt;{$path} || $seen{$path};</td></tr>
+<tr><td class="h">210</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @{ $found{extra} }, { p =&gt; $path, t =&gt; $type_of-&gt;($manifest-&gt;{$path}) };</td></tr>
+<tr><td class="h">211</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">212</td><td colspan="6"></td></tr><tr><td class="h">213</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$found{seen} = \%seen;</td></tr>
+<tr><td class="h">214</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return \%found;</td></tr>
+<tr><td class="h">215</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L215">314</a></div></td><td><div>355</div><div>163</div><div>2412</div></td><td class="s">}</td></tr>
+<tr><td class="h">216</td><td colspan="6"></td></tr><tr><td class="h">217</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _sample_check</td></tr>
+<tr><td class="h">218</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rehash a random sample of files the scan trusted.</td></tr>
+<tr><td class="h">219</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$wanted &gt; 0; $found is _compare&#39;s result, updated in place.</td></tr>
+<tr><td class="h">220</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns how many files were rehashed.</td></tr>
+<tr><td class="h">221</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: reads the sampled files; appends to $found-&gt;{modified}.</td></tr>
+<tr><td class="h">222</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _sample_check :Private {</td></tr>
+<tr><td class="h">223</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($root, $entries, $manifest, $wanted, $found) = @_;</td></tr>
+<tr><td class="h">224</td><td colspan="6"></td></tr><tr><td class="h">225</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Only a file on both sides can be compared by content.</td></tr>
+<tr><td class="h">226</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @candidates = grep {</td></tr>
+<tr><td class="h">227</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ref($entries-&gt;{$_}) eq &#39;HASH&#39;</td></tr>
+<tr><td class="h">228</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;&amp; $type_of-&gt;($entries-&gt;{$_}) eq $TYPE_FILE</td></tr>
+<tr><td class="h">229</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;&amp; $manifest-&gt;{$_}</td></tr>
+<tr><td class="h">230</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;&amp; $type_of-&gt;($manifest-&gt;{$_}) eq $TYPE_FILE</td></tr>
+<tr><td class="h">231</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} sort keys %{$entries};</td></tr>
+<tr><td class="h">232</td><td colspan="6"></td></tr><tr><td class="h">233</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $sampled = 0;</td></tr>
+<tr><td class="h">234</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $path (sample($wanted, @candidates)) {</td></tr>
+<tr><td class="h">235</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $got = sha256_file(File::Spec-&gt;catfile($root, split m{/}, $path));</td></tr>
+<tr><td class="h">236</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next unless defined $got;</td></tr>
+<tr><td class="h">237</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$sampled++;</td></tr>
+<tr><td class="h">238</td><td colspan="6"></td></tr><tr><td class="h">239</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $expected = $entries-&gt;{$path}{h};</td></tr>
+<tr><td class="h">240</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next if !defined $expected || $got eq $expected || $found-&gt;{seen}{$path};</td></tr>
+<tr><td class="h">241</td><td colspan="6"></td></tr><tr><td class="h">242</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @{ $found-&gt;{modified} }, { p =&gt; $path, expected =&gt; $expected, got =&gt; $got, sampled =&gt; 1 };</td></tr>
+<tr><td class="h">243</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$found-&gt;{seen}{$path} = 1;</td></tr>
+<tr><td class="h">244</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">245</td><td colspan="6"></td></tr><tr><td class="h">246</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $sampled;</td></tr>
+<tr><td class="h">247</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Verify-pm--subroutine.html#L247">314</a></div></td><td><div>63594</div><div>154</div><div>1198</div></td><td class="s">}</td></tr>
+<tr><td class="h">248</td><td colspan="6"></td></tr><tr><td class="h">249</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
+<tr><td class="h">250</td><td colspan="6"></td></tr></table>
 </body>
 </html>

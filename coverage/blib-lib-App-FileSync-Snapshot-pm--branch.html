@@ -20,87 +20,38 @@ https://pjcj.net
 <h1>Branch Coverage</h1>
 <table>
 <tr><td class="h" align="right">File:</td><td align="left">blib/lib/App/FileSync/Snapshot.pm</td></tr>
-<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">61.2%</td></tr>
+<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">61.1%</td></tr>
 </table>
 <div><br/></div>
 <table>
 <tr><th>line</th><th>%</th><th colspan="2">coverage</th><th>branch</th></tr>
-<tr><td class="h"><a id="L18">18</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $root and length $root</td></tr>
-<tr><td class="h"><a id="L24">24</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $epoch ? :</td></tr>
-<tr><td class="h"><a id="L30">30</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $date</td></tr>
-<tr><td class="h"><a id="L31">31</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">$date =~ /\A\d{4}-\d{2}-\d{2}\z/ ? :</td></tr>
-<tr><td class="h"><a id="L35">35</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">$^O eq &#39;MSWin32&#39; ? :</td></tr>
-<tr><td class="h"><a id="L46">46</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $root and length $root</td></tr>
-<tr><td class="h"><a id="L47">47</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $root</td></tr>
-<tr><td class="h"><a id="L49">49</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $args{&#39;date&#39;} ? :</td></tr>
-<tr><td class="h"><a id="L50">50</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless is_date($date)</td></tr>
-<tr><td class="h"><a id="L52">52</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $args{&#39;mode&#39;} ? :</td></tr>
-<tr><td class="h"><a id="L53">53</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $mode eq &quot;hardlink&quot; or $mode eq &quot;copy&quot;</td></tr>
-<tr><td class="h"><a id="L59">59</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (-e $target)</td></tr>
-<tr><td class="h"><a id="L70">70</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless -d $dir</td></tr>
-<tr><td class="h"><a id="L80">80</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless rename $temp, $target</td></tr>
-<tr><td class="h"><a id="L85">85</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless ($ok)</td></tr>
-<tr><td class="h"><a id="L110">110</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless (opendir $dh, $src)</td></tr>
-<tr><td class="h"><a id="L113">113</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $_ ne &quot;.&quot;</td></tr>
-<tr><td class="h"><a id="L122">122</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $name eq $DIR_NAME</td></tr>
-<tr><td class="h"><a id="L123">123</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $name =~ /\A\.filesync-/</td></tr>
-<tr><td class="h"><a id="L126">126</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless @stat</td></tr>
-<tr><td class="h"><a id="L128">128</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (-d _)</td></tr>
-<tr><td class="h"><a id="L129">129</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">unless -d $to</td></tr>
-<tr><td class="h"><a id="L131">131</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">unless $^O eq &quot;MSWin32&quot;</td></tr>
-<tr><td class="h"><a id="L135">135</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -f _</td></tr>
-<tr><td class="h"><a id="L138">138</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if ($args{&#39;mode&#39;} eq &quot;hardlink&quot;)</td></tr>
-<tr><td class="h"><a id="L140">140</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">if $made</td></tr>
-<tr><td class="h"><a id="L143">143</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ($made)</td></tr>
-<tr><td class="h"><a id="L144">144</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless File::Copy::copy($from, $to)</td></tr>
-<tr><td class="h"><a id="L149">149</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">unless $^O eq &quot;MSWin32&quot;</td></tr>
-<tr><td class="h"><a id="L165">165</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless opendir $dh, $dir</td></tr>
-<tr><td class="h"><a id="L171">171</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">unless $name =~ /\A\.tmp-\d+-\d+\z/</td></tr>
-<tr><td class="h"><a id="L174">174</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">unless @stat and -d _</td></tr>
-<tr><td class="h"><a id="L175">175</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">if $now - $stat[9] &lt; 3600</td></tr>
-<tr><td class="h"><a id="L187">187</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $root and length $root</td></tr>
-<tr><td class="h"><a id="L190">190</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $dir</td></tr>
-<tr><td class="h"><a id="L193">193</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless (opendir $dh, $dir)</td></tr>
-<tr><td class="h"><a id="L196">196</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if /\A\d{4}-\d{2}-\d{2}\z/</td></tr>
-<tr><td class="h"><a id="L220">220</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless opendir $dh, $dir</td></tr>
-<tr><td class="h"><a id="L221">221</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $_ ne &quot;.&quot;</td></tr>
-<tr><td class="h"><a id="L227">227</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless @stat</td></tr>
-<tr><td class="h"><a id="L228">228</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (-d _)</td></tr>
-<tr><td class="h"><a id="L232">232</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -f _</td></tr>
-<tr><td class="h"><a id="L245">245</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $root and length $root</td></tr>
-<tr><td class="h"><a id="L251">251</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless defined $keep and $keep &gt; 0 and @{$snapshots;} &gt; $keep</td></tr>
-<tr><td class="h"><a id="L256">256</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">unless ($args{&#39;dry_run&#39;})</td></tr>
-<tr><td class="h"><a id="L260">260</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless (remove_tree($path, {&quot;error&quot;, \$errors}))</td></tr>
-<tr><td class="h"><a id="L262">262</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">defined $first ? :</td></tr>
-<tr><td class="h"><a id="L276">276</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $root and length $root</td></tr>
-<tr><td class="h"><a id="L279">279</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $date and length $date</td></tr>
-<tr><td class="h"><a id="L280">280</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless is_date($date)</td></tr>
-<tr><td class="h"><a id="L283">283</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $snapshot</td></tr>
-<tr><td class="h"><a id="L287">287</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $to and length $to</td></tr>
-<tr><td class="h"><a id="L288">288</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $to</td></tr>
-<tr><td class="h"><a id="L289">289</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $to</td></tr>
-<tr><td class="h"><a id="L291">291</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $args{&#39;paths&#39;}</td></tr>
-<tr><td class="h"><a id="L292">292</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless (@paths)</td></tr>
-<tr><td class="h"><a id="L294">294</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless opendir $dh, $snapshot</td></tr>
-<tr><td class="h"><a id="L295">295</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $_ ne &quot;.&quot;</td></tr>
-<tr><td class="h"><a id="L303">303</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $safe</td></tr>
-<tr><td class="h"><a id="L306">306</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -e $from or -l $from</td></tr>
-<tr><td class="h"><a id="L330">330</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless @stat</td></tr>
-<tr><td class="h"><a id="L332">332</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (-d _)</td></tr>
-<tr><td class="h"><a id="L333">333</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">unless -d $dst</td></tr>
-<tr><td class="h"><a id="L335">335</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless opendir $dh, $src</td></tr>
-<tr><td class="h"><a id="L336">336</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $_ ne &quot;.&quot;</td></tr>
-<tr><td class="h"><a id="L346">346</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">unless ($args{&#39;dry_run&#39;})</td></tr>
-<tr><td class="h"><a id="L347">347</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">unless $^O eq &quot;MSWin32&quot;</td></tr>
-<tr><td class="h"><a id="L353">353</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -f _</td></tr>
-<tr><td class="h"><a id="L358">358</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if $args{&#39;dry_run&#39;}</td></tr>
-<tr><td class="h"><a id="L360">360</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if (-d $dst and not -l $dst) { }</td></tr>
-<tr><td class="h"></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">elsif (-e $dst or -l $dst) { }</td></tr>
-<tr><td class="h"><a id="L362">362</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">unless remove_tree($dst, {&quot;error&quot;, \$errors})</td></tr>
-<tr><td class="h"><a id="L365">365</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless unlink $dst</td></tr>
-<tr><td class="h"><a id="L369">369</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $parent</td></tr>
-<tr><td class="h"><a id="L371">371</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless File::Copy::copy($src, $dst)</td></tr>
-<tr><td class="h"><a id="L374">374</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">unless $^O eq &quot;MSWin32&quot;</td></tr>
+<tr><td class="h"><a id="L105">105</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $root and length $root</td></tr>
+<tr><td class="h"><a id="L156">156</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $epoch ? :</td></tr>
+<tr><td class="h"><a id="L163">163</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">defined $date &amp;&amp; $date =~ /$DATE/ ? :</td></tr>
+<tr><td class="h"><a id="L167">167</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">$^O eq &#39;MSWin32&#39; ? :</td></tr>
+<tr><td class="h"><a id="L247">247</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $root</td></tr>
+<tr><td class="h"><a id="L249">249</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $args-&gt;{&#39;date&#39;} ? :</td></tr>
+<tr><td class="h"><a id="L250">250</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless is_date($date)</td></tr>
+<tr><td class="h"><a id="L252">252</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $args-&gt;{&#39;mode&#39;} ? :</td></tr>
+<tr><td class="h"><a id="L253">253</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $mode eq $HARDLINK or $mode eq $COPY</td></tr>
+<tr><td class="h"><a id="L259">259</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if -e $target</td></tr>
+<tr><td class="h"><a id="L274">274</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless ($ok)</td></tr>
+<tr><td class="h"><a id="L278">278</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">if ref $error</td></tr>
+<tr><td class="h"><a id="L329">329</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $dir</td></tr>
+<tr><td class="h"><a id="L331">331</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless my $names = list_dir($dir)</td></tr>
+<tr><td class="h"><a id="L332">332</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">if $_ =~ /$DATE/</td></tr>
+<tr><td class="h"><a id="L404">404</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $keep and @dates &gt; $keep</td></tr>
+<tr><td class="h"><a id="L409">409</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">unless ($args-&gt;{&#39;dry_run&#39;})</td></tr>
+<tr><td class="h"><a id="L496">496</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $date and length $date</td></tr>
+<tr><td class="h"><a id="L497">497</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless is_date($date)</td></tr>
+<tr><td class="h"><a id="L500">500</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $snapshot</td></tr>
+<tr><td class="h"><a id="L502">502</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $to and length $to</td></tr>
+<tr><td class="h"><a id="L504">504</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $to</td></tr>
+<tr><td class="h"><a id="L506">506</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $args-&gt;{&#39;paths&#39;}</td></tr>
+<tr><td class="h"><a id="L507">507</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless list_dir($snapshot)</td></tr>
+<tr><td class="h"></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless @paths</td></tr>
+<tr><td class="h"><a id="L512">512</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $safe</td></tr>
+<tr><td class="h"><a id="L515">515</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -e $from or -l $from</td></tr>
 </table>
 </body>
 </html>

@@ -1,0 +1,851 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CPD: lib/App/FileSync/Transport/SSH.pm</title>
+<style>
+
+/* --------------------------------------------------
+   CSS Variables (Light Mode Default)
+-------------------------------------------------- */
+
+:root {
+    --bg: #ffffff;
+    --text: #000000;
+    --table-header: #333;
+    --table-header-text: #ffffff;
+
+    --survived-1: #f8d7da;
+    --survived-2: #f5b7b1;
+    --survived-3: #ec7063;
+
+    --killed: #d4edda;
+    --border: #cccccc;
+}
+
+/* --------------------------------------------------
+   Dark Mode Overrides
+-------------------------------------------------- */
+
+html[data-theme='dark'] {
+    --bg: #1e1e1e;
+    --text: #dddddd;
+    --table-header: #222;
+    --table-header-text: #ffffff;
+
+    --survived-1: #5c2b2e;
+    --survived-2: #7b2c2f;
+    --survived-3: #a93226;
+
+    --killed: #1e4620;
+    --border: #555;
+}
+
+/* --------------------------------------------------
+   Global Styles
+-------------------------------------------------- */
+
+body {
+	font-family: sans-serif;
+	background: var(--bg);
+	color: var(--text);
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    background: var(--table-header);
+    color: var(--table-header-text);
+}
+
+.survived-1 { background-color: var(--survived-1); }
+.survived-2 { background-color: var(--survived-2); }
+.survived-3 { background-color: var(--survived-3); }
+
+.killed { background-color: var(--killed); }
+
+.legend {
+    border: 1px solid #ccc;
+    background: #fafafa;
+    padding: 10px;
+    margin: 15px 0;
+    font-size: 0.9em;
+}
+
+.legend pre {
+    background: #f4f4f4;
+    padding: 5px;
+}
+
+.legend-box {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin: 0 6px 0 20px;
+    vertical-align: middle;
+    border: 1px solid var(--border);
+}
+
+/* White box for non-mutated lines */
+.legend-box.none {
+	background-color: var(--bg);
+}
+
+/* --------------------------------------------------
+   Suggested Test Box Styling
+   Theme-aware and readable in light & dark modes
+-------------------------------------------------- */
+
+.suggested-test {
+    margin-top: 6px;
+    margin-bottom: 12px;
+
+    /* Use theme variables instead of hardcoded colors */
+    background: var(--bg);
+    color: var(--text);
+
+    padding: 8px;
+    border-radius: 4px;
+
+    /* Subtle border for visual separation */
+    border: 1px solid var(--border);
+}
+
+/* Label styling */
+.suggest-label {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+/* Ensure the test code block inherits readable colors */
+.suggested-test pre {
+    background: transparent;   /* Prevent nested dark blocks */
+    color: inherit;            /* Match theme text color */
+    margin: 0;
+    font-family: monospace;
+}
+
+pre { line-height: 1.4; }
+
+pre > details {
+    margin: 0.2em 0;
+}
+
+pre > details:first-child {
+    margin-top: 0;
+}
+
+pre > details:last-child {
+    margin-bottom: 0;
+}
+
+pre details,
+pre summary,
+pre ul,
+pre li {
+    white-space: normal;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+.nav { margin-bottom: 1em; }
+
+.toggle {
+    float: right;
+    cursor: pointer;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
+/* Tooltip container */
+.tooltip {
+	position: relative;
+	cursor: help;
+}
+
+/* Tooltip bubble */
+.tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: var(--table-header);
+    color: var(--table-header-text);
+    padding: 6px 10px;
+    white-space: normal;
+    max-width: 300px;
+    min-width: 30ch;
+    font-size: 12px;
+    border-radius: 6px;
+    z-index: 1000;
+    margin-left: 10ch;   /* move tooltip ~10 characters to the right */
+}
+
+.mutant-details {
+	margin-left: 2em;
+	font-size: 0.9em;
+}
+
+/* Indent the list of mutations that displays when expanding by 8 characters */
+pre details.mutant-details ul {
+	padding-left: 8ch;
+	margin: 0.2em 0;
+}
+
+.mutant-details summary {
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.lcsaj-dot {
+    color: #5555ff;
+    font-size: 10px;
+    margin-right: 3px;
+}
+
+.lcsaj-dot-uncovered {
+    color: #cc4444;
+    font-size: 10px;
+    margin-right: 3px;
+}
+
+.lcsaj-tip {
+	position: relative;
+	display: inline-block;
+}
+
+.lcsaj-tip .lcsaj-tip-text {
+	visibility: hidden;
+	background-color: #333;
+	color: #fff;
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 11px;
+	white-space: nowrap;
+	position: fixed;
+	z-index: 9999;
+	pointer-events: none;
+}
+
+.lcsaj-tip:hover .lcsaj-tip-text {
+	visibility: visible;
+}
+
+.cpd-dot {
+    color: #cc8800;
+    font-size: 10px;
+    margin-right: 3px;
+    cursor: help;
+    text-decoration: none;
+}
+a.cpd-dot { cursor: pointer; }
+a.cpd-dot:hover { color: #ff8800; }
+
+.cpd-tip {
+    position: relative;
+    display: inline-block;
+}
+
+.cpd-tip .cpd-tip-text {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    white-space: nowrap;
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.cpd-tip:hover .cpd-tip-text {
+    visibility: visible;
+}
+
+/* CPD drill-down page styles */
+.dup-line { background-color: #fff3cd; display: block; }
+.dup-line:hover { background-color: #ffe082; }
+.intra-dot { color: #9944cc; margin-right: 4px; cursor: help; text-decoration: none; }
+a.intra-dot { cursor: pointer; }
+a.intra-dot:hover { color: #7700bb; }
+.cpd-legend {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 6px 10px;
+    margin-bottom: 1em;
+    font-size: 0.9em;
+}
+
+</style>
+</head>
+<body>
+<button class="toggle" onclick="toggleTheme()">🌙 Toggle Theme</button>
+<div class="nav">&larr; <a href="Local.pm.html">lib/App/FileSync/Transport/Local.pm</a> &nbsp; <a href="../../../../../index.html">&uarr; Dashboard</a> &nbsp; &nbsp;
+<a href="https://github.com/nigelhorne/App-FileSync/blob/2ccb9580960b0f46c64956b0ee79f6fa7b839217/lib/App/FileSync/Transport/SSH.pm" target="_blank">View on GitHub &#128269;</a></div>
+<h1>lib/App/FileSync/Transport/SSH.pm &mdash; Duplicate Code Regions</h1>
+<div class="legend cpd-legend">
+  <span class="cpd-dot">&#9670;</span> Amber lines duplicate code in another file &mdash; hover for location.<br>
+  <span class="intra-dot">&#9670;</span> Purple: duplicate of another region within this same file.
+</div>
+<pre>
+    1: package App::FileSync::Transport::SSH;
+    2: 
+    3: # Runs filesync-server on the server host over one ssh connection and speaks
+    4: # the wire protocol on its pipes.  The ssh argument list is built here and
+    5: # never passed through a local shell, and every value that reaches the remote
+    6: # shell is restricted to characters that are inert there, so a repo or client
+    7: # id cannot become a command.
+    8: 
+    9: use App::FileSync::Platform;
+   10: 
+   11: use strict;
+   12: use warnings;
+   13: 
+   14: # Not :all - this class has a close method, and autodie replaces a package's
+   15: # subs named after the builtins it wraps.
+   16: use autodie qw(open);
+   17: 
+   18: use File::Temp ();
+   19: use IPC::Open3 ();
+   20: use List::Util qw(any);
+   21: use Readonly;
+   22: use Sub::Private { mode =&gt; 'enforce' };
+   23: 
+   24: use App::FileSync qw(validate_client_id validate_repo_name);
+   25: use App::FileSync::Args qw(named);
+   26: use App::FileSync::Constants qw($PROTOCOL_VERSION $ROLE_CLIENT @ROLES $SERVER_PROGRAM);
+   27: use App::FileSync::I18N qw(throw);
+   28: use App::FileSync::IO qw(read_text);
+   29: 
+   30: our $VERSION = '0.001.1';
+   31: 
+   32: # Kept for compatibility: the protocol version sent as --proto.
+   33: our $PROTO = $PROTOCOL_VERSION;
+   34: 
+   35: # Options every session uses: no prompts, keepalives so a dead link is
+   36: # noticed, and a bounded connect.
+   37: Readonly my @SSH_OPTIONS =&gt; (
+   38: 	'-T',
+   39: 	'-o', 'BatchMode=yes',
+   40: 	'-o', 'ServerAliveInterval=30',
+   41: 	'-o', 'ConnectTimeout=10',
+   42: );
+   43: 
+   44: # Host key policies a repo may choose.
+   45: Readonly my @HOST_KEY_CHECKING =&gt; qw(yes accept-new);
+   46: 
+   47: # The highest TCP port.
+   48: Readonly my $MAX_PORT =&gt; 65_535;
+   49: 
+   50: # Characters that would end or split an argument.
+   51: Readonly my $UNSAFE_ARG =&gt; qr/[\0\n]/;
+   52: 
+   53: # user@host, host, or a bracketed IPv6 literal.  Both the user and the host
+   54: # start with a letter or digit, so neither can be read as an ssh option.
+   55: Readonly my $SERVER =&gt; qr/\A(?:[A-Za-z0-9][A-Za-z0-9._-]*@)?
+   56: 	(?:[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?|\[[0-9A-Fa-f:]+\])\z/x;
+   57: 
+   58: # A remote program path: only characters inert in a POSIX shell, and not
+   59: # starting with '-'.
+   60: Readonly my $PROGRAM =&gt; qr{\A[A-Za-z0-9._/][A-Za-z0-9._/-]*\z};
+   61: 
+   62: =encoding utf8
+   63: 
+   64: =head1 NAME
+   65: 
+   66: App::FileSync::Transport::SSH - run the server over ssh
+   67: 
+   68: =head1 SYNOPSIS
+   69: 
+   70: 	my $transport = App::FileSync::Transport::SSH-&gt;new(
+   71: 		server =&gt; 'filesync@files.example.com', repo =&gt; 'docs', client =&gt; 'laptop',
+   72: 		identity =&gt; '~/.ssh/filesync_ed25519',
+   73: 	);
+   74: 	...
+   75: 	$transport-&gt;close or warn $transport-&gt;error_text;
+   76: 
+   77: =head1 METHODS
+   78: 
+   79: =head2 new
+   80: 
+   81: Purpose: start C&lt;filesync-server&gt; on the server host for one session.
+   82: 
+   83: Args: C&lt;server&gt; (C&lt;user@host&gt;, C&lt;host&gt; or C&lt;user@[v6]&gt;), C&lt;repo&gt;, C&lt;client&gt;,
+   84: optional C&lt;role&gt; (default C&lt;client&gt;), C&lt;server_command&gt; (default
+   85: C&lt;filesync-server&gt;), C&lt;host_key_checking&gt; (C&lt;yes&gt;, the default, or
+   86: C&lt;accept-new&gt;), C&lt;known_hosts&gt;, C&lt;identity&gt;, C&lt;port&gt;, C&lt;command&gt; (the local
+   87: ssh program), C&lt;extra_args&gt; (arrayref of extra ssh arguments).
+   88: 
+   89: Returns: the transport.
+   90: 
+   91: Side Effects: runs C&lt;ssh ... SERVER PROGRAM --repo R --client C --role X
+   92: --proto 2&gt;.  ssh's standard error goes to a temporary file, never the
+   93: protocol pipe, and is available from L&lt;/error_text&gt;.  On Windows a C&lt;.cmd&gt; or
+   94: C&lt;.bat&gt; ssh wrapper is started through C&lt;COMSPEC&gt;, since CreateProcess cannot
+   95: start one directly.
+   96: 
+   97: Usage:
+   98: 
+   99: 	my $transport = App::FileSync::Transport::SSH-&gt;new(%args);
+  100: 
+  101: =head3 EXAMPLE
+  102: 
+  103: 	my $t = App::FileSync::Transport::SSH-&gt;new(
+  104: 		server =&gt; 'backup', repo =&gt; 'photos', client =&gt; 'nas', role =&gt; 'replica', port =&gt; 2222,
+  105: 	);
+  106: 	print join(' ', @{ $t-&gt;command }), "\n";
+  107: 
+  108: =head3 API SPECIFICATION
+  109: 
+  110: =head4 INPUT
+  111: 
+  112: 	{
+  113: 		server            =&gt; { type =&gt; 'string', matches =&gt; $SERVER },
+  114: 		repo              =&gt; { type =&gt; 'string', min =&gt; 1, max =&gt; 64 },
+  115: 		client            =&gt; { type =&gt; 'string', min =&gt; 1, max =&gt; 64 },
+  116: 		role              =&gt; { type =&gt; 'string', optional =&gt; 1, memberof =&gt; [ 'client', 'replica' ] },
+  117: 		server_command    =&gt; { type =&gt; 'string', optional =&gt; 1, matches =&gt; $PROGRAM },
+  118: 		host_key_checking =&gt; { type =&gt; 'string', optional =&gt; 1, memberof =&gt; [ 'yes', 'accept-new' ] },
+  119: 		known_hosts       =&gt; { type =&gt; 'string', optional =&gt; 1 },
+  120: 		identity          =&gt; { type =&gt; 'string', optional =&gt; 1 },
+  121: 		port              =&gt; { type =&gt; 'integer', optional =&gt; 1, min =&gt; 1, max =&gt; 65535 },
+  122: 		command           =&gt; { type =&gt; 'string', optional =&gt; 1 },
+  123: 		extra_args        =&gt; { type =&gt; 'arrayref', optional =&gt; 1 },
+  124: 	}
+  125: 
+  126: =head4 OUTPUT
+  127: 
+  128: 	{ type =&gt; 'object', isa =&gt; 'App::FileSync::Transport::SSH' }
+  129: 
+  130: =head3 MESSAGES
+  131: 
+  132: 	Key                  Meaning                                    Resolution
+  133: 	transport.missing    server, repo or client absent              fix the repo config
+  134: 	transport.bad_value  a value is unsafe or out of range          fix the repo config or settings
+  135: 	transport.bad_id     the repo or client is not a plain id       fix the repo config
+  136: 	io.write             the error file cannot be created           check the temp directory
+  137: 
+  138: =head3 FORMAL SPECIFICATION
+  139: 
+  140: 	pre server ∈ SERVER ∧ repo ∈ Id ∧ client ∈ Id ∧ role ∈ ROLES ∧ program ∈ PROGRAM
+  141: 	    ∧ (port = ⊥ ∨ 0 &lt; port ≤ 65535) ∧ ∀ a : extra_args • a ∈ TEXT ∧ '\n' ∉ a
+  142: 	argv = ⟨ssh⟩ ⁀ options ⁀ ⟨server, program, --repo, repo, --client, client, --role, role, --proto, PROTO⟩
+  143: 
+  144: =head3 PSEUDOCODE
+  145: 
+  146: 	validate every argument
+  147: 	build ssh's options: fixed ones, host key policy, known hosts, identity,
+  148: 	port, extra arguments
+  149: 	append the server, then the remote command
+  150: 	wrap a .cmd/.bat ssh in COMSPEC on Windows
+  151: 	start it with standard error going to a temporary file
+  152: 
+  153: =cut
+  154: 
+  155: sub new {
+  156: 	my $class = shift;
+  157: 	my $args = named(\@_, {
+  158: 		map({ $_ =&gt; { type =&gt; 'string', optional =&gt; 1 } }
+  159: 			qw(server repo client role server_command host_key_checking known_hosts identity port command)),
+  160: 		extra_args =&gt; { type =&gt; 'arrayref', optional =&gt; 1 },
+  161: 	}, 'Transport::SSH-&gt;new');
+  162: 
+  163: 	for my $required (qw(server repo client)) {
+  164: 		throw('transport.missing', { transport =&gt; 'SSH', what =&gt; $required })
+  165: 			unless defined $args-&gt;{$required} &amp;&amp; length $args-&gt;{$required};
+  166: 	}
+  167: 	_check('server', $args-&gt;{server}, valid_server($args-&gt;{server}));
+  168: 
+  169: 	for my $check ([ repo =&gt; \&amp;validate_repo_name ], [ client =&gt; \&amp;validate_client_id ]) {
+  170: 		my ($field, $validate) = @{$check};
+  171: 		my ($ok, $reason) = $validate-&gt;($args-&gt;{$field});
+  172: 		throw('transport.bad_id', { reason =&gt; $reason }) unless $ok;
+  173: 	}
+  174: 
+  175: 	my $role = $args-&gt;{role} || $ROLE_CLIENT;
+  176: 	_check('role', $role, any { $_ eq $role } @ROLES);
+  177: 
+  178: 	my $program = _given($args-&gt;{server_command}) // $SERVER_PROGRAM;
+  179: 	_check('server_command', $program, valid_program($program));
+  180: 
+  181: 	my $checking = _given($args-&gt;{host_key_checking}) // $HOST_KEY_CHECKING[0];
+  182: 	_check('host_key_checking', $checking, any { $_ eq $checking } @HOST_KEY_CHECKING);
+  183: 
+  184: 	my @command = (_given($args-&gt;{command}) // 'ssh', @SSH_OPTIONS, '-o', "StrictHostKeyChecking=$checking");
+  185: 
+  186: 	if (defined(my $known = _given($args-&gt;{known_hosts}))) {
+  187: 		_check('known_hosts', $known, $known !~ $UNSAFE_ARG);
+  188: 		push @command, '-o', "UserKnownHostsFile=$known";
+  189: 	}
+  190: 	if (defined(my $identity = _given($args-&gt;{identity}))) {
+  191: 		_check('identity', $identity, $identity !~ $UNSAFE_ARG);
+  192: 		push @command, '-i', $identity;
+  193: 	}
+  194: 	if (defined(my $port = _given($args-&gt;{port}))) {
+  195: 		_check('port', $port, $port =~ /\A\d{1,5}\z/ &amp;&amp; $port &gt; 0 &amp;&amp; $port &lt;= $MAX_PORT);
+  196: 		push @command, '-p', $port;
+  197: 	}
+  198: 	for my $extra (@{ $args-&gt;{extra_args} || [] }) {
+  199: 		_check('extra_args', $extra // '', defined $extra &amp;&amp; !ref $extra &amp;&amp; $extra !~ $UNSAFE_ARG);
+  200: 		push @command, $extra;
+  201: 	}
+  202: 
+  203: 	# The remote shell splits this back into arguments; every value is
+  204: 	# restricted (above) to characters that are inert in a POSIX shell.
+  205: 	push @command, $args-&gt;{server}, $program,
+  206: 		'--repo', $args-&gt;{repo}, '--client', $args-&gt;{client}, '--role', $role, '--proto', $PROTO;
+  207: 
+  208: 	if ($^O eq 'MSWin32' &amp;&amp; $command[0] =~ /\.(?:cmd|bat)\z/i) {
+  209: 		unshift @command, _given($ENV{COMSPEC}) // 'cmd.exe', '/d', '/c';
+  210: 	}
+  211: 
+  212: 	return bless { command =&gt; \@command, status =&gt; undef, stderr =&gt; '', %{ _spawn(\@command) } }, $class;
+  213: }
+  214: 
+  215: =head2 reader
+  216: 
+  217: =head2 writer
+  218: 
+  219: =head2 command
+  220: 
+  221: =head2 exit_status
+  222: 
+  223: Purpose: the session's pipes, the argv that was run, and ssh's exit status.
+  224: 
+  225: Args: none.
+  226: 
+  227: Returns: the read and write handles; a copy of the argv (for C&lt;--verbose&gt; and
+  228: tests); the exit status after L&lt;/close&gt; (undef before).
+  229: 
+  230: Side Effects: none.
+  231: 
+  232: Usage:
+  233: 
+  234: 	my $argv = $transport-&gt;command;
+  235: 
+  236: =head3 EXAMPLE
+  237: 
+  238: 	print "ran: @{ $transport-&gt;command }\n";
+  239: 
+  240: =head3 API SPECIFICATION
+  241: 
+  242: =head4 INPUT
+  243: 
+  244: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
+  245: 
+  246: =head4 OUTPUT
+  247: 
+  248: 	{ type =&gt; 'scalar' }
+  249: 
+  250: =head3 MESSAGES
+  251: 
+  252: None.
+  253: 
+  254: =head3 FORMAL SPECIFICATION
+  255: 
+  256: 	command = copy(self.command) ; exit_status = self.status
+  257: 
+  258: =cut
+  259: 
+  260: sub reader {
+  261: 	my ($self) = @_;
+  262: 
+  263: 	return $self-&gt;{reader};
+<span class="dup-line">  264: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>}</span><span class="dup-line">  265: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a></span><span class="dup-line">  266: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>sub writer {</span><span class="dup-line">  267: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>	my ($self) = @_;</span><span class="dup-line">  268: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a></span><span class="dup-line">  269: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>	return $self-&gt;{writer};</span><span class="dup-line">  270: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>}</span><span class="dup-line">  271: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a></span><span class="dup-line">  272: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>sub command {</span><span class="dup-line">  273: <a href="Local.pm.html" class="cpd-dot" title="Duplicate: lib/App/FileSync/Transport/Local.pm line 172" target="_blank">&#9670;</a>	my ($self) = @_;</span>  274: 
+  275: 	return [ @{ $self-&gt;{command} } ];
+  276: }
+  277: 
+  278: sub exit_status {
+  279: 	my ($self) = @_;
+  280: 
+  281: 	return $self-&gt;{status};
+  282: }
+  283: 
+  284: =head2 close
+  285: 
+  286: Purpose: end the ssh session.
+  287: 
+  288: Args: none.
+  289: 
+  290: Returns: 1 when ssh exited 0, else 0.  Repeated calls return 1.
+  291: 
+  292: Side Effects: closes both pipes, reaps ssh, records its exit status and
+  293: signal, and reads what it wrote to standard error.
+  294: 
+  295: Usage:
+  296: 
+  297: 	$transport-&gt;close or warn $transport-&gt;error_text, "\n";
+  298: 
+  299: =head3 EXAMPLE
+  300: 
+  301: 	unless ($transport-&gt;close) {
+  302: 		printf "ssh exited %d: %s\n", $transport-&gt;exit_status, $transport-&gt;error_text;
+  303: 	}
+  304: 
+  305: =head3 API SPECIFICATION
+  306: 
+  307: =head4 INPUT
+  308: 
+  309: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
+  310: 
+  311: =head4 OUTPUT
+  312: 
+  313: 	{ type =&gt; 'integer', memberof =&gt; [ 0, 1 ] }
+  314: 
+  315: =head3 MESSAGES
+  316: 
+  317: None.
+  318: 
+  319: =head3 FORMAL SPECIFICATION
+  320: 
+  321: 	close = 1 ⇔ closed ∨ exit(ssh) = 0
+  322: 
+  323: =cut
+  324: 
+  325: sub close {	## no critic (Subroutines::ProhibitBuiltinHomonyms, Subroutines::ProhibitAmbiguousNames) -- transport interface
+  326: 	my ($self) = @_;
+  327: 
+  328: 	return 1 if $self-&gt;{closed}++;
+  329: 
+  330: 	for my $handle (grep { defined } @{$self}{qw(writer reader)}) {
+  331: 		CORE::close($handle);
+  332: 	}
+  333: 
+  334: 	if ($self-&gt;{pid}) {
+  335: 		waitpid($self-&gt;{pid}, 0);
+  336: 		my $status = $?;
+  337: 		@{$self}{qw(status signal pid)} = ($status &gt;&gt; 8, $status &amp; 127, 0);
+  338: 	}
+  339: 	$self-&gt;{stderr} = _slurp($self-&gt;{error_path});
+  340: 
+  341: 	return ($self-&gt;{status} || 0) == 0 ? 1 : 0;
+  342: }
+  343: 
+  344: =head2 error_text
+  345: 
+  346: Purpose: what ssh or the remote shell said, for when the protocol failed.
+  347: 
+  348: Args: none.
+  349: 
+  350: Returns: the text, trimmed, with blank lines collapsed.
+  351: 
+  352: Side Effects: reads the error file if L&lt;/close&gt; has not yet.
+  353: 
+  354: Usage:
+  355: 
+  356: 	my $why = $transport-&gt;error_text;
+  357: 
+  358: =head3 EXAMPLE
+  359: 
+  360: 	print $transport-&gt;error_text, "\n";	# "Permission denied (publickey)."
+  361: 
+  362: =head3 API SPECIFICATION
+  363: 
+  364: =head4 INPUT
+  365: 
+  366: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
+  367: 
+  368: =head4 OUTPUT
+  369: 
+  370: 	{ type =&gt; 'string' }
+  371: 
+  372: =head3 MESSAGES
+  373: 
+  374: None.
+  375: 
+  376: =head3 FORMAL SPECIFICATION
+  377: 
+  378: 	error_text = squeeze(trim(stderr))
+  379: 
+  380: =cut
+  381: 
+  382: sub error_text {
+  383: 	my ($self) = @_;
+  384: 
+  385: 	my $text = length $self-&gt;{stderr} ? $self-&gt;{stderr} : _slurp($self-&gt;{error_path});
+  386: 	$text =~ s/\A\s+|\s+\z//g;
+  387: 	$text =~ s/\n+/\n/g;
+  388: 	return $text;
+  389: }
+  390: 
+  391: =head2 valid_server
+  392: 
+  393: =head2 valid_program
+  394: 
+  395: Purpose: check a server address and a remote program path.
+  396: 
+  397: Args: the value.
+  398: 
+  399: Returns: 1 or 0.
+  400: 
+  401: A server is C&lt;user@host&gt;, C&lt;host&gt; or C&lt;user@[ipv6]&gt;; the user and host must
+  402: start with a letter or digit, so neither can be read as an ssh option (a
+  403: leading C&lt;-&gt;) and nothing can split into another word.  A program is a path of
+  404: letters, digits, C&lt;.&gt;, C&lt;_&gt;, C&lt;/&gt; and C&lt;-&gt;, not starting with C&lt;-&gt;.
+  405: 
+  406: Side Effects: none.
+  407: 
+  408: Usage:
+  409: 
+  410: 	die "bad server\n" unless App::FileSync::Transport::SSH::valid_server($server);
+  411: 
+  412: =head3 EXAMPLE
+  413: 
+  414: 	App::FileSync::Transport::SSH::valid_server('filesync@files.example.com');	# 1
+  415: 	App::FileSync::Transport::SSH::valid_server('-oProxyCommand=sh');		# 0
+  416: 	App::FileSync::Transport::SSH::valid_server('-v@host');				# 0
+  417: 
+  418: =head3 API SPECIFICATION
+  419: 
+  420: =head4 INPUT
+  421: 
+  422: 	[ { name =&gt; 'value', type =&gt; 'string', optional =&gt; 1 } ]
+  423: 
+  424: =head4 OUTPUT
+  425: 
+  426: 	{ type =&gt; 'integer', memberof =&gt; [ 0, 1 ] }
+  427: 
+  428: =head3 MESSAGES
+  429: 
+  430: None.
+  431: 
+  432: =head3 FORMAL SPECIFICATION
+  433: 
+  434: 	valid_server(v) ⇔ v ∈ SERVER
+  435: 	valid_program(v) ⇔ v ∈ PROGRAM
+  436: 
+  437: =cut
+  438: 
+  439: sub valid_server {
+  440: 	my ($value) = @_;
+  441: 
+  442: 	return (defined $value &amp;&amp; $value =~ $SERVER) ? 1 : 0;
+  443: }
+  444: 
+  445: sub valid_program {
+  446: 	my ($value) = @_;
+  447: 
+  448: 	return (defined $value &amp;&amp; $value =~ $PROGRAM) ? 1 : 0;
+  449: }
+  450: 
+  451: # _spawn
+  452: # Purpose:     start ssh with stderr going to a temporary file.
+  453: # Entry:       $command is the full argv.
+  454: # Exit:        returns { pid, writer, reader, errors, error_path }.
+  455: # Side effects: creates the error file (removed when the object goes) and
+  456: #              starts the process.  IPC::Open3 rather than fork/exec: on
+  457: #              Windows fork() is a pseudo-process whose pipe handles are
+  458: #              not always duplicated, which leaves a full-duplex session
+  459: #              waiting on a pipe end that never closes.
+  460: sub _spawn :Private {
+  461: 	my ($command) = @_;
+  462: 
+  463: 	my $errors = File::Temp-&gt;new(UNLINK =&gt; 1);
+  464: 	my $error_path = $errors-&gt;filename;
+  465: 	open my $err_fh, '&gt;', $error_path;
+  466: 
+  467: 	my ($writer, $reader);
+  468: 	my $pid = IPC::Open3::open3($writer, $reader, '&gt;&amp;' . fileno($err_fh), @{$command});
+  469: 	CORE::close($err_fh);
+  470: 
+  471: 	return { pid =&gt; $pid, writer =&gt; $writer, reader =&gt; $reader, errors =&gt; $errors, error_path =&gt; $error_path };
+  472: }
+  473: 
+  474: # _check
+  475: # Purpose:     refuse an unsafe or out-of-range argument.
+  476: # Entry:       $ok is the result of the check.
+  477: # Exit:        returns 1.
+  478: # Side effects: raises transport.bad_value naming the field.
+  479: sub _check :Private {
+  480: 	my ($field, $value, $ok) = @_;
+  481: 
+  482: 	throw('transport.bad_value', { field =&gt; $field, value =&gt; $value }) unless $ok;
+  483: 	return 1;
+  484: }
+  485: 
+  486: # _given
+  487: # Purpose:     treat an empty string like an absent value.
+  488: # Entry:       any scalar.
+  489: # Exit:        returns the value, or undef if undefined or empty.
+  490: # Side effects: none.
+  491: sub _given :Private {
+  492: 	my ($value) = @_;
+  493: 
+  494: 	return (defined $value &amp;&amp; length $value) ? $value : undef;
+  495: }
+  496: 
+  497: # _slurp
+  498: # Purpose:     the error file's contents.
+  499: # Entry:       $path may be undef or gone.
+  500: # Exit:        returns the text, or ''.
+  501: # Side effects: reads the file; an unreadable one is treated as empty
+  502: #              (there is nothing better to report).
+  503: sub _slurp :Private {
+  504: 	my ($path) = @_;
+  505: 
+  506: 	return '' unless defined $path &amp;&amp; -e $path;
+  507: 	my $text = eval { read_text($path) };
+  508: 	return defined $text ? $text : '';
+  509: }
+  510: 
+  511: 1;
+  512: 
+  513: __END__
+  514: 
+  515: =head1 LIMITATIONS
+  516: 
+  517: =over 4
+  518: 
+  519: =item * C&lt;extra_args&gt; are passed to ssh unchecked apart from embedded NULs and
+  520: newlines: they are the user's own options, and can therefore do anything ssh
+  521: options can (C&lt;-o ProxyCommand=...&gt; included).  Only trusted configuration
+  522: should set them.
+  523: 
+  524: =item * C&lt;known_hosts&gt; and C&lt;identity&gt; are not tilde-expanded here; ssh expands
+  525: C&lt;~&gt; in C&lt;-i&gt; but not in C&lt;UserKnownHostsFile&gt; on every version.
+  526: 
+  527: =back
+  528: 
+  529: =head1 LICENCE
+  530: 
+  531: GPL v2 for personal single-user, single-computer use.  All other users must
+  532: apply in writing to the author.
+  533: 
+  534: =cut
+</pre>
+
+<script>
+function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+}
+
+(function() {
+    const saved = localStorage.getItem('theme');
+    if(saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+    }
+})();
+
+document.addEventListener("mousemove", function(e) {
+	document.querySelectorAll(".lcsaj-tip-text, .cpd-tip-text").forEach(function(tip) {
+		tip.style.left = (e.clientX + 12) + "px";
+		tip.style.top  = (e.clientY + 12) + "px";
+	});
+});
+</script>
+</body>
+</html>
+	

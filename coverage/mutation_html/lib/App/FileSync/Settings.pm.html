@@ -293,10 +293,10 @@ a.intra-dot:hover { color: #7700bb; }
 <div class="nav"><a href="../FileSync.pm.html">⬅ Previous</a> <a href="../../../../index.html">Index</a>
 </div><div class='summary'>
 <strong>Structural Coverage (Approximate)</strong><p>
-TER1 (Statement): 92.93%<br>
-TER2 (Branch): 72.03%<br>
-TER3 (LCSAJ): 88.9% (8/9)<br>
-Approximate LCSAJ segments: 119<br>
+TER1 (Statement): 98.82%<br>
+TER2 (Branch): 88.00%<br>
+TER3 (LCSAJ): 83.3% (5/6)<br>
+Approximate LCSAJ segments: 51<br>
 </div>
 
     <div class="legend">
@@ -341,53 +341,53 @@ Approximate LCSAJ segments: 119<br>
 	<pre>
 <span class="">    1: package App::FileSync::Settings;
 </span><span class="">    2: 
-</span><span class="">    3: use strict;
-</span><span class="">    4: use warnings;
-</span><span class="">    5: 
-</span><span class="">    6: # B::Hooks::EndOfScope 0.28 releases its XS scope hook with an access violation
-</span><span class="">    7: # (0xC0000005) on Perl 5.42 for Windows, after a command has done its work but
-</span><span class="">    8: # before the interpreter exits, so a run that synced everything correctly would
-</span><span class="">    9: # still exit nonzero.  Log::Abstraction reaches the hook through
-</span><span class="">   10: # namespace::clean, and the implementation has to be chosen before the module
-</span><span class="">   11: # loads, hence the BEGIN.  Its plain-Perl hook does not fault.
-</span><span class="">   12: sub wants_plain_end_of_scope_hook {
-</span><span class="">   13: 	my ($os, $version) = @_;
-</span><span class="">   14: 
-</span><span class="">   15: 	return 0 unless defined $os &amp;&amp; $os eq &#39;MSWin32&#39;;
-</span><span class="">   16: 	return 0 unless defined $version &amp;&amp; $version =~ /\A[0-9.]+\z/;
-</span><span class="">   17: 
-</span><span class="">   18: 	# 5.42.x only: later releases may not share the fault, and forcing an
-</span><span class="">   19: 	# implementation a later B::Hooks::EndOfScope no longer ships would refuse
-</span><span class="">   20: 	# to load.
-</span><span class="">   21: 	return ($version &gt;= 5.042 &amp;&amp; $version &lt; 5.043) ? 1 : 0;
-</span><span class="">   22: }
-</span><span class="">   23: 
-</span><span class="">   24: # Choose that hook for the running interpreter, unless it has already been
-</span><span class="">   25: # chosen.  Split from the predicate so the choice can be tested for a platform
-</span><span class="">   26: # this test run is not using.
-</span><span class="">   27: sub use_plain_end_of_scope_hook {
-</span><span class="">   28: 	my ($os, $version) = @_;
-</span><span class="">   29: 
-</span><span class="">   30: 	return 0 if defined $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION};
-</span><span class="">   31: 	return 0 unless wants_plain_end_of_scope_hook($os, $version);
-</span><span class="">   32: 
-</span><span class="">   33: 	$ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} = &#39;PP&#39;;
-</span><span class="">   34: 	return 1;
-</span><span class="">   35: }
-</span><span class="">   36: 
-</span><span class="">   37: BEGIN {
-</span><span class="">   38: 	use_plain_end_of_scope_hook($^O, $]);
-</span><span class="">   39: }
-</span><span class="">   40: 
-</span><span class="">   41: use Config::Abstraction;
-</span><span class="">   42: use File::Basename qw(dirname);
-</span><span class="">   43: use File::Path qw(make_path);
-</span><span class="">   44: use File::Spec;
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   45: use Log::Abstraction;
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">   46: use Object::Configure;
+</span><span class="">    3: # Process-wide settings (logging and SSH defaults) read through
+</span><span class="">    4: # Object::Configure, and the logger built from them.  The repos themselves stay
+</span><span class="">    5: # in ~/.filesync/config.json, which &quot;filesync init&quot; writes and the admin tool
+</span><span class="">    6: # edits; this module never touches that store.
+</span><span class="">    7: 
+</span><span class="">    8: # First, so the Windows end-of-scope hook is chosen before Log::Abstraction
+</span><span class="">    9: # (through namespace::clean) or Sub::Private loads B::Hooks::EndOfScope.
+</span><span class="">   10: use App::FileSync::Platform;
+</span><span class="">   11: 
+</span><span class="">   12: use strict;
+</span><span class="">   13: use warnings;
+</span><span class="">   14: use autodie qw(:all);
+</span><span class="">   15: 
+</span><span class="">   16: use Config::Abstraction;
+</span><span class="">   17: use File::Basename qw(dirname);
+</span><span class="">   18: use File::Spec;
+</span><span class="">   19: use List::Util qw(any first);
+</span><span class="">   20: use Log::Abstraction;
+</span><span class="">   21: use Object::Configure;
+</span><span class="">   22: use Readonly;
+</span><span class="">   23: use Sub::Private { mode =&gt; &#39;enforce&#39; };
+</span><span class="">   24: 
+</span><span class="">   25: use App::FileSync::Args qw(named);
+</span><span class="">   26: use App::FileSync::I18N qw(throw);
+</span><span class="">   27: use App::FileSync::IO qw(ensure_dir);
+</span><span class="">   28: 
+</span><span class="">   29: our $VERSION = &#39;0.001.1&#39;;
+</span><span class="">   30: 
+</span><span class="">   31: # The hook predicates moved to App::FileSync::Platform, which must load before
+</span><span class="">   32: # this module&#39;s dependencies; these names are kept for existing callers.
+</span><span class="">   33: {
+</span><span class="">   34: 	no warnings &#39;once&#39;;
+</span><span class="">   35: 	*wants_plain_end_of_scope_hook = \&amp;App::FileSync::Platform::wants_plain_end_of_scope_hook;
+</span><span class="">   36: 	*use_plain_end_of_scope_hook   = \&amp;App::FileSync::Platform::use_plain_end_of_scope_hook;
+</span><span class="">   37: }
+</span><span class="">   38: 
+</span><span class="">   39: # Package variables, not Readonly: they are documented and tests may localise them.
+</span><span class="">   40: our $DEFAULT_FORMAT  = &#39;%level%: %message%&#39;;
+</span><span class="">   41: our $DEFAULT_LEVEL   = &#39;warning&#39;;
+</span><span class="">   42: our $CONFIG_BASENAME = &#39;app-filesync.json&#39;;
+</span><span class="">   43: 
+</span><span class="">   44: # Defaults for every SSH repo.  A repo&#39;s own config still wins, so one machine
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   45: # can point at another identity without repeating the common settings.
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">   46: our $DEFAULT_SERVER_COMMAND = &#39;filesync-server&#39;;
 </span><span class="">   47: 
-</span><span class="">   48: # Process-wide settings live in Object::Configure; the repos themselves stay in
-</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">   49: # ~/.filesync/config.json, which &quot;filesync init&quot; writes and the admin tool edits.
+</span><span class="">   48: our @VALID_LEVELS = qw(
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">   49: 	trace debug info informational notice warn warning error err
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -409,8 +409,8 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </pre>
 								</div>
 							</li></ul></details>
-<span class="">   50: our $DEFAULT_FORMAT  = &#39;%level%: %message%&#39;;
-</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">   51: our $DEFAULT_LEVEL   = &#39;warning&#39;;
+<span class="">   50: 	crit critical fatal alert emerg emergency panic
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">   51: );
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -432,15 +432,15 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </pre>
 								</div>
 							</li></ul></details>
-<span class="">   52: our $CONFIG_BASENAME = &#39;app-filesync.json&#39;;
-</span><span class="">   53: 
-</span><span class="">   54: # Defaults for every SSH repo.  A repo&#39;s own config still wins, so one machine
-</span><span class="">   55: # can point at another identity without repeating the common settings.
-</span><span class="">   56: our $DEFAULT_SERVER_COMMAND = &#39;filesync-server&#39;;
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   57: 
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">   58: our @VALID_LEVELS = qw(
-</span><span class="">   59:     trace debug info informational notice warn warning error err
-</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">   60:     crit critical fatal alert emerg emergency panic
+<span class="">   52: 
+</span><span class="">   53: # The process-wide settings, in the order &quot;filesync settings&quot; prints them.
+</span><span class="">   54: our @SETTING_KEYS = qw(
+</span><span class="">   55: 	log_level log_format log_file
+</span><span class="">   56: 	ssh_identity ssh_known_hosts server_command
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   57: );
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">   58: 
+</span><span class="">   59: # How each repo-level SSH key corresponds to the process setting it falls back
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">   60: # to.  The names differ only because the repo config uses shorter keys.
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -462,221 +462,221 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </pre>
 								</div>
 							</li></ul></details>
-<span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   61: );
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">   62: 
-</span><span class="">   63: # The process-wide settings, in the order &quot;filesync settings&quot; prints them.
-</span><span class="">   64: our @SETTING_KEYS = qw(
-</span><span class="">   65:     log_level log_format log_file
-</span><span class="">   66:     ssh_identity ssh_known_hosts server_command
-</span><span class="">   67: );
-</span><span class="">   68: 
-</span><span class="">   69: # How each repo-level SSH key corresponds to the process setting it falls back
-</span><span class="">   70: # to.  The names differ only because the repo config uses shorter keys.
-</span><span class="">   71: our %REPO_SSH_KEYS = (
-</span><span class="">   72:     ssh_identity    =&gt; &#39;identity&#39;,
-</span><span class="">   73:     ssh_known_hosts =&gt; &#39;known_hosts&#39;,
-</span><span class="">   74:     server_command  =&gt; &#39;server_command&#39;,
-</span><span class="">   75: );
-</span><span class="">   76: our @REPO_SSH_SETTINGS = qw(ssh_identity ssh_known_hosts server_command);
-</span><span class="">   77: 
-</span><span class="">   78: sub _default_config_path {
-</span><span class="">   79:     my $path = $ENV{FILESYNC_SETTINGS};
-</span><span class="">   80:     return $path if defined $path &amp;&amp; length $path;
+<span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   61: our %REPO_SSH_KEYS = (
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">   62: 	ssh_identity    =&gt; &#39;identity&#39;,
+</span><span class="">   63: 	ssh_known_hosts =&gt; &#39;known_hosts&#39;,
+</span><span class="">   64: 	server_command  =&gt; &#39;server_command&#39;,
+</span><span class="">   65: );
+</span><span class="">   66: our @REPO_SSH_SETTINGS = qw(ssh_identity ssh_known_hosts server_command);
+</span><span class="">   67: 
+</span><span class="">   68: # Section names Object::Configure and Config::Abstraction use.
+</span><span class="">   69: Readonly my $CLASS_SECTION     =&gt; &#39;App__FileSync&#39;;
+</span><span class="">   70: Readonly my $UNIVERSAL_SECTION =&gt; &#39;UNIVERSAL&#39;;
+</span><span class="">   71: Readonly my $CONF_DIR          =&gt; &#39;.conf&#39;;
+</span><span class="">   72: 
+</span><span class="">   73: # Settings that only a repo records: there is no process-wide layer, and ssh&#39;s
+</span><span class="">   74: # own default applies when the repo leaves them out.
+</span><span class="">   75: Readonly my @REPO_ONLY =&gt; ([ port =&gt; &#39;22&#39; ], [ host_key_checking =&gt; &#39;yes&#39; ]);
+</span><span class="">   76: 
+</span><span class="">   77: # Provenance labels for &quot;filesync settings&quot;.
+</span><span class="">   78: Readonly my $LABEL_DEFAULT     =&gt; &#39;built-in default&#39;;
+</span><span class="">   79: Readonly my $LABEL_SSH_DEFAULT =&gt; &#39;ssh default&#39;;
+</span><span class="">   80: Readonly my $LABEL_UNKNOWN     =&gt; &#39;unknown source&#39;;
 </span><span class="">   81: 
-</span><span class="">   82:     my $home = $ENV{HOME};
-</span><span class="">   83:     $home = $ENV{USERPROFILE} if !defined $home || !length $home;
-</span><span class="">   84:     return undef unless defined $home &amp;&amp; length $home;
-</span><span class="">   85: 
-</span><span class="">   86:     return File::Spec-&gt;catfile($home, &#39;.conf&#39;, $CONFIG_BASENAME);
-</span><span class="">   87: }
-</span><span class="">   88: 
-</span><span class="">   89: sub config_file {
-</span><span class="">   90:     my ($given) = @_;
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   91: 
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">   92:     return $given if defined $given &amp;&amp; length $given;
-</span><span class="">   93: 
-</span><span class="">   94:     my $path = _default_config_path();
-</span><span class="">   95:     return undef unless defined $path &amp;&amp; length $path;
-</span><span class="">   96:     return -e $path ? $path : undef;
-</span><span class="">   97: }
+</span><span class="">   82: # Object::Configure&#39;s search order for a universal file beside the settings file.
+</span><span class="">   83: Readonly my @UNIVERSAL_EXTENSIONS =&gt; qw(.conf .yml .yaml .json);
+</span><span class="">   84: 
+</span><span class="">   85: # The arguments load, explain and logger share.
+</span><span class="">   86: my %FILE_ARGS = (
+</span><span class="">   87: 	config_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">   88: 	config_dirs =&gt; { type =&gt; &#39;arrayref&#39;, optional =&gt; 1 },
+</span><span class="">   89: );
+</span><span class="">   90: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">   91: =encoding utf8
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">   92: 
+</span><span class="">   93: =head1 NAME
+</span><span class="">   94: 
+</span><span class="">   95: App::FileSync::Settings - process-wide settings and logging for App::FileSync
+</span><span class="">   96: 
+</span><span class="">   97: =head1 SYNOPSIS
 </span><span class="">   98: 
-</span><span class="">   99: # Merge the settings file (if any), the UNIVERSAL section and the
-</span><span class="">  100: # App__FileSync__* environment variables over the built-in defaults.
-</span><span class="">  101: sub load {
-</span><span class="">  102:     my (%args) = @_;
+</span><span class="">   99: 	use App::FileSync::Settings;
+</span><span class="">  100: 
+</span><span class="">  101: 	my $logger = App::FileSync::Settings::logger(verbose =&gt; 1);
+</span><span class="">  102: 	$logger-&gt;error(&#39;...&#39;);
 </span><span class="">  103: 
-</span><span class="">  104:     my $config_file = exists $args{config_file}
-</span><span class="">  105:         ? config_file($args{config_file})
-</span><span class="">  106:         : config_file();
-</span><span class="">  107: 
-</span><span class="">  108:     my %params = (
-</span><span class="">  109:         log_level       =&gt; $DEFAULT_LEVEL,
-</span><span class="">  110:         log_format      =&gt; $DEFAULT_FORMAT,
-</span><span class="">  111:         log_file        =&gt; &#39;&#39;,
-</span><span class="">  112:         ssh_identity    =&gt; &#39;&#39;,
-</span><span class="">  113:         ssh_known_hosts =&gt; &#39;&#39;,
-</span><span class="">  114:         server_command  =&gt; $DEFAULT_SERVER_COMMAND,
-</span><span class="">  115:         # We build the logger ourselves; this keeps Object::Configure from
-</span><span class="">  116:         # constructing its default Log::Log4perl backend as a side effect.
-</span><span class="">  117:         logger     =&gt; [],
-</span><span class="">  118:     );
-</span><span class="">  119: 
-</span><span class="">  120:     $params{config_file} = $config_file if defined $config_file &amp;&amp; length $config_file;
-</span><span class="">  121:     $params{config_dirs} = $args{config_dirs} if ref($args{config_dirs}) eq &#39;ARRAY&#39;;
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  122: 
-</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  123:     my $settings = Object::Configure::configure(&#39;App::FileSync&#39;, \%params);
-</span><span class="">  124:     delete $settings-&gt;{logger};
-</span><span class="">  125: 
-</span><span class="">  126:     return $settings;
-</span><span class="">  127: }
-</span><span class="">  128: 
-</span><span class="">  129: sub _defaults {
-</span><span class="">  130:     return {
-</span><span class="">  131:         log_level       =&gt; $DEFAULT_LEVEL,
-</span><span class="">  132:         log_format      =&gt; $DEFAULT_FORMAT,
-</span><span class="">  133:         log_file        =&gt; &#39;&#39;,
-</span><span class="">  134:         ssh_identity    =&gt; &#39;&#39;,
-</span><span class="">  135:         ssh_known_hosts =&gt; &#39;&#39;,
-</span><span class="">  136:         server_command  =&gt; $DEFAULT_SERVER_COMMAND,
-</span><span class="">  137:     };
-</span><span class="">  138: }
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  139: 
-</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  140: # Where each effective setting came from, for &quot;filesync settings&quot;.  The values
-</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  141: # are whatever load() returns; the provenance is reconstructed from the same
-</span><span class="">  142: # layers Object::Configure merges: the class section of the settings file, the
-</span><span class="">  143: # UNIVERSAL section beside it, and App__FileSync__* environment variables.
-</span><span class="">  144: sub explain {
-</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">145 → 157 → 164</span></span>  145:     my (%args) = @_;
-</span><span class="">  146: 
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  147:     my $config_file = exists $args{config_file}
-</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  148:         ? config_file($args{config_file})
-</span><span class="">  149:         : config_file();
-</span><span class="">  150: 
-</span><span class="">  151:     my $settings = load(%args);
-</span><span class="">  152:     my $defaults = _defaults();
-</span><span class="">  153: 
-</span><span class="">  154:     my $class_explanation = {};
-</span><span class="">  155:     my $universal_file;
-</span><span class="">  156:     my $universal_explanation = {};
-</span><span class="">  157:     if (defined $config_file &amp;&amp; length $config_file) {
-</span><span class="">  158:         $class_explanation = _explanation($config_file, &#39;App__FileSync&#39;);
-</span><span class="">  159:         $universal_file = _universal_file($config_file);
-</span><span class="">  160:         $universal_explanation = _explanation($universal_file, &#39;UNIVERSAL&#39;)
-</span><span class="">  161:             if defined $universal_file;
-</span><span class="">  162:     }
+</span><span class="">  104: 	my $settings = App::FileSync::Settings::load();
+</span><span class="">  105: 	my $level = $settings-&gt;{log_level};
+</span><span class="">  106: 
+</span><span class="">  107: 	my $report = App::FileSync::Settings::explain();
+</span><span class="">  108: 	printf &quot;%s = %s (%s)\n&quot;, $_-&gt;{key}, $_-&gt;{value}, $_-&gt;{label}
+</span><span class="">  109: 		for @{ $report-&gt;{settings} };
+</span><span class="">  110: 
+</span><span class="">  111: =head1 DESCRIPTION
+</span><span class="">  112: 
+</span><span class="">  113: Settings that apply to the process rather than to one repo - the log level,
+</span><span class="">  114: format and destination, plus the SSH identity, known-hosts file and remote
+</span><span class="">  115: server command - are read through L&lt;Object::Configure&gt;.  The repos themselves
+</span><span class="">  116: remain in F&lt;~/.filesync/config.json&gt;, which C&lt;filesync init&gt; writes; this
+</span><span class="">  117: module does not replace that store.
+</span><span class="">  118: 
+</span><span class="">  119: The settings file is F&lt;~/.conf/app-filesync.json&gt; when it exists, or the path in
+</span><span class="">  120: C&lt;FILESYNC_SETTINGS&gt;.  The section key is C&lt;App__FileSync&gt;, and a C&lt;UNIVERSAL&gt;
+</span><span class="">  121: section in the same directory applies to every class that uses
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  122: Object::Configure.  Environment variables named C&lt;App__FileSync__I&lt;key&gt;&gt;
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  123: override the file:
+</span><span class="">  124: 
+</span><span class="">  125: 	# ~/.conf/app-filesync.json
+</span><span class="">  126: 	{ &quot;App__FileSync&quot;: { &quot;log_level&quot;: &quot;debug&quot;, &quot;log_format&quot;: &quot;%level%: %message%&quot; } }
+</span><span class="">  127: 
+</span><span class="">  128: 	# or
+</span><span class="">  129: 	export App__FileSync__log_level=debug
+</span><span class="">  130: 
+</span><span class="">  131: C&lt;log_file&gt; sends the log to a file instead of standard error; leading
+</span><span class="">  132: directories are created.  C&lt;log_format&gt; is a L&lt;Log::Abstraction&gt; format string.
+</span><span class="">  133: 
+</span><span class="">  134: C&lt;ssh_identity&gt;, C&lt;ssh_known_hosts&gt; and C&lt;server_command&gt; are the defaults for
+</span><span class="">  135: every SSH repo, so a per-repo C&lt;identity&gt;, C&lt;known_hosts&gt; or C&lt;server_command&gt;
+</span><span class="">  136: (written by C&lt;filesync init --identity&gt; and friends) only has to be set when it
+</span><span class="">  137: differs.  C&lt;server_command&gt; defaults to C&lt;filesync-server&gt;:
+</span><span class="">  138: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  139: 	{ &quot;App__FileSync&quot;: {
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  140: 		&quot;ssh_identity&quot;    : &quot;~/.ssh/filesync_ed25519&quot;,
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  141: 		&quot;ssh_known_hosts&quot; : &quot;~/.ssh/filesync_known_hosts&quot;,
+</span><span class="">  142: 		&quot;server_command&quot;  : &quot;/usr/local/bin/filesync-server&quot;
+</span><span class="">  143: 	} }
+</span><span class="">  144: 
+</span><span class="">  145: Command output (sync summaries, plans, C&lt;--json&gt;) is written to standard output
+</span><span class="">  146: by the commands themselves; the logger carries diagnostics on standard error,
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  147: so a cron job can separate the two.  C&lt;--verbose&gt; raises the level to C&lt;debug&gt;
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  148: and C&lt;--quiet&gt; lowers it to C&lt;error&gt; for that run, overriding the file.
+</span><span class="">  149: 
+</span><span class="">  150: C&lt;wants_plain_end_of_scope_hook&gt; and C&lt;use_plain_end_of_scope_hook&gt; are aliases
+</span><span class="">  151: of the functions in L&lt;App::FileSync::Platform&gt;, kept for existing callers.
+</span><span class="">  152: 
+</span><span class="">  153: =head1 FUNCTIONS
+</span><span class="">  154: 
+</span><span class="">  155: =head2 config_file
+</span><span class="">  156: 
+</span><span class="">  157: Purpose: the settings file that would be used.
+</span><span class="">  158: 
+</span><span class="">  159: Args: an optional explicit path.
+</span><span class="">  160: 
+</span><span class="">  161: Returns: the explicit path when one is given; otherwise C&lt;FILESYNC_SETTINGS&gt; or
+</span><span class="">  162: F&lt;~/.conf/app-filesync.json&gt; if that file exists; otherwise C&lt;undef&gt;.
 </span><span class="">  163: 
-</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">164 → 165 → 212</span></span>  164:     my @rows;
-</span><span class="">  165:     for my $key (@SETTING_KEYS) {
-</span><span class="">  166:         my %row = (
-</span><span class="">  167:             key    =&gt; $key,
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  168:             value  =&gt; $settings-&gt;{$key},
-</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  169:             source =&gt; &#39;default&#39;,
-</span><span class="">  170:             label  =&gt; &#39;built-in default&#39;,
-</span><span class="">  171:         );
-</span><span class="">  172:         my $winner_value = $defaults-&gt;{$key};
-</span><span class="">  173: 
-</span><span class="">  174:         if (defined $config_file &amp;&amp; length $config_file) {
-</span><span class="">  175:             if (my $entry = _pick($universal_explanation, &#39;UNIVERSAL&#39;, $key)) {
-</span><span class="">  176:                 $row{source} = $entry-&gt;{type};
-</span><span class="">  177:                 $row{label}  = $entry-&gt;{type} eq &#39;env&#39;
-</span><span class="">  178:                     ? $entry-&gt;{label}
-</span><span class="">  179:                     : &quot;$universal_file [UNIVERSAL]&quot;;
-</span><span class="">  180:                 $winner_value = $entry-&gt;{value};
-</span><span class="">  181:             }
-</span><span class="">  182:             if (my $entry = _pick($class_explanation, &#39;App__FileSync&#39;, $key)) {
-</span><span class="">  183:                 $row{source} = $entry-&gt;{type};
-</span><span class="">  184:                 $row{label}  = $entry-&gt;{type} eq &#39;env&#39;
-</span><span class="">  185:                     ? $entry-&gt;{label}
-</span><span class="">  186:                     : &quot;$config_file [App__FileSync]&quot;;
-</span><span class="">  187:                 $winner_value = $entry-&gt;{value};
-</span><span class="">  188:             }
-</span><span class="">  189:         } else {
-</span><span class="">  190:             # No settings file: Object::Configure falls back to environment
-</span><span class="">  191:             # variables only, universal ones first and class ones last.
-</span><span class="">  192:             for my $prefix (qw(UNIVERSAL App__FileSync)) {
-</span><span class="">  193:                 my $name = _env_key(&quot;${prefix}__$key&quot;);
-</span><span class="">  194:                 next unless defined $name;
-</span><span class="">  195:                 $row{source}  = &#39;env&#39;;
-</span><span class="">  196:                 $row{label}   = $name;
-</span><span class="">  197:                 $winner_value = $ENV{$name};
-</span><span class="">  198:             }
-</span><span class="">  199:         }
-</span><span class="">  200: 
-</span><span class="">  201:         # A value that no modelled layer accounts for came from somewhere else
-</span><span class="">  202:         # (a &quot;global&quot; section, say); say so instead of claiming a default.
-</span><span class="">  203:         if (_differs($settings-&gt;{$key}, $winner_value)) {
-</span><span class="">  204:             $row{source} = &#39;merged&#39;;
-</span><span class="">  205:             $row{label}  = join(&#39; + &#39;, _labels_for($key, $universal_explanation, $class_explanation))
-</span><span class="">  206:                 || &#39;unknown source&#39;;
-</span><span class="">  207:         }
+</span><span class="">  164: Side Effects: none.
+</span><span class="">  165: 
+</span><span class="">  166: Usage:
+</span><span class="">  167: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  168: 	my $file = App::FileSync::Settings::config_file();
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  169: 
+</span><span class="">  170: =head3 EXAMPLE
+</span><span class="">  171: 
+</span><span class="">  172: 	my $file = App::FileSync::Settings::config_file() // &#39;none&#39;;
+</span><span class="">  173: 	print &quot;settings: $file\n&quot;;
+</span><span class="">  174: 
+</span><span class="">  175: =head3 API SPECIFICATION
+</span><span class="">  176: 
+</span><span class="">  177: =head4 INPUT
+</span><span class="">  178: 
+</span><span class="">  179: 	[ { name =&gt; &#39;given&#39;, type =&gt; &#39;string&#39;, optional =&gt; 1 } ]
+</span><span class="">  180: 
+</span><span class="">  181: =head4 OUTPUT
+</span><span class="">  182: 
+</span><span class="">  183: 	{ type =&gt; &#39;string&#39;, optional =&gt; 1 }
+</span><span class="">  184: 
+</span><span class="">  185: =head3 MESSAGES
+</span><span class="">  186: 
+</span><span class="">  187: None.
+</span><span class="">  188: 
+</span><span class="">  189: =head3 FORMAL SPECIFICATION
+</span><span class="">  190: 
+</span><span class="">  191: 	config_file(g) = g                     if g &acirc;&#137;&nbsp; &quot;&quot;
+</span><span class="">  192: 	config_file(g) = d                     if d = default_path &acirc;&#136;&sect; d &acirc;&#136;&#136; dom FS
+</span><span class="">  193: 	config_file(g) = &acirc;&#138;&yen;                     otherwise
+</span><span class="">  194: 
+</span><span class="">  195: =cut
+</span><span class="">  196: 
+</span><span class="">  197: sub config_file {
+</span><span class="">  198: 	my ($given) = @_;
+</span><span class="">  199: 
+</span><span class="">  200: 	return $given if defined $given &amp;&amp; length $given;
+</span><span class="">  201: 
+</span><span class="">  202: 	# A stale FILESYNC_SETTINGS must not fail every command: it is only a default.
+</span><span class="">  203: 	my $path = _default_config_path();
+</span><span class="">  204: 	return (defined $path &amp;&amp; -e $path) ? $path : undef;
+</span><span class="">  205: }
+</span><span class="">  206: 
+</span><span class="">  207: =head2 load
 </span><span class="">  208: 
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  209:         push @rows, \%row;
-</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  210:     }
-</span><span class="">  211: 
-</span><span class="">  212:     return {
-</span><span class="">  213:         settings_file =&gt; $config_file,
-</span><span class="">  214:         settings      =&gt; \@rows,
-</span><span class="">  215:     };
-</span><span class="">  216: }
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  209: Purpose: the merged process settings.
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  210: 
+</span><span class="">  211: Args: optional C&lt;config_file&gt; and C&lt;config_dirs&gt; (as for
+</span><span class="">  212: L&lt;Object::Configure/configure&gt;).
+</span><span class="">  213: 
+</span><span class="">  214: Returns: a hashref with every key in C&lt;@SETTING_KEYS&gt;, built-in defaults
+</span><span class="">  215: overlaid by the settings file, the C&lt;UNIVERSAL&gt; section and C&lt;App__FileSync__*&gt;
+</span><span class="">  216: environment variables.
 </span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  217: 
-</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  218: # How the SSH settings resolve for every repo in a client config, for
-</span><span class="">  219: # &quot;filesync settings&quot;.  Each row reports the value the transport will use and
-</span><span class="">  220: # whether the repo, the process settings or ssh&#39;s own default supplied it.
-</span><span class="">  221: sub explain_repos {
-</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">222 → 231 → 284</span></span>  222:     my (%args) = @_;
-</span><span class="">  223: 
-</span><span class="">  224:     my $config      = ref($args{config}) eq &#39;HASH&#39; ? $args{config} : {};
-</span><span class="">  225:     my $report      = ref($args{report}) eq &#39;HASH&#39; ? $args{report} : {};
-</span><span class="">  226:     my $config_file = $args{config_file};
-</span><span class="">  227: 
-</span><span class="">  228:     my %process = map { $_-&gt;{key} =&gt; $_ } @{ $report-&gt;{settings} || [] };
-</span><span class="">  229: 
-</span><span class="">  230:     my @repos;
-</span><span class="">  231:     for my $name (sort keys %{ $config-&gt;{repos} || {} }) {
-</span><span class="">  232:         my $repo = $config-&gt;{repos}{$name};
-</span><span class="">  233:         $repo = {} unless ref($repo) eq &#39;HASH&#39;;
-</span><span class="">  234: 
-</span><span class="">  235:         my $transport = $repo-&gt;{transport} || &#39;ssh&#39;;
-</span><span class="">  236:         my $entry = {
-</span><span class="">  237:             repo      =&gt; $name,
-</span><span class="">  238:             transport =&gt; $transport,
-</span><span class="">  239:         };
-</span><span class="">  240:         $entry-&gt;{server} = $repo-&gt;{server}
-</span><span class="">  241:             if defined $repo-&gt;{server} &amp;&amp; length $repo-&gt;{server};
-</span><span class="">  242: 
-</span><span class="">  243:         # The local transport never runs ssh, so there is nothing to resolve.
-</span><span class="">  244:         if ($transport eq &#39;ssh&#39;) {
-</span><span class="">  245:             my @rows;
-</span><span class="">  246:             for my $key (@REPO_SSH_SETTINGS) {
-</span><span class="">  247:                 my $value = $repo-&gt;{ $REPO_SSH_KEYS{$key} };
-</span><span class="">  248:                 my %row = (key =&gt; $key, value =&gt; &#39;&#39;);
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  249: 
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  250:                 my $setting = $process{$key};
-</span><span class="">  251: 
-</span><span class="">  252:                 if (defined $value &amp;&amp; length $value) {
-</span><span class="">  253:                     $row{value}  = $value;
-</span><span class="">  254:                     $row{source} = &#39;repo&#39;;
-</span><span class="">  255:                     $row{label}  = defined $config_file &amp;&amp; length $config_file
-</span><span class="">  256:                         ? &quot;$config_file [$name]&quot;
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  257:                         : &quot;[$name]&quot;;
-</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  258:                 } elsif ($setting &amp;&amp; defined $setting-&gt;{value} &amp;&amp; length $setting-&gt;{value}) {
-</span><span class="">  259:                     $row{value}  = $setting-&gt;{value};
-</span><span class="">  260:                     $row{source} = &#39;process&#39;;
-</span><span class="">  261:                     $row{label}  = $setting-&gt;{label};
-</span><span class="">  262:                 } else {
-</span><span class="">  263:                     $row{source} = &#39;default&#39;;
-</span><span class="">  264:                     $row{label}  = &#39;ssh default&#39;;
-</span><span class="">  265:                 }
-</span><span class="">  266: 
-</span><span class="">  267:                 push @rows, \%row;
-</span><span class="">  268:             }
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  269: 
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  270:             # These two are recorded per repo only: there is no process-wide
-</span><span class="">  271:             # default to fall back to, so the marker is always set.
-</span><span class="">  272:             push @rows,
-</span><span class="">  273:                 _repo_only_row($repo, $name, $config_file, &#39;port&#39;, &#39;22&#39;),
-</span><span class="">  274:                 _repo_only_row($repo, $name, $config_file, &#39;host_key_checking&#39;, &#39;yes&#39;);
-</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  275: 
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  218: Side Effects: reads the settings file.  Dies (through Object::Configure) when
+</span><span class="">  219: an explicit file does not exist.
+</span><span class="">  220: 
+</span><span class="">  221: Usage:
+</span><span class="">  222: 
+</span><span class="">  223: 	my $settings = App::FileSync::Settings::load(config_file =&gt; $path);
+</span><span class="">  224: 
+</span><span class="">  225: =head3 EXAMPLE
+</span><span class="">  226: 
+</span><span class="">  227: 	print App::FileSync::Settings::load()-&gt;{log_level}, &quot;\n&quot;;	# warning
+</span><span class="">  228: 
+</span><span class="">  229: =head3 API SPECIFICATION
+</span><span class="">  230: 
+</span><span class="">  231: =head4 INPUT
+</span><span class="">  232: 
+</span><span class="">  233: 	{
+</span><span class="">  234: 		config_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  235: 		config_dirs =&gt; { type =&gt; &#39;arrayref&#39;, optional =&gt; 1 },
+</span><span class="">  236: 	}
+</span><span class="">  237: 
+</span><span class="">  238: =head4 OUTPUT
+</span><span class="">  239: 
+</span><span class="">  240: 	{ type =&gt; &#39;hashref&#39; }
+</span><span class="">  241: 
+</span><span class="">  242: =head3 MESSAGES
+</span><span class="">  243: 
+</span><span class="">  244: 	Key            Meaning                         Resolution
+</span><span class="">  245: 	args.invalid   an argument has the wrong type  fix the call
+</span><span class="">  246: 
+</span><span class="">  247: Object::Configure&#39;s own error for a missing explicit file is passed through.
+</span><span class="">  248: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  249: =head3 FORMAL SPECIFICATION
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  250: 
+</span><span class="">  251: 	load(a) = defaults &acirc;&#138;&#149; file(config_file(a)) &acirc;&#138;&#149; universal &acirc;&#138;&#149; env
+</span><span class="">  252: 
+</span><span class="">  253: =cut
+</span><span class="">  254: 
+</span><span class="">  255: sub load {
+</span><span class="">  256: 	my $args = named(\@_, {%FILE_ARGS}, &#39;Settings::load&#39;);
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  257: 
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  258: 	my $config_file = config_file($args-&gt;{config_file});
+</span><span class="">  259: 
+</span><span class="">  260: 	my %params = (
+</span><span class="">  261: 		%{ _defaults() },
+</span><span class="">  262: 		# We build the logger ourselves; this keeps Object::Configure from
+</span><span class="">  263: 		# constructing its default Log::Log4perl backend as a side effect.
+</span><span class="">  264: 		logger =&gt; [],
+</span><span class="">  265: 	);
+</span><span class="">  266: 	$params{config_file} = $config_file if defined $config_file;
+</span><span class="">  267: 	$params{config_dirs} = $args-&gt;{config_dirs} if $args-&gt;{config_dirs};
+</span><span class="">  268: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  269: 	my $settings = Object::Configure::configure(&#39;App::FileSync&#39;, \%params);
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  270: 	delete $settings-&gt;{logger};
+</span><span class="">  271: 
+</span><span class="">  272: 	return $settings;
+</span><span class="">  273: }
+</span><span class="">  274: 
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  275: =head2 explain
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -698,7 +698,7 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </pre>
 								</div>
 							</li></ul></details>
-<span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  276:             $entry-&gt;{ssh} = \@rows;
+<span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  276: 
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -720,38 +720,38 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </pre>
 								</div>
 							</li></ul></details>
-<span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  277:         } else {
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  278:             $entry-&gt;{ssh} = undef;
-</span><span class="">  279:         }
+<span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  277: Purpose: where each effective setting came from, for C&lt;filesync settings&gt;.
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  278: 
+</span><span class="">  279: Args: as L&lt;/load&gt;.
 </span><span class="">  280: 
-</span><span class="">  281:         push @repos, $entry;
-</span><span class="">  282:     }
-</span><span class="">  283: 
-</span><span class="">  284:     return \@repos;
-</span><span class="">  285: }
+</span><span class="">  281: Returns: C&lt;{ settings_file =E&lt;gt&gt; $path_or_undef, settings =E&lt;gt&gt; \@rows }&gt;, one
+</span><span class="">  282: row per key in C&lt;@SETTING_KEYS&gt;.  Each row has the effective C&lt;value&gt;, a
+</span><span class="">  283: C&lt;source&gt; of C&lt;default&gt;, C&lt;file&gt;, C&lt;env&gt; or C&lt;merged&gt;, and a human-readable
+</span><span class="">  284: C&lt;label&gt; naming the file section, environment variable or built-in default
+</span><span class="">  285: that supplied it.
 </span><span class="">  286: 
-</span><span class="">  287: sub _repo_only_row {
-</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">288 → 292 → 304</span></span>  288:     my ($repo, $name, $config_file, $key, $default) = @_;
-</span><span class="">  289: 
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  290:     my %row = (key =&gt; $key, repo_only =&gt; 1, value =&gt; $default);
+</span><span class="">  287: The values are whatever L&lt;/load&gt; returns; the provenance is reconstructed from
+</span><span class="">  288: the same layers Object::Configure merges.  A value no modelled layer accounts
+</span><span class="">  289: for (a C&lt;global&gt; section, say) is reported as C&lt;merged&gt; rather than claimed as
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  290: a default.
 </span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  291: 
-</span><span class="">  292:     if (defined $repo-&gt;{$key} &amp;&amp; length $repo-&gt;{$key}) {
-</span><span class="">  293:         $row{value}  = $repo-&gt;{$key};
-</span><span class="">  294:         $row{source} = &#39;repo&#39;;
-</span><span class="">  295:         $row{label}  = defined $config_file &amp;&amp; length $config_file
-</span><span class="">  296:             ? &quot;$config_file [$name]&quot;
-</span><span class="">  297:             : &quot;[$name]&quot;;
-</span><span class="">  298:     } else {
-</span><span class="">  299:         # The transport omits -p and StrictHostKeyChecking defaults to yes.
-</span><span class="">  300:         $row{source} = &#39;default&#39;;
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  301:         $row{label}  = &#39;ssh default&#39;;
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  302:     }
+</span><span class="">  292: Side Effects: reads the settings file and any universal file beside it.
+</span><span class="">  293: 
+</span><span class="">  294: Usage:
+</span><span class="">  295: 
+</span><span class="">  296: 	my $report = App::FileSync::Settings::explain();
+</span><span class="">  297: 
+</span><span class="">  298: =head3 EXAMPLE
+</span><span class="">  299: 
+</span><span class="">  300: 	for my $row (@{ App::FileSync::Settings::explain()-&gt;{settings} }) {
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  301: 		printf &quot;%-16s %-20s %s\n&quot;, $row-&gt;{key}, $row-&gt;{value}, $row-&gt;{label};
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  302: 	}
 </span><span class="">  303: 
-</span><span class="">  304:     return \%row;
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  305: }
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  306: 
-</span><span class="">  307: sub _differs {
-</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  308:     my ($left, $right) = @_;
+</span><span class="">  304: =head3 API SPECIFICATION
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  305: 
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  306: =head4 INPUT
+</span><span class="">  307: 
+</span><span class="survived-2 tooltip" data-tooltip="Boolean logic mutation survived. Add tests covering both true and false paths. Return value mutation survived. Add tests asserting exact return values.">  308: 	{
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -773,46 +773,46 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </pre>
 								</div>
 							</li></ul></details>
-<span class="">  309: 
-</span><span class="">  310:     return 0 if !defined $left &amp;&amp; !defined $right;
-</span><span class="">  311:     return 1 if !defined $left || !defined $right;
-</span><span class="">  312:     return &quot;$left&quot; ne &quot;$right&quot; ? 1 : 0;
-</span><span class="">  313: }
+<span class="">  309: 		config_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  310: 		config_dirs =&gt; { type =&gt; &#39;arrayref&#39;, optional =&gt; 1 },
+</span><span class="">  311: 	}
+</span><span class="">  312: 
+</span><span class="">  313: =head4 OUTPUT
 </span><span class="">  314: 
-</span><span class="">  315: sub _explanation {
-</span><span class="">  316:     my ($file, $section) = @_;
-</span><span class="">  317: 
-</span><span class="">  318:     my $reader = Config::Abstraction-&gt;new(
-</span><span class="">  319:         config_file =&gt; $file,
-</span><span class="">  320:         env_prefix  =&gt; &quot;${section}__&quot;,
-</span><span class="">  321:     );
-</span><span class="">  322:     return {} unless $reader;
-</span><span class="">  323: 
-</span><span class="">  324:     my $explanation = $reader-&gt;explain_sources();
-</span><span class="">  325:     return ref($explanation) eq &#39;HASH&#39; ? $explanation : {};
-</span><span class="">  326: }
-</span><span class="">  327: 
-</span><span class="">  328: # The name the environment actually uses, matched the way Config::Abstraction
-</span><span class="">  329: # matches an env_prefix: case-insensitively.  Windows reports environment
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  330: # names upper-cased, so building one from &quot;prefix__key&quot; is not enough; the
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  331: # report would then name a variable that does not exist in the same spelling
-</span><span class="">  332: # as the one that supplied the value.
-</span><span class="">  333: sub _env_key {
-</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">334 → 339 → 343</span></span>  334:     my ($name) = @_;
+</span><span class="">  315: 	{
+</span><span class="">  316: 		type =&gt; &#39;hashref&#39;,
+</span><span class="">  317: 		schema =&gt; {
+</span><span class="">  318: 			settings_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  319: 			settings      =&gt; { type =&gt; &#39;arrayref&#39; },
+</span><span class="">  320: 		},
+</span><span class="">  321: 	}
+</span><span class="">  322: 
+</span><span class="">  323: =head3 MESSAGES
+</span><span class="">  324: 
+</span><span class="">  325: As L&lt;/load&gt;.
+</span><span class="">  326: 
+</span><span class="">  327: =head3 FORMAL SPECIFICATION
+</span><span class="">  328: 
+</span><span class="">  329: 	&acirc;&#136;&#128; k : SETTING_KEYS &acirc;&#128;&cent;
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  330: 		row(k).value = load()(k)
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  331: 		row(k).source = last layer &acirc;&#136;&#136; &acirc;&#159;&uml;default, universal, class&acirc;&#159;&copy; that sets k,
+</span><span class="">  332: 		                or merged if that layer&#39;s value &acirc;&#137;&nbsp; row(k).value
+</span><span class="">  333: 
+</span><span class="">  334: =head3 PSEUDOCODE
 </span><span class="">  335: 
-</span><span class="">  336:     return $name if grep { $_ eq $name } keys %ENV;
-</span><span class="">  337: 
-</span><span class="">  338:     my $wanted = lc $name;
-</span><span class="">  339:     for my $key (keys %ENV) {
-</span><span class="">  340:         return $key if lc $key eq $wanted;
-</span><span class="">  341:     }
-</span><span class="">  342: 
-</span><span class="">  343:     return undef;
-</span><span class="">  344: }
+</span><span class="">  336: 	load the settings
+</span><span class="">  337: 	explain the class and universal sections of the settings file, if any
+</span><span class="">  338: 	for each key:
+</span><span class="">  339: 		start from the built-in default
+</span><span class="">  340: 		let the universal section, then the class section, override it
+</span><span class="">  341: 		without a file, let UNIVERSAL__key then App__FileSync__key override it
+</span><span class="">  342: 		if the loaded value differs from the winner, call it merged
+</span><span class="">  343: 
+</span><span class="">  344: =cut
 </span><span class="">  345: 
-</span><span class="">  346: # The last source that set a key in a section wins, which is how
-</span><span class="">  347: # Config::Abstraction layers a file under its environment variables.
-</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  348: sub _pick {
+</span><span class="">  346: sub explain {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">347 → 355 → 362</span></span>  347: 	my $args = named(\@_, {%FILE_ARGS}, &#39;Settings::explain&#39;);
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  348: 
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -834,29 +834,29 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </pre>
 								</div>
 							</li></ul></details>
-<span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">349 → 351 → 365</span></span>  349:     my ($explanation, $section, $key) = @_;
-</span><span class="">  350: 
-</span><span class="">  351:     for my $full (&quot;$section.$key&quot;, &quot;global.$key&quot;, $key) {
-</span><span class="">  352:         my $entry = $explanation-&gt;{$full};
-</span><span class="">  353:         next unless ref($entry) eq &#39;HASH&#39; &amp;&amp; ref($entry-&gt;{sources}) eq &#39;ARRAY&#39;;
-</span><span class="">  354:         my @sources = @{ $entry-&gt;{sources} };
-</span><span class="">  355:         next unless @sources;
-</span><span class="">  356: 
-</span><span class="">  357:         my $winner = $sources[-1];
-</span><span class="">  358:         return {
-</span><span class="">  359:             type  =&gt; $winner-&gt;{type},
-</span><span class="">  360:             label =&gt; $winner-&gt;{label},
-</span><span class="">  361:             value =&gt; $winner-&gt;{value},
-</span><span class="">  362:         };
-</span><span class="">  363:     }
-</span><span class="">  364: 
-</span><span class="">  365:     return undef;
-</span><span class="">  366: }
-</span><span class="">  367: 
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  368: sub _labels_for {
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot-uncovered">●</span><span class="lcsaj-tip-text">[NOT COVERED] 369 → 372 → 383</span></span>  369:     my ($key, @explanations) = @_;
-</span><span class="">  370: 
-</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  371:     my (%seen, @labels);
+<span class="">  349: 	my $config_file = config_file($args-&gt;{config_file});
+</span><span class="">  350: 	my $settings = load(%{$args});
+</span><span class="">  351: 	my $defaults = _defaults();
+</span><span class="">  352: 
+</span><span class="">  353: 	# Each layer is [ section explanation, label for a file entry ], lowest first.
+</span><span class="">  354: 	my @layers;
+</span><span class="">  355: 	if (defined $config_file) {
+</span><span class="">  356: 		my $universal = _universal_file($config_file);
+</span><span class="">  357: 		push @layers, [ _explanation($universal, $UNIVERSAL_SECTION), $UNIVERSAL_SECTION, &quot;$universal [$UNIVERSAL_SECTION]&quot; ]
+</span><span class="">  358: 			if defined $universal;
+</span><span class="">  359: 		push @layers, [ _explanation($config_file, $CLASS_SECTION), $CLASS_SECTION, &quot;$config_file [$CLASS_SECTION]&quot; ];
+</span><span class="">  360: 	}
+</span><span class="">  361: 
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">362 → 363 → 393</span></span>  362: 	my @rows;
+</span><span class="">  363: 	for my $key (@SETTING_KEYS) {
+</span><span class="">  364: 		my %row = (key =&gt; $key, value =&gt; $settings-&gt;{$key}, source =&gt; &#39;default&#39;, label =&gt; $LABEL_DEFAULT);
+</span><span class="">  365: 		my $winner = $defaults-&gt;{$key};
+</span><span class="">  366: 
+</span><span class="">  367: 		if (defined $config_file) {
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  368: 			for my $layer (@layers) {
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  369: 				my ($explanation, $section, $file_label) = @{$layer};
+</span><span class="">  370: 				my $entry = _pick($explanation, $section, $key) or next;
+</span><span class="survived-2 tooltip" data-tooltip="Return value mutation survived. Add tests asserting exact return values. Boolean logic mutation survived. Add tests covering both true and false paths.">  371: 				$row{source} = $entry-&gt;{type};
 </span>
 					<details class="mutant-details">
 					<summary>Mutants (Total: 2, Killed: 0, Survived: 2)</summary>
@@ -878,196 +878,429 @@ is( func(INPUT), EXPECTED, &#39;Verify correct return value&#39; );
 </pre>
 								</div>
 							</li></ul></details>
-<span class="">  372:     for my $explanation (@explanations) {
-</span><span class="">  373:         for my $full (sort keys %{$explanation}) {
-</span><span class="">  374:             next unless $full eq $key || $full =~ /\.\Q$key\E\z/;
-</span><span class="">  375:             for my $source (@{ $explanation-&gt;{$full}{sources} || [] }) {
-</span><span class="">  376:                 my $label = $source-&gt;{label};
-</span><span class="">  377:                 next unless defined $label &amp;&amp; length $label;
-</span><span class="">  378:                 push @labels, $label unless $seen{$label}++;
-</span><span class="">  379:             }
-</span><span class="">  380:         }
-</span><span class="">  381:     }
-</span><span class="">  382: 
-</span><span class="">  383:     return @labels;
-</span><span class="">  384: }
-</span><span class="">  385: 
-</span><span class="">  386: # Object::Configure looks for universal&lt;ext&gt; beside the settings file, then the
-</span><span class="">  387: # other config-file extensions; mirror its search so the report matches.
-</span><span class="">  388: sub _universal_file {
-</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">389 → 396 → 406</span></span>  389:     my ($config_file) = @_;
-</span><span class="">  390: 
-</span><span class="">  391:     my ($volume, $directory) = File::Spec-&gt;splitpath($config_file);
-</span><span class="">  392:     my $base_directory = File::Spec-&gt;catpath($volume, $directory, &#39;&#39;);
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  393:     my $ext = $config_file =~ /(\.[^.\/\\]+)\z/ ? $1 : &#39;&#39;;
-</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  394: 
-</span><span class="">  395:     my %seen;
-</span><span class="">  396:     for my $candidate (grep { !$seen{$_}++ } (
-</span><span class="">  397:         File::Spec-&gt;catfile($base_directory, &quot;universal$ext&quot;),
-</span><span class="">  398:         File::Spec-&gt;catfile($base_directory, &#39;universal.conf&#39;),
-</span><span class="">  399:         File::Spec-&gt;catfile($base_directory, &#39;universal.yml&#39;),
-</span><span class="">  400:         File::Spec-&gt;catfile($base_directory, &#39;universal.yaml&#39;),
-</span><span class="">  401:         File::Spec-&gt;catfile($base_directory, &#39;universal.json&#39;),
-</span><span class="">  402:     )) {
-</span><span class="">  403:         return $candidate if -f $candidate &amp;&amp; -r $candidate;
-</span><span class="">  404:     }
-</span><span class="">  405: 
-</span><span class="">  406:     return undef;
-</span><span class="">  407: }
-</span><span class="">  408: 
-</span><span class="">  409: sub logger {
-</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">410 → 428 → 437</span></span>  410:     my (%args) = @_;
+<span class="">  372: 				$row{label}  = $entry-&gt;{type} eq &#39;env&#39; ? $entry-&gt;{label} : $file_label;
+</span><span class="">  373: 				$winner      = $entry-&gt;{value};
+</span><span class="">  374: 			}
+</span><span class="">  375: 		} else {
+</span><span class="">  376: 			# No settings file: Object::Configure falls back to environment
+</span><span class="">  377: 			# variables only, universal ones first and class ones last.
+</span><span class="">  378: 			for my $section ($UNIVERSAL_SECTION, $CLASS_SECTION) {
+</span><span class="">  379: 				my $name = _env_key(&quot;${section}__$key&quot;) // next;
+</span><span class="">  380: 				@row{qw(source label)} = (&#39;env&#39;, $name);
+</span><span class="">  381: 				$winner = $ENV{$name};
+</span><span class="">  382: 			}
+</span><span class="">  383: 		}
+</span><span class="">  384: 
+</span><span class="">  385: 		if (_differs($settings-&gt;{$key}, $winner)) {
+</span><span class="">  386: 			$row{source} = &#39;merged&#39;;
+</span><span class="">  387: 			$row{label}  = join(&#39; + &#39;, @{ _labels_for($key, map { $_-&gt;[0] } @layers) }) || $LABEL_UNKNOWN;
+</span><span class="">  388: 		}
+</span><span class="">  389: 
+</span><span class="">  390: 		push @rows, \%row;
+</span><span class="">  391: 	}
+</span><span class="">  392: 
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  393: 	return { settings_file =&gt; $config_file, settings =&gt; \@rows };
+</span><p> <b> Mutants (Total: 1, Killed: 1, Survived: 0)</b><p><span class="">  394: }
+</span><span class="">  395: 
+</span><span class="">  396: =head2 explain_repos
+</span><span class="">  397: 
+</span><span class="">  398: Purpose: how the SSH settings resolve for every repo in a client config.
+</span><span class="">  399: 
+</span><span class="">  400: Args: C&lt;config&gt; (the hashref from C&lt;App::FileSync::Config::load_client&gt;),
+</span><span class="">  401: C&lt;report&gt; (the result of L&lt;/explain&gt;), C&lt;config_file&gt; (the client config path,
+</span><span class="">  402: used in labels).
+</span><span class="">  403: 
+</span><span class="">  404: Returns: an arrayref, one entry per repo in name order, with C&lt;repo&gt;,
+</span><span class="">  405: C&lt;transport&gt;, C&lt;server&gt; (when the repo records one) and C&lt;ssh&gt;: one
+</span><span class="">  406: C&lt;{key, value, source, label}&gt; row per setting, where C&lt;source&gt; is C&lt;repo&gt;
+</span><span class="">  407: (the repo&#39;s own entry), C&lt;process&gt; (the settings reported by C&lt;explain&gt;) or
+</span><span class="">  408: C&lt;default&gt; (ssh&#39;s own default).  C&lt;port&gt; and C&lt;host_key_checking&gt; rows carry
+</span><span class="">  409: C&lt;repo_only =E&lt;gt&gt; 1&gt;.  C&lt;ssh&gt; is C&lt;undef&gt; for the local transport, which never
+</span><span class="">  410: runs ssh.
 </span><span class="">  411: 
-</span><span class="">  412:     my $settings = load(%args);
+</span><span class="">  412: Side Effects: none.
 </span><span class="">  413: 
-</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  414:     my $level = defined $args{level} &amp;&amp; length $args{level}
-</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  415:         ? $args{level}
-</span><span class="">  416:         : (defined $settings-&gt;{log_level} &amp;&amp; length $settings-&gt;{log_level}
-</span><span class="">  417:             ? $settings-&gt;{log_level}
-</span><span class="">  418:             : $DEFAULT_LEVEL);
+</span><span class="killed tooltip" data-tooltip="Mutations here were killed. Tests are effectively covering this logic.">  414: Usage:
+</span><p> <b> Mutants (Total: 2, Killed: 2, Survived: 0)</b><p><span class="">  415: 
+</span><span class="">  416: 	my $repos = App::FileSync::Settings::explain_repos(
+</span><span class="">  417: 		config =&gt; $config, report =&gt; App::FileSync::Settings::explain(), config_file =&gt; $path,
+</span><span class="">  418: 	);
 </span><span class="">  419: 
-</span><span class="">  420:     die &quot;Invalid log_level &#39;$level&#39; (want &quot; . join(&#39;, &#39;, @VALID_LEVELS) . &quot;)\n&quot;
-</span><span class="">  421:         unless grep { lc($_) eq lc($level) } @VALID_LEVELS;
-</span><span class="">  422: 
-</span><span class="">  423:     my $format = defined $settings-&gt;{log_format} &amp;&amp; length $settings-&gt;{log_format}
-</span><span class="">  424:         ? $settings-&gt;{log_format}
-</span><span class="">  425:         : $DEFAULT_FORMAT;
+</span><span class="">  420: =head3 EXAMPLE
+</span><span class="">  421: 
+</span><span class="">  422: 	for my $repo (@{ $repos }) {
+</span><span class="">  423: 		next unless $repo-&gt;{ssh};
+</span><span class="">  424: 		print &quot;$repo-&gt;{repo}: $_-&gt;{key} = $_-&gt;{value} ($_-&gt;{label})\n&quot; for @{ $repo-&gt;{ssh} };
+</span><span class="">  425: 	}
 </span><span class="">  426: 
-</span><span class="">  427:     my $destination;
-</span><span class="">  428:     if (defined $settings-&gt;{log_file} &amp;&amp; length $settings-&gt;{log_file}) {
-</span><span class="">  429:         my $path = $settings-&gt;{log_file};
-</span><span class="">  430:         my $directory = dirname($path);
-</span><span class="">  431:         make_path($directory) unless -d $directory;
-</span><span class="">  432:         $destination = { file =&gt; $path };
-</span><span class="">  433:     } else {
-</span><span class="">  434:         $destination = { fd =&gt; \*STDERR };
-</span><span class="">  435:     }
+</span><span class="">  427: =head3 API SPECIFICATION
+</span><span class="">  428: 
+</span><span class="">  429: =head4 INPUT
+</span><span class="">  430: 
+</span><span class="">  431: 	{
+</span><span class="">  432: 		config      =&gt; { type =&gt; &#39;hashref&#39;, optional =&gt; 1 },
+</span><span class="">  433: 		report      =&gt; { type =&gt; &#39;hashref&#39;, optional =&gt; 1 },
+</span><span class="">  434: 		config_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  435: 	}
 </span><span class="">  436: 
-</span><span class="">  437:     my $logger = Log::Abstraction-&gt;new(
-</span><span class="">  438:         level          =&gt; $level,
-</span><span class="">  439:         format         =&gt; $format,
-</span><span class="">  440:         # Logging must never turn a handled error into a second, uncaught one.
-</span><span class="">  441:         croak_on_error =&gt; 0,
-</span><span class="">  442:         logger         =&gt; $destination,
-</span><span class="">  443:     );
-</span><span class="">  444: 
-</span><span class="">  445:     # A command-line flag describes this run, so it beats the settings file.
-</span><span class="">  446:     $logger = $logger-&gt;new(level =&gt; &#39;debug&#39;) if $args{verbose};
-</span><span class="">  447:     $logger = $logger-&gt;new(level =&gt; &#39;error&#39;) if $args{quiet};
-</span><span class="">  448: 
-</span><span class="">  449:     return $logger;
-</span><span class="">  450: }
-</span><span class="">  451: 
-</span><span class="">  452: 1;
-</span><span class="">  453: 
-</span><span class="">  454: __END__
-</span><span class="">  455: 
-</span><span class="">  456: =head1 NAME
-</span><span class="">  457: 
-</span><span class="">  458: App::FileSync::Settings - process-wide settings and logging for App::FileSync
-</span><span class="">  459: 
-</span><span class="">  460: =head1 SYNOPSIS
+</span><span class="">  437: =head4 OUTPUT
+</span><span class="">  438: 
+</span><span class="">  439: 	{ type =&gt; &#39;arrayref&#39; }
+</span><span class="">  440: 
+</span><span class="">  441: =head3 MESSAGES
+</span><span class="">  442: 
+</span><span class="">  443: 	Key            Meaning                         Resolution
+</span><span class="">  444: 	args.invalid   an argument has the wrong type  fix the call
+</span><span class="">  445: 
+</span><span class="">  446: =head3 FORMAL SPECIFICATION
+</span><span class="">  447: 
+</span><span class="">  448: 	&acirc;&#136;&#128; r : dom config.repos &acirc;&#128;&cent; &acirc;&#136;&#128; k : REPO_SSH_SETTINGS &acirc;&#128;&cent;
+</span><span class="">  449: 		value(r, k) = repo(r)(k)       if repo(r)(k) &acirc;&#137;&nbsp; &quot;&quot;
+</span><span class="">  450: 		            = process(k)       else if process(k) &acirc;&#137;&nbsp; &quot;&quot;
+</span><span class="">  451: 		            = &quot;&quot;               otherwise
+</span><span class="">  452: 
+</span><span class="">  453: =head3 PSEUDOCODE
+</span><span class="">  454: 
+</span><span class="">  455: 	for each repo, by name:
+</span><span class="">  456: 		record its transport and server
+</span><span class="">  457: 		if it uses ssh:
+</span><span class="">  458: 			for each SSH setting take the repo&#39;s value, else the process
+</span><span class="">  459: 			setting, else ssh&#39;s default
+</span><span class="">  460: 			add the repo-only port and host-key-checking rows
 </span><span class="">  461: 
-</span><span class="">  462:     use App::FileSync::Settings;
+</span><span class="">  462: =cut
 </span><span class="">  463: 
-</span><span class="">  464:     my $logger = App::FileSync::Settings::logger(verbose =&gt; 1);
-</span><span class="">  465:     $logger-&gt;error(&#39;...&#39;);
-</span><span class="">  466: 
-</span><span class="">  467:     my $settings = App::FileSync::Settings::load();
-</span><span class="">  468:     my $level = $settings-&gt;{log_level};
-</span><span class="">  469: 
-</span><span class="">  470:     my $report = App::FileSync::Settings::explain();
-</span><span class="">  471:     printf &quot;%s = %s (%s)\n&quot;, $_-&gt;{key}, $_-&gt;{value}, $_-&gt;{label}
-</span><span class="">  472:         for @{ $report-&gt;{settings} };
+</span><span class="">  464: sub explain_repos {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">465 → 475 → 517</span></span>  465: 	my $args = named(\@_, {
+</span><span class="">  466: 		config      =&gt; { type =&gt; &#39;hashref&#39;, optional =&gt; 1 },
+</span><span class="">  467: 		report      =&gt; { type =&gt; &#39;hashref&#39;, optional =&gt; 1 },
+</span><span class="">  468: 		config_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  469: 	}, &#39;Settings::explain_repos&#39;);
+</span><span class="">  470: 
+</span><span class="">  471: 	my $config = $args-&gt;{config} || {};
+</span><span class="">  472: 	my %process = map { $_-&gt;{key} =&gt; $_ } @{ ($args-&gt;{report} || {})-&gt;{settings} || [] };
 </span><span class="">  473: 
-</span><span class="">  474: =head1 DESCRIPTION
-</span><span class="">  475: 
-</span><span class="">  476: Settings that apply to the process rather than to one repo - the log level,
-</span><span class="">  477: format and destination, plus the SSH identity, known-hosts file and remote
-</span><span class="">  478: server command - are read through L&lt;Object::Configure&gt;.  The repos themselves
-</span><span class="">  479: remain in F&lt;~/.filesync/config.json&gt;, which C&lt;filesync init&gt; writes; this
-</span><span class="">  480: module does not replace that store.
+</span><span class="">  474: 	my @repos;
+</span><span class="">  475: 	for my $name (sort keys %{ $config-&gt;{repos} || {} }) {
+</span><span class="">  476: 		my $repo = $config-&gt;{repos}{$name};
+</span><span class="">  477: 		$repo = {} unless ref($repo) eq &#39;HASH&#39;;
+</span><span class="">  478: 
+</span><span class="">  479: 		my $entry = { repo =&gt; $name, transport =&gt; $repo-&gt;{transport} || &#39;ssh&#39;, ssh =&gt; undef };
+</span><span class="">  480: 		$entry-&gt;{server} = $repo-&gt;{server} if _set($repo-&gt;{server});
 </span><span class="">  481: 
-</span><span class="">  482: The settings file is F&lt;~/.conf/app-filesync.json&gt; when it exists, or the path in
-</span><span class="">  483: C&lt;FILESYNC_SETTINGS&gt;.  The section key is C&lt;App__FileSync&gt;, and a C&lt;UNIVERSAL&gt;
-</span><span class="">  484: section in the same directory applies to every class that uses
-</span><span class="">  485: Object::Configure.  Environment variables named C&lt;App__FileSync__I&lt;key&gt;&gt;
-</span><span class="">  486: override the file:
-</span><span class="">  487: 
-</span><span class="">  488:     # ~/.conf/app-filesync.json
-</span><span class="">  489:     { &quot;App__FileSync&quot;: { &quot;log_level&quot;: &quot;debug&quot;, &quot;log_format&quot;: &quot;%level%: %message%&quot; } }
-</span><span class="">  490: 
-</span><span class="">  491:     # or
-</span><span class="">  492:     export App__FileSync__log_level=debug
-</span><span class="">  493: 
-</span><span class="">  494: C&lt;log_file&gt; sends the log to a file instead of standard error; leading
-</span><span class="">  495: directories are created.  C&lt;log_format&gt; is a L&lt;Log::Abstraction&gt; format string.
-</span><span class="">  496: 
-</span><span class="">  497: C&lt;ssh_identity&gt;, C&lt;ssh_known_hosts&gt; and C&lt;server_command&gt; are the defaults for
-</span><span class="">  498: every SSH repo, so a per-repo C&lt;identity&gt;, C&lt;known_hosts&gt; or C&lt;server_command&gt;
-</span><span class="">  499: (written by C&lt;filesync init --identity&gt; and friends) only has to be set when it
-</span><span class="">  500: differs.  C&lt;server_command&gt; defaults to C&lt;filesync-server&gt;:
-</span><span class="">  501: 
-</span><span class="">  502:     { &quot;App__FileSync&quot;: {
-</span><span class="">  503:         &quot;ssh_identity&quot;    : &quot;~/.ssh/filesync_ed25519&quot;,
-</span><span class="">  504:         &quot;ssh_known_hosts&quot; : &quot;~/.ssh/filesync_known_hosts&quot;,
-</span><span class="">  505:         &quot;server_command&quot;  : &quot;/usr/local/bin/filesync-server&quot;
-</span><span class="">  506:     } }
-</span><span class="">  507: 
-</span><span class="">  508: Command output (sync summaries, plans, C&lt;--json&gt;) is written to standard output
-</span><span class="">  509: by the commands themselves; the logger carries diagnostics on standard error,
-</span><span class="">  510: so a cron job can separate the two.  C&lt;--verbose&gt; raises the level to C&lt;debug&gt;
-</span><span class="">  511: and C&lt;--quiet&gt; lowers it to C&lt;error&gt; for that run, overriding the file.
-</span><span class="">  512: 
-</span><span class="">  513: =head1 FUNCTIONS
-</span><span class="">  514: 
-</span><span class="">  515: =head2 logger
+</span><span class="">  482: 		# The local transport never runs ssh, so there is nothing to resolve.
+</span><span class="">  483: 		if ($entry-&gt;{transport} eq &#39;ssh&#39;) {
+</span><span class="">  484: 			my $repo_label = _repo_label($args-&gt;{config_file}, $name);
+</span><span class="">  485: 			my @rows;
+</span><span class="">  486: 			for my $key (@REPO_SSH_SETTINGS) {
+</span><span class="">  487: 				my $value   = $repo-&gt;{ $REPO_SSH_KEYS{$key} };
+</span><span class="">  488: 				my $setting = $process{$key};
+</span><span class="">  489: 
+</span><span class="">  490: 				if (_set($value)) {
+</span><span class="">  491: 					push @rows, { key =&gt; $key, value =&gt; $value, source =&gt; &#39;repo&#39;, label =&gt; $repo_label };
+</span><span class="">  492: 				} elsif ($setting &amp;&amp; _set($setting-&gt;{value})) {
+</span><span class="">  493: 					push @rows, { key =&gt; $key, value =&gt; $setting-&gt;{value}, source =&gt; &#39;process&#39;, label =&gt; $setting-&gt;{label} };
+</span><span class="">  494: 				} else {
+</span><span class="">  495: 					push @rows, { key =&gt; $key, value =&gt; &#39;&#39;, source =&gt; &#39;default&#39;, label =&gt; $LABEL_SSH_DEFAULT };
+</span><span class="">  496: 				}
+</span><span class="">  497: 			}
+</span><span class="">  498: 
+</span><span class="">  499: 			# The transport omits -p and StrictHostKeyChecking defaults to yes.
+</span><span class="">  500: 			for my $only (@REPO_ONLY) {
+</span><span class="">  501: 				my ($key, $default) = @{$only};
+</span><span class="">  502: 				my $set = _set($repo-&gt;{$key});
+</span><span class="">  503: 				push @rows, {
+</span><span class="">  504: 					key       =&gt; $key,
+</span><span class="">  505: 					repo_only =&gt; 1,
+</span><span class="">  506: 					value     =&gt; $set ? $repo-&gt;{$key} : $default,
+</span><span class="">  507: 					source    =&gt; $set ? &#39;repo&#39; : &#39;default&#39;,
+</span><span class="">  508: 					label     =&gt; $set ? $repo_label : $LABEL_SSH_DEFAULT,
+</span><span class="">  509: 				};
+</span><span class="">  510: 			}
+</span><span class="">  511: 			$entry-&gt;{ssh} = \@rows;
+</span><span class="">  512: 		}
+</span><span class="">  513: 
+</span><span class="">  514: 		push @repos, $entry;
+</span><span class="">  515: 	}
 </span><span class="">  516: 
-</span><span class="">  517:     my $logger = App::FileSync::Settings::logger(%args);
-</span><span class="">  518: 
-</span><span class="">  519: Returns a L&lt;Log::Abstraction&gt; writing to standard error (or C&lt;log_file&gt;).
-</span><span class="">  520: C&lt;config_file&gt;, C&lt;config_dirs&gt;, C&lt;level&gt;, C&lt;verbose&gt; and C&lt;quiet&gt; may be passed.
+</span><span class="">  517: 	return \@repos;
+</span><span class="">  518: }
+</span><span class="">  519: 
+</span><span class="">  520: =head2 logger
 </span><span class="">  521: 
-</span><span class="">  522: =head2 load
+</span><span class="">  522: Purpose: the diagnostics logger for this run.
 </span><span class="">  523: 
-</span><span class="">  524: Returns the merged settings hashref (without the Object::Configure logger).
-</span><span class="">  525: 
-</span><span class="">  526: =head2 config_file
+</span><span class="">  524: Args: as L&lt;/load&gt;, plus C&lt;level&gt; (overrides the settings), C&lt;verbose&gt; (debug)
+</span><span class="">  525: and C&lt;quiet&gt; (errors only).  A command-line flag describes this run, so it
+</span><span class="">  526: beats the settings file.
 </span><span class="">  527: 
-</span><span class="">  528: Returns the settings file that would be used, or C&lt;undef&gt;.
+</span><span class="">  528: Returns: a L&lt;Log::Abstraction&gt; writing to standard error, or to C&lt;log_file&gt;.
 </span><span class="">  529: 
-</span><span class="">  530: =head2 explain
+</span><span class="">  530: Side Effects: reads the settings; creates C&lt;log_file&gt;&#39;s directory.
 </span><span class="">  531: 
-</span><span class="">  532:     my $report = App::FileSync::Settings::explain(%args);
+</span><span class="">  532: Usage:
 </span><span class="">  533: 
-</span><span class="">  534: Returns C&lt;{ settings_file =E&lt;gt&gt; $path_or_undef, settings =E&lt;gt&gt; \@rows }&gt;, with
-</span><span class="">  535: one row per key in C&lt;@App::FileSync::Settings::SETTING_KEYS&gt;.  Each row has the
-</span><span class="">  536: effective C&lt;value&gt;, a C&lt;source&gt; of C&lt;default&gt;, C&lt;file&gt;, C&lt;env&gt; or C&lt;merged&gt;, anda human-readable C&lt;label&gt; naming the file section, environment variable or
-</span><span class="">  537: built-in default that supplied it.  C&lt;config_file&gt; and C&lt;config_dirs&gt; may be
-</span><span class="">  538: passed, as for C&lt;load&gt;.
-</span><span class="">  539: 
-</span><span class="">  540: =head2 explain_repos
-</span><span class="">  541: 
-</span><span class="">  542:     my $repos = App::FileSync::Settings::explain_repos(%args);
-</span><span class="">  543: 
-</span><span class="">  544: Resolves C&lt;ssh_identity&gt;, C&lt;ssh_known_hosts&gt; and C&lt;server_command&gt; for every
-</span><span class="">  545: repo in a client config.  C&lt;config&gt; is the hashref from
-</span><span class="">  546: C&lt;App::FileSync::Config::load_client&gt;, C&lt;report&gt; is the result of C&lt;explain&gt;,
-</span><span class="">  547: and C&lt;config_file&gt; is the client config path used in labels.
-</span><span class="">  548: 
-</span><span class="">  549: Each entry has C&lt;repo&gt;, C&lt;transport&gt;, C&lt;server&gt; (when the repo records one) and
-</span><span class="">  550: C&lt;ssh&gt;: one C&lt;{key, value, source, label}&gt; row per setting, where C&lt;source&gt; is
-</span><span class="">  551: C&lt;repo&gt; (the repo&#39;s own entry), C&lt;process&gt; (the settings reported by C&lt;explain&gt;)
-</span><span class="">  552: or C&lt;default&gt; (ssh&#39;s own default, when nothing sets a value).  C&lt;ssh&gt; is
-</span><span class="">  553: C&lt;undef&gt; for the local transport, which never runs ssh.
+</span><span class="">  534: 	my $logger = App::FileSync::Settings::logger(verbose =&gt; $opts{verbose});
+</span><span class="">  535: 
+</span><span class="">  536: =head3 EXAMPLE
+</span><span class="">  537: 
+</span><span class="">  538: 	my $logger = App::FileSync::Settings::logger(level =&gt; &#39;info&#39;);
+</span><span class="">  539: 	$logger-&gt;info(&#39;starting&#39;);
+</span><span class="">  540: 
+</span><span class="">  541: =head3 API SPECIFICATION
+</span><span class="">  542: 
+</span><span class="">  543: =head4 INPUT
+</span><span class="">  544: 
+</span><span class="">  545: 	{
+</span><span class="">  546: 		config_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  547: 		config_dirs =&gt; { type =&gt; &#39;arrayref&#39;, optional =&gt; 1 },
+</span><span class="">  548: 		level       =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  549: 		verbose     =&gt; { type =&gt; &#39;boolean&#39;, optional =&gt; 1 },
+</span><span class="">  550: 		quiet       =&gt; { type =&gt; &#39;boolean&#39;, optional =&gt; 1 },
+</span><span class="">  551: 	}
+</span><span class="">  552: 
+</span><span class="">  553: =head4 OUTPUT
 </span><span class="">  554: 
-</span><span class="">  555: 
-</span><span class="">  556: =head1 LICENCE
-</span><span class="">  557: 
-</span><span class="">  558: GPL v2 for personal single-user, single-computer use.  All other users must
-</span><span class="">  559: apply in writing to the author.
-</span><span class="">  560: 
-</span><span class="">  561: =cut
+</span><span class="">  555: 	{ type =&gt; &#39;object&#39;, isa =&gt; &#39;Log::Abstraction&#39; }
+</span><span class="">  556: 
+</span><span class="">  557: =head3 MESSAGES
+</span><span class="">  558: 
+</span><span class="">  559: 	Key                   Meaning                         Resolution
+</span><span class="">  560: 	settings.bad_level    log_level is not a known level  use one of @VALID_LEVELS
+</span><span class="">  561: 	io.mkdir              log_file&#39;s directory cannot be made  fix log_file
+</span><span class="">  562: 
+</span><span class="">  563: =head3 FORMAL SPECIFICATION
+</span><span class="">  564: 
+</span><span class="">  565: 	level = debug                      if verbose
+</span><span class="">  566: 	      = error                      else if quiet
+</span><span class="">  567: 	      = args.level                 else if set
+</span><span class="">  568: 	      = settings.log_level         else if set
+</span><span class="">  569: 	      = warning                    otherwise
+</span><span class="">  570: 	pre lc level &acirc;&#136;&#136; lc VALID_LEVELS
+</span><span class="">  571: 
+</span><span class="">  572: =head3 PSEUDOCODE
+</span><span class="">  573: 
+</span><span class="">  574: 	load the settings
+</span><span class="">  575: 	choose the level: argument, then settings, then the default
+</span><span class="">  576: 	reject an unknown level
+</span><span class="">  577: 	send output to log_file (creating its directory) or standard error
+</span><span class="">  578: 	build the logger; apply --verbose or --quiet over it
+</span><span class="">  579: 
+</span><span class="">  580: =cut
+</span><span class="">  581: 
+</span><span class="">  582: sub logger {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">583 → 599 → 604</span></span>  583: 	my $args = named(\@_, {
+</span><span class="">  584: 		%FILE_ARGS,
+</span><span class="">  585: 		level   =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+</span><span class="">  586: 		verbose =&gt; { type =&gt; &#39;scalar&#39;, optional =&gt; 1 },
+</span><span class="">  587: 		quiet   =&gt; { type =&gt; &#39;scalar&#39;, optional =&gt; 1 },
+</span><span class="">  588: 	}, &#39;Settings::logger&#39;);
+</span><span class="">  589: 
+</span><span class="">  590: 	my $settings = load(map { $_ =&gt; $args-&gt;{$_} } grep { exists $args-&gt;{$_} } keys %FILE_ARGS);
+</span><span class="">  591: 
+</span><span class="">  592: 	my $level = first { _set($_) } $args-&gt;{level}, $settings-&gt;{log_level}, $DEFAULT_LEVEL;
+</span><span class="">  593: 	throw(&#39;settings.bad_level&#39;, { level =&gt; $level, valid =&gt; join(&#39;, &#39;, @VALID_LEVELS) })
+</span><span class="">  594: 		unless any { lc($_) eq lc($level) } @VALID_LEVELS;
+</span><span class="">  595: 
+</span><span class="">  596: 	my $format = _set($settings-&gt;{log_format}) ? $settings-&gt;{log_format} : $DEFAULT_FORMAT;
+</span><span class="">  597: 
+</span><span class="">  598: 	my $destination = { fd =&gt; \*STDERR };
+</span><span class="">  599: 	if (_set($settings-&gt;{log_file})) {
+</span><span class="">  600: 		ensure_dir(dirname($settings-&gt;{log_file}));
+</span><span class="">  601: 		$destination = { file =&gt; $settings-&gt;{log_file} };
+</span><span class="">  602: 	}
+</span><span class="">  603: 
+</span><span class="">  604: 	my $logger = Log::Abstraction-&gt;new(
+</span><span class="">  605: 		level          =&gt; $level,
+</span><span class="">  606: 		format         =&gt; $format,
+</span><span class="">  607: 		# Logging must never turn a handled error into a second, uncaught one.
+</span><span class="">  608: 		croak_on_error =&gt; 0,
+</span><span class="">  609: 		logger         =&gt; $destination,
+</span><span class="">  610: 	);
+</span><span class="">  611: 
+</span><span class="">  612: 	$logger = $logger-&gt;new(level =&gt; &#39;debug&#39;) if $args-&gt;{verbose};
+</span><span class="">  613: 	$logger = $logger-&gt;new(level =&gt; &#39;error&#39;) if $args-&gt;{quiet};
+</span><span class="">  614: 
+</span><span class="">  615: 	return $logger;
+</span><span class="">  616: }
+</span><span class="">  617: 
+</span><span class="">  618: # _set
+</span><span class="">  619: # Purpose:     true for a value that is defined and not empty.
+</span><span class="">  620: # Entry:       any scalar.
+</span><span class="">  621: # Exit:        returns 1 or 0.
+</span><span class="">  622: # Side effects: none.
+</span><span class="">  623: sub _set :Private {
+</span><span class="">  624: 	my ($value) = @_;
+</span><span class="">  625: 
+</span><span class="">  626: 	return (defined $value &amp;&amp; length $value) ? 1 : 0;
+</span><span class="">  627: }
+</span><span class="">  628: 
+</span><span class="">  629: # _default_config_path
+</span><span class="">  630: # Purpose:     where the settings file would be when none is given.
+</span><span class="">  631: # Entry:       none.
+</span><span class="">  632: # Exit:        returns FILESYNC_SETTINGS, else HOME (or USERPROFILE on
+</span><span class="">  633: #              Windows) /.conf/app-filesync.json, else undef.
+</span><span class="">  634: # Side effects: none; existence is the caller&#39;s question.
+</span><span class="">  635: sub _default_config_path :Private {
+</span><span class="">  636: 	my $home = first { _set($_) } @ENV{qw(HOME USERPROFILE)};
+</span><span class="">  637: 
+</span><span class="">  638: 	my $path = _set($ENV{FILESYNC_SETTINGS}) ? $ENV{FILESYNC_SETTINGS}
+</span><span class="">  639: 		: defined $home ? File::Spec-&gt;catfile($home, $CONF_DIR, $CONFIG_BASENAME)
+</span><span class="">  640: 		: undef;
+</span><span class="">  641: 	return $path;
+</span><span class="">  642: }
+</span><span class="">  643: 
+</span><span class="">  644: # _defaults
+</span><span class="">  645: # Purpose:     the built-in value of every setting.
+</span><span class="">  646: # Entry:       none.
+</span><span class="">  647: # Exit:        returns a fresh hashref (callers may change it).
+</span><span class="">  648: # Side effects: none.
+</span><span class="">  649: sub _defaults :Private {
+</span><span class="">  650: 	return {
+</span><span class="">  651: 		log_level       =&gt; $DEFAULT_LEVEL,
+</span><span class="">  652: 		log_format      =&gt; $DEFAULT_FORMAT,
+</span><span class="">  653: 		log_file        =&gt; &#39;&#39;,
+</span><span class="">  654: 		ssh_identity    =&gt; &#39;&#39;,
+</span><span class="">  655: 		ssh_known_hosts =&gt; &#39;&#39;,
+</span><span class="">  656: 		server_command  =&gt; $DEFAULT_SERVER_COMMAND,
+</span><span class="">  657: 	};
+</span><span class="">  658: }
+</span><span class="">  659: 
+</span><span class="">  660: # _repo_label
+</span><span class="">  661: # Purpose:     the provenance label for a value a repo&#39;s own entry supplied.
+</span><span class="">  662: # Entry:       $config_file may be undef.
+</span><span class="">  663: # Exit:        returns &quot;FILE [name]&quot; or &quot;[name]&quot;.
+</span><span class="">  664: # Side effects: none.
+</span><span class="">  665: sub _repo_label :Private {
+</span><span class="">  666: 	my ($config_file, $name) = @_;
+</span><span class="">  667: 
+</span><span class="">  668: 	return _set($config_file) ? &quot;$config_file [$name]&quot; : &quot;[$name]&quot;;
+</span><span class="">  669: }
+</span><span class="">  670: 
+</span><span class="">  671: # _differs
+</span><span class="">  672: # Purpose:     compare two setting values as strings, undef only equal to undef.
+</span><span class="">  673: # Entry:       two scalars.
+</span><span class="">  674: # Exit:        returns 1 if they differ, else 0.
+</span><span class="">  675: # Side effects: none.
+</span><span class="">  676: sub _differs :Private {
+</span><span class="">  677: 	my ($left, $right) = @_;
+</span><span class="">  678: 
+</span><span class="">  679: 	return (defined $left xor defined $right) ? 1
+</span><span class="">  680: 		: !defined $left ? 0
+</span><span class="">  681: 		: (&quot;$left&quot; ne &quot;$right&quot;) ? 1 : 0;
+</span><span class="">  682: }
+</span><span class="">  683: 
+</span><span class="">  684: # _explanation
+</span><span class="">  685: # Purpose:     ask Config::Abstraction which sources set each key of a section.
+</span><span class="">  686: # Entry:       $file exists; $section is the env prefix&#39;s stem.
+</span><span class="">  687: # Exit:        returns a hashref (empty when the reader cannot be built).
+</span><span class="">  688: # Side effects: reads $file.
+</span><span class="">  689: sub _explanation :Private {
+</span><span class="">  690: 	my ($file, $section) = @_;
+</span><span class="">  691: 
+</span><span class="">  692: 	my $reader = Config::Abstraction-&gt;new(config_file =&gt; $file, env_prefix =&gt; &quot;${section}__&quot;);
+</span><span class="">  693: 	my $explanation = $reader ? $reader-&gt;explain_sources() : undef;
+</span><span class="">  694: 	return ref($explanation) eq &#39;HASH&#39; ? $explanation : {};
+</span><span class="">  695: }
+</span><span class="">  696: 
+</span><span class="">  697: # _env_key
+</span><span class="">  698: # Purpose:     the name the environment actually uses for a variable.
+</span><span class="">  699: # Entry:       $name is &quot;prefix__key&quot;.
+</span><span class="">  700: # Exit:        returns the matching %ENV key, or undef.
+</span><span class="">  701: # Side effects: none.
+</span><span class="">  702: # Config::Abstraction matches an env_prefix case-insensitively, and Windows
+</span><span class="">  703: # reports environment names upper-cased, so the report must name the variable
+</span><span class="">  704: # in the spelling that actually supplied the value.
+</span><span class="">  705: sub _env_key :Private {
+</span><span class="">  706: 	my ($name) = @_;
+</span><span class="">  707: 
+</span><span class="">  708: 	return exists $ENV{$name} ? $name : first { lc $_ eq lc $name } sort keys %ENV;
+</span><span class="">  709: }
+</span><span class="">  710: 
+</span><span class="">  711: # _pick
+</span><span class="">  712: # Purpose:     the source that set a key in one section.
+</span><span class="">  713: # Entry:       $explanation is from _explanation.
+</span><span class="">  714: # Exit:        returns { type, label, value } or undef.
+</span><span class="">  715: # Side effects: none.
+</span><span class="">  716: # The last source wins, which is how Config::Abstraction layers a file under
+</span><span class="">  717: # its environment variables.
+</span><span class="">  718: sub _pick :Private {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot">●</span><span class="lcsaj-tip-text">719 → 721 → 729</span></span>  719: 	my ($explanation, $section, $key) = @_;
+</span><span class="">  720: 
+</span><span class="">  721: 	for my $full (&quot;$section.$key&quot;, &quot;global.$key&quot;, $key) {
+</span><span class="">  722: 		my $entry = $explanation-&gt;{$full};
+</span><span class="">  723: 		next unless ref($entry) eq &#39;HASH&#39; &amp;&amp; ref($entry-&gt;{sources}) eq &#39;ARRAY&#39; &amp;&amp; @{ $entry-&gt;{sources} };
+</span><span class="">  724: 
+</span><span class="">  725: 		my $winner = $entry-&gt;{sources}[-1];
+</span><span class="">  726: 		return { map { $_ =&gt; $winner-&gt;{$_} } qw(type label value) };
+</span><span class="">  727: 	}
+</span><span class="">  728: 
+</span><span class="">  729: 	return undef;	## no critic (Subroutines::ProhibitExplicitReturnUndef) -- callers test it in scalar context
+</span><span class="">  730: }
+</span><span class="">  731: 
+</span><span class="">  732: # _labels_for
+</span><span class="">  733: # Purpose:     every source label that mentions a key, for a merged value.
+</span><span class="">  734: # Entry:       explanations from _explanation.
+</span><span class="">  735: # Exit:        returns an arrayref of distinct labels, in order found.
+</span><span class="">  736: # Side effects: none.
+</span><span class="">  737: sub _labels_for :Private {
+</span><span class=""><span class="lcsaj-tip"><span class="lcsaj-dot-uncovered">●</span><span class="lcsaj-tip-text">[NOT COVERED] 738 → 741 → 748</span></span>  738: 	my ($key, @explanations) = @_;
+</span><span class="">  739: 
+</span><span class="">  740: 	my (%seen, @labels);
+</span><span class="">  741: 	for my $explanation (@explanations) {
+</span><span class="">  742: 		for my $full (grep { $_ eq $key || /\.\Q$key\E\z/ } sort keys %{$explanation}) {
+</span><span class="">  743: 			push @labels, grep { _set($_) &amp;&amp; !$seen{$_}++ }
+</span><span class="">  744: 				map { $_-&gt;{label} } @{ $explanation-&gt;{$full}{sources} || [] };
+</span><span class="">  745: 		}
+</span><span class="">  746: 	}
+</span><span class="">  747: 
+</span><span class="">  748: 	return \@labels;
+</span><span class="">  749: }
+</span><span class="">  750: 
+</span><span class="">  751: # _universal_file
+</span><span class="">  752: # Purpose:     the universal settings file Object::Configure would read.
+</span><span class="">  753: # Entry:       $config_file is the settings file.
+</span><span class="">  754: # Exit:        returns the first readable candidate, or undef.
+</span><span class="">  755: # Side effects: none.
+</span><span class="">  756: # Mirrors Object::Configure&#39;s search: universal&lt;ext&gt; beside the settings
+</span><span class="">  757: # file, then the other config-file extensions, so the report matches.
+</span><span class="">  758: sub _universal_file :Private {
+</span><span class="">  759: 	my ($config_file) = @_;
+</span><span class="">  760: 
+</span><span class="">  761: 	my ($volume, $directory) = File::Spec-&gt;splitpath($config_file);
+</span><span class="">  762: 	my $base = File::Spec-&gt;catpath($volume, $directory, &#39;&#39;);
+</span><span class="">  763: 	my $ext = $config_file =~ /(\.[^.\/\\]+)\z/ ? $1 : &#39;&#39;;
+</span><span class="">  764: 
+</span><span class="">  765: 	my %seen;
+</span><span class="">  766: 	return first { -f $_ &amp;&amp; -r $_ }
+</span><span class="">  767: 		map { File::Spec-&gt;catfile($base, &quot;universal$_&quot;) }
+</span><span class="">  768: 		grep { !$seen{$_}++ } ($ext, @UNIVERSAL_EXTENSIONS);
+</span><span class="">  769: }
+</span><span class="">  770: 
+</span><span class="">  771: 1;
+</span><span class="">  772: 
+</span><span class="">  773: __END__
+</span><span class="">  774: 
+</span><span class="">  775: =head1 LIMITATIONS
+</span><span class="">  776: 
+</span><span class="">  777: =over 4
+</span><span class="">  778: 
+</span><span class="">  779: =item * C&lt;explain&gt; reconstructs provenance by re-reading the layers
+</span><span class="">  780: Object::Configure merges.  If a later Object::Configure adds a layer, the
+</span><span class="">  781: report says C&lt;merged&gt; for values from it rather than naming it.
+</span><span class="">  782: 
+</span><span class="">  783: =item * The settings are re-read on every C&lt;load&gt;, C&lt;explain&gt; and C&lt;logger&gt;
+</span><span class="">  784: call; nothing is cached, so a long-running process sees edits but pays a file
+</span><span class="">  785: read per call.
+</span><span class="">  786: 
+</span><span class="">  787: =back
+</span><span class="">  788: 
+</span><span class="">  789: =head1 LICENCE
+</span><span class="">  790: 
+</span><span class="">  791: GPL v2 for personal single-user, single-computer use.  All other users must
+</span><span class="">  792: apply in writing to the author.
+</span><span class="">  793: 
+</span><span class="">  794: =cut
 </span></pre>
 
 <script>

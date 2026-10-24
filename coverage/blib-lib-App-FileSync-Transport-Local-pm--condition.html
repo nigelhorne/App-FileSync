@@ -20,14 +20,14 @@ https://pjcj.net
 <h1>Condition Coverage</h1>
 <table>
 <tr><td class="h" align="right">File:</td><td align="left">blib/lib/App/FileSync/Transport/Local.pm</td></tr>
-<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">37.5%</td></tr>
+<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">44.4%</td></tr>
 </table>
 <div><br/></div>
 <table>
 <tr><th>line</th><th>%</th><th>coverage</th><th>condition</th></tr>
-<tr><td class="h"><a id="L18">18</a></td><td class="c0">50</td><td><div><table><tr><th>A</th><th>dec</th></tr><tr align="center"><td class="c0">0</td><td class="c0">0</td></tr><tr align="center"><td class="c3">1</td><td class="c3">1</td></tr></table></div></td><td class="s">$args{&#39;role&#39;} || &#39;client&#39;</td></tr>
-<tr><td class="h"><a id="L20">20</a></td><td class="c0">33</td><td><div><table><tr><th>A</th><th>B</th><th>dec</th></tr><tr align="center"><td class="c0">0</td><td class="c0">0</td><td class="c0">0</td></tr><tr align="center"><td class="c3">0</td><td class="c3">1</td><td class="c3">1</td></tr><tr align="center"><td class="c0">1</td><td class="c0">X</td><td class="c0">1</td></tr></table></div></td><td class="s">$args{&#39;server_bin&#39;} || _default_server_bin()</td></tr>
-<tr><td class="h"><a id="L64">64</a></td><td class="c0">33</td><td><div><table><tr><th>A</th><th>B</th><th>dec</th></tr><tr align="center"><td class="c3">0</td><td class="c3">X</td><td class="c3">0</td></tr><tr align="center"><td class="c0">1</td><td class="c0">0</td><td class="c0">0</td></tr><tr align="center"><td class="c0">1</td><td class="c0">1</td><td class="c0">1</td></tr></table></div></td><td class="s">defined $ENV{&#39;FILESYNC_SERVER_BIN&#39;} and length $ENV{&#39;FILESYNC_SERVER_BIN&#39;}</td></tr>
+<tr><td class="h"><a id="L108">108</a></td><td class="c0">33</td><td><div><table><tr><th>A</th><th>B</th><th>dec</th></tr><tr align="center"><td class="c0">0</td><td class="c0">X</td><td class="c0">0</td></tr><tr align="center"><td class="c0">1</td><td class="c0">0</td><td class="c0">0</td></tr><tr align="center"><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td></tr></table></div></td><td class="s">defined $args-&gt;{$required} and length $args-&gt;{$required}</td></tr>
+<tr><td class="h"><a id="L116">116</a></td><td class="c0">67</td><td><div><table><tr><th>A</th><th>B</th><th>dec</th></tr><tr align="center"><td class="c0">0</td><td class="c0">0</td><td class="c0">0</td></tr><tr align="center"><td class="c3">0</td><td class="c3">1</td><td class="c3">1</td></tr><tr align="center"><td class="c3">1</td><td class="c3">X</td><td class="c3">1</td></tr></table></div></td><td class="s">$args-&gt;{&#39;role&#39;} || $App::FileSync::Transport::Local::ROLE_CLIENT</td></tr>
+<tr><td class="h"></td><td class="c0">33</td><td><div><table><tr><th>A</th><th>B</th><th>dec</th></tr><tr align="center"><td class="c0">0</td><td class="c0">0</td><td class="c0">0</td></tr><tr align="center"><td class="c3">0</td><td class="c3">1</td><td class="c3">1</td></tr><tr align="center"><td class="c0">1</td><td class="c0">X</td><td class="c0">1</td></tr></table></div></td><td class="s">$args-&gt;{&#39;server_bin&#39;} || _default_server_bin()</td></tr>
 </table>
 </body>
 </html>

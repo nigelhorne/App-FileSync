@@ -20,120 +20,583 @@ https://pjcj.net
 <h1>File Coverage</h1>
 <table>
 <tr><td class="h" align="right">File:</td><td align="left">blib/lib/App/FileSync/Config.pm</td></tr>
-<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">73.6%</td></tr>
+<tr><td class="h" align="right">Coverage:</td><td align="left" class="c1">89.6%</td></tr>
 </table>
 <div><br/></div>
 <table>
 <tr><th>line</th><th>stmt</th><th>bran</th><th>cond</th><th>sub</th><th>time</th><th>code</th></tr>
 <tr><td class="h">1</td><td></td><td></td><td></td><td></td><td></td><td class="s">package App::FileSync::Config;</td></tr>
-<tr><td class="h">2</td><td colspan="6"></td></tr><tr><td class="h">3</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L3">297</a></div></td><td><div>636</div><div>217</div><div>3669</div></td><td class="s">use strict;</td></tr>
-<tr><td class="h">4</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L4">297</a></div></td><td><div>429</div><div>195</div><div>5599</div></td><td class="s">use warnings;</td></tr>
-<tr><td class="h">5</td><td colspan="6"></td></tr><tr><td class="h">6</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L6">297</a></div></td><td><div>467</div><div>191</div><div>6197</div></td><td class="s">use File::Path qw(make_path);</td></tr>
-<tr><td class="h">7</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L7">297</a></div></td><td><div>480</div><div>192</div><div>2314</div></td><td class="s">use File::Spec;</td></tr>
-<tr><td class="h">8</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L8">297</a></div></td><td><div>383</div><div>237</div><div>2433</div></td><td class="s">use JSON::PP ();</td></tr>
-<tr><td class="h">9</td><td colspan="6"></td></tr><tr><td class="h">10</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L10">297</a></div></td><td><div>382</div><div>202</div><div>112068</div></td><td class="s">use App::FileSync qw(json_encode json_decode read_text write_atomic);</td></tr>
-<tr><td class="h">11</td><td colspan="6"></td></tr><tr><td class="h">12</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Patterns that must never enter a manifest; they are excluded on both sides.</td></tr>
-<tr><td class="h">13</td><td></td><td></td><td></td><td></td><td></td><td class="s">our @DEFAULT_IGNORE = (</td></tr>
-<tr><td class="h">14</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;.filesync-root&#39;,</td></tr>
-<tr><td class="h">15</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;.filesync-tmp-*&#39;,</td></tr>
-<tr><td class="h">16</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;.filesync-snapshots&#39;,</td></tr>
-<tr><td class="h">17</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;*.swp&#39;,</td></tr>
-<tr><td class="h">18</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;*~&#39;,</td></tr>
-<tr><td class="h">19</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;.#*&#39;,</td></tr>
-<tr><td class="h">20</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;#*#&#39;,</td></tr>
-<tr><td class="h">21</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;.DS_Store&#39;,</td></tr>
-<tr><td class="h">22</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;._*&#39;,</td></tr>
-<tr><td class="h">23</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;Thumbs.db&#39;,</td></tr>
-<tr><td class="h">24</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;desktop.ini&#39;,</td></tr>
-<tr><td class="h">25</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;*.crdownload&#39;,</td></tr>
-<tr><td class="h">26</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&#39;*.part&#39;,</td></tr>
-<tr><td class="h">27</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
-<tr><td class="h">28</td><td colspan="6"></td></tr><tr><td class="h">29</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub home_dir {</td></tr>
-<tr><td class="h">30</td><td><div class="c3">885</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L30">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Config-pm--condition.html#L30">33</a></div></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L30">885</a></div></td><td><div>12737</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $ENV{FILESYNC_HOME} if defined $ENV{FILESYNC_HOME} &amp;&amp; length $ENV{FILESYNC_HOME};</td></tr>
-<tr><td class="h">31</td><td colspan="6"></td></tr><tr><td class="h">32</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $home = $ENV{HOME};</td></tr>
-<tr><td class="h">33</td><td><div class="c0">0</div></td><td><div class="c0" title="-/-"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L33">0</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Config-pm--condition.html#L33">0</a></div></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$home = $ENV{USERPROFILE} if !defined($home) || !length($home);</td></tr>
-<tr><td class="h">34</td><td><div class="c0">0</div></td><td><div class="c0" title="-/-"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L34">0</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Config-pm--condition.html#L34">0</a></div></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;Cannot determine your home directory; set FILESYNC_HOME\n&quot;</td></tr>
-<tr><td class="h">35</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless defined $home &amp;&amp; length $home;</td></tr>
-<tr><td class="h">36</td><td colspan="6"></td></tr><tr><td class="h">37</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catdir($home, &#39;.filesync&#39;);</td></tr>
-<tr><td class="h">38</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">39</td><td colspan="6"></td></tr><tr><td class="h">40</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub client_config_path {</td></tr>
-<tr><td class="h">41</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $ENV{FILESYNC_CONFIG}</td></tr>
-<tr><td class="h">42</td><td><div class="c3">75</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L42">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Config-pm--condition.html#L42">33</a></div></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L42">75</a></div></td><td><div>301</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if defined $ENV{FILESYNC_CONFIG} &amp;&amp; length $ENV{FILESYNC_CONFIG};</td></tr>
-<tr><td class="h">43</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile(home_dir(), &#39;config.json&#39;);</td></tr>
-<tr><td class="h">44</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">45</td><td colspan="6"></td></tr><tr><td class="h">46</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub default_client_config {</td></tr>
-<tr><td class="h">47</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return {</td></tr>
-<tr><td class="h">48</td><td><div class="c3">63</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L48">63</a></div></td><td><div>455</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version =&gt; 1,</td></tr>
-<tr><td class="h">49</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { command =&gt; &#39;ssh&#39;, extra_args =&gt; [] },</td></tr>
-<tr><td class="h">50</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repos&nbsp;&nbsp;&nbsp;=&gt; {},</td></tr>
-<tr><td class="h">51</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
-<tr><td class="h">52</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">53</td><td colspan="6"></td></tr><tr><td class="h">54</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub load_client {</td></tr>
-<tr><td class="h">55</td><td><div class="c3">273</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L55">273</a></div></td><td><div>8109923</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($path) = @_;</td></tr>
-<tr><td class="h">56</td><td><div class="c3">273</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L56">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Config-pm--condition.html#L56">67</a></div></td><td></td><td><div>1165</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$path = client_config_path() unless defined $path &amp;&amp; length $path;</td></tr>
-<tr><td class="h">57</td><td colspan="6"></td></tr><tr><td class="h">58</td><td><div class="c3">273</div></td><td></td><td></td><td></td><td><div>272</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $config;</td></tr>
-<tr><td class="h">59</td><td><div class="c3">273</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L59">50</a></div></td><td></td><td></td><td><div>1575</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;if (-e $path) {</td></tr>
-<tr><td class="h">60</td><td><div class="c3">273</div><div class="c3">273</div></td><td></td><td></td><td></td><td><div>273</div><div>653</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$config = eval { json_decode(read_text($path)) };</td></tr>
-<tr><td class="h">61</td><td><div class="c3">273</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L61">50</a></div></td><td></td><td></td><td><div>465</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;die &quot;Cannot parse $path: $@&quot; if $@;</td></tr>
-<tr><td class="h">62</td><td><div class="c3">273</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L62">50</a></div></td><td></td><td></td><td><div>564</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;die &quot;$path is not a JSON object\n&quot; unless ref($config) eq &#39;HASH&#39;;</td></tr>
-<tr><td class="h">63</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;} else {</td></tr>
-<tr><td class="h">64</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$config = default_client_config();</td></tr>
-<tr><td class="h">65</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">66</td><td colspan="6"></td></tr><tr><td class="h">67</td><td><div class="c3">273</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L67">50</a></div></td><td></td><td></td><td><div>504</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$config-&gt;{repos} = {} unless ref($config-&gt;{repos}) eq &#39;HASH&#39;;</td></tr>
-<tr><td class="h">68</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$config-&gt;{ssh} = { command =&gt; &#39;ssh&#39;, extra_args =&gt; [] }</td></tr>
-<tr><td class="h">69</td><td><div class="c3">273</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L69">100</a></div></td><td></td><td></td><td><div>484</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless ref($config-&gt;{ssh}) eq &#39;HASH&#39;;</td></tr>
-<tr><td class="h">70</td><td colspan="6"></td></tr><tr><td class="h">71</td><td><div class="c3">273</div></td><td></td><td></td><td></td><td><div>349</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $config;</td></tr>
-<tr><td class="h">72</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">73</td><td colspan="6"></td></tr><tr><td class="h">74</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub save_client {</td></tr>
-<tr><td class="h">75</td><td><div class="c3">70</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L75">70</a></div></td><td><div>1451</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($config, $path) = @_;</td></tr>
-<tr><td class="h">76</td><td><div class="c3">70</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L76">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Config-pm--condition.html#L76">33</a></div></td><td></td><td><div>246</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$path = client_config_path() unless defined $path &amp;&amp; length $path;</td></tr>
-<tr><td class="h">77</td><td><div class="c3">70</div></td><td></td><td></td><td></td><td><div>123</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;write_atomic($path, json_encode($config) . &quot;\n&quot;);</td></tr>
-<tr><td class="h">78</td><td><div class="c3">70</div></td><td></td><td></td><td></td><td><div>132</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $path;</td></tr>
-<tr><td class="h">79</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">80</td><td colspan="6"></td></tr><tr><td class="h">81</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub repo_meta_dir {</td></tr>
-<tr><td class="h">82</td><td><div class="c3">2372</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L82">2372</a></div></td><td><div>2185</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($root, $repo) = @_;</td></tr>
-<tr><td class="h">83</td><td><div class="c3">2372</div></td><td></td><td></td><td></td><td><div>21861</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catdir($root, &#39;.filesync&#39;, &#39;repos&#39;, $repo);</td></tr>
-<tr><td class="h">84</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">85</td><td colspan="6"></td></tr><tr><td class="h">86</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub repo_config_path {</td></tr>
-<tr><td class="h">87</td><td><div class="c3">569</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L87">569</a></div></td><td><div>1691</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($root, $repo) = @_;</td></tr>
-<tr><td class="h">88</td><td><div class="c3">569</div></td><td></td><td></td><td></td><td><div>776</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile(repo_meta_dir($root, $repo), &#39;config.json&#39;);</td></tr>
-<tr><td class="h">89</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">90</td><td colspan="6"></td></tr><tr><td class="h">91</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub default_repo_config {</td></tr>
-<tr><td class="h">92</td><td><div class="c3">64</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L92">64</a></div></td><td><div>86</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($name) = @_;</td></tr>
-<tr><td class="h">93</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return {</td></tr>
-<tr><td class="h">94</td><td><div class="c3">64</div></td><td></td><td></td><td></td><td><div>575</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; 1,</td></tr>
-<tr><td class="h">95</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $name,</td></tr>
-<tr><td class="h">96</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; scalar(gmtime()) . &#39; UTC&#39;,</td></tr>
-<tr><td class="h">97</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trash_days&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; 30,</td></tr>
-<tr><td class="h">98</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_deletes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; 200,</td></tr>
-<tr><td class="h">99</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_delete_percent =&gt; 10,</td></tr>
-<tr><td class="h">100</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conflicts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;inline&#39;,</td></tr>
-<tr><td class="h">101</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preserve_mode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; JSON::PP::true,</td></tr>
-<tr><td class="h">102</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_symlinks&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; JSON::PP::false,</td></tr>
-<tr><td class="h">103</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clients&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; {},</td></tr>
-<tr><td class="h">104</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; [ @DEFAULT_IGNORE ],</td></tr>
-<tr><td class="h">105</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
-<tr><td class="h">106</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">107</td><td colspan="6"></td></tr><tr><td class="h">108</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub load_repo {</td></tr>
-<tr><td class="h">109</td><td><div class="c3">376</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L109">376</a></div></td><td><div>498</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($root, $repo) = @_;</td></tr>
-<tr><td class="h">110</td><td><div class="c3">376</div></td><td></td><td></td><td></td><td><div>567</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $path = repo_config_path($root, $repo);</td></tr>
-<tr><td class="h">111</td><td><div class="c3">376</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L111">100</a></div></td><td></td><td></td><td><div>2631</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;No such repo &#39;$repo&#39; under $root (run filesync-admin repo create)\n&quot;</td></tr>
-<tr><td class="h">112</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless -e $path;</td></tr>
-<tr><td class="h">113</td><td colspan="6"></td></tr><tr><td class="h">114</td><td><div class="c3">375</div><div class="c3">375</div></td><td></td><td></td><td></td><td><div>353</div><div>681</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $config = eval { json_decode(read_text($path)) };</td></tr>
-<tr><td class="h">115</td><td><div class="c3">375</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L115">50</a></div></td><td></td><td></td><td><div>696</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;Cannot parse $path: $@&quot; if $@;</td></tr>
-<tr><td class="h">116</td><td><div class="c3">375</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L116">50</a></div></td><td></td><td></td><td><div>655</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;$path is not a JSON object\n&quot; unless ref($config) eq &#39;HASH&#39;;</td></tr>
-<tr><td class="h">117</td><td colspan="6"></td></tr><tr><td class="h">118</td><td><div class="c3">375</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L118">50</a></div></td><td></td><td></td><td><div>732</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$config-&gt;{ignore} = [ @DEFAULT_IGNORE ] unless ref($config-&gt;{ignore}) eq &#39;ARRAY&#39;;</td></tr>
-<tr><td class="h">119</td><td><div class="c3">375</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L119">50</a></div></td><td></td><td></td><td><div>601</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$config-&gt;{clients} = {} unless ref($config-&gt;{clients}) eq &#39;HASH&#39;;</td></tr>
-<tr><td class="h">120</td><td colspan="6"></td></tr><tr><td class="h">121</td><td><div class="c3">375</div></td><td></td><td></td><td></td><td><div>708</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $config;</td></tr>
-<tr><td class="h">122</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">123</td><td colspan="6"></td></tr><tr><td class="h">124</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub save_repo {</td></tr>
-<tr><td class="h">125</td><td><div class="c3">128</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L125">128</a></div></td><td><div>211</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($root, $repo, $config) = @_;</td></tr>
-<tr><td class="h">126</td><td><div class="c3">128</div></td><td></td><td></td><td></td><td><div>127</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $path = repo_config_path($root, $repo);</td></tr>
-<tr><td class="h">127</td><td><div class="c3">128</div></td><td></td><td></td><td></td><td><div>137</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;make_path(repo_meta_dir($root, $repo));</td></tr>
-<tr><td class="h">128</td><td><div class="c3">128</div></td><td></td><td></td><td></td><td><div>276</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;write_atomic($path, json_encode($config) . &quot;\n&quot;);</td></tr>
-<tr><td class="h">129</td><td><div class="c3">128</div></td><td></td><td></td><td></td><td><div>177</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $path;</td></tr>
-<tr><td class="h">130</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">131</td><td colspan="6"></td></tr><tr><td class="h">132</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
-</table>
+<tr><td class="h">2</td><td colspan="6"></td></tr><tr><td class="h">3</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Where configuration lives and what it holds: the client&#39;s repo list in</td></tr>
+<tr><td class="h">4</td><td></td><td></td><td></td><td></td><td></td><td class="s"># ~/.filesync/config.json, and each repo&#39;s policy under the server root.</td></tr>
+<tr><td class="h">5</td><td colspan="6"></td></tr><tr><td class="h">6</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L6">314</a></div></td><td><div>305</div><div>153</div><div>1502</div></td><td class="s">use App::FileSync::Platform;</td></tr>
+<tr><td class="h">7</td><td colspan="6"></td></tr><tr><td class="h">8</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L8">314</a></div></td><td><div>277</div><div>163</div><div>1194</div></td><td class="s">use strict;</td></tr>
+<tr><td class="h">9</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L9">314</a></div></td><td><div>220</div><div>162</div><div>3422</div></td><td class="s">use warnings;</td></tr>
+<tr><td class="h">10</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L10">314</a></div></td><td><div>240</div><div>150</div><div>417</div></td><td class="s">use autodie qw(:all);</td></tr>
+<tr><td class="h">11</td><td colspan="6"></td></tr><tr><td class="h">12</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L12">314</a></div></td><td><div>388120</div><div>174</div><div>1966</div></td><td class="s">use File::Spec;</td></tr>
+<tr><td class="h">13</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L13">314</a></div></td><td><div>282</div><div>154</div><div>1801</div></td><td class="s">use JSON::PP ();</td></tr>
+<tr><td class="h">14</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L14">314</a></div></td><td><div>255</div><div>181</div><div>613</div></td><td class="s">use Sub::Private { mode =&gt; &#39;enforce&#39; };</td></tr>
+<tr><td class="h">15</td><td colspan="6"></td></tr><tr><td class="h">16</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L16">314</a></div></td><td><div>19353</div><div>165</div><div>3843</div></td><td class="s">use App::FileSync qw(json_encode json_decode read_text write_atomic);</td></tr>
+<tr><td class="h">17</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L17">314</a></div></td><td><div>270</div><div>166</div><div>2860</div></td><td class="s">use App::FileSync::Args qw(positional);</td></tr>
+<tr><td class="h">18</td><td><div class="c3">314</div></td><td></td><td></td><td></td><td><div>11740</div></td><td class="s">use App::FileSync::Constants qw(</td></tr>
+<tr><td class="h">19</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ROOT_MARKER $TEMP_PREFIX $SNAPSHOT_DIR</td></tr>
+<tr><td class="h">20</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$TRASH_DAYS $MAX_DELETES $MAX_DELETE_PERCENT</td></tr>
+<tr><td class="h">21</td><td><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L21">314</a></div></td><td><div>280</div><div>154</div></td><td class="s">);</td></tr>
+<tr><td class="h">22</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L22">314</a></div></td><td><div>272</div><div>157</div><div>2574</div></td><td class="s">use App::FileSync::I18N qw(throw strip_location);</td></tr>
+<tr><td class="h">23</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L23">314</a></div></td><td><div>274</div><div>145</div><div>88705</div></td><td class="s">use App::FileSync::IO qw(ensure_dir);</td></tr>
+<tr><td class="h">24</td><td colspan="6"></td></tr><tr><td class="h">25</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $VERSION = &#39;0.001.1&#39;;</td></tr>
+<tr><td class="h">26</td><td colspan="6"></td></tr><tr><td class="h">27</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Patterns that must never enter a manifest; they are excluded on both sides.</td></tr>
+<tr><td class="h">28</td><td></td><td></td><td></td><td></td><td></td><td class="s">our @DEFAULT_IGNORE = (</td></tr>
+<tr><td class="h">29</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ROOT_MARKER,</td></tr>
+<tr><td class="h">30</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;$TEMP_PREFIX*&quot;,</td></tr>
+<tr><td class="h">31</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$SNAPSHOT_DIR,</td></tr>
+<tr><td class="h">32</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;*.swp&#39;,</td></tr>
+<tr><td class="h">33</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;*~&#39;,</td></tr>
+<tr><td class="h">34</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;.#*&#39;,</td></tr>
+<tr><td class="h">35</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;#*#&#39;,</td></tr>
+<tr><td class="h">36</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;.DS_Store&#39;,</td></tr>
+<tr><td class="h">37</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;._*&#39;,</td></tr>
+<tr><td class="h">38</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;Thumbs.db&#39;,</td></tr>
+<tr><td class="h">39</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;desktop.ini&#39;,</td></tr>
+<tr><td class="h">40</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;*.crdownload&#39;,</td></tr>
+<tr><td class="h">41</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;*.part&#39;,</td></tr>
+<tr><td class="h">42</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
+<tr><td class="h">43</td><td colspan="6"></td></tr><tr><td class="h">44</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Schemas for the positional entry points.</td></tr>
+<tr><td class="h">45</td><td></td><td></td><td></td><td></td><td></td><td class="s">my %PATH_RULE = (type =&gt; &#39;string&#39;, min =&gt; 1);</td></tr>
+<tr><td class="h">46</td><td></td><td></td><td></td><td></td><td></td><td class="s">my %ROOT_REPO = (root =&gt; {%PATH_RULE}, repo =&gt; {%PATH_RULE});</td></tr>
+<tr><td class="h">47</td><td colspan="6"></td></tr><tr><td class="h">48</td><td></td><td></td><td></td><td></td><td></td><td class="s">=encoding utf8</td></tr>
+<tr><td class="h">49</td><td colspan="6"></td></tr><tr><td class="h">50 - 112</td><td colspan="5"></td><td class="s"><pre>=head1 NAME
+
+App::FileSync::Config - client and repo configuration files
+
+=head1 SYNOPSIS
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $client = App::FileSync::Config::load_client();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$client-&gt;{repos}{docs}{root} = &#39;/home/foo/Documents&#39;;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App::FileSync::Config::save_client($client);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $repo = App::FileSync::Config::load_repo(&#39;/srv/filesync&#39;, &#39;docs&#39;);
+
+=head1 DESCRIPTION
+
+The client keeps one JSON file, F&lt;~/.filesync/config.json&gt; (or
+C&lt;FILESYNC_CONFIG&gt;), listing its repos.&nbsp;&nbsp;The server keeps one JSON file per
+repo, F&lt;ROOT/.filesync/repos/NAME/config.json&gt;, holding its policy (trash
+retention, deletion limits, ignore patterns) and the allowed clients.&nbsp;&nbsp;Both are
+written atomically.
+
+=head1 FUNCTIONS
+
+=head2 home_dir
+
+Purpose: the client&#39;s state directory.
+
+Args: none.
+
+Returns: C&lt;FILESYNC_HOME&gt;, else F&lt;~/.filesync&gt; (using C&lt;HOME&gt;, then
+C&lt;USERPROFILE&gt;).
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $home = App::FileSync::Config::home_dir();
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print App::FileSync::Config::home_dir(), &quot;\n&quot;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# /home/foo/.filesync
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;string&#39;, min =&gt; 1 }
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config.no_home&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no home directory is known&nbsp;&nbsp;&nbsp;&nbsp;set FILESYNC_HOME
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;home_dir = ENV(FILESYNC_HOME)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if non-empty
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= (ENV(HOME) or ENV(USERPROFILE)) / &quot;.filesync&quot;&nbsp;&nbsp;&nbsp;if one is non-empty
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&acirc;&#134;&#145; config.no_home&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;otherwise
+
+=cut</pre></td></tr>
+<tr><td class="h">113</td><td colspan="6"></td></tr><tr><td class="h">114</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub home_dir {</td></tr>
+<tr><td class="h">115</td><td><div class="c3">1066</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L115">1066</a></div></td><td><div>1872</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $explicit = _env(&#39;FILESYNC_HOME&#39;);</td></tr>
+<tr><td class="h">116</td><td><div class="c3">1066</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L116">50</a></div></td><td></td><td></td><td><div>6880</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $explicit if defined $explicit;</td></tr>
+<tr><td class="h">117</td><td colspan="6"></td></tr><tr><td class="h">118</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $home = _env(&#39;HOME&#39;);</td></tr>
+<tr><td class="h">119</td><td><div class="c0">0</div></td><td><div class="c0" title="-/-"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L119">0</a></div></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$home = _env(&#39;USERPROFILE&#39;) unless defined $home;</td></tr>
+<tr><td class="h">120</td><td><div class="c0">0</div></td><td><div class="c0" title="-/-"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L120">0</a></div></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;config.no_home&#39;) unless defined $home;</td></tr>
+<tr><td class="h">121</td><td colspan="6"></td></tr><tr><td class="h">122</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catdir($home, &#39;.filesync&#39;);</td></tr>
+<tr><td class="h">123</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">124</td><td colspan="6"></td></tr><tr><td class="h">125 - 163</td><td colspan="5"></td><td class="s"><pre>=head2 client_config_path
+
+Purpose: where the client&#39;s repo list is stored.
+
+Args: none.
+
+Returns: C&lt;FILESYNC_CONFIG&gt;, else F&lt;HOME_DIR/config.json&gt;.
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $path = App::FileSync::Config::client_config_path();
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local $ENV{FILESYNC_CONFIG} = &#39;/tmp/test.json&#39;;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print App::FileSync::Config::client_config_path(), &quot;\n&quot;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# /tmp/test.json
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;string&#39;, min =&gt; 1 }
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config.no_home&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no home directory is known&nbsp;&nbsp;&nbsp;&nbsp;set FILESYNC_HOME
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_config_path = ENV(FILESYNC_CONFIG) if non-empty, else home_dir / &quot;config.json&quot;
+
+=cut</pre></td></tr>
+<tr><td class="h">164</td><td colspan="6"></td></tr><tr><td class="h">165</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub client_config_path {</td></tr>
+<tr><td class="h">166</td><td><div class="c3">75</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L166">75</a></div></td><td><div>173</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $explicit = _env(&#39;FILESYNC_CONFIG&#39;);</td></tr>
+<tr><td class="h">167</td><td colspan="6"></td></tr><tr><td class="h">168</td><td><div class="c3">75</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L168">50</a></div></td><td></td><td></td><td><div>201</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return defined $explicit ? $explicit : File::Spec-&gt;catfile(home_dir(), &#39;config.json&#39;);</td></tr>
+<tr><td class="h">169</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">170</td><td colspan="6"></td></tr><tr><td class="h">171 - 215</td><td colspan="5"></td><td class="s"><pre>=head2 default_client_config
+
+Purpose: the configuration of a client that has no repos yet.
+
+Args: none.
+
+Returns: a new hashref C&lt;{ version, ssh =E&lt;gt&gt; { command, extra_args }, repos =E&lt;gt&gt; {} }&gt;.
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = App::FileSync::Config::default_client_config();
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = App::FileSync::Config::default_client_config();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$config-&gt;{client_id} = &#39;laptop-1&#39;;
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type =&gt; &#39;hashref&#39;,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;schema =&gt; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version =&gt; { type =&gt; &#39;integer&#39; },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;hashref&#39; },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repos&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;hashref&#39; },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head3 MESSAGES
+
+None.
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_client_config = &acirc;&#159;&uml;version &acirc;&#134;&brvbar; 1, ssh &acirc;&#134;&brvbar; default_ssh, repos &acirc;&#134;&brvbar; &acirc;&#136;&#133;&acirc;&#159;&copy;
+
+=cut</pre></td></tr>
+<tr><td class="h">216</td><td colspan="6"></td></tr><tr><td class="h">217</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub default_client_config {</td></tr>
+<tr><td class="h">218</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return {</td></tr>
+<tr><td class="h">219</td><td><div class="c3">75</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L219">75</a></div></td><td><div>316</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version =&gt; 1,</td></tr>
+<tr><td class="h">220</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; _default_ssh(),</td></tr>
+<tr><td class="h">221</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repos&nbsp;&nbsp;&nbsp;=&gt; {},</td></tr>
+<tr><td class="h">222</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
+<tr><td class="h">223</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">224</td><td colspan="6"></td></tr><tr><td class="h">225 - 267</td><td colspan="5"></td><td class="s"><pre>=head2 load_client
+
+Purpose: read the client&#39;s repo list.
+
+Args: optional C&lt;$path&gt; (default L&lt;/client_config_path&gt;).
+
+Returns: the configuration hashref; a missing file gives
+L&lt;/default_client_config&gt;.&nbsp;&nbsp;C&lt;repos&gt; and C&lt;ssh&gt; are always hashes.
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = App::FileSync::Config::load_client($opts{config});
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = App::FileSync::Config::load_client();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print join(&#39;, &#39;, sort keys %{ $config-&gt;{repos} }), &quot;\n&quot;;
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ { name =&gt; &#39;path&#39;, type =&gt; &#39;string&#39;, optional =&gt; 1 } ]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;hashref&#39; }
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config.parse&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the file is not valid JSON&nbsp;&nbsp;&nbsp;&nbsp;fix or remove it
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config.not_object&nbsp;&nbsp;&nbsp;&nbsp;the JSON is not an object&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix or remove it
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;io.read&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the file cannot be read&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check permissions
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;load_client(p) = normalise(json(FS(p)))&nbsp;&nbsp;&nbsp;if p &acirc;&#136;&#136; dom FS
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= default_client_config&nbsp;&nbsp;&nbsp;&nbsp;otherwise
+
+=cut</pre></td></tr>
+<tr><td class="h">268</td><td colspan="6"></td></tr><tr><td class="h">269</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub load_client {</td></tr>
+<tr><td class="h">270</td><td><div class="c3">281</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L270">281</a></div></td><td><div>5115666</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = positional(\@_, [&#39;path&#39;], { path =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 } }, &#39;load_client&#39;);</td></tr>
+<tr><td class="h">271</td><td><div class="c3">281</div></td><td></td><td></td><td></td><td><div>897</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $path = _or_default($args-&gt;{path}, \&amp;client_config_path);</td></tr>
+<tr><td class="h">272</td><td colspan="6"></td></tr><tr><td class="h">273</td><td><div class="c3">281</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L273">50</a></div></td><td></td><td></td><td><div>2041</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = -e $path ? _load_object($path) : default_client_config();</td></tr>
+<tr><td class="h">274</td><td colspan="6"></td></tr><tr><td class="h">275</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Older or hand-edited files may lack either section.</td></tr>
+<tr><td class="h">276</td><td><div class="c3">281</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L276">50</a></div></td><td></td><td></td><td><div>640</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$config-&gt;{repos} = {} unless ref($config-&gt;{repos}) eq &#39;HASH&#39;;</td></tr>
+<tr><td class="h">277</td><td><div class="c3">281</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L277">100</a></div></td><td></td><td></td><td><div>573</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$config-&gt;{ssh} = _default_ssh() unless ref($config-&gt;{ssh}) eq &#39;HASH&#39;;</td></tr>
+<tr><td class="h">278</td><td colspan="6"></td></tr><tr><td class="h">279</td><td><div class="c3">281</div></td><td></td><td></td><td></td><td><div>494</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $config;</td></tr>
+<tr><td class="h">280</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">281</td><td colspan="6"></td></tr><tr><td class="h">282 - 323</td><td colspan="5"></td><td class="s"><pre>=head2 save_client
+
+Purpose: write the client&#39;s repo list.
+
+Args: C&lt;\%config&gt;, optional C&lt;$path&gt;.
+
+Returns: the path written.
+
+Side Effects: replaces the file atomically, creating its directory.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App::FileSync::Config::save_client($config, $path);
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $written = App::FileSync::Config::save_client(App::FileSync::Config::default_client_config());
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ name =&gt; &#39;config&#39;, type =&gt; &#39;hashref&#39; },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ name =&gt; &#39;path&#39;,&nbsp;&nbsp;&nbsp;type =&gt; &#39;string&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;string&#39;, min =&gt; 1 }
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;io.write&nbsp;&nbsp;&nbsp;the file cannot be written&nbsp;&nbsp;&nbsp;&nbsp;check permissions and space
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Icirc;&#148;FS
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FS&#39;(path) = json(config) &acirc;&#129;&#128; &quot;\n&quot;
+
+=cut</pre></td></tr>
+<tr><td class="h">324</td><td colspan="6"></td></tr><tr><td class="h">325</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub save_client {</td></tr>
+<tr><td class="h">326</td><td><div class="c3">82</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L326">82</a></div></td><td><div>1674</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = positional(\@_, [qw(config path)], {</td></tr>
+<tr><td class="h">327</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config =&gt; { type =&gt; &#39;hashref&#39; },</td></tr>
+<tr><td class="h">328</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">329</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}, &#39;save_client&#39;);</td></tr>
+<tr><td class="h">330</td><td colspan="6"></td></tr><tr><td class="h">331</td><td><div class="c3">82</div></td><td></td><td></td><td></td><td><div>327</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $path = _or_default($args-&gt;{path}, \&amp;client_config_path);</td></tr>
+<tr><td class="h">332</td><td><div class="c3">82</div></td><td></td><td></td><td></td><td><div>143</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write_atomic($path, json_encode($args-&gt;{config}) . &quot;\n&quot;);</td></tr>
+<tr><td class="h">333</td><td colspan="6"></td></tr><tr><td class="h">334</td><td><div class="c3">82</div></td><td></td><td></td><td></td><td><div>154</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $path;</td></tr>
+<tr><td class="h">335</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">336</td><td colspan="6"></td></tr><tr><td class="h">337 - 379</td><td colspan="5"></td><td class="s"><pre>=head2 repo_meta_dir
+
+=head2 repo_config_path
+
+Purpose: where a repo&#39;s metadata (and its config file) lives on the server.
+
+Args: C&lt;$root&gt;, C&lt;$repo&gt;.
+
+Returns: F&lt;ROOT/.filesync/repos/REPO&gt; and F&lt;.../config.json&gt;.
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $meta = App::FileSync::Config::repo_meta_dir($root, $repo);
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print App::FileSync::Config::repo_config_path(&#39;/srv/filesync&#39;, &#39;docs&#39;), &quot;\n&quot;;
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ name =&gt; &#39;root&#39;, type =&gt; &#39;string&#39;, min =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ name =&gt; &#39;repo&#39;, type =&gt; &#39;string&#39;, min =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;string&#39;, min =&gt; 1 }
+
+=head3 MESSAGES
+
+None.
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repo_meta_dir(r, n) = r / &quot;.filesync&quot; / &quot;repos&quot; / n
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repo_config_path(r, n) = repo_meta_dir(r, n) / &quot;config.json&quot;
+
+=cut</pre></td></tr>
+<tr><td class="h">380</td><td colspan="6"></td></tr><tr><td class="h">381</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub repo_meta_dir {</td></tr>
+<tr><td class="h">382</td><td><div class="c3">2612</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L382">2612</a></div></td><td><div>1685</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($root, $repo) = @_;</td></tr>
+<tr><td class="h">383</td><td colspan="6"></td></tr><tr><td class="h">384</td><td><div class="c3">2612</div></td><td></td><td></td><td></td><td><div>14764</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catdir($root, &#39;.filesync&#39;, &#39;repos&#39;, $repo);</td></tr>
+<tr><td class="h">385</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">386</td><td colspan="6"></td></tr><tr><td class="h">387</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub repo_config_path {</td></tr>
+<tr><td class="h">388</td><td><div class="c3">645</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L388">645</a></div></td><td><div>1337</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($root, $repo) = @_;</td></tr>
+<tr><td class="h">389</td><td colspan="6"></td></tr><tr><td class="h">390</td><td><div class="c3">645</div></td><td></td><td></td><td></td><td><div>834</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile(repo_meta_dir($root, $repo), &#39;config.json&#39;);</td></tr>
+<tr><td class="h">391</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">392</td><td colspan="6"></td></tr><tr><td class="h">393 - 434</td><td colspan="5"></td><td class="s"><pre>=head2 default_repo_config
+
+Purpose: the policy of a newly created repo.
+
+Args: C&lt;$name&gt;.
+
+Returns: a new hashref: 30 days of trash, at most 200 or 10% of known files
+deleted per session, inline conflict copies, modes preserved, symlinks not
+followed, no clients, the default ignore list.
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = App::FileSync::Config::default_repo_config(&#39;docs&#39;);
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = App::FileSync::Config::default_repo_config(&#39;photos&#39;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$config-&gt;{trash_days} = 90;
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ { name =&gt; &#39;name&#39;, type =&gt; &#39;string&#39;, min =&gt; 1 } ]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;hashref&#39; }
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;args.invalid&nbsp;&nbsp;&nbsp;no name was given&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pass the repo name
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_repo_config(n) = &acirc;&#159;&uml;name &acirc;&#134;&brvbar; n, trash_days &acirc;&#134;&brvbar; 30, max_deletes &acirc;&#134;&brvbar; 200,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_delete_percent &acirc;&#134;&brvbar; 10, clients &acirc;&#134;&brvbar; &acirc;&#136;&#133;, ignore &acirc;&#134;&brvbar; DEFAULT_IGNORE, ...&acirc;&#159;&copy;
+
+=cut</pre></td></tr>
+<tr><td class="h">435</td><td colspan="6"></td></tr><tr><td class="h">436</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub default_repo_config {</td></tr>
+<tr><td class="h">437</td><td><div class="c3">77</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L437">77</a></div></td><td><div>391</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = positional(\@_, [&#39;name&#39;], { name =&gt; {%PATH_RULE} }, &#39;default_repo_config&#39;);</td></tr>
+<tr><td class="h">438</td><td colspan="6"></td></tr><tr><td class="h">439</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return {</td></tr>
+<tr><td class="h">440</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; 1,</td></tr>
+<tr><td class="h">441</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $args-&gt;{name},</td></tr>
+<tr><td class="h">442</td><td><div class="c3">77</div></td><td></td><td></td><td></td><td><div>687</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; scalar(gmtime()) . &#39; UTC&#39;,</td></tr>
+<tr><td class="h">443</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trash_days&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $TRASH_DAYS,</td></tr>
+<tr><td class="h">444</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_deletes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $MAX_DELETES,</td></tr>
+<tr><td class="h">445</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_delete_percent =&gt; $MAX_DELETE_PERCENT,</td></tr>
+<tr><td class="h">446</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conflicts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;inline&#39;,</td></tr>
+<tr><td class="h">447</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preserve_mode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; JSON::PP::true,</td></tr>
+<tr><td class="h">448</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_symlinks&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; JSON::PP::false,</td></tr>
+<tr><td class="h">449</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clients&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; {},</td></tr>
+<tr><td class="h">450</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; [ @DEFAULT_IGNORE ],</td></tr>
+<tr><td class="h">451</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
+<tr><td class="h">452</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">453</td><td colspan="6"></td></tr><tr><td class="h">454 - 499</td><td colspan="5"></td><td class="s"><pre>=head2 load_repo
+
+Purpose: read a repo&#39;s policy from the server root.
+
+Args: C&lt;$root&gt;, C&lt;$repo&gt;.
+
+Returns: the configuration hashref; C&lt;ignore&gt; is always an array and
+C&lt;clients&gt; always a hash.
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = App::FileSync::Config::load_repo($root, &#39;docs&#39;);
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = App::FileSync::Config::load_repo(&#39;/srv/filesync&#39;, &#39;docs&#39;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print &quot;$config-&gt;{trash_days} days of trash\n&quot;;
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ name =&gt; &#39;root&#39;, type =&gt; &#39;string&#39;, min =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ name =&gt; &#39;repo&#39;, type =&gt; &#39;string&#39;, min =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;hashref&#39; }
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config.no_repo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no such repo under the root&nbsp;&nbsp;&nbsp;&nbsp;filesync-admin repo create
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config.parse&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the file is not valid JSON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix it by hand
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config.not_object&nbsp;&nbsp;&nbsp;the JSON is not an object&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix it by hand
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;load_repo(r, n) = normalise(json(FS(repo_config_path(r, n))))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pre repo_config_path(r, n) &acirc;&#136;&#136; dom FS
+
+=cut</pre></td></tr>
+<tr><td class="h">500</td><td colspan="6"></td></tr><tr><td class="h">501</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub load_repo {</td></tr>
+<tr><td class="h">502</td><td><div class="c3">413</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L502">413</a></div></td><td><div>1397</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = positional(\@_, [qw(root repo)], {%ROOT_REPO}, &#39;load_repo&#39;);</td></tr>
+<tr><td class="h">503</td><td><div class="c3">413</div><div class="c3">413</div></td><td></td><td></td><td></td><td><div>641</div><div>589</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($root, $repo) = @{$args}{qw(root repo)};</td></tr>
+<tr><td class="h">504</td><td colspan="6"></td></tr><tr><td class="h">505</td><td><div class="c3">413</div></td><td></td><td></td><td></td><td><div>696</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $path = repo_config_path($root, $repo);</td></tr>
+<tr><td class="h">506</td><td><div class="c3">413</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L506">100</a></div></td><td></td><td></td><td><div>2649</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;config.no_repo&#39;, { repo =&gt; $repo, root =&gt; $root }) unless -e $path;</td></tr>
+<tr><td class="h">507</td><td colspan="6"></td></tr><tr><td class="h">508</td><td><div class="c3">411</div></td><td></td><td></td><td></td><td><div>808</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = _load_object($path);</td></tr>
+<tr><td class="h">509</td><td><div class="c3">411</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L509">50</a></div></td><td></td><td></td><td><div>670</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$config-&gt;{ignore} = [ @DEFAULT_IGNORE ] unless ref($config-&gt;{ignore}) eq &#39;ARRAY&#39;;</td></tr>
+<tr><td class="h">510</td><td><div class="c3">411</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Config-pm--branch.html#L510">50</a></div></td><td></td><td></td><td><div>725</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$config-&gt;{clients} = {} unless ref($config-&gt;{clients}) eq &#39;HASH&#39;;</td></tr>
+<tr><td class="h">511</td><td colspan="6"></td></tr><tr><td class="h">512</td><td><div class="c3">411</div></td><td></td><td></td><td></td><td><div>892</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $config;</td></tr>
+<tr><td class="h">513</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">514</td><td colspan="6"></td></tr><tr><td class="h">515 - 561</td><td colspan="5"></td><td class="s"><pre>=head2 save_repo
+
+Purpose: write a repo&#39;s policy.
+
+Args: C&lt;$root&gt;, C&lt;$repo&gt;, C&lt;\%config&gt;.
+
+Returns: the path written.
+
+Side Effects: creates the repo&#39;s metadata directory; replaces the file
+atomically.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App::FileSync::Config::save_repo($root, &#39;docs&#39;, $config);
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = App::FileSync::Config::load_repo($root, &#39;docs&#39;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$config-&gt;{trash_days} = 60;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App::FileSync::Config::save_repo($root, &#39;docs&#39;, $config);
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ name =&gt; &#39;root&#39;,&nbsp;&nbsp;&nbsp;type =&gt; &#39;string&#39;, min =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ name =&gt; &#39;repo&#39;,&nbsp;&nbsp;&nbsp;type =&gt; &#39;string&#39;, min =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ name =&gt; &#39;config&#39;, type =&gt; &#39;hashref&#39; },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;string&#39;, min =&gt; 1 }
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;io.mkdir&nbsp;&nbsp;&nbsp;the directory cannot be made&nbsp;&nbsp;check permissions
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;io.write&nbsp;&nbsp;&nbsp;the file cannot be written&nbsp;&nbsp;&nbsp;&nbsp;check permissions and space
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Icirc;&#148;FS
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FS&#39;(repo_config_path(r, n)) = json(config) &acirc;&#129;&#128; &quot;\n&quot;
+
+=cut</pre></td></tr>
+<tr><td class="h">562</td><td colspan="6"></td></tr><tr><td class="h">563</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub save_repo {</td></tr>
+<tr><td class="h">564</td><td><div class="c3">154</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L564">154</a></div></td><td><div>590</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = positional(\@_, [qw(root repo config)], {</td></tr>
+<tr><td class="h">565</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%ROOT_REPO,</td></tr>
+<tr><td class="h">566</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config =&gt; { type =&gt; &#39;hashref&#39; },</td></tr>
+<tr><td class="h">567</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}, &#39;save_repo&#39;);</td></tr>
+<tr><td class="h">568</td><td><div class="c3">154</div><div class="c3">154</div></td><td></td><td></td><td></td><td><div>219</div><div>153</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($root, $repo) = @{$args}{qw(root repo)};</td></tr>
+<tr><td class="h">569</td><td colspan="6"></td></tr><tr><td class="h">570</td><td><div class="c3">154</div></td><td></td><td></td><td></td><td><div>144</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ensure_dir(repo_meta_dir($root, $repo));</td></tr>
+<tr><td class="h">571</td><td><div class="c3">154</div></td><td></td><td></td><td></td><td><div>151</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $path = repo_config_path($root, $repo);</td></tr>
+<tr><td class="h">572</td><td><div class="c3">154</div></td><td></td><td></td><td></td><td><div>267</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write_atomic($path, json_encode($args-&gt;{config}) . &quot;\n&quot;);</td></tr>
+<tr><td class="h">573</td><td colspan="6"></td></tr><tr><td class="h">574</td><td><div class="c3">154</div></td><td></td><td></td><td></td><td><div>267</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $path;</td></tr>
+<tr><td class="h">575</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">576</td><td colspan="6"></td></tr><tr><td class="h">577</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _load_object</td></tr>
+<tr><td class="h">578</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;read a JSON file that must hold an object.</td></tr>
+<tr><td class="h">579</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$path exists.</td></tr>
+<tr><td class="h">580</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns the decoded hashref.</td></tr>
+<tr><td class="h">581</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: raises config.parse or config.not_object.</td></tr>
+<tr><td class="h">582</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _load_object :Private {</td></tr>
+<tr><td class="h">583</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($path) = @_;</td></tr>
+<tr><td class="h">584</td><td colspan="6"></td></tr><tr><td class="h">585</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $text = read_text($path);</td></tr>
+<tr><td class="h">586</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $data = eval { json_decode($text) };</td></tr>
+<tr><td class="h">587</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;config.parse&#39;, { path =&gt; $path, error =&gt; strip_location($@) }) if $@;</td></tr>
+<tr><td class="h">588</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;config.not_object&#39;, { path =&gt; $path }) unless ref($data) eq &#39;HASH&#39;;</td></tr>
+<tr><td class="h">589</td><td colspan="6"></td></tr><tr><td class="h">590</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $data;</td></tr>
+<tr><td class="h">591</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L591">314</a></div></td><td><div>336</div><div>146</div><div>2866</div></td><td class="s">}</td></tr>
+<tr><td class="h">592</td><td colspan="6"></td></tr><tr><td class="h">593</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _default_ssh</td></tr>
+<tr><td class="h">594</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the ssh section of a client config that has none.</td></tr>
+<tr><td class="h">595</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;none.</td></tr>
+<tr><td class="h">596</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns a new hashref.</td></tr>
+<tr><td class="h">597</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">598</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _default_ssh :Private {</td></tr>
+<tr><td class="h">599</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return { command =&gt; &#39;ssh&#39;, extra_args =&gt; [] };</td></tr>
+<tr><td class="h">600</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L600">314</a></div></td><td><div>50823</div><div>173</div><div>1086</div></td><td class="s">}</td></tr>
+<tr><td class="h">601</td><td colspan="6"></td></tr><tr><td class="h">602</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _env</td></tr>
+<tr><td class="h">603</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;an environment variable, treating empty as unset.</td></tr>
+<tr><td class="h">604</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name is the variable&#39;s name.</td></tr>
+<tr><td class="h">605</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns the value, or undef when unset or empty.</td></tr>
+<tr><td class="h">606</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">607</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _env :Private {</td></tr>
+<tr><td class="h">608</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($name) = @_;</td></tr>
+<tr><td class="h">609</td><td colspan="6"></td></tr><tr><td class="h">610</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $value = $ENV{$name};</td></tr>
+<tr><td class="h">611</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (defined $value &amp;&amp; length $value) ? $value : undef;</td></tr>
+<tr><td class="h">612</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L612">314</a></div></td><td><div>42740</div><div>157</div><div>860</div></td><td class="s">}</td></tr>
+<tr><td class="h">613</td><td colspan="6"></td></tr><tr><td class="h">614</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _or_default</td></tr>
+<tr><td class="h">615</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use a given path, or compute the default one.</td></tr>
+<tr><td class="h">616</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$given may be undef or empty; $default is a coderef.</td></tr>
+<tr><td class="h">617</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns the path to use.</td></tr>
+<tr><td class="h">618</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: whatever $default does (reads %ENV).</td></tr>
+<tr><td class="h">619</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _or_default :Private {</td></tr>
+<tr><td class="h">620</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($given, $default) = @_;</td></tr>
+<tr><td class="h">621</td><td colspan="6"></td></tr><tr><td class="h">622</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (defined $given &amp;&amp; length $given) ? $given : $default-&gt;();</td></tr>
+<tr><td class="h">623</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Config-pm--subroutine.html#L623">314</a></div></td><td><div>41544</div><div>139</div><div>786</div></td><td class="s">}</td></tr>
+<tr><td class="h">624</td><td colspan="6"></td></tr><tr><td class="h">625</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
+<tr><td class="h">626</td><td colspan="6"></td></tr></table>
 </body>
 </html>

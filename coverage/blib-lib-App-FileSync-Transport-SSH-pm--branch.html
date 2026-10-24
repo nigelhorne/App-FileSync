@@ -20,53 +20,24 @@ https://pjcj.net
 <h1>Branch Coverage</h1>
 <table>
 <tr><td class="h" align="right">File:</td><td align="left">blib/lib/App/FileSync/Transport/SSH.pm</td></tr>
-<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">58.5%</td></tr>
+<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">73.1%</td></tr>
 </table>
 <div><br/></div>
 <table>
 <tr><th>line</th><th>%</th><th colspan="2">coverage</th><th>branch</th></tr>
-<tr><td class="h"><a id="L20">20</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $server and length $server</td></tr>
-<tr><td class="h"><a id="L21">21</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless valid_server($server)</td></tr>
-<tr><td class="h"><a id="L24">24</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $repo and length $repo</td></tr>
-<tr><td class="h"><a id="L26">26</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $repo_ok</td></tr>
-<tr><td class="h"><a id="L29">29</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $client and length $client</td></tr>
-<tr><td class="h"><a id="L31">31</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $client_ok</td></tr>
-<tr><td class="h"><a id="L34">34</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $role eq &quot;client&quot; or $role eq &quot;replica&quot;</td></tr>
-<tr><td class="h"><a id="L39">39</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">defined $args{&#39;server_command&#39;} &amp;&amp; length $args{&#39;server_command&#39;} ? :</td></tr>
-<tr><td class="h"><a id="L40">40</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless valid_program($program)</td></tr>
-<tr><td class="h"><a id="L44">44</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $args{&#39;host_key_checking&#39;} &amp;&amp; length $args{&#39;host_key_checking&#39;} ? :</td></tr>
-<tr><td class="h"><a id="L45">45</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $checking eq &quot;yes&quot; or $checking eq &quot;accept-new&quot;</td></tr>
-<tr><td class="h"><a id="L48">48</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">defined $args{&#39;command&#39;} &amp;&amp; length $args{&#39;command&#39;} ? :</td></tr>
-<tr><td class="h"><a id="L56">56</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (defined $args{&#39;known_hosts&#39;} and length $args{&#39;known_hosts&#39;})</td></tr>
-<tr><td class="h"><a id="L58">58</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if $args{&#39;known_hosts&#39;} =~ /[\0\n]/</td></tr>
-<tr><td class="h"><a id="L62">62</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (defined $args{&#39;identity&#39;} and length $args{&#39;identity&#39;})</td></tr>
-<tr><td class="h"><a id="L63">63</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if $args{&#39;identity&#39;} =~ /[\0\n]/</td></tr>
-<tr><td class="h"><a id="L67">67</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (defined $args{&#39;port&#39;} and length $args{&#39;port&#39;})</td></tr>
-<tr><td class="h"><a id="L69">69</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $args{&#39;port&#39;} =~ /\A\d{1,5}\z/ and $args{&#39;port&#39;} &gt; 0 and $args{&#39;port&#39;} &lt; 65536</td></tr>
-<tr><td class="h"><a id="L73">73</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $args{&#39;extra_args&#39;}</td></tr>
-<tr><td class="h"><a id="L74">74</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">if not defined $extra or ref $extra or $extra =~ /[\0\n]/</td></tr>
-<tr><td class="h"><a id="L91">91</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if ($^O eq &quot;MSWin32&quot; and $command[0] =~ /\.(?:cmd|bat)\z/i)</td></tr>
-<tr><td class="h"><a id="L94">94</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">defined $ENV{&#39;COMSPEC&#39;} &amp;&amp; length $ENV{&#39;COMSPEC&#39;} ? :</td></tr>
-<tr><td class="h"><a id="L103">103</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless open my $err_fh, &quot;&gt;&quot;, $err_path</td></tr>
-<tr><td class="h"><a id="L140">140</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if $self-&gt;{&#39;closed&#39;}</td></tr>
-<tr><td class="h"><a id="L143">143</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">if $self-&gt;{&#39;writer&#39;}</td></tr>
-<tr><td class="h"><a id="L144">144</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">if $self-&gt;{&#39;reader&#39;}</td></tr>
-<tr><td class="h"><a id="L146">146</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">if ($self-&gt;{&#39;pid&#39;})</td></tr>
-<tr><td class="h"><a id="L156">156</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">($self-&gt;{&#39;status&#39;} || 0) == 0 ? :</td></tr>
-<tr><td class="h"><a id="L166">166</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $text and length $text</td></tr>
-<tr><td class="h"><a id="L177">177</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $path and -e $path</td></tr>
-<tr><td class="h"><a id="L178">178</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless open my $fh, &quot;&lt;&quot;, $path</td></tr>
-<tr><td class="h"><a id="L183">183</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">defined $text ? :</td></tr>
-<tr><td class="h"><a id="L191">191</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless defined $value and length $value</td></tr>
-<tr><td class="h"><a id="L192">192</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $value =~ /[\s\0\n]/</td></tr>
-<tr><td class="h"><a id="L194">194</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$value =~ /\A(?:[A-Za-z0-9._-]+@)?
-&#12;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(?:[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?|\[[0-9A-Fa-f:]+\])\z/x ? :</td></tr>
-<tr><td class="h"><a id="L201">201</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $value and length $value</td></tr>
-<tr><td class="h"><a id="L202">202</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $value =~ /[\s\0\n&#39;&quot;;&amp;|&lt;&gt;]/</td></tr>
-<tr><td class="h"><a id="L203">203</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if index($value, &quot;`&quot;) != -1</td></tr>
-<tr><td class="h"><a id="L204">204</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if index($value, &quot;\$&quot;) != -1</td></tr>
-<tr><td class="h"><a id="L205">205</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if index($value, &quot;\\&quot;) != -1</td></tr>
-<tr><td class="h"><a id="L207">207</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">$value =~ m[\A[A-Za-z0-9._/-]+\z] ? :</td></tr>
+<tr><td class="h"><a id="L165">165</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $args-&gt;{$required} and length $args-&gt;{$required}</td></tr>
+<tr><td class="h"><a id="L172">172</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $ok</td></tr>
+<tr><td class="h"><a id="L186">186</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (defined(my $known = _given($args-&gt;{&#39;known_hosts&#39;})))</td></tr>
+<tr><td class="h"><a id="L190">190</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (defined(my $identity = _given($args-&gt;{&#39;identity&#39;})))</td></tr>
+<tr><td class="h"><a id="L194">194</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (defined(my $port = _given($args-&gt;{&#39;port&#39;})))</td></tr>
+<tr><td class="h"><a id="L198">198</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $args-&gt;{&#39;extra_args&#39;}</td></tr>
+<tr><td class="h"><a id="L208">208</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if ($^O eq &quot;MSWin32&quot; and $command[0] =~ /\.(?:cmd|bat)\z/i)</td></tr>
+<tr><td class="h"><a id="L328">328</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if $self-&gt;{&#39;closed&#39;}++</td></tr>
+<tr><td class="h"><a id="L334">334</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">if ($self-&gt;{&#39;pid&#39;})</td></tr>
+<tr><td class="h"><a id="L341">341</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">($self-&gt;{&#39;status&#39;} || 0) == 0 ? :</td></tr>
+<tr><td class="h"><a id="L385">385</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">length $self-&gt;{&#39;stderr&#39;} ? :</td></tr>
+<tr><td class="h"><a id="L442">442</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $value &amp;&amp; $value =~ /$SERVER/ ? :</td></tr>
+<tr><td class="h"><a id="L448">448</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $value &amp;&amp; $value =~ /$PROGRAM/ ? :</td></tr>
 </table>
 </body>
 </html>

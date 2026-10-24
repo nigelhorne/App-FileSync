@@ -20,38 +20,18 @@ https://pjcj.net
 <h1>Branch Coverage</h1>
 <table>
 <tr><td class="h" align="right">File:</td><td align="left">blib/lib/App/FileSync/Scan.pm</td></tr>
-<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">70.5%</td></tr>
+<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">57.1%</td></tr>
 </table>
 <div><br/></div>
 <table>
 <tr><th>line</th><th>%</th><th colspan="2">coverage</th><th>branch</th></tr>
-<tr><td class="h"><a id="L22">22</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $root and length $root</td></tr>
-<tr><td class="h"><a id="L49">49</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless (opendir $dh, $abs)</td></tr>
-<tr><td class="h"><a id="L55">55</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $_ ne &quot;.&quot;</td></tr>
-<tr><td class="h"><a id="L61">61</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">length $rel ? :</td></tr>
-<tr><td class="h"><a id="L63">63</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $context-&gt;{&#39;ignore&#39;} and $context-&gt;{&#39;ignore&#39;}-&gt;match($child_rel)</td></tr>
-<tr><td class="h"><a id="L67">67</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless (@stat)</td></tr>
-<tr><td class="h"><a id="L73">73</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (-d _)</td></tr>
-<tr><td class="h"><a id="L76">76</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if ($inside == 0)</td></tr>
-<tr><td class="h"><a id="L83">83</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (-f _)</td></tr>
-<tr><td class="h"><a id="L85">85</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $entry</td></tr>
-<tr><td class="h"><a id="L93">93</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">if (-l _)</td></tr>
-<tr><td class="h"><a id="L112">112</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $args{&#39;max_age&#39;} ? :</td></tr>
-<tr><td class="h"><a id="L113">113</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $root and length $root and -d $root</td></tr>
-<tr><td class="h"><a id="L122">122</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless opendir $dh, $dir</td></tr>
-<tr><td class="h"><a id="L125">125</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $name eq &quot;.&quot; or $name eq &quot;..&quot;</td></tr>
-<tr><td class="h"><a id="L128">128</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless @stat</td></tr>
-<tr><td class="h"><a id="L129">129</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (-d _)</td></tr>
-<tr><td class="h"><a id="L133">133</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">unless $name =~ /\A\.filesync-tmp-/</td></tr>
-<tr><td class="h"><a id="L134">134</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">if $now - $stat[9] &lt; $max_age</td></tr>
-<tr><td class="h"><a id="L135">135</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">if unlink $path</td></tr>
-<tr><td class="h"><a id="L153">153</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if ($cached and ($cached-&gt;{&#39;t&#39;} || &#39;&#39;) eq &#39;f&#39; and defined $cached-&gt;{&#39;h&#39;} and $cached-&gt;{&#39;s&#39;} == $size and abs(($cached-&gt;{&#39;m&#39;} // -1) - $mtime) &lt; 0.001) { }</td></tr>
-<tr><td class="h"><a id="L162">162</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless (eval {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$sha-&gt;addfile($abs, &quot;b&quot;);
-1
-}
-})</td></tr>
+<tr><td class="h"><a id="L243">243</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $root and length $root and -d $root</td></tr>
+<tr><td class="h"><a id="L245">245</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $args-&gt;{&#39;max_age&#39;} ? :</td></tr>
+<tr><td class="h"><a id="L254">254</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless list_dir($dir)</td></tr>
+<tr><td class="h"><a id="L256">256</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless my(@stat) = &amp;Time::HiRes::lstat($path)</td></tr>
+<tr><td class="h"><a id="L257">257</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (-d _) { }</td></tr>
+<tr><td class="h"></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">elsif ($name =~ /$TEMP_NAME/ and $now - $stat[9] &gt;= $max_age) { }</td></tr>
+<tr><td class="h"><a id="L261">261</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">if unlink $path</td></tr>
 </table>
 </body>
 </html>

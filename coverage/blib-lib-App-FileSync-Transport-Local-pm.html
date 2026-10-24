@@ -20,71 +20,277 @@ https://pjcj.net
 <h1>File Coverage</h1>
 <table>
 <tr><td class="h" align="right">File:</td><td align="left">blib/lib/App/FileSync/Transport/Local.pm</td></tr>
-<tr><td class="h" align="right">Coverage:</td><td align="left" class="c1">81.8%</td></tr>
+<tr><td class="h" align="right">Coverage:</td><td align="left" class="c1">89.4%</td></tr>
 </table>
 <div><br/></div>
 <table>
 <tr><th>line</th><th>stmt</th><th>bran</th><th>cond</th><th>sub</th><th>time</th><th>code</th></tr>
 <tr><td class="h">1</td><td></td><td></td><td></td><td></td><td></td><td class="s">package App::FileSync::Transport::Local;</td></tr>
-<tr><td class="h">2</td><td colspan="6"></td></tr><tr><td class="h">3</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L3">297</a></div></td><td><div>703</div><div>233</div><div>3852</div></td><td class="s">use strict;</td></tr>
-<tr><td class="h">4</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L4">297</a></div></td><td><div>457</div><div>226</div><div>5726</div></td><td class="s">use warnings;</td></tr>
-<tr><td class="h">5</td><td colspan="6"></td></tr><tr><td class="h">6</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L6">297</a></div></td><td><div>473</div><div>218</div><div>5482</div></td><td class="s">use File::Basename qw(dirname);</td></tr>
-<tr><td class="h">7</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L7">297</a></div></td><td><div>500</div><div>233</div><div>2089</div></td><td class="s">use File::Spec;</td></tr>
-<tr><td class="h">8</td><td><div class="c3">297</div><div class="c3">297</div><div class="c3">297</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L8">297</a></div></td><td><div>53593</div><div>354991</div><div>48455</div></td><td class="s">use IPC::Open3 ();</td></tr>
-<tr><td class="h">9</td><td colspan="6"></td></tr><tr><td class="h">10</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Runs filesync-server as a child process and speaks the wire protocol over its pipes.</td></tr>
-<tr><td class="h">11</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Used by the test suite, and for a server directory that is local to the client.</td></tr>
-<tr><td class="h">12</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub new {</td></tr>
-<tr><td class="h">13</td><td><div class="c3">149</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L13">149</a></div></td><td><div>730</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($class, %args) = @_;</td></tr>
-<tr><td class="h">14</td><td colspan="6"></td></tr><tr><td class="h">15</td><td><div class="c3">149</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-Local-pm--branch.html#L15">50</a></div></td><td></td><td></td><td><div>287</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $root&nbsp;&nbsp;&nbsp;= $args{root}&nbsp;&nbsp;&nbsp;or die &quot;Local transport: no server root\n&quot;;</td></tr>
-<tr><td class="h">16</td><td><div class="c3">149</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-Local-pm--branch.html#L16">50</a></div></td><td></td><td></td><td><div>282</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $repo&nbsp;&nbsp;&nbsp;= $args{repo}&nbsp;&nbsp;&nbsp;or die &quot;Local transport: no repo\n&quot;;</td></tr>
-<tr><td class="h">17</td><td><div class="c3">149</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-Local-pm--branch.html#L17">50</a></div></td><td></td><td></td><td><div>219</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $client = $args{client} or die &quot;Local transport: no client id\n&quot;;</td></tr>
-<tr><td class="h">18</td><td><div class="c3">149</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-Local-pm--condition.html#L18">50</a></div></td><td></td><td><div>277</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $role&nbsp;&nbsp;&nbsp;= $args{role} || &#39;client&#39;;</td></tr>
-<tr><td class="h">19</td><td colspan="6"></td></tr><tr><td class="h">20</td><td><div class="c3">149</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-Local-pm--condition.html#L20">33</a></div></td><td></td><td><div>522</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $binary = $args{server_bin} || _default_server_bin();</td></tr>
-<tr><td class="h">21</td><td colspan="6"></td></tr><tr><td class="h">22</td><td><div class="c3">149</div></td><td></td><td></td><td></td><td><div>483</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my @command = (</td></tr>
-<tr><td class="h">23</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$^X, $binary,</td></tr>
-<tr><td class="h">24</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--root&#39;, $root,</td></tr>
-<tr><td class="h">25</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--repo&#39;, $repo,</td></tr>
-<tr><td class="h">26</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--client&#39;, $client,</td></tr>
-<tr><td class="h">27</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--role&#39;, $role,</td></tr>
-<tr><td class="h">28</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
-<tr><td class="h">29</td><td colspan="6"></td></tr><tr><td class="h">30</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# stderr must NOT share the stdout pipe: that sends the child&#39;s diagnostics</td></tr>
-<tr><td class="h">31</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# into the protocol stream and corrupts it the first time the server warns</td></tr>
-<tr><td class="h">32</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# about anything.&nbsp;&nbsp;&quot;&amp;&gt;STDERR&quot; dups the parent&#39;s stderr; passing a filehandle</td></tr>
-<tr><td class="h">33</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# here does not redirect the child at all - it leaves the child writing into</td></tr>
-<tr><td class="h">34</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# an unread pipe, so the first log line kills it with SIGPIPE.</td></tr>
-<tr><td class="h">35</td><td><div class="c3">149</div></td><td></td><td></td><td></td><td><div>146</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($writer, $reader);</td></tr>
-<tr><td class="h">36</td><td><div class="c3">149</div></td><td></td><td></td><td></td><td><div>506</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $pid = IPC::Open3::open3($writer, $reader, &#39;&gt;&amp;STDERR&#39;, @command);</td></tr>
-<tr><td class="h">37</td><td colspan="6"></td></tr><tr><td class="h">38</td><td><div class="c3">149</div></td><td></td><td></td><td></td><td><div>420398</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return bless {</td></tr>
-<tr><td class="h">39</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pid&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $pid,</td></tr>
-<tr><td class="h">40</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;writer =&gt; $writer,</td></tr>
-<tr><td class="h">41</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reader =&gt; $reader,</td></tr>
-<tr><td class="h">42</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}, $class;</td></tr>
-<tr><td class="h">43</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">44</td><td colspan="6"></td></tr><tr><td class="h">45</td><td><div class="c3">149</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L45">149</a></div></td><td><div>776</div></td><td class="s">sub reader { $_[0]{reader} }</td></tr>
-<tr><td class="h">46</td><td><div class="c3">149</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L46">149</a></div></td><td><div>1353</div></td><td class="s">sub writer { $_[0]{writer} }</td></tr>
-<tr><td class="h">47</td><td colspan="6"></td></tr><tr><td class="h">48</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub close {</td></tr>
-<tr><td class="h">49</td><td><div class="c3">149</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L49">149</a></div></td><td><div>835</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">50</td><td colspan="6"></td></tr><tr><td class="h">51</td><td><div class="c3">149</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-Local-pm--branch.html#L51">50</a></div></td><td></td><td></td><td><div>287</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return 1 if $self-&gt;{closed};</td></tr>
-<tr><td class="h">52</td><td><div class="c3">149</div></td><td></td><td></td><td></td><td><div>218</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;{closed} = 1;</td></tr>
-<tr><td class="h">53</td><td colspan="6"></td></tr><tr><td class="h">54</td><td><div class="c3">149</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-Local-pm--branch.html#L54">50</a></div></td><td></td><td></td><td><div>924</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;close $self-&gt;{writer} if $self-&gt;{writer};</td></tr>
-<tr><td class="h">55</td><td><div class="c3">149</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-Local-pm--branch.html#L55">50</a></div></td><td></td><td></td><td><div>582</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;close $self-&gt;{reader} if $self-&gt;{reader};</td></tr>
-<tr><td class="h">56</td><td colspan="6"></td></tr><tr><td class="h">57</td><td><div class="c3">149</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-Local-pm--branch.html#L57">50</a></div></td><td></td><td></td><td><div>178843684</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;waitpid($self-&gt;{pid}, 0) if $self-&gt;{pid};</td></tr>
-<tr><td class="h">58</td><td colspan="6"></td></tr><tr><td class="h">59</td><td><div class="c3">149</div></td><td></td><td></td><td></td><td><div>1553</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return 1;</td></tr>
-<tr><td class="h">60</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">61</td><td colspan="6"></td></tr><tr><td class="h">62</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _default_server_bin {</td></tr>
-<tr><td class="h">63</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $ENV{FILESYNC_SERVER_BIN}</td></tr>
-<tr><td class="h">64</td><td><div class="c3">149</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-Local-pm--branch.html#L64">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-Local-pm--condition.html#L64">33</a></div></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L64">149</a></div></td><td><div>262</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if defined $ENV{FILESYNC_SERVER_BIN} &amp;&amp; length $ENV{FILESYNC_SERVER_BIN};</td></tr>
-<tr><td class="h">65</td><td colspan="6"></td></tr><tr><td class="h">66</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# Works from lib/ in a checkout and from blib/lib/ under &quot;make test&quot;: walk up</td></tr>
-<tr><td class="h">67</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# until a bin/filesync-server is found, then fall back to PATH (installed).</td></tr>
-<tr><td class="h">68</td><td><div class="c3">149</div></td><td></td><td></td><td></td><td><div>2586</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $directory = dirname(__FILE__);</td></tr>
-<tr><td class="h">69</td><td><div class="c3">149</div></td><td></td><td></td><td></td><td><div>283</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;for (1 .. 6) {</td></tr>
-<tr><td class="h">70</td><td><div class="c3">888</div></td><td></td><td></td><td></td><td><div>2308</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $candidate = File::Spec-&gt;catfile($directory, &#39;bin&#39;, &#39;filesync-server&#39;);</td></tr>
-<tr><td class="h">71</td><td><div class="c3">888</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-Local-pm--branch.html#L71">100</a></div></td><td></td><td></td><td><div>3704</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $candidate if -f $candidate;</td></tr>
-<tr><td class="h">72</td><td><div class="c3">739</div></td><td></td><td></td><td></td><td><div>7180</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$directory = dirname($directory);</td></tr>
-<tr><td class="h">73</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">74</td><td colspan="6"></td></tr><tr><td class="h">75</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return &#39;filesync-server&#39;;</td></tr>
-<tr><td class="h">76</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">77</td><td colspan="6"></td></tr><tr><td class="h">78</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
-</table>
+<tr><td class="h">2</td><td colspan="6"></td></tr><tr><td class="h">3</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Runs filesync-server as a child process and speaks the wire protocol over</td></tr>
+<tr><td class="h">4</td><td></td><td></td><td></td><td></td><td></td><td class="s"># its pipes.&nbsp;&nbsp;Used by the test suite, and for a server directory that is</td></tr>
+<tr><td class="h">5</td><td></td><td></td><td></td><td></td><td></td><td class="s"># local to the client (a NAS mount, say).</td></tr>
+<tr><td class="h">6</td><td colspan="6"></td></tr><tr><td class="h">7</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L7">313</a></div></td><td><div>313</div><div>175</div><div>1570</div></td><td class="s">use App::FileSync::Platform;</td></tr>
+<tr><td class="h">8</td><td colspan="6"></td></tr><tr><td class="h">9</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L9">313</a></div></td><td><div>268</div><div>170</div><div>1264</div></td><td class="s">use strict;</td></tr>
+<tr><td class="h">10</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L10">313</a></div></td><td><div>260</div><div>166</div><div>3927</div></td><td class="s">use warnings;</td></tr>
+<tr><td class="h">11</td><td colspan="6"></td></tr><tr><td class="h">12</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Not :all - this class has a close method, and autodie replaces a package&#39;s</td></tr>
+<tr><td class="h">13</td><td></td><td></td><td></td><td></td><td></td><td class="s"># subs named after the builtins it wraps.</td></tr>
+<tr><td class="h">14</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L14">313</a></div></td><td><div>257</div><div>169</div><div>420</div></td><td class="s">use autodie qw(open);</td></tr>
+<tr><td class="h">15</td><td colspan="6"></td></tr><tr><td class="h">16</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L16">313</a></div></td><td><div>22949</div><div>195</div><div>3942</div></td><td class="s">use File::Basename qw(dirname);</td></tr>
+<tr><td class="h">17</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L17">313</a></div></td><td><div>282</div><div>179</div><div>1659</div></td><td class="s">use File::Spec;</td></tr>
+<tr><td class="h">18</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L18">313</a></div></td><td><div>41849</div><div>230644</div><div>1545</div></td><td class="s">use IPC::Open3 ();</td></tr>
+<tr><td class="h">19</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L19">313</a></div></td><td><div>436</div><div>171</div><div>4200</div></td><td class="s">use Readonly;</td></tr>
+<tr><td class="h">20</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L20">313</a></div></td><td><div>260</div><div>187</div><div>657</div></td><td class="s">use Sub::Private { mode =&gt; &#39;enforce&#39; };</td></tr>
+<tr><td class="h">21</td><td colspan="6"></td></tr><tr><td class="h">22</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L22">313</a></div></td><td><div>20387</div><div>190</div><div>2876</div></td><td class="s">use App::FileSync::Args qw(named);</td></tr>
+<tr><td class="h">23</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L23">313</a></div></td><td><div>317</div><div>170</div><div>8684</div></td><td class="s">use App::FileSync::Constants qw($ROLE_CLIENT $SERVER_PROGRAM);</td></tr>
+<tr><td class="h">24</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L24">313</a></div></td><td><div>287</div><div>175</div><div>48811</div></td><td class="s">use App::FileSync::I18N qw(throw);</td></tr>
+<tr><td class="h">25</td><td colspan="6"></td></tr><tr><td class="h">26</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $VERSION = &#39;0.001.1&#39;;</td></tr>
+<tr><td class="h">27</td><td colspan="6"></td></tr><tr><td class="h">28</td><td></td><td></td><td></td><td></td><td></td><td class="s"># How far up from this file to look for a checkout&#39;s bin/filesync-server:</td></tr>
+<tr><td class="h">29</td><td></td><td></td><td></td><td></td><td></td><td class="s"># lib/App/FileSync/Transport is four levels, blib/lib/... five.</td></tr>
+<tr><td class="h">30</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $SEARCH_DEPTH =&gt; 6;</td></tr>
+<tr><td class="h">31</td><td colspan="6"></td></tr><tr><td class="h">32</td><td></td><td></td><td></td><td></td><td></td><td class="s">=encoding utf8</td></tr>
+<tr><td class="h">33</td><td colspan="6"></td></tr><tr><td class="h">34 - 98</td><td colspan="5"></td><td class="s"><pre>=head1 NAME
+
+App::FileSync::Transport::Local - run the server as a local child process
+
+=head1 SYNOPSIS
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $transport = App::FileSync::Transport::Local-&gt;new(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root =&gt; &#39;/srv/filesync&#39;, repo =&gt; &#39;docs&#39;, client =&gt; &#39;laptop&#39;,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $connection = App::FileSync::Protocol-&gt;new(in =&gt; $transport-&gt;reader, out =&gt; $transport-&gt;writer);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$transport-&gt;close;
+
+=head1 METHODS
+
+=head2 new
+
+Purpose: start a server for one session.
+
+Args: C&lt;root&gt; (the server root), C&lt;repo&gt;, C&lt;client&gt;, optional C&lt;role&gt;
+(default C&lt;client&gt;) and C&lt;server_bin&gt; (default C&lt;FILESYNC_SERVER_BIN&gt;, then a
+F&lt;bin/filesync-server&gt; found above this module, then C&lt;filesync-server&gt; on
+the PATH).
+
+Returns: the transport.
+
+Side Effects: starts C&lt;$^X server_bin --root ... --repo ... --client ...
+--role ...&gt;.&nbsp;&nbsp;The child&#39;s standard error is the parent&#39;s, never the protocol
+pipe: sharing it would put diagnostics into the protocol stream.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $transport = App::FileSync::Transport::Local-&gt;new(%args);
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $t = App::FileSync::Transport::Local-&gt;new(root =&gt; $root, repo =&gt; &#39;docs&#39;, client =&gt; &#39;test-1&#39;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print {$t-&gt;writer} ...;
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, min =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, min =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, min =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_bin =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;object&#39;, isa =&gt; &#39;App::FileSync::Transport::Local&#39; }
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transport.missing&nbsp;&nbsp;&nbsp;root, repo or client absent&nbsp;&nbsp;pass it
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new(a) &acirc;&#135;&#146; &acirc;&#136;&#131; child &acirc;&#128;&cent; argv(child) = &acirc;&#159;&uml;perl, bin, --root, a.root, --repo, a.repo, --client, a.client, --role, role&acirc;&#159;&copy;
+
+=cut</pre></td></tr>
+<tr><td class="h">99</td><td colspan="6"></td></tr><tr><td class="h">100</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub new {</td></tr>
+<tr><td class="h">101</td><td><div class="c3">164</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L101">164</a></div></td><td><div>1913</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $class = shift;</td></tr>
+<tr><td class="h">102</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = named(\@_, {</td></tr>
+<tr><td class="h">103</td><td><div class="c3">164</div><div class="c3">820</div></td><td></td><td></td><td></td><td><div>347</div><div>1089</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map({ $_ =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 } } qw(root repo client role server_bin)),</td></tr>
+<tr><td class="h">104</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}, &#39;Transport::Local-&gt;new&#39;);</td></tr>
+<tr><td class="h">105</td><td colspan="6"></td></tr><tr><td class="h">106</td><td><div class="c3">164</div></td><td></td><td></td><td></td><td><div>351</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $required (qw(root repo client)) {</td></tr>
+<tr><td class="h">107</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;transport.missing&#39;, { transport =&gt; &#39;Local&#39;, what =&gt; $required })</td></tr>
+<tr><td class="h">108</td><td><div class="c3">492</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-Local-pm--branch.html#L108">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-Local-pm--condition.html#L108">33</a></div></td><td></td><td><div>780</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless defined $args-&gt;{$required} &amp;&amp; length $args-&gt;{$required};</td></tr>
+<tr><td class="h">109</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">110</td><td colspan="6"></td></tr><tr><td class="h">111</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @command = (</td></tr>
+<tr><td class="h">112</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$^X, $args-&gt;{server_bin} || _default_server_bin(),</td></tr>
+<tr><td class="h">113</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--root&#39;,&nbsp;&nbsp;&nbsp;$args-&gt;{root},</td></tr>
+<tr><td class="h">114</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--repo&#39;,&nbsp;&nbsp;&nbsp;$args-&gt;{repo},</td></tr>
+<tr><td class="h">115</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--client&#39;, $args-&gt;{client},</td></tr>
+<tr><td class="h">116</td><td><div class="c3">164</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-Local-pm--condition.html#L116">67</a></div><div class="c0"><a href="blib-lib-App-FileSync-Transport-Local-pm--condition.html#L116">33</a></div></td><td></td><td><div>508</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--role&#39;,&nbsp;&nbsp;&nbsp;$args-&gt;{role} || $ROLE_CLIENT,</td></tr>
+<tr><td class="h">117</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
+<tr><td class="h">118</td><td colspan="6"></td></tr><tr><td class="h">119</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# &#39;&gt;&amp;STDERR&#39; dups the parent&#39;s stderr.&nbsp;&nbsp;Passing a filehandle here would not</td></tr>
+<tr><td class="h">120</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# redirect the child at all: it would write into an unread pipe, and the</td></tr>
+<tr><td class="h">121</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# first log line would kill it with SIGPIPE.</td></tr>
+<tr><td class="h">122</td><td><div class="c3">164</div></td><td></td><td></td><td></td><td><div>192</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($writer, $reader);</td></tr>
+<tr><td class="h">123</td><td><div class="c3">164</div></td><td></td><td></td><td></td><td><div>577</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $pid = IPC::Open3::open3($writer, $reader, &#39;&gt;&amp;STDERR&#39;, @command);</td></tr>
+<tr><td class="h">124</td><td colspan="6"></td></tr><tr><td class="h">125</td><td><div class="c3">164</div></td><td></td><td></td><td></td><td><div>457096</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return bless { pid =&gt; $pid, writer =&gt; $writer, reader =&gt; $reader }, $class;</td></tr>
+<tr><td class="h">126</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">127</td><td colspan="6"></td></tr><tr><td class="h">128 - 166</td><td colspan="5"></td><td class="s"><pre>=head2 reader
+
+=head2 writer
+
+Purpose: the pipes to and from the server.
+
+Args: none.
+
+Returns: the read handle (server&#39;s stdout) or write handle (its stdin).
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $in = $transport-&gt;reader;
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App::FileSync::Protocol-&gt;new(in =&gt; $t-&gt;reader, out =&gt; $t-&gt;writer);
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ { name =&gt; &#39;self&#39;, type =&gt; &#39;object&#39; } ]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;object&#39; }
+
+=head3 MESSAGES
+
+None.
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reader = self.reader ; writer = self.writer
+
+=cut</pre></td></tr>
+<tr><td class="h">167</td><td colspan="6"></td></tr><tr><td class="h">168</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub reader {</td></tr>
+<tr><td class="h">169</td><td><div class="c3">164</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L169">164</a></div></td><td><div>383</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">170</td><td colspan="6"></td></tr><tr><td class="h">171</td><td><div class="c3">164</div></td><td></td><td></td><td></td><td><div>541</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;{reader};</td></tr>
+<tr><td class="h">172</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">173</td><td colspan="6"></td></tr><tr><td class="h">174</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub writer {</td></tr>
+<tr><td class="h">175</td><td><div class="c3">164</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L175">164</a></div></td><td><div>236</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">176</td><td colspan="6"></td></tr><tr><td class="h">177</td><td><div class="c3">164</div></td><td></td><td></td><td></td><td><div>1326</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;{writer};</td></tr>
+<tr><td class="h">178</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">179</td><td colspan="6"></td></tr><tr><td class="h">180 - 217</td><td colspan="5"></td><td class="s"><pre>=head2 close
+
+Purpose: end the session&#39;s process.
+
+Args: none.
+
+Returns: 1.&nbsp;&nbsp;Repeated calls do nothing.
+
+Side Effects: closes both pipes (the server sees end of file) and reaps the
+child.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$transport-&gt;close;
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$transport-&gt;close;&nbsp;&nbsp;&nbsp;# safe to call twice
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ { name =&gt; &#39;self&#39;, type =&gt; &#39;object&#39; } ]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;integer&#39;, memberof =&gt; [ 1 ] }
+
+=head3 MESSAGES
+
+None.
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;closed&#39; = 1 &acirc;&#136;&sect; child &acirc;&#136;&#137; processes&#39;
+
+=cut</pre></td></tr>
+<tr><td class="h">218</td><td colspan="6"></td></tr><tr><td class="h">219</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub close {&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## no critic (Subroutines::ProhibitBuiltinHomonyms, Subroutines::ProhibitAmbiguousNames) -- transport interface</td></tr>
+<tr><td class="h">220</td><td><div class="c3">164</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L220">164</a></div></td><td><div>6740</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">221</td><td colspan="6"></td></tr><tr><td class="h">222</td><td><div class="c3">164</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-Local-pm--branch.html#L222">50</a></div></td><td></td><td></td><td><div>437</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1 if $self-&gt;{closed}++;</td></tr>
+<tr><td class="h">223</td><td colspan="6"></td></tr><tr><td class="h">224</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Pipe close failures mean the child already went; reaping still matters.</td></tr>
+<tr><td class="h">225</td><td><div class="c3">164</div><div class="c3">328</div><div class="c3">164</div></td><td></td><td></td><td></td><td><div>214</div><div>433</div><div>273</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $handle (grep { defined } @{$self}{qw(writer reader)}) {</td></tr>
+<tr><td class="h">226</td><td><div class="c3">328</div></td><td></td><td></td><td></td><td><div>1078</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CORE::close($handle);</td></tr>
+<tr><td class="h">227</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">228</td><td><div class="c3">164</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-Local-pm--branch.html#L228">50</a></div></td><td></td><td></td><td><div>113307044</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;waitpid($self-&gt;{pid}, 0) if $self-&gt;{pid};</td></tr>
+<tr><td class="h">229</td><td colspan="6"></td></tr><tr><td class="h">230</td><td><div class="c3">164</div></td><td></td><td></td><td></td><td><div>2170</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;</td></tr>
+<tr><td class="h">231</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">232</td><td colspan="6"></td></tr><tr><td class="h">233 - 270</td><td colspan="5"></td><td class="s"><pre>=head2 error_text
+
+Purpose: what the transport itself said, for when the protocol failed.
+
+Args: none.
+
+Returns: an empty string: the local server writes its diagnostics to this
+process&#39;s own standard error, which the user already sees.
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $text = $transport-&gt;error_text;
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print $transport-&gt;error_text, &quot;\n&quot;;
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ { name =&gt; &#39;self&#39;, type =&gt; &#39;object&#39; } ]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;string&#39; }
+
+=head3 MESSAGES
+
+None.
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_text = &quot;&quot;
+
+=cut</pre></td></tr>
+<tr><td class="h">271</td><td colspan="6"></td></tr><tr><td class="h">272</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub error_text {</td></tr>
+<tr><td class="h">273</td><td><div class="c0">0</div></td><td></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L273">0</a></div></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return &#39;&#39;;</td></tr>
+<tr><td class="h">274</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">275</td><td colspan="6"></td></tr><tr><td class="h">276</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _default_server_bin</td></tr>
+<tr><td class="h">277</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find the server program when none is configured.</td></tr>
+<tr><td class="h">278</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;none.</td></tr>
+<tr><td class="h">279</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns FILESYNC_SERVER_BIN, a bin/filesync-server found by</td></tr>
+<tr><td class="h">280</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;walking up from this file (a checkout, or blib under</td></tr>
+<tr><td class="h">281</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;make test&quot;), or the bare name (installed, on the PATH).</td></tr>
+<tr><td class="h">282</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">283</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _default_server_bin :Private {</td></tr>
+<tr><td class="h">284</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $configured = $ENV{FILESYNC_SERVER_BIN};</td></tr>
+<tr><td class="h">285</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $configured if defined $configured &amp;&amp; length $configured;</td></tr>
+<tr><td class="h">286</td><td colspan="6"></td></tr><tr><td class="h">287</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $directory = dirname(__FILE__);</td></tr>
+<tr><td class="h">288</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (1 .. $SEARCH_DEPTH) {</td></tr>
+<tr><td class="h">289</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $candidate = File::Spec-&gt;catfile($directory, &#39;bin&#39;, $SERVER_PROGRAM);</td></tr>
+<tr><td class="h">290</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $candidate if -f $candidate;</td></tr>
+<tr><td class="h">291</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$directory = dirname($directory);</td></tr>
+<tr><td class="h">292</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">293</td><td colspan="6"></td></tr><tr><td class="h">294</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $SERVER_PROGRAM;</td></tr>
+<tr><td class="h">295</td><td><div class="c3">313</div><div class="c3">313</div><div class="c3">313</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-Local-pm--subroutine.html#L295">313</a></div></td><td><div>305</div><div>214</div><div>2692</div></td><td class="s">}</td></tr>
+<tr><td class="h">296</td><td colspan="6"></td></tr><tr><td class="h">297</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
+<tr><td class="h">298</td><td colspan="6"></td></tr></table>
 </body>
 </html>

@@ -20,380 +20,702 @@ https://pjcj.net
 <h1>File Coverage</h1>
 <table>
 <tr><td class="h" align="right">File:</td><td align="left">blib/lib/App/FileSync/Settings.pm</td></tr>
-<tr><td class="h" align="right">Coverage:</td><td align="left" class="c1">78.8%</td></tr>
+<tr><td class="h" align="right">Coverage:</td><td align="left" class="c2">93.8%</td></tr>
 </table>
 <div><br/></div>
 <table>
 <tr><th>line</th><th>stmt</th><th>bran</th><th>cond</th><th>sub</th><th>time</th><th>code</th></tr>
 <tr><td class="h">1</td><td></td><td></td><td></td><td></td><td></td><td class="s">package App::FileSync::Settings;</td></tr>
-<tr><td class="h">2</td><td colspan="6"></td></tr><tr><td class="h">3</td><td><div class="c3">301</div><div class="c3">301</div><div class="c3">301</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L3">301</a></div></td><td><div>9075</div><div>233</div><div>3908</div></td><td class="s">use strict;</td></tr>
-<tr><td class="h">4</td><td><div class="c3">301</div><div class="c3">301</div><div class="c3">301</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L4">301</a></div></td><td><div>464</div><div>213</div><div>29541</div></td><td class="s">use warnings;</td></tr>
-<tr><td class="h">5</td><td colspan="6"></td></tr><tr><td class="h">6</td><td></td><td></td><td></td><td></td><td></td><td class="s"># B::Hooks::EndOfScope 0.28 releases its XS scope hook with an access violation</td></tr>
-<tr><td class="h">7</td><td></td><td></td><td></td><td></td><td></td><td class="s"># (0xC0000005) on Perl 5.42 for Windows, after a command has done its work but</td></tr>
-<tr><td class="h">8</td><td></td><td></td><td></td><td></td><td></td><td class="s"># before the interpreter exits, so a run that synced everything correctly would</td></tr>
-<tr><td class="h">9</td><td></td><td></td><td></td><td></td><td></td><td class="s"># still exit nonzero.&nbsp;&nbsp;Log::Abstraction reaches the hook through</td></tr>
-<tr><td class="h">10</td><td></td><td></td><td></td><td></td><td></td><td class="s"># namespace::clean, and the implementation has to be chosen before the module</td></tr>
-<tr><td class="h">11</td><td></td><td></td><td></td><td></td><td></td><td class="s"># loads, hence the BEGIN.&nbsp;&nbsp;Its plain-Perl hook does not fault.</td></tr>
-<tr><td class="h">12</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub wants_plain_end_of_scope_hook {</td></tr>
-<tr><td class="h">13</td><td><div class="c3">311</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L13">311</a></div></td><td><div>10563549</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($os, $version) = @_;</td></tr>
-<tr><td class="h">14</td><td colspan="6"></td></tr><tr><td class="h">15</td><td><div class="c3">311</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L15">100</a></div></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L15">100</a></div></td><td></td><td><div>3565</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0 unless defined $os &amp;&amp; $os eq &#39;MSWin32&#39;;</td></tr>
-<tr><td class="h">16</td><td><div class="c3">8</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L16">100</a></div></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L16">100</a></div></td><td></td><td><div>47</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0 unless defined $version &amp;&amp; $version =~ /\A[0-9.]+\z/;</td></tr>
-<tr><td class="h">17</td><td colspan="6"></td></tr><tr><td class="h">18</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 5.42.x only: later releases may not share the fault, and forcing an</td></tr>
-<tr><td class="h">19</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# implementation a later B::Hooks::EndOfScope no longer ships would refuse</td></tr>
-<tr><td class="h">20</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# to load.</td></tr>
-<tr><td class="h">21</td><td><div class="c3">6</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L21">100</a></div></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L21">100</a></div></td><td></td><td><div>27</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ($version &gt;= 5.042 &amp;&amp; $version &lt; 5.043) ? 1 : 0;</td></tr>
-<tr><td class="h">22</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">23</td><td colspan="6"></td></tr><tr><td class="h">24</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Choose that hook for the running interpreter, unless it has already been</td></tr>
-<tr><td class="h">25</td><td></td><td></td><td></td><td></td><td></td><td class="s"># chosen.&nbsp;&nbsp;Split from the predicate so the choice can be tested for a platform</td></tr>
-<tr><td class="h">26</td><td></td><td></td><td></td><td></td><td></td><td class="s"># this test run is not using.</td></tr>
-<tr><td class="h">27</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub use_plain_end_of_scope_hook {</td></tr>
-<tr><td class="h">28</td><td><div class="c3">303</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L28">303</a></div></td><td><div>134918</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($os, $version) = @_;</td></tr>
-<tr><td class="h">29</td><td colspan="6"></td></tr><tr><td class="h">30</td><td><div class="c3">303</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L30">100</a></div></td><td></td><td></td><td><div>1284</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0 if defined $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION};</td></tr>
-<tr><td class="h">31</td><td><div class="c3">302</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L31">100</a></div></td><td></td><td></td><td><div>705</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0 unless wants_plain_end_of_scope_hook($os, $version);</td></tr>
-<tr><td class="h">32</td><td colspan="6"></td></tr><tr><td class="h">33</td><td><div class="c3">1</div></td><td></td><td></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} = &#39;PP&#39;;</td></tr>
-<tr><td class="h">34</td><td><div class="c3">1</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;</td></tr>
-<tr><td class="h">35</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">36</td><td colspan="6"></td></tr><tr><td class="h">37</td><td></td><td></td><td></td><td></td><td></td><td class="s">BEGIN {</td></tr>
-<tr><td class="h">38</td><td><div class="c3">301</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L38">301</a></div></td><td><div>581</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_plain_end_of_scope_hook($^O, $]);</td></tr>
-<tr><td class="h">39</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">40</td><td colspan="6"></td></tr><tr><td class="h">41</td><td><div class="c3">301</div><div class="c3">301</div><div class="c3">301</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L41">301</a></div></td><td><div>101625</div><div>15478717</div><div>6003</div></td><td class="s">use Config::Abstraction;</td></tr>
-<tr><td class="h">42</td><td><div class="c3">301</div><div class="c3">301</div><div class="c3">301</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L42">301</a></div></td><td><div>1028</div><div>289</div><div>7071</div></td><td class="s">use File::Basename qw(dirname);</td></tr>
-<tr><td class="h">43</td><td><div class="c3">301</div><div class="c3">301</div><div class="c3">301</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L43">301</a></div></td><td><div>632</div><div>238</div><div>5286</div></td><td class="s">use File::Path qw(make_path);</td></tr>
-<tr><td class="h">44</td><td><div class="c3">301</div><div class="c3">301</div><div class="c3">301</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L44">301</a></div></td><td><div>529</div><div>259</div><div>2513</div></td><td class="s">use File::Spec;</td></tr>
-<tr><td class="h">45</td><td><div class="c3">301</div><div class="c3">301</div><div class="c3">301</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L45">301</a></div></td><td><div>134281</div><div>11918042</div><div>5112</div></td><td class="s">use Log::Abstraction;</td></tr>
-<tr><td class="h">46</td><td><div class="c3">301</div><div class="c3">301</div><div class="c3">301</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L46">301</a></div></td><td><div>85888</div><div>1701618</div><div>317773</div></td><td class="s">use Object::Configure;</td></tr>
-<tr><td class="h">47</td><td colspan="6"></td></tr><tr><td class="h">48</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Process-wide settings live in Object::Configure; the repos themselves stay in</td></tr>
-<tr><td class="h">49</td><td></td><td></td><td></td><td></td><td></td><td class="s"># ~/.filesync/config.json, which &quot;filesync init&quot; writes and the admin tool edits.</td></tr>
-<tr><td class="h">50</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $DEFAULT_FORMAT&nbsp;&nbsp;= &#39;%level%: %message%&#39;;</td></tr>
-<tr><td class="h">51</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $DEFAULT_LEVEL&nbsp;&nbsp;&nbsp;= &#39;warning&#39;;</td></tr>
-<tr><td class="h">52</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $CONFIG_BASENAME = &#39;app-filesync.json&#39;;</td></tr>
-<tr><td class="h">53</td><td colspan="6"></td></tr><tr><td class="h">54</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Defaults for every SSH repo.&nbsp;&nbsp;A repo&#39;s own config still wins, so one machine</td></tr>
-<tr><td class="h">55</td><td></td><td></td><td></td><td></td><td></td><td class="s"># can point at another identity without repeating the common settings.</td></tr>
-<tr><td class="h">56</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $DEFAULT_SERVER_COMMAND = &#39;filesync-server&#39;;</td></tr>
-<tr><td class="h">57</td><td colspan="6"></td></tr><tr><td class="h">58</td><td></td><td></td><td></td><td></td><td></td><td class="s">our @VALID_LEVELS = qw(</td></tr>
-<tr><td class="h">59</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;trace debug info informational notice warn warning error err</td></tr>
-<tr><td class="h">60</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;crit critical fatal alert emerg emergency panic</td></tr>
-<tr><td class="h">61</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
-<tr><td class="h">62</td><td colspan="6"></td></tr><tr><td class="h">63</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The process-wide settings, in the order &quot;filesync settings&quot; prints them.</td></tr>
-<tr><td class="h">64</td><td></td><td></td><td></td><td></td><td></td><td class="s">our @SETTING_KEYS = qw(</td></tr>
-<tr><td class="h">65</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;log_level log_format log_file</td></tr>
-<tr><td class="h">66</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;ssh_identity ssh_known_hosts server_command</td></tr>
-<tr><td class="h">67</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
-<tr><td class="h">68</td><td colspan="6"></td></tr><tr><td class="h">69</td><td></td><td></td><td></td><td></td><td></td><td class="s"># How each repo-level SSH key corresponds to the process setting it falls back</td></tr>
-<tr><td class="h">70</td><td></td><td></td><td></td><td></td><td></td><td class="s"># to.&nbsp;&nbsp;The names differ only because the repo config uses shorter keys.</td></tr>
-<tr><td class="h">71</td><td></td><td></td><td></td><td></td><td></td><td class="s">our %REPO_SSH_KEYS = (</td></tr>
-<tr><td class="h">72</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;ssh_identity&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;identity&#39;,</td></tr>
-<tr><td class="h">73</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;ssh_known_hosts =&gt; &#39;known_hosts&#39;,</td></tr>
-<tr><td class="h">74</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;server_command&nbsp;&nbsp;=&gt; &#39;server_command&#39;,</td></tr>
-<tr><td class="h">75</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
-<tr><td class="h">76</td><td></td><td></td><td></td><td></td><td></td><td class="s">our @REPO_SSH_SETTINGS = qw(ssh_identity ssh_known_hosts server_command);</td></tr>
-<tr><td class="h">77</td><td colspan="6"></td></tr><tr><td class="h">78</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _default_config_path {</td></tr>
-<tr><td class="h">79</td><td><div class="c3">569</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L79">569</a></div></td><td><div>933</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $path = $ENV{FILESYNC_SETTINGS};</td></tr>
-<tr><td class="h">80</td><td><div class="c3">569</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L80">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L80">67</a></div></td><td></td><td><div>1855</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $path if defined $path &amp;&amp; length $path;</td></tr>
-<tr><td class="h">81</td><td colspan="6"></td></tr><tr><td class="h">82</td><td><div class="c3">14</div></td><td></td><td></td><td></td><td><div>25</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $home = $ENV{HOME};</td></tr>
-<tr><td class="h">83</td><td><div class="c3">14</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L83">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L83">33</a></div></td><td></td><td><div>43</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$home = $ENV{USERPROFILE} if !defined $home || !length $home;</td></tr>
-<tr><td class="h">84</td><td><div class="c3">14</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L84">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L84">33</a></div></td><td></td><td><div>33</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return undef unless defined $home &amp;&amp; length $home;</td></tr>
-<tr><td class="h">85</td><td colspan="6"></td></tr><tr><td class="h">86</td><td><div class="c3">14</div></td><td></td><td></td><td></td><td><div>83</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return File::Spec-&gt;catfile($home, &#39;.conf&#39;, $CONFIG_BASENAME);</td></tr>
-<tr><td class="h">87</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">88</td><td colspan="6"></td></tr><tr><td class="h">89</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub config_file {</td></tr>
-<tr><td class="h">90</td><td><div class="c3">588</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L90">588</a></div></td><td><div>758</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($given) = @_;</td></tr>
-<tr><td class="h">91</td><td colspan="6"></td></tr><tr><td class="h">92</td><td><div class="c3">588</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L92">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L92">67</a></div></td><td></td><td><div>1199</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $given if defined $given &amp;&amp; length $given;</td></tr>
-<tr><td class="h">93</td><td colspan="6"></td></tr><tr><td class="h">94</td><td><div class="c3">569</div></td><td></td><td></td><td></td><td><div>1091</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $path = _default_config_path();</td></tr>
-<tr><td class="h">95</td><td><div class="c3">569</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L95">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L95">33</a></div></td><td></td><td><div>1681</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return undef unless defined $path &amp;&amp; length $path;</td></tr>
-<tr><td class="h">96</td><td><div class="c3">569</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L96">100</a></div></td><td></td><td></td><td><div>3672</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return -e $path ? $path : undef;</td></tr>
-<tr><td class="h">97</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">98</td><td colspan="6"></td></tr><tr><td class="h">99</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Merge the settings file (if any), the UNIVERSAL section and the</td></tr>
-<tr><td class="h">100</td><td></td><td></td><td></td><td></td><td></td><td class="s"># App__FileSync__* environment variables over the built-in defaults.</td></tr>
-<tr><td class="h">101</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub load {</td></tr>
-<tr><td class="h">102</td><td><div class="c3">578</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L102">578</a></div></td><td><div>85606</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my (%args) = @_;</td></tr>
-<tr><td class="h">103</td><td colspan="6"></td></tr><tr><td class="h">104</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $config_file = exists $args{config_file}</td></tr>
-<tr><td class="h">105</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? config_file($args{config_file})</td></tr>
-<tr><td class="h">106</td><td><div class="c3">578</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L106">100</a></div></td><td></td><td></td><td><div>1672</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: config_file();</td></tr>
-<tr><td class="h">107</td><td colspan="6"></td></tr><tr><td class="h">108</td><td><div class="c3">578</div></td><td></td><td></td><td></td><td><div>3806</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my %params = (</td></tr>
-<tr><td class="h">109</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log_level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $DEFAULT_LEVEL,</td></tr>
-<tr><td class="h">110</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log_format&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $DEFAULT_FORMAT,</td></tr>
-<tr><td class="h">111</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log_file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;&#39;,</td></tr>
-<tr><td class="h">112</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh_identity&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;&#39;,</td></tr>
-<tr><td class="h">113</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh_known_hosts =&gt; &#39;&#39;,</td></tr>
-<tr><td class="h">114</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_command&nbsp;&nbsp;=&gt; $DEFAULT_SERVER_COMMAND,</td></tr>
-<tr><td class="h">115</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# We build the logger ourselves; this keeps Object::Configure from</td></tr>
-<tr><td class="h">116</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# constructing its default Log::Log4perl backend as a side effect.</td></tr>
-<tr><td class="h">117</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logger&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; [],</td></tr>
-<tr><td class="h">118</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
-<tr><td class="h">119</td><td colspan="6"></td></tr><tr><td class="h">120</td><td><div class="c3">578</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L120">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L120">67</a></div></td><td></td><td><div>1893</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$params{config_file} = $config_file if defined $config_file &amp;&amp; length $config_file;</td></tr>
-<tr><td class="h">121</td><td><div class="c3">578</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L121">50</a></div></td><td></td><td></td><td><div>1048</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$params{config_dirs} = $args{config_dirs} if ref($args{config_dirs}) eq &#39;ARRAY&#39;;</td></tr>
-<tr><td class="h">122</td><td colspan="6"></td></tr><tr><td class="h">123</td><td><div class="c3">578</div></td><td></td><td></td><td></td><td><div>1795</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $settings = Object::Configure::configure(&#39;App::FileSync&#39;, \%params);</td></tr>
-<tr><td class="h">124</td><td><div class="c3">577</div></td><td></td><td></td><td></td><td><div>1539088</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;delete $settings-&gt;{logger};</td></tr>
-<tr><td class="h">125</td><td colspan="6"></td></tr><tr><td class="h">126</td><td><div class="c3">577</div></td><td></td><td></td><td></td><td><div>6745</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $settings;</td></tr>
-<tr><td class="h">127</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">128</td><td colspan="6"></td></tr><tr><td class="h">129</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _defaults {</td></tr>
-<tr><td class="h">130</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return {</td></tr>
-<tr><td class="h">131</td><td><div class="c3">8</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L131">8</a></div></td><td><div>18</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log_level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $DEFAULT_LEVEL,</td></tr>
-<tr><td class="h">132</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log_format&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $DEFAULT_FORMAT,</td></tr>
-<tr><td class="h">133</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log_file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;&#39;,</td></tr>
-<tr><td class="h">134</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh_identity&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;&#39;,</td></tr>
-<tr><td class="h">135</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh_known_hosts =&gt; &#39;&#39;,</td></tr>
-<tr><td class="h">136</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_command&nbsp;&nbsp;=&gt; $DEFAULT_SERVER_COMMAND,</td></tr>
-<tr><td class="h">137</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
-<tr><td class="h">138</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">139</td><td colspan="6"></td></tr><tr><td class="h">140</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Where each effective setting came from, for &quot;filesync settings&quot;.&nbsp;&nbsp;The values</td></tr>
-<tr><td class="h">141</td><td></td><td></td><td></td><td></td><td></td><td class="s"># are whatever load() returns; the provenance is reconstructed from the same</td></tr>
-<tr><td class="h">142</td><td></td><td></td><td></td><td></td><td></td><td class="s"># layers Object::Configure merges: the class section of the settings file, the</td></tr>
-<tr><td class="h">143</td><td></td><td></td><td></td><td></td><td></td><td class="s"># UNIVERSAL section beside it, and App__FileSync__* environment variables.</td></tr>
-<tr><td class="h">144</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub explain {</td></tr>
-<tr><td class="h">145</td><td><div class="c3">8</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L145">8</a></div></td><td><div>8650</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my (%args) = @_;</td></tr>
-<tr><td class="h">146</td><td colspan="6"></td></tr><tr><td class="h">147</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $config_file = exists $args{config_file}</td></tr>
-<tr><td class="h">148</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? config_file($args{config_file})</td></tr>
-<tr><td class="h">149</td><td><div class="c3">8</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L149">100</a></div></td><td></td><td></td><td><div>16</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: config_file();</td></tr>
-<tr><td class="h">150</td><td colspan="6"></td></tr><tr><td class="h">151</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $settings = load(%args);</td></tr>
-<tr><td class="h">152</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $defaults = _defaults();</td></tr>
-<tr><td class="h">153</td><td colspan="6"></td></tr><tr><td class="h">154</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $class_explanation = {};</td></tr>
-<tr><td class="h">155</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $universal_file;</td></tr>
-<tr><td class="h">156</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $universal_explanation = {};</td></tr>
-<tr><td class="h">157</td><td><div class="c3">8</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L157">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L157">67</a></div></td><td></td><td><div>19</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;if (defined $config_file &amp;&amp; length $config_file) {</td></tr>
-<tr><td class="h">158</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$class_explanation = _explanation($config_file, &#39;App__FileSync&#39;);</td></tr>
-<tr><td class="h">159</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>48</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$universal_file = _universal_file($config_file);</td></tr>
-<tr><td class="h">160</td><td><div class="c3">6</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L160">100</a></div></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$universal_explanation = _explanation($universal_file, &#39;UNIVERSAL&#39;)</td></tr>
-<tr><td class="h">161</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if defined $universal_file;</td></tr>
-<tr><td class="h">162</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">163</td><td colspan="6"></td></tr><tr><td class="h">164</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>16</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my @rows;</td></tr>
-<tr><td class="h">165</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;for my $key (@SETTING_KEYS) {</td></tr>
-<tr><td class="h">166</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my %row = (</td></tr>
-<tr><td class="h">167</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $key,</td></tr>
-<tr><td class="h">168</td><td><div class="c3">48</div></td><td></td><td></td><td></td><td><div>63</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;&nbsp;=&gt; $settings-&gt;{$key},</td></tr>
-<tr><td class="h">169</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source =&gt; &#39;default&#39;,</td></tr>
-<tr><td class="h">170</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label&nbsp;&nbsp;=&gt; &#39;built-in default&#39;,</td></tr>
-<tr><td class="h">171</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
-<tr><td class="h">172</td><td><div class="c3">48</div></td><td></td><td></td><td></td><td><div>31</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $winner_value = $defaults-&gt;{$key};</td></tr>
-<tr><td class="h">173</td><td colspan="6"></td></tr><tr><td class="h">174</td><td><div class="c3">48</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L174">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L174">67</a></div></td><td></td><td><div>50</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (defined $config_file &amp;&amp; length $config_file) {</td></tr>
-<tr><td class="h">175</td><td><div class="c3">36</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L175">100</a></div></td><td></td><td></td><td><div>31</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (my $entry = _pick($universal_explanation, &#39;UNIVERSAL&#39;, $key)) {</td></tr>
-<tr><td class="h">176</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{source} = $entry-&gt;{type};</td></tr>
-<tr><td class="h">177</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{label}&nbsp;&nbsp;= $entry-&gt;{type} eq &#39;env&#39;</td></tr>
-<tr><td class="h">178</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? $entry-&gt;{label}</td></tr>
-<tr><td class="h">179</td><td><div class="c3">2</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L179">50</a></div></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &quot;$universal_file [UNIVERSAL]&quot;;</td></tr>
-<tr><td class="h">180</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>1</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$winner_value = $entry-&gt;{value};</td></tr>
-<tr><td class="h">181</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">182</td><td><div class="c3">36</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L182">100</a></div></td><td></td><td></td><td><div>23</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (my $entry = _pick($class_explanation, &#39;App__FileSync&#39;, $key)) {</td></tr>
-<tr><td class="h">183</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{source} = $entry-&gt;{type};</td></tr>
-<tr><td class="h">184</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{label}&nbsp;&nbsp;= $entry-&gt;{type} eq &#39;env&#39;</td></tr>
-<tr><td class="h">185</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? $entry-&gt;{label}</td></tr>
-<tr><td class="h">186</td><td><div class="c3">6</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L186">100</a></div></td><td></td><td></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &quot;$config_file [App__FileSync]&quot;;</td></tr>
-<tr><td class="h">187</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$winner_value = $entry-&gt;{value};</td></tr>
-<tr><td class="h">188</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">189</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} else {</td></tr>
-<tr><td class="h">190</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# No settings file: Object::Configure falls back to environment</td></tr>
-<tr><td class="h">191</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# variables only, universal ones first and class ones last.</td></tr>
-<tr><td class="h">192</td><td><div class="c3">12</div></td><td></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $prefix (qw(UNIVERSAL App__FileSync)) {</td></tr>
-<tr><td class="h">193</td><td><div class="c3">24</div></td><td></td><td></td><td></td><td><div>18</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $name = _env_key(&quot;${prefix}__$key&quot;);</td></tr>
-<tr><td class="h">194</td><td><div class="c3">24</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L194">100</a></div></td><td></td><td></td><td><div>30</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next unless defined $name;</td></tr>
-<tr><td class="h">195</td><td><div class="c3">4</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{source}&nbsp;&nbsp;= &#39;env&#39;;</td></tr>
-<tr><td class="h">196</td><td><div class="c3">4</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{label}&nbsp;&nbsp;&nbsp;= $name;</td></tr>
-<tr><td class="h">197</td><td><div class="c3">4</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$winner_value = $ENV{$name};</td></tr>
-<tr><td class="h">198</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">199</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">200</td><td colspan="6"></td></tr><tr><td class="h">201</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# A value that no modelled layer accounts for came from somewhere else</td></tr>
-<tr><td class="h">202</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# (a &quot;global&quot; section, say); say so instead of claiming a default.</td></tr>
-<tr><td class="h">203</td><td><div class="c3">48</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L203">50</a></div></td><td></td><td></td><td><div>43</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (_differs($settings-&gt;{$key}, $winner_value)) {</td></tr>
-<tr><td class="h">204</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{source} = &#39;merged&#39;;</td></tr>
-<tr><td class="h">205</td><td><div class="c0">0</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L205">0</a></div></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{label}&nbsp;&nbsp;= join(&#39; + &#39;, _labels_for($key, $universal_explanation, $class_explanation))</td></tr>
-<tr><td class="h">206</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| &#39;unknown source&#39;;</td></tr>
-<tr><td class="h">207</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">208</td><td colspan="6"></td></tr><tr><td class="h">209</td><td><div class="c3">48</div></td><td></td><td></td><td></td><td><div>43</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @rows, \%row;</td></tr>
-<tr><td class="h">210</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">211</td><td colspan="6"></td></tr><tr><td class="h">212</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return {</td></tr>
-<tr><td class="h">213</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>34</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;settings_file =&gt; $config_file,</td></tr>
-<tr><td class="h">214</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;settings&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; \@rows,</td></tr>
-<tr><td class="h">215</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
-<tr><td class="h">216</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">217</td><td colspan="6"></td></tr><tr><td class="h">218</td><td></td><td></td><td></td><td></td><td></td><td class="s"># How the SSH settings resolve for every repo in a client config, for</td></tr>
-<tr><td class="h">219</td><td></td><td></td><td></td><td></td><td></td><td class="s"># &quot;filesync settings&quot;.&nbsp;&nbsp;Each row reports the value the transport will use and</td></tr>
-<tr><td class="h">220</td><td></td><td></td><td></td><td></td><td></td><td class="s"># whether the repo, the process settings or ssh&#39;s own default supplied it.</td></tr>
-<tr><td class="h">221</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub explain_repos {</td></tr>
-<tr><td class="h">222</td><td><div class="c3">3</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L222">3</a></div></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my (%args) = @_;</td></tr>
-<tr><td class="h">223</td><td colspan="6"></td></tr><tr><td class="h">224</td><td><div class="c3">3</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L224">50</a></div></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $config&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ref($args{config}) eq &#39;HASH&#39; ? $args{config} : {};</td></tr>
-<tr><td class="h">225</td><td><div class="c3">3</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L225">50</a></div></td><td></td><td></td><td><div>39</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $report&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ref($args{report}) eq &#39;HASH&#39; ? $args{report} : {};</td></tr>
-<tr><td class="h">226</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $config_file = $args{config_file};</td></tr>
-<tr><td class="h">227</td><td colspan="6"></td></tr><tr><td class="h">228</td><td><div class="c3">3</div><div class="c3">18</div><div class="c3">3</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L228">50</a></div></td><td></td><td></td><td><div>2</div><div>17</div><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my %process = map { $_-&gt;{key} =&gt; $_ } @{ $report-&gt;{settings} || [] };</td></tr>
-<tr><td class="h">229</td><td colspan="6"></td></tr><tr><td class="h">230</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my @repos;</td></tr>
-<tr><td class="h">231</td><td><div class="c3">3</div><div class="c3">3</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L231">50</a></div></td><td></td><td></td><td><div>3</div><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;for my $name (sort keys %{ $config-&gt;{repos} || {} }) {</td></tr>
-<tr><td class="h">232</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $repo = $config-&gt;{repos}{$name};</td></tr>
-<tr><td class="h">233</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L233">50</a></div></td><td></td><td></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$repo = {} unless ref($repo) eq &#39;HASH&#39;;</td></tr>
-<tr><td class="h">234</td><td colspan="6"></td></tr><tr><td class="h">235</td><td><div class="c3">9</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L235">50</a></div></td><td></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $transport = $repo-&gt;{transport} || &#39;ssh&#39;;</td></tr>
-<tr><td class="h">236</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $entry = {</td></tr>
-<tr><td class="h">237</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $name,</td></tr>
-<tr><td class="h">238</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transport =&gt; $transport,</td></tr>
-<tr><td class="h">239</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
-<tr><td class="h">240</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$entry-&gt;{server} = $repo-&gt;{server}</td></tr>
-<tr><td class="h">241</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L241">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L241">67</a></div></td><td></td><td><div>19</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if defined $repo-&gt;{server} &amp;&amp; length $repo-&gt;{server};</td></tr>
-<tr><td class="h">242</td><td colspan="6"></td></tr><tr><td class="h">243</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The local transport never runs ssh, so there is nothing to resolve.</td></tr>
-<tr><td class="h">244</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L244">100</a></div></td><td></td><td></td><td><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ($transport eq &#39;ssh&#39;) {</td></tr>
-<tr><td class="h">245</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @rows;</td></tr>
-<tr><td class="h">246</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $key (@REPO_SSH_SETTINGS) {</td></tr>
-<tr><td class="h">247</td><td><div class="c3">18</div></td><td></td><td></td><td></td><td><div>16</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $value = $repo-&gt;{ $REPO_SSH_KEYS{$key} };</td></tr>
-<tr><td class="h">248</td><td><div class="c3">18</div></td><td></td><td></td><td></td><td><div>21</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my %row = (key =&gt; $key, value =&gt; &#39;&#39;);</td></tr>
-<tr><td class="h">249</td><td colspan="6"></td></tr><tr><td class="h">250</td><td><div class="c3">18</div></td><td></td><td></td><td></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $setting = $process{$key};</td></tr>
-<tr><td class="h">251</td><td colspan="6"></td></tr><tr><td class="h">252</td><td><div class="c3">18</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L252">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L252">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L252">67</a></div><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L252">50</a></div></td><td></td><td><div>62</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (defined $value &amp;&amp; length $value) {</td></tr>
-<tr><td class="h">253</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{value}&nbsp;&nbsp;= $value;</td></tr>
-<tr><td class="h">254</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{source} = &#39;repo&#39;;</td></tr>
-<tr><td class="h">255</td><td><div class="c3">3</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L255">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L255">33</a></div></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{label}&nbsp;&nbsp;= defined $config_file &amp;&amp; length $config_file</td></tr>
-<tr><td class="h">256</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &quot;$config_file [$name]&quot;</td></tr>
-<tr><td class="h">257</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &quot;[$name]&quot;;</td></tr>
-<tr><td class="h">258</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} elsif ($setting &amp;&amp; defined $setting-&gt;{value} &amp;&amp; length $setting-&gt;{value}) {</td></tr>
-<tr><td class="h">259</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{value}&nbsp;&nbsp;= $setting-&gt;{value};</td></tr>
-<tr><td class="h">260</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{source} = &#39;process&#39;;</td></tr>
-<tr><td class="h">261</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{label}&nbsp;&nbsp;= $setting-&gt;{label};</td></tr>
-<tr><td class="h">262</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} else {</td></tr>
-<tr><td class="h">263</td><td><div class="c3">7</div></td><td></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{source} = &#39;default&#39;;</td></tr>
-<tr><td class="h">264</td><td><div class="c3">7</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{label}&nbsp;&nbsp;= &#39;ssh default&#39;;</td></tr>
-<tr><td class="h">265</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">266</td><td colspan="6"></td></tr><tr><td class="h">267</td><td><div class="c3">18</div></td><td></td><td></td><td></td><td><div>16</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @rows, \%row;</td></tr>
-<tr><td class="h">268</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">269</td><td colspan="6"></td></tr><tr><td class="h">270</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# These two are recorded per repo only: there is no process-wide</td></tr>
-<tr><td class="h">271</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# default to fall back to, so the marker is always set.</td></tr>
-<tr><td class="h">272</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>8</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @rows,</td></tr>
-<tr><td class="h">273</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_repo_only_row($repo, $name, $config_file, &#39;port&#39;, &#39;22&#39;),</td></tr>
-<tr><td class="h">274</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_repo_only_row($repo, $name, $config_file, &#39;host_key_checking&#39;, &#39;yes&#39;);</td></tr>
-<tr><td class="h">275</td><td colspan="6"></td></tr><tr><td class="h">276</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$entry-&gt;{ssh} = \@rows;</td></tr>
-<tr><td class="h">277</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} else {</td></tr>
-<tr><td class="h">278</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$entry-&gt;{ssh} = undef;</td></tr>
-<tr><td class="h">279</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">280</td><td colspan="6"></td></tr><tr><td class="h">281</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>8</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @repos, $entry;</td></tr>
-<tr><td class="h">282</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">283</td><td colspan="6"></td></tr><tr><td class="h">284</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return \@repos;</td></tr>
-<tr><td class="h">285</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">286</td><td colspan="6"></td></tr><tr><td class="h">287</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _repo_only_row {</td></tr>
-<tr><td class="h">288</td><td><div class="c3">12</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L288">12</a></div></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($repo, $name, $config_file, $key, $default) = @_;</td></tr>
-<tr><td class="h">289</td><td colspan="6"></td></tr><tr><td class="h">290</td><td><div class="c3">12</div></td><td></td><td></td><td></td><td><div>16</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my %row = (key =&gt; $key, repo_only =&gt; 1, value =&gt; $default);</td></tr>
-<tr><td class="h">291</td><td colspan="6"></td></tr><tr><td class="h">292</td><td><div class="c3">12</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L292">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L292">67</a></div></td><td></td><td><div>29</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;if (defined $repo-&gt;{$key} &amp;&amp; length $repo-&gt;{$key}) {</td></tr>
-<tr><td class="h">293</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{value}&nbsp;&nbsp;= $repo-&gt;{$key};</td></tr>
-<tr><td class="h">294</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>24</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{source} = &#39;repo&#39;;</td></tr>
-<tr><td class="h">295</td><td><div class="c3">6</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L295">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L295">33</a></div></td><td></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{label}&nbsp;&nbsp;= defined $config_file &amp;&amp; length $config_file</td></tr>
-<tr><td class="h">296</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &quot;$config_file [$name]&quot;</td></tr>
-<tr><td class="h">297</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &quot;[$name]&quot;;</td></tr>
-<tr><td class="h">298</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;} else {</td></tr>
-<tr><td class="h">299</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The transport omits -p and StrictHostKeyChecking defaults to yes.</td></tr>
-<tr><td class="h">300</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{source} = &#39;default&#39;;</td></tr>
-<tr><td class="h">301</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{label}&nbsp;&nbsp;= &#39;ssh default&#39;;</td></tr>
-<tr><td class="h">302</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">303</td><td colspan="6"></td></tr><tr><td class="h">304</td><td><div class="c3">12</div></td><td></td><td></td><td></td><td><div>16</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return \%row;</td></tr>
-<tr><td class="h">305</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">306</td><td colspan="6"></td></tr><tr><td class="h">307</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _differs {</td></tr>
-<tr><td class="h">308</td><td><div class="c3">48</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L308">48</a></div></td><td><div>35</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($left, $right) = @_;</td></tr>
-<tr><td class="h">309</td><td colspan="6"></td></tr><tr><td class="h">310</td><td><div class="c3">48</div></td><td><div class="c0" title="-/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L310">0</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L310">33</a></div></td><td></td><td><div>37</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return 0 if !defined $left &amp;&amp; !defined $right;</td></tr>
-<tr><td class="h">311</td><td><div class="c3">48</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L311">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L311">33</a></div></td><td></td><td><div>48</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return 1 if !defined $left || !defined $right;</td></tr>
-<tr><td class="h">312</td><td><div class="c3">48</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L312">50</a></div></td><td></td><td></td><td><div>54</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return &quot;$left&quot; ne &quot;$right&quot; ? 1 : 0;</td></tr>
-<tr><td class="h">313</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">314</td><td colspan="6"></td></tr><tr><td class="h">315</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _explanation {</td></tr>
-<tr><td class="h">316</td><td><div class="c3">8</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L316">8</a></div></td><td><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($file, $section) = @_;</td></tr>
-<tr><td class="h">317</td><td colspan="6"></td></tr><tr><td class="h">318</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>24</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $reader = Config::Abstraction-&gt;new(</td></tr>
-<tr><td class="h">319</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_file =&gt; $file,</td></tr>
-<tr><td class="h">320</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;env_prefix&nbsp;&nbsp;=&gt; &quot;${section}__&quot;,</td></tr>
-<tr><td class="h">321</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
-<tr><td class="h">322</td><td><div class="c3">8</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L322">50</a></div></td><td></td><td></td><td><div>4407</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return {} unless $reader;</td></tr>
-<tr><td class="h">323</td><td colspan="6"></td></tr><tr><td class="h">324</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>14</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $explanation = $reader-&gt;explain_sources();</td></tr>
-<tr><td class="h">325</td><td><div class="c3">8</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L325">50</a></div></td><td></td><td></td><td><div>251</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return ref($explanation) eq &#39;HASH&#39; ? $explanation : {};</td></tr>
-<tr><td class="h">326</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">327</td><td colspan="6"></td></tr><tr><td class="h">328</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The name the environment actually uses, matched the way Config::Abstraction</td></tr>
-<tr><td class="h">329</td><td></td><td></td><td></td><td></td><td></td><td class="s"># matches an env_prefix: case-insensitively.&nbsp;&nbsp;Windows reports environment</td></tr>
-<tr><td class="h">330</td><td></td><td></td><td></td><td></td><td></td><td class="s"># names upper-cased, so building one from &quot;prefix__key&quot; is not enough; the</td></tr>
-<tr><td class="h">331</td><td></td><td></td><td></td><td></td><td></td><td class="s"># report would then name a variable that does not exist in the same spelling</td></tr>
-<tr><td class="h">332</td><td></td><td></td><td></td><td></td><td></td><td class="s"># as the one that supplied the value.</td></tr>
-<tr><td class="h">333</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _env_key {</td></tr>
-<tr><td class="h">334</td><td><div class="c3">24</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L334">24</a></div></td><td><div>14</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($name) = @_;</td></tr>
-<tr><td class="h">335</td><td colspan="6"></td></tr><tr><td class="h">336</td><td><div class="c3">24</div><div class="c3">3312</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L336">100</a></div></td><td></td><td></td><td><div>81</div><div>1836</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $name if grep { $_ eq $name } keys %ENV;</td></tr>
-<tr><td class="h">337</td><td colspan="6"></td></tr><tr><td class="h">338</td><td><div class="c3">21</div></td><td></td><td></td><td></td><td><div>63</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $wanted = lc $name;</td></tr>
-<tr><td class="h">339</td><td><div class="c3">21</div></td><td></td><td></td><td></td><td><div>66</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;for my $key (keys %ENV) {</td></tr>
-<tr><td class="h">340</td><td><div class="c3">2887</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L340">100</a></div></td><td></td><td></td><td><div>1807</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $key if lc $key eq $wanted;</td></tr>
-<tr><td class="h">341</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">342</td><td colspan="6"></td></tr><tr><td class="h">343</td><td><div class="c3">20</div></td><td></td><td></td><td></td><td><div>59</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return undef;</td></tr>
-<tr><td class="h">344</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">345</td><td colspan="6"></td></tr><tr><td class="h">346</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The last source that set a key in a section wins, which is how</td></tr>
-<tr><td class="h">347</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Config::Abstraction layers a file under its environment variables.</td></tr>
-<tr><td class="h">348</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _pick {</td></tr>
-<tr><td class="h">349</td><td><div class="c3">72</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L349">72</a></div></td><td><div>43</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($explanation, $section, $key) = @_;</td></tr>
-<tr><td class="h">350</td><td colspan="6"></td></tr><tr><td class="h">351</td><td><div class="c3">72</div></td><td></td><td></td><td></td><td><div>58</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;for my $full (&quot;$section.$key&quot;, &quot;global.$key&quot;, $key) {</td></tr>
-<tr><td class="h">352</td><td><div class="c3">200</div></td><td></td><td></td><td></td><td><div>113</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $entry = $explanation-&gt;{$full};</td></tr>
-<tr><td class="h">353</td><td><div class="c3">200</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L353">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L353">67</a></div></td><td></td><td><div>166</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next unless ref($entry) eq &#39;HASH&#39; &amp;&amp; ref($entry-&gt;{sources}) eq &#39;ARRAY&#39;;</td></tr>
-<tr><td class="h">354</td><td><div class="c3">8</div><div class="c3">8</div></td><td></td><td></td><td></td><td><div>4</div><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @sources = @{ $entry-&gt;{sources} };</td></tr>
-<tr><td class="h">355</td><td><div class="c3">8</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L355">50</a></div></td><td></td><td></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next unless @sources;</td></tr>
-<tr><td class="h">356</td><td colspan="6"></td></tr><tr><td class="h">357</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $winner = $sources[-1];</td></tr>
-<tr><td class="h">358</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return {</td></tr>
-<tr><td class="h">359</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type&nbsp;&nbsp;=&gt; $winner-&gt;{type},</td></tr>
-<tr><td class="h">360</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label =&gt; $winner-&gt;{label},</td></tr>
-<tr><td class="h">361</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value =&gt; $winner-&gt;{value},</td></tr>
-<tr><td class="h">362</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>17</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
-<tr><td class="h">363</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">364</td><td colspan="6"></td></tr><tr><td class="h">365</td><td><div class="c3">64</div></td><td></td><td></td><td></td><td><div>59</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return undef;</td></tr>
-<tr><td class="h">366</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">367</td><td colspan="6"></td></tr><tr><td class="h">368</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _labels_for {</td></tr>
-<tr><td class="h">369</td><td><div class="c0">0</div></td><td></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L369">0</a></div></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($key, @explanations) = @_;</td></tr>
-<tr><td class="h">370</td><td colspan="6"></td></tr><tr><td class="h">371</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my (%seen, @labels);</td></tr>
-<tr><td class="h">372</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;for my $explanation (@explanations) {</td></tr>
-<tr><td class="h">373</td><td><div class="c0">0</div><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $full (sort keys %{$explanation}) {</td></tr>
-<tr><td class="h">374</td><td><div class="c0">0</div></td><td><div class="c0" title="-/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L374">0</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L374">0</a></div></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next unless $full eq $key || $full =~ /\.\Q$key\E\z/;</td></tr>
-<tr><td class="h">375</td><td><div class="c0">0</div><div class="c0">0</div></td><td><div class="c0" title="-/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L375">0</a></div></td><td></td><td></td><td><div>0</div><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $source (@{ $explanation-&gt;{$full}{sources} || [] }) {</td></tr>
-<tr><td class="h">376</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $label = $source-&gt;{label};</td></tr>
-<tr><td class="h">377</td><td><div class="c0">0</div></td><td><div class="c0" title="-/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L377">0</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L377">0</a></div></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next unless defined $label &amp;&amp; length $label;</td></tr>
-<tr><td class="h">378</td><td><div class="c0">0</div></td><td><div class="c0" title="-/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L378">0</a></div></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @labels, $label unless $seen{$label}++;</td></tr>
-<tr><td class="h">379</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">380</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">381</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">382</td><td colspan="6"></td></tr><tr><td class="h">383</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return @labels;</td></tr>
-<tr><td class="h">384</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">385</td><td colspan="6"></td></tr><tr><td class="h">386</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Object::Configure looks for universal&lt;ext&gt; beside the settings file, then the</td></tr>
-<tr><td class="h">387</td><td></td><td></td><td></td><td></td><td></td><td class="s"># other config-file extensions; mirror its search so the report matches.</td></tr>
-<tr><td class="h">388</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _universal_file {</td></tr>
-<tr><td class="h">389</td><td><div class="c3">6</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L389">6</a></div></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($config_file) = @_;</td></tr>
-<tr><td class="h">390</td><td colspan="6"></td></tr><tr><td class="h">391</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>33</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($volume, $directory) = File::Spec-&gt;splitpath($config_file);</td></tr>
-<tr><td class="h">392</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>17</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $base_directory = File::Spec-&gt;catpath($volume, $directory, &#39;&#39;);</td></tr>
-<tr><td class="h">393</td><td><div class="c3">6</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L393">50</a></div></td><td></td><td></td><td><div>14</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $ext = $config_file =~ /(\.[^.\/\\]+)\z/ ? $1 : &#39;&#39;;</td></tr>
-<tr><td class="h">394</td><td colspan="6"></td></tr><tr><td class="h">395</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my %seen;</td></tr>
-<tr><td class="h">396</td><td><div class="c3">6</div><div class="c3">30</div></td><td></td><td></td><td></td><td><div>62</div><div>29</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;for my $candidate (grep { !$seen{$_}++ } (</td></tr>
-<tr><td class="h">397</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File::Spec-&gt;catfile($base_directory, &quot;universal$ext&quot;),</td></tr>
-<tr><td class="h">398</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File::Spec-&gt;catfile($base_directory, &#39;universal.conf&#39;),</td></tr>
-<tr><td class="h">399</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File::Spec-&gt;catfile($base_directory, &#39;universal.yml&#39;),</td></tr>
-<tr><td class="h">400</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File::Spec-&gt;catfile($base_directory, &#39;universal.yaml&#39;),</td></tr>
-<tr><td class="h">401</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File::Spec-&gt;catfile($base_directory, &#39;universal.json&#39;),</td></tr>
-<tr><td class="h">402</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;)) {</td></tr>
-<tr><td class="h">403</td><td><div class="c3">18</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L403">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L403">67</a></div></td><td></td><td><div>65</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $candidate if -f $candidate &amp;&amp; -r $candidate;</td></tr>
-<tr><td class="h">404</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">405</td><td colspan="6"></td></tr><tr><td class="h">406</td><td><div class="c3">4</div></td><td></td><td></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return undef;</td></tr>
-<tr><td class="h">407</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">408</td><td colspan="6"></td></tr><tr><td class="h">409</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub logger {</td></tr>
-<tr><td class="h">410</td><td><div class="c3">554</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L410">554</a></div></td><td><div>1820</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my (%args) = @_;</td></tr>
-<tr><td class="h">411</td><td colspan="6"></td></tr><tr><td class="h">412</td><td><div class="c3">554</div></td><td></td><td></td><td></td><td><div>1401</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $settings = load(%args);</td></tr>
-<tr><td class="h">413</td><td colspan="6"></td></tr><tr><td class="h">414</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $level = defined $args{level} &amp;&amp; length $args{level}</td></tr>
-<tr><td class="h">415</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? $args{level}</td></tr>
-<tr><td class="h">416</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: (defined $settings-&gt;{log_level} &amp;&amp; length $settings-&gt;{log_level}</td></tr>
-<tr><td class="h">417</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? $settings-&gt;{log_level}</td></tr>
-<tr><td class="h">418</td><td><div class="c3">554</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L418">50</a></div><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L418">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L418">33</a></div><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L418">33</a></div></td><td></td><td><div>3267</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $DEFAULT_LEVEL);</td></tr>
-<tr><td class="h">419</td><td colspan="6"></td></tr><tr><td class="h">420</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;Invalid log_level &#39;$level&#39; (want &quot; . join(&#39;, &#39;, @VALID_LEVELS) . &quot;)\n&quot;</td></tr>
-<tr><td class="h">421</td><td><div class="c3">554</div><div class="c3">8864</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L421">100</a></div></td><td></td><td></td><td><div>866</div><div>7075</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless grep { lc($_) eq lc($level) } @VALID_LEVELS;</td></tr>
-<tr><td class="h">422</td><td colspan="6"></td></tr><tr><td class="h">423</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $format = defined $settings-&gt;{log_format} &amp;&amp; length $settings-&gt;{log_format}</td></tr>
-<tr><td class="h">424</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? $settings-&gt;{log_format}</td></tr>
-<tr><td class="h">425</td><td><div class="c3">553</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L425">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L425">33</a></div></td><td></td><td><div>1933</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $DEFAULT_FORMAT;</td></tr>
-<tr><td class="h">426</td><td colspan="6"></td></tr><tr><td class="h">427</td><td><div class="c3">553</div></td><td></td><td></td><td></td><td><div>526</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $destination;</td></tr>
-<tr><td class="h">428</td><td><div class="c3">553</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L428">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L428">67</a></div></td><td></td><td><div>1630</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;if (defined $settings-&gt;{log_file} &amp;&amp; length $settings-&gt;{log_file}) {</td></tr>
-<tr><td class="h">429</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $path = $settings-&gt;{log_file};</td></tr>
-<tr><td class="h">430</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>44</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $directory = dirname($path);</td></tr>
-<tr><td class="h">431</td><td><div class="c3">3</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L431">50</a></div></td><td></td><td></td><td><div>15</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make_path($directory) unless -d $directory;</td></tr>
-<tr><td class="h">432</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>3</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$destination = { file =&gt; $path };</td></tr>
-<tr><td class="h">433</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;} else {</td></tr>
-<tr><td class="h">434</td><td><div class="c3">550</div></td><td></td><td></td><td></td><td><div>860</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$destination = { fd =&gt; \*STDERR };</td></tr>
-<tr><td class="h">435</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">436</td><td colspan="6"></td></tr><tr><td class="h">437</td><td><div class="c3">553</div></td><td></td><td></td><td></td><td><div>1325</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $logger = Log::Abstraction-&gt;new(</td></tr>
-<tr><td class="h">438</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $level,</td></tr>
-<tr><td class="h">439</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;format&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $format,</td></tr>
-<tr><td class="h">440</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Logging must never turn a handled error into a second, uncaught one.</td></tr>
-<tr><td class="h">441</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;croak_on_error =&gt; 0,</td></tr>
-<tr><td class="h">442</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logger&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $destination,</td></tr>
-<tr><td class="h">443</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
-<tr><td class="h">444</td><td colspan="6"></td></tr><tr><td class="h">445</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# A command-line flag describes this run, so it beats the settings file.</td></tr>
-<tr><td class="h">446</td><td><div class="c3">553</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L446">100</a></div></td><td></td><td></td><td><div>88176</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$logger = $logger-&gt;new(level =&gt; &#39;debug&#39;) if $args{verbose};</td></tr>
-<tr><td class="h">447</td><td><div class="c3">553</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L447">100</a></div></td><td></td><td></td><td><div>1006</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$logger = $logger-&gt;new(level =&gt; &#39;error&#39;) if $args{quiet};</td></tr>
-<tr><td class="h">448</td><td colspan="6"></td></tr><tr><td class="h">449</td><td><div class="c3">553</div></td><td></td><td></td><td></td><td><div>2575</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $logger;</td></tr>
-<tr><td class="h">450</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">451</td><td colspan="6"></td></tr><tr><td class="h">452</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
-<tr><td class="h">453</td><td colspan="6"></td></tr></table>
+<tr><td class="h">2</td><td colspan="6"></td></tr><tr><td class="h">3</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Process-wide settings (logging and SSH defaults) read through</td></tr>
+<tr><td class="h">4</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Object::Configure, and the logger built from them.&nbsp;&nbsp;The repos themselves stay</td></tr>
+<tr><td class="h">5</td><td></td><td></td><td></td><td></td><td></td><td class="s"># in ~/.filesync/config.json, which &quot;filesync init&quot; writes and the admin tool</td></tr>
+<tr><td class="h">6</td><td></td><td></td><td></td><td></td><td></td><td class="s"># edits; this module never touches that store.</td></tr>
+<tr><td class="h">7</td><td colspan="6"></td></tr><tr><td class="h">8</td><td></td><td></td><td></td><td></td><td></td><td class="s"># First, so the Windows end-of-scope hook is chosen before Log::Abstraction</td></tr>
+<tr><td class="h">9</td><td></td><td></td><td></td><td></td><td></td><td class="s"># (through namespace::clean) or Sub::Private loads B::Hooks::EndOfScope.</td></tr>
+<tr><td class="h">10</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L10">318</a></div></td><td><div>6242</div><div>153</div><div>1535</div></td><td class="s">use App::FileSync::Platform;</td></tr>
+<tr><td class="h">11</td><td colspan="6"></td></tr><tr><td class="h">12</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L12">318</a></div></td><td><div>258</div><div>167</div><div>1218</div></td><td class="s">use strict;</td></tr>
+<tr><td class="h">13</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L13">318</a></div></td><td><div>450</div><div>162</div><div>3544</div></td><td class="s">use warnings;</td></tr>
+<tr><td class="h">14</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L14">318</a></div></td><td><div>743</div><div>19584</div><div>440</div></td><td class="s">use autodie qw(:all);</td></tr>
+<tr><td class="h">15</td><td colspan="6"></td></tr><tr><td class="h">16</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L16">318</a></div></td><td><div>490250</div><div>1758739</div><div>3634</div></td><td class="s">use Config::Abstraction;</td></tr>
+<tr><td class="h">17</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L17">318</a></div></td><td><div>614</div><div>183</div><div>5190</div></td><td class="s">use File::Basename qw(dirname);</td></tr>
+<tr><td class="h">18</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L18">318</a></div></td><td><div>316</div><div>198</div><div>1586</div></td><td class="s">use File::Spec;</td></tr>
+<tr><td class="h">19</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L19">318</a></div></td><td><div>317</div><div>203</div><div>5399</div></td><td class="s">use List::Util qw(any first);</td></tr>
+<tr><td class="h">20</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L20">318</a></div></td><td><div>107632</div><div>5454195</div><div>3108</div></td><td class="s">use Log::Abstraction;</td></tr>
+<tr><td class="h">21</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L21">318</a></div></td><td><div>70843</div><div>1098228</div><div>3322</div></td><td class="s">use Object::Configure;</td></tr>
+<tr><td class="h">22</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L22">318</a></div></td><td><div>689</div><div>203</div><div>4684</div></td><td class="s">use Readonly;</td></tr>
+<tr><td class="h">23</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L23">318</a></div></td><td><div>367</div><div>195</div><div>957</div></td><td class="s">use Sub::Private { mode =&gt; &#39;enforce&#39; };</td></tr>
+<tr><td class="h">24</td><td colspan="6"></td></tr><tr><td class="h">25</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L25">318</a></div></td><td><div>28093</div><div>198</div><div>3545</div></td><td class="s">use App::FileSync::Args qw(named);</td></tr>
+<tr><td class="h">26</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L26">318</a></div></td><td><div>368</div><div>199</div><div>2777</div></td><td class="s">use App::FileSync::I18N qw(throw);</td></tr>
+<tr><td class="h">27</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L27">318</a></div></td><td><div>822</div><div>222</div><div>4649</div></td><td class="s">use App::FileSync::IO qw(ensure_dir);</td></tr>
+<tr><td class="h">28</td><td colspan="6"></td></tr><tr><td class="h">29</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $VERSION = &#39;0.001.1&#39;;</td></tr>
+<tr><td class="h">30</td><td colspan="6"></td></tr><tr><td class="h">31</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The hook predicates moved to App::FileSync::Platform, which must load before</td></tr>
+<tr><td class="h">32</td><td></td><td></td><td></td><td></td><td></td><td class="s"># this module&#39;s dependencies; these names are kept for existing callers.</td></tr>
+<tr><td class="h">33</td><td></td><td></td><td></td><td></td><td></td><td class="s">{</td></tr>
+<tr><td class="h">34</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L34">318</a></div></td><td><div>314</div><div>225</div><div>154693</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no warnings &#39;once&#39;;</td></tr>
+<tr><td class="h">35</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*wants_plain_end_of_scope_hook = \&amp;App::FileSync::Platform::wants_plain_end_of_scope_hook;</td></tr>
+<tr><td class="h">36</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*use_plain_end_of_scope_hook&nbsp;&nbsp;&nbsp;= \&amp;App::FileSync::Platform::use_plain_end_of_scope_hook;</td></tr>
+<tr><td class="h">37</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">38</td><td colspan="6"></td></tr><tr><td class="h">39</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Package variables, not Readonly: they are documented and tests may localise them.</td></tr>
+<tr><td class="h">40</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $DEFAULT_FORMAT&nbsp;&nbsp;= &#39;%level%: %message%&#39;;</td></tr>
+<tr><td class="h">41</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $DEFAULT_LEVEL&nbsp;&nbsp;&nbsp;= &#39;warning&#39;;</td></tr>
+<tr><td class="h">42</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $CONFIG_BASENAME = &#39;app-filesync.json&#39;;</td></tr>
+<tr><td class="h">43</td><td colspan="6"></td></tr><tr><td class="h">44</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Defaults for every SSH repo.&nbsp;&nbsp;A repo&#39;s own config still wins, so one machine</td></tr>
+<tr><td class="h">45</td><td></td><td></td><td></td><td></td><td></td><td class="s"># can point at another identity without repeating the common settings.</td></tr>
+<tr><td class="h">46</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $DEFAULT_SERVER_COMMAND = &#39;filesync-server&#39;;</td></tr>
+<tr><td class="h">47</td><td colspan="6"></td></tr><tr><td class="h">48</td><td></td><td></td><td></td><td></td><td></td><td class="s">our @VALID_LEVELS = qw(</td></tr>
+<tr><td class="h">49</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trace debug info informational notice warn warning error err</td></tr>
+<tr><td class="h">50</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;crit critical fatal alert emerg emergency panic</td></tr>
+<tr><td class="h">51</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
+<tr><td class="h">52</td><td colspan="6"></td></tr><tr><td class="h">53</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The process-wide settings, in the order &quot;filesync settings&quot; prints them.</td></tr>
+<tr><td class="h">54</td><td></td><td></td><td></td><td></td><td></td><td class="s">our @SETTING_KEYS = qw(</td></tr>
+<tr><td class="h">55</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log_level log_format log_file</td></tr>
+<tr><td class="h">56</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh_identity ssh_known_hosts server_command</td></tr>
+<tr><td class="h">57</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
+<tr><td class="h">58</td><td colspan="6"></td></tr><tr><td class="h">59</td><td></td><td></td><td></td><td></td><td></td><td class="s"># How each repo-level SSH key corresponds to the process setting it falls back</td></tr>
+<tr><td class="h">60</td><td></td><td></td><td></td><td></td><td></td><td class="s"># to.&nbsp;&nbsp;The names differ only because the repo config uses shorter keys.</td></tr>
+<tr><td class="h">61</td><td></td><td></td><td></td><td></td><td></td><td class="s">our %REPO_SSH_KEYS = (</td></tr>
+<tr><td class="h">62</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh_identity&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;identity&#39;,</td></tr>
+<tr><td class="h">63</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh_known_hosts =&gt; &#39;known_hosts&#39;,</td></tr>
+<tr><td class="h">64</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_command&nbsp;&nbsp;=&gt; &#39;server_command&#39;,</td></tr>
+<tr><td class="h">65</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
+<tr><td class="h">66</td><td></td><td></td><td></td><td></td><td></td><td class="s">our @REPO_SSH_SETTINGS = qw(ssh_identity ssh_known_hosts server_command);</td></tr>
+<tr><td class="h">67</td><td colspan="6"></td></tr><tr><td class="h">68</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Section names Object::Configure and Config::Abstraction use.</td></tr>
+<tr><td class="h">69</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $CLASS_SECTION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;App__FileSync&#39;;</td></tr>
+<tr><td class="h">70</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $UNIVERSAL_SECTION =&gt; &#39;UNIVERSAL&#39;;</td></tr>
+<tr><td class="h">71</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $CONF_DIR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;.conf&#39;;</td></tr>
+<tr><td class="h">72</td><td colspan="6"></td></tr><tr><td class="h">73</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Settings that only a repo records: there is no process-wide layer, and ssh&#39;s</td></tr>
+<tr><td class="h">74</td><td></td><td></td><td></td><td></td><td></td><td class="s"># own default applies when the repo leaves them out.</td></tr>
+<tr><td class="h">75</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my @REPO_ONLY =&gt; ([ port =&gt; &#39;22&#39; ], [ host_key_checking =&gt; &#39;yes&#39; ]);</td></tr>
+<tr><td class="h">76</td><td colspan="6"></td></tr><tr><td class="h">77</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Provenance labels for &quot;filesync settings&quot;.</td></tr>
+<tr><td class="h">78</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $LABEL_DEFAULT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;built-in default&#39;;</td></tr>
+<tr><td class="h">79</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $LABEL_SSH_DEFAULT =&gt; &#39;ssh default&#39;;</td></tr>
+<tr><td class="h">80</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $LABEL_UNKNOWN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;unknown source&#39;;</td></tr>
+<tr><td class="h">81</td><td colspan="6"></td></tr><tr><td class="h">82</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Object::Configure&#39;s search order for a universal file beside the settings file.</td></tr>
+<tr><td class="h">83</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my @UNIVERSAL_EXTENSIONS =&gt; qw(.conf .yml .yaml .json);</td></tr>
+<tr><td class="h">84</td><td colspan="6"></td></tr><tr><td class="h">85</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The arguments load, explain and logger share.</td></tr>
+<tr><td class="h">86</td><td></td><td></td><td></td><td></td><td></td><td class="s">my %FILE_ARGS = (</td></tr>
+<tr><td class="h">87</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">88</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_dirs =&gt; { type =&gt; &#39;arrayref&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">89</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
+<tr><td class="h">90</td><td colspan="6"></td></tr><tr><td class="h">91</td><td></td><td></td><td></td><td></td><td></td><td class="s">=encoding utf8</td></tr>
+<tr><td class="h">92</td><td colspan="6"></td></tr><tr><td class="h">93 - 195</td><td colspan="5"></td><td class="s"><pre>=head1 NAME
+
+App::FileSync::Settings - process-wide settings and logging for App::FileSync
+
+=head1 SYNOPSIS
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use App::FileSync::Settings;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $logger = App::FileSync::Settings::logger(verbose =&gt; 1);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$logger-&gt;error(&#39;...&#39;);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $settings = App::FileSync::Settings::load();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $level = $settings-&gt;{log_level};
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $report = App::FileSync::Settings::explain();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf &quot;%s = %s (%s)\n&quot;, $_-&gt;{key}, $_-&gt;{value}, $_-&gt;{label}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for @{ $report-&gt;{settings} };
+
+=head1 DESCRIPTION
+
+Settings that apply to the process rather than to one repo - the log level,
+format and destination, plus the SSH identity, known-hosts file and remote
+server command - are read through L&lt;Object::Configure&gt;.&nbsp;&nbsp;The repos themselves
+remain in F&lt;~/.filesync/config.json&gt;, which C&lt;filesync init&gt; writes; this
+module does not replace that store.
+
+The settings file is F&lt;~/.conf/app-filesync.json&gt; when it exists, or the path in
+C&lt;FILESYNC_SETTINGS&gt;.&nbsp;&nbsp;The section key is C&lt;App__FileSync&gt;, and a C&lt;UNIVERSAL&gt;
+section in the same directory applies to every class that uses
+Object::Configure.&nbsp;&nbsp;Environment variables named C&lt;App__FileSync__I&lt;key&gt;&gt;
+override the file:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# ~/.conf/app-filesync.json
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ &quot;App__FileSync&quot;: { &quot;log_level&quot;: &quot;debug&quot;, &quot;log_format&quot;: &quot;%level%: %message%&quot; } }
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# or
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;export App__FileSync__log_level=debug
+
+C&lt;log_file&gt; sends the log to a file instead of standard error; leading
+directories are created.&nbsp;&nbsp;C&lt;log_format&gt; is a L&lt;Log::Abstraction&gt; format string.
+
+C&lt;ssh_identity&gt;, C&lt;ssh_known_hosts&gt; and C&lt;server_command&gt; are the defaults for
+every SSH repo, so a per-repo C&lt;identity&gt;, C&lt;known_hosts&gt; or C&lt;server_command&gt;
+(written by C&lt;filesync init --identity&gt; and friends) only has to be set when it
+differs.&nbsp;&nbsp;C&lt;server_command&gt; defaults to C&lt;filesync-server&gt;:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ &quot;App__FileSync&quot;: {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ssh_identity&quot;&nbsp;&nbsp;&nbsp;&nbsp;: &quot;~/.ssh/filesync_ed25519&quot;,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ssh_known_hosts&quot; : &quot;~/.ssh/filesync_known_hosts&quot;,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;server_command&quot;&nbsp;&nbsp;: &quot;/usr/local/bin/filesync-server&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} }
+
+Command output (sync summaries, plans, C&lt;--json&gt;) is written to standard output
+by the commands themselves; the logger carries diagnostics on standard error,
+so a cron job can separate the two.&nbsp;&nbsp;C&lt;--verbose&gt; raises the level to C&lt;debug&gt;
+and C&lt;--quiet&gt; lowers it to C&lt;error&gt; for that run, overriding the file.
+
+C&lt;wants_plain_end_of_scope_hook&gt; and C&lt;use_plain_end_of_scope_hook&gt; are aliases
+of the functions in L&lt;App::FileSync::Platform&gt;, kept for existing callers.
+
+=head1 FUNCTIONS
+
+=head2 config_file
+
+Purpose: the settings file that would be used.
+
+Args: an optional explicit path.
+
+Returns: the explicit path when one is given; otherwise C&lt;FILESYNC_SETTINGS&gt; or
+F&lt;~/.conf/app-filesync.json&gt; if that file exists; otherwise C&lt;undef&gt;.
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $file = App::FileSync::Settings::config_file();
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $file = App::FileSync::Settings::config_file() // &#39;none&#39;;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print &quot;settings: $file\n&quot;;
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ { name =&gt; &#39;given&#39;, type =&gt; &#39;string&#39;, optional =&gt; 1 } ]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;string&#39;, optional =&gt; 1 }
+
+=head3 MESSAGES
+
+None.
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_file(g) = g&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if g &acirc;&#137;&nbsp; &quot;&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_file(g) = d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if d = default_path &acirc;&#136;&sect; d &acirc;&#136;&#136; dom FS
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_file(g) = &acirc;&#138;&yen;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;otherwise
+
+=cut</pre></td></tr>
+<tr><td class="h">196</td><td colspan="6"></td></tr><tr><td class="h">197</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub config_file {</td></tr>
+<tr><td class="h">198</td><td><div class="c3">631</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L198">631</a></div></td><td><div>1070</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($given) = @_;</td></tr>
+<tr><td class="h">199</td><td colspan="6"></td></tr><tr><td class="h">200</td><td><div class="c3">631</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L200">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L200">67</a></div></td><td></td><td><div>1346</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $given if defined $given &amp;&amp; length $given;</td></tr>
+<tr><td class="h">201</td><td colspan="6"></td></tr><tr><td class="h">202</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# A stale FILESYNC_SETTINGS must not fail every command: it is only a default.</td></tr>
+<tr><td class="h">203</td><td><div class="c3">612</div></td><td></td><td></td><td></td><td><div>1208</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $path = _default_config_path();</td></tr>
+<tr><td class="h">204</td><td><div class="c3">612</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L204">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L204">67</a></div></td><td></td><td><div>4489</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (defined $path &amp;&amp; -e $path) ? $path : undef;</td></tr>
+<tr><td class="h">205</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">206</td><td colspan="6"></td></tr><tr><td class="h">207 - 253</td><td colspan="5"></td><td class="s"><pre>=head2 load
+
+Purpose: the merged process settings.
+
+Args: optional C&lt;config_file&gt; and C&lt;config_dirs&gt; (as for
+L&lt;Object::Configure/configure&gt;).
+
+Returns: a hashref with every key in C&lt;@SETTING_KEYS&gt;, built-in defaults
+overlaid by the settings file, the C&lt;UNIVERSAL&gt; section and C&lt;App__FileSync__*&gt;
+environment variables.
+
+Side Effects: reads the settings file.&nbsp;&nbsp;Dies (through Object::Configure) when
+an explicit file does not exist.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $settings = App::FileSync::Settings::load(config_file =&gt; $path);
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print App::FileSync::Settings::load()-&gt;{log_level}, &quot;\n&quot;;&nbsp;&nbsp;# warning
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_dirs =&gt; { type =&gt; &#39;arrayref&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;hashref&#39; }
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;args.invalid&nbsp;&nbsp;&nbsp;an argument has the wrong type&nbsp;&nbsp;fix the call
+
+Object::Configure&#39;s own error for a missing explicit file is passed through.
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;load(a) = defaults &acirc;&#138;&#149; file(config_file(a)) &acirc;&#138;&#149; universal &acirc;&#138;&#149; env
+
+=cut</pre></td></tr>
+<tr><td class="h">254</td><td colspan="6"></td></tr><tr><td class="h">255</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub load {</td></tr>
+<tr><td class="h">256</td><td><div class="c3">621</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L256">621</a></div></td><td><div>58842</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = named(\@_, {%FILE_ARGS}, &#39;Settings::load&#39;);</td></tr>
+<tr><td class="h">257</td><td colspan="6"></td></tr><tr><td class="h">258</td><td><div class="c3">621</div></td><td></td><td></td><td></td><td><div>1534</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config_file = config_file($args-&gt;{config_file});</td></tr>
+<tr><td class="h">259</td><td colspan="6"></td></tr><tr><td class="h">260</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my %params = (</td></tr>
+<tr><td class="h">261</td><td><div class="c3">621</div><div class="c3">621</div></td><td></td><td></td><td></td><td><div>759</div><div>941</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%{ _defaults() },</td></tr>
+<tr><td class="h">262</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# We build the logger ourselves; this keeps Object::Configure from</td></tr>
+<tr><td class="h">263</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# constructing its default Log::Log4perl backend as a side effect.</td></tr>
+<tr><td class="h">264</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logger =&gt; [],</td></tr>
+<tr><td class="h">265</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
+<tr><td class="h">266</td><td><div class="c3">621</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L266">100</a></div></td><td></td><td></td><td><div>1354</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$params{config_file} = $config_file if defined $config_file;</td></tr>
+<tr><td class="h">267</td><td><div class="c3">621</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L267">50</a></div></td><td></td><td></td><td><div>972</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$params{config_dirs} = $args-&gt;{config_dirs} if $args-&gt;{config_dirs};</td></tr>
+<tr><td class="h">268</td><td colspan="6"></td></tr><tr><td class="h">269</td><td><div class="c3">621</div></td><td></td><td></td><td></td><td><div>2082</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $settings = Object::Configure::configure(&#39;App::FileSync&#39;, \%params);</td></tr>
+<tr><td class="h">270</td><td><div class="c3">620</div></td><td></td><td></td><td></td><td><div>1212684</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delete $settings-&gt;{logger};</td></tr>
+<tr><td class="h">271</td><td colspan="6"></td></tr><tr><td class="h">272</td><td><div class="c3">620</div></td><td></td><td></td><td></td><td><div>6036</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $settings;</td></tr>
+<tr><td class="h">273</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">274</td><td colspan="6"></td></tr><tr><td class="h">275 - 344</td><td colspan="5"></td><td class="s"><pre>=head2 explain
+
+Purpose: where each effective setting came from, for C&lt;filesync settings&gt;.
+
+Args: as L&lt;/load&gt;.
+
+Returns: C&lt;{ settings_file =E&lt;gt&gt; $path_or_undef, settings =E&lt;gt&gt; \@rows }&gt;, one
+row per key in C&lt;@SETTING_KEYS&gt;.&nbsp;&nbsp;Each row has the effective C&lt;value&gt;, a
+C&lt;source&gt; of C&lt;default&gt;, C&lt;file&gt;, C&lt;env&gt; or C&lt;merged&gt;, and a human-readable
+C&lt;label&gt; naming the file section, environment variable or built-in default
+that supplied it.
+
+The values are whatever L&lt;/load&gt; returns; the provenance is reconstructed from
+the same layers Object::Configure merges.&nbsp;&nbsp;A value no modelled layer accounts
+for (a C&lt;global&gt; section, say) is reported as C&lt;merged&gt; rather than claimed as
+a default.
+
+Side Effects: reads the settings file and any universal file beside it.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $report = App::FileSync::Settings::explain();
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $row (@{ App::FileSync::Settings::explain()-&gt;{settings} }) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf &quot;%-16s %-20s %s\n&quot;, $row-&gt;{key}, $row-&gt;{value}, $row-&gt;{label};
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_dirs =&gt; { type =&gt; &#39;arrayref&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type =&gt; &#39;hashref&#39;,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;schema =&gt; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;settings_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;settings&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;arrayref&#39; },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head3 MESSAGES
+
+As L&lt;/load&gt;.
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&acirc;&#136;&#128; k : SETTING_KEYS &acirc;&#128;&cent;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;row(k).value = load()(k)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;row(k).source = last layer &acirc;&#136;&#136; &acirc;&#159;&uml;default, universal, class&acirc;&#159;&copy; that sets k,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or merged if that layer&#39;s value &acirc;&#137;&nbsp; row(k).value
+
+=head3 PSEUDOCODE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;load the settings
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;explain the class and universal sections of the settings file, if any
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for each key:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start from the built-in default
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let the universal section, then the class section, override it
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;without a file, let UNIVERSAL__key then App__FileSync__key override it
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if the loaded value differs from the winner, call it merged
+
+=cut</pre></td></tr>
+<tr><td class="h">345</td><td colspan="6"></td></tr><tr><td class="h">346</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub explain {</td></tr>
+<tr><td class="h">347</td><td><div class="c3">8</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L347">8</a></div></td><td><div>4244</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = named(\@_, {%FILE_ARGS}, &#39;Settings::explain&#39;);</td></tr>
+<tr><td class="h">348</td><td colspan="6"></td></tr><tr><td class="h">349</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>13</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config_file = config_file($args-&gt;{config_file});</td></tr>
+<tr><td class="h">350</td><td><div class="c3">8</div><div class="c3">8</div></td><td></td><td></td><td></td><td><div>6</div><div>8</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $settings = load(%{$args});</td></tr>
+<tr><td class="h">351</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $defaults = _defaults();</td></tr>
+<tr><td class="h">352</td><td colspan="6"></td></tr><tr><td class="h">353</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Each layer is [ section explanation, label for a file entry ], lowest first.</td></tr>
+<tr><td class="h">354</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @layers;</td></tr>
+<tr><td class="h">355</td><td><div class="c3">8</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L355">100</a></div></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (defined $config_file) {</td></tr>
+<tr><td class="h">356</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $universal = _universal_file($config_file);</td></tr>
+<tr><td class="h">357</td><td><div class="c3">6</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L357">100</a></div></td><td></td><td></td><td><div>14</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @layers, [ _explanation($universal, $UNIVERSAL_SECTION), $UNIVERSAL_SECTION, &quot;$universal [$UNIVERSAL_SECTION]&quot; ]</td></tr>
+<tr><td class="h">358</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if defined $universal;</td></tr>
+<tr><td class="h">359</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>24</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @layers, [ _explanation($config_file, $CLASS_SECTION), $CLASS_SECTION, &quot;$config_file [$CLASS_SECTION]&quot; ];</td></tr>
+<tr><td class="h">360</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">361</td><td colspan="6"></td></tr><tr><td class="h">362</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>47</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @rows;</td></tr>
+<tr><td class="h">363</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $key (@SETTING_KEYS) {</td></tr>
+<tr><td class="h">364</td><td><div class="c3">48</div></td><td></td><td></td><td></td><td><div>35</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my %row = (key =&gt; $key, value =&gt; $settings-&gt;{$key}, source =&gt; &#39;default&#39;, label =&gt; $LABEL_DEFAULT);</td></tr>
+<tr><td class="h">365</td><td><div class="c3">48</div></td><td></td><td></td><td></td><td><div>70</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $winner = $defaults-&gt;{$key};</td></tr>
+<tr><td class="h">366</td><td colspan="6"></td></tr><tr><td class="h">367</td><td><div class="c3">48</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L367">100</a></div></td><td></td><td></td><td><div>25</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (defined $config_file) {</td></tr>
+<tr><td class="h">368</td><td><div class="c3">36</div></td><td></td><td></td><td></td><td><div>14</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $layer (@layers) {</td></tr>
+<tr><td class="h">369</td><td><div class="c3">48</div><div class="c3">48</div></td><td></td><td></td><td></td><td><div>18</div><div>23</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($explanation, $section, $file_label) = @{$layer};</td></tr>
+<tr><td class="h">370</td><td><div class="c3">48</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L370">100</a></div></td><td></td><td></td><td><div>28</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $entry = _pick($explanation, $section, $key) or next;</td></tr>
+<tr><td class="h">371</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{source} = $entry-&gt;{type};</td></tr>
+<tr><td class="h">372</td><td><div class="c3">8</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L372">100</a></div></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{label}&nbsp;&nbsp;= $entry-&gt;{type} eq &#39;env&#39; ? $entry-&gt;{label} : $file_label;</td></tr>
+<tr><td class="h">373</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$winner&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= $entry-&gt;{value};</td></tr>
+<tr><td class="h">374</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">375</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} else {</td></tr>
+<tr><td class="h">376</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# No settings file: Object::Configure falls back to environment</td></tr>
+<tr><td class="h">377</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# variables only, universal ones first and class ones last.</td></tr>
+<tr><td class="h">378</td><td><div class="c3">12</div></td><td></td><td></td><td></td><td><div>2</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $section ($UNIVERSAL_SECTION, $CLASS_SECTION) {</td></tr>
+<tr><td class="h">379</td><td><div class="c3">24</div></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L379">100</a></div></td><td></td><td><div>17</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $name = _env_key(&quot;${section}__$key&quot;) // next;</td></tr>
+<tr><td class="h">380</td><td><div class="c3">4</div></td><td></td><td></td><td></td><td><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@row{qw(source label)} = (&#39;env&#39;, $name);</td></tr>
+<tr><td class="h">381</td><td><div class="c3">4</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$winner = $ENV{$name};</td></tr>
+<tr><td class="h">382</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">383</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">384</td><td colspan="6"></td></tr><tr><td class="h">385</td><td><div class="c3">48</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L385">50</a></div></td><td></td><td></td><td><div>27</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (_differs($settings-&gt;{$key}, $winner)) {</td></tr>
+<tr><td class="h">386</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{source} = &#39;merged&#39;;</td></tr>
+<tr><td class="h">387</td><td><div class="c0">0</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L387">0</a></div></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$row{label}&nbsp;&nbsp;= join(&#39; + &#39;, @{ _labels_for($key, map { $_-&gt;[0] } @layers) }) || $LABEL_UNKNOWN;</td></tr>
+<tr><td class="h">388</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">389</td><td colspan="6"></td></tr><tr><td class="h">390</td><td><div class="c3">48</div></td><td></td><td></td><td></td><td><div>27</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @rows, \%row;</td></tr>
+<tr><td class="h">391</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">392</td><td colspan="6"></td></tr><tr><td class="h">393</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>32</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return { settings_file =&gt; $config_file, settings =&gt; \@rows };</td></tr>
+<tr><td class="h">394</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">395</td><td colspan="6"></td></tr><tr><td class="h">396 - 462</td><td colspan="5"></td><td class="s"><pre>=head2 explain_repos
+
+Purpose: how the SSH settings resolve for every repo in a client config.
+
+Args: C&lt;config&gt; (the hashref from C&lt;App::FileSync::Config::load_client&gt;),
+C&lt;report&gt; (the result of L&lt;/explain&gt;), C&lt;config_file&gt; (the client config path,
+used in labels).
+
+Returns: an arrayref, one entry per repo in name order, with C&lt;repo&gt;,
+C&lt;transport&gt;, C&lt;server&gt; (when the repo records one) and C&lt;ssh&gt;: one
+C&lt;{key, value, source, label}&gt; row per setting, where C&lt;source&gt; is C&lt;repo&gt;
+(the repo&#39;s own entry), C&lt;process&gt; (the settings reported by C&lt;explain&gt;) or
+C&lt;default&gt; (ssh&#39;s own default).&nbsp;&nbsp;C&lt;port&gt; and C&lt;host_key_checking&gt; rows carry
+C&lt;repo_only =E&lt;gt&gt; 1&gt;.&nbsp;&nbsp;C&lt;ssh&gt; is C&lt;undef&gt; for the local transport, which never
+runs ssh.
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $repos = App::FileSync::Settings::explain_repos(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config =&gt; $config, report =&gt; App::FileSync::Settings::explain(), config_file =&gt; $path,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $repo (@{ $repos }) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next unless $repo-&gt;{ssh};
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print &quot;$repo-&gt;{repo}: $_-&gt;{key} = $_-&gt;{value} ($_-&gt;{label})\n&quot; for @{ $repo-&gt;{ssh} };
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;hashref&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;hashref&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;arrayref&#39; }
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;args.invalid&nbsp;&nbsp;&nbsp;an argument has the wrong type&nbsp;&nbsp;fix the call
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&acirc;&#136;&#128; r : dom config.repos &acirc;&#128;&cent; &acirc;&#136;&#128; k : REPO_SSH_SETTINGS &acirc;&#128;&cent;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value(r, k) = repo(r)(k)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if repo(r)(k) &acirc;&#137;&nbsp; &quot;&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= process(k)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else if process(k) &acirc;&#137;&nbsp; &quot;&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= &quot;&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;otherwise
+
+=head3 PSEUDOCODE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for each repo, by name:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;record its transport and server
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if it uses ssh:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for each SSH setting take the repo&#39;s value, else the process
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setting, else ssh&#39;s default
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add the repo-only port and host-key-checking rows
+
+=cut</pre></td></tr>
+<tr><td class="h">463</td><td colspan="6"></td></tr><tr><td class="h">464</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub explain_repos {</td></tr>
+<tr><td class="h">465</td><td><div class="c3">3</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L465">3</a></div></td><td><div>15</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = named(\@_, {</td></tr>
+<tr><td class="h">466</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;hashref&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">467</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;hashref&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">468</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">469</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}, &#39;Settings::explain_repos&#39;);</td></tr>
+<tr><td class="h">470</td><td colspan="6"></td></tr><tr><td class="h">471</td><td><div class="c3">3</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L471">50</a></div></td><td></td><td><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $config = $args-&gt;{config} || {};</td></tr>
+<tr><td class="h">472</td><td><div class="c3">3</div><div class="c3">18</div><div class="c3">3</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L472">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L472">50</a></div></td><td></td><td><div>3</div><div>13</div><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my %process = map { $_-&gt;{key} =&gt; $_ } @{ ($args-&gt;{report} || {})-&gt;{settings} || [] };</td></tr>
+<tr><td class="h">473</td><td colspan="6"></td></tr><tr><td class="h">474</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @repos;</td></tr>
+<tr><td class="h">475</td><td><div class="c3">3</div><div class="c3">3</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L475">50</a></div></td><td></td><td></td><td><div>4</div><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $name (sort keys %{ $config-&gt;{repos} || {} }) {</td></tr>
+<tr><td class="h">476</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $repo = $config-&gt;{repos}{$name};</td></tr>
+<tr><td class="h">477</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L477">50</a></div></td><td></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$repo = {} unless ref($repo) eq &#39;HASH&#39;;</td></tr>
+<tr><td class="h">478</td><td colspan="6"></td></tr><tr><td class="h">479</td><td><div class="c3">9</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L479">50</a></div></td><td></td><td><div>13</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $entry = { repo =&gt; $name, transport =&gt; $repo-&gt;{transport} || &#39;ssh&#39;, ssh =&gt; undef };</td></tr>
+<tr><td class="h">480</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L480">100</a></div></td><td></td><td></td><td><div>8</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$entry-&gt;{server} = $repo-&gt;{server} if _set($repo-&gt;{server});</td></tr>
+<tr><td class="h">481</td><td colspan="6"></td></tr><tr><td class="h">482</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The local transport never runs ssh, so there is nothing to resolve.</td></tr>
+<tr><td class="h">483</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L483">100</a></div></td><td></td><td></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ($entry-&gt;{transport} eq &#39;ssh&#39;) {</td></tr>
+<tr><td class="h">484</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $repo_label = _repo_label($args-&gt;{config_file}, $name);</td></tr>
+<tr><td class="h">485</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @rows;</td></tr>
+<tr><td class="h">486</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>6</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $key (@REPO_SSH_SETTINGS) {</td></tr>
+<tr><td class="h">487</td><td><div class="c3">18</div></td><td></td><td></td><td></td><td><div>23</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $value&nbsp;&nbsp;&nbsp;= $repo-&gt;{ $REPO_SSH_KEYS{$key} };</td></tr>
+<tr><td class="h">488</td><td><div class="c3">18</div></td><td></td><td></td><td></td><td><div>8</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $setting = $process{$key};</td></tr>
+<tr><td class="h">489</td><td colspan="6"></td></tr><tr><td class="h">490</td><td><div class="c3">18</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L490">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L490">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Settings-pm--condition.html#L490">67</a></div></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (_set($value)) {</td></tr>
+<tr><td class="h">491</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @rows, { key =&gt; $key, value =&gt; $value, source =&gt; &#39;repo&#39;, label =&gt; $repo_label };</td></tr>
+<tr><td class="h">492</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} elsif ($setting &amp;&amp; _set($setting-&gt;{value})) {</td></tr>
+<tr><td class="h">493</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @rows, { key =&gt; $key, value =&gt; $setting-&gt;{value}, source =&gt; &#39;process&#39;, label =&gt; $setting-&gt;{label} };</td></tr>
+<tr><td class="h">494</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} else {</td></tr>
+<tr><td class="h">495</td><td><div class="c3">7</div></td><td></td><td></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @rows, { key =&gt; $key, value =&gt; &#39;&#39;, source =&gt; &#39;default&#39;, label =&gt; $LABEL_SSH_DEFAULT };</td></tr>
+<tr><td class="h">496</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">497</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">498</td><td colspan="6"></td></tr><tr><td class="h">499</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The transport omits -p and StrictHostKeyChecking defaults to yes.</td></tr>
+<tr><td class="h">500</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $only (@REPO_ONLY) {</td></tr>
+<tr><td class="h">501</td><td><div class="c3">12</div><div class="c3">12</div></td><td></td><td></td><td></td><td><div>20</div><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($key, $default) = @{$only};</td></tr>
+<tr><td class="h">502</td><td><div class="c3">12</div></td><td></td><td></td><td></td><td><div>63</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $set = _set($repo-&gt;{$key});</td></tr>
+<tr><td class="h">503</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @rows, {</td></tr>
+<tr><td class="h">504</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $key,</td></tr>
+<tr><td class="h">505</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repo_only =&gt; 1,</td></tr>
+<tr><td class="h">506</td><td><div class="c3">12</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L506">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L506">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L506">100</a></div></td><td></td><td></td><td><div>24</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $set ? $repo-&gt;{$key} : $default,</td></tr>
+<tr><td class="h">507</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $set ? &#39;repo&#39; : &#39;default&#39;,</td></tr>
+<tr><td class="h">508</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $set ? $repo_label : $LABEL_SSH_DEFAULT,</td></tr>
+<tr><td class="h">509</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
+<tr><td class="h">510</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">511</td><td><div class="c3">6</div></td><td></td><td></td><td></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$entry-&gt;{ssh} = \@rows;</td></tr>
+<tr><td class="h">512</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">513</td><td colspan="6"></td></tr><tr><td class="h">514</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @repos, $entry;</td></tr>
+<tr><td class="h">515</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">516</td><td colspan="6"></td></tr><tr><td class="h">517</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return \@repos;</td></tr>
+<tr><td class="h">518</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">519</td><td colspan="6"></td></tr><tr><td class="h">520 - 580</td><td colspan="5"></td><td class="s"><pre>=head2 logger
+
+Purpose: the diagnostics logger for this run.
+
+Args: as L&lt;/load&gt;, plus C&lt;level&gt; (overrides the settings), C&lt;verbose&gt; (debug)
+and C&lt;quiet&gt; (errors only).&nbsp;&nbsp;A command-line flag describes this run, so it
+beats the settings file.
+
+Returns: a L&lt;Log::Abstraction&gt; writing to standard error, or to C&lt;log_file&gt;.
+
+Side Effects: reads the settings; creates C&lt;log_file&gt;&#39;s directory.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $logger = App::FileSync::Settings::logger(verbose =&gt; $opts{verbose});
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $logger = App::FileSync::Settings::logger(level =&gt; &#39;info&#39;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$logger-&gt;info(&#39;starting&#39;);
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_file =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config_dirs =&gt; { type =&gt; &#39;arrayref&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verbose&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;boolean&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quiet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;boolean&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;object&#39;, isa =&gt; &#39;Log::Abstraction&#39; }
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;settings.bad_level&nbsp;&nbsp;&nbsp;&nbsp;log_level is not a known level&nbsp;&nbsp;use one of @VALID_LEVELS
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;io.mkdir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log_file&#39;s directory cannot be made&nbsp;&nbsp;fix log_file
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level = debug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if verbose
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= error&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else if quiet
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= args.level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else if set
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= settings.log_level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else if set
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= warning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;otherwise
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pre lc level &acirc;&#136;&#136; lc VALID_LEVELS
+
+=head3 PSEUDOCODE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;load the settings
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;choose the level: argument, then settings, then the default
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reject an unknown level
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send output to log_file (creating its directory) or standard error
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;build the logger; apply --verbose or --quiet over it
+
+=cut</pre></td></tr>
+<tr><td class="h">581</td><td colspan="6"></td></tr><tr><td class="h">582</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub logger {</td></tr>
+<tr><td class="h">583</td><td><div class="c3">597</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L583">597</a></div></td><td><div>4884</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = named(\@_, {</td></tr>
+<tr><td class="h">584</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%FILE_ARGS,</td></tr>
+<tr><td class="h">585</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">586</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verbose =&gt; { type =&gt; &#39;scalar&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">587</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quiet&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;scalar&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">588</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}, &#39;Settings::logger&#39;);</td></tr>
+<tr><td class="h">589</td><td colspan="6"></td></tr><tr><td class="h">590</td><td><div class="c3">597</div><div class="c3">4</div><div class="c3">1194</div></td><td></td><td></td><td></td><td><div>1274</div><div>4</div><div>1889</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $settings = load(map { $_ =&gt; $args-&gt;{$_} } grep { exists $args-&gt;{$_} } keys %FILE_ARGS);</td></tr>
+<tr><td class="h">591</td><td colspan="6"></td></tr><tr><td class="h">592</td><td><div class="c3">597</div><div class="c3">1194</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L592">1194</a></div></td><td><div>2210</div><div>1219</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $level = first { _set($_) } $args-&gt;{level}, $settings-&gt;{log_level}, $DEFAULT_LEVEL;</td></tr>
+<tr><td class="h">593</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;settings.bad_level&#39;, { level =&gt; $level, valid =&gt; join(&#39;, &#39;, @VALID_LEVELS) })</td></tr>
+<tr><td class="h">594</td><td><div class="c3">597</div><div class="c3">4158</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L594">100</a></div></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L594">4158</a></div></td><td><div>2359</div><div>2882</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless any { lc($_) eq lc($level) } @VALID_LEVELS;</td></tr>
+<tr><td class="h">595</td><td colspan="6"></td></tr><tr><td class="h">596</td><td><div class="c3">596</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L596">50</a></div></td><td></td><td></td><td><div>1300</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $format = _set($settings-&gt;{log_format}) ? $settings-&gt;{log_format} : $DEFAULT_FORMAT;</td></tr>
+<tr><td class="h">597</td><td colspan="6"></td></tr><tr><td class="h">598</td><td><div class="c3">596</div></td><td></td><td></td><td></td><td><div>950</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $destination = { fd =&gt; \*STDERR };</td></tr>
+<tr><td class="h">599</td><td><div class="c3">596</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L599">100</a></div></td><td></td><td></td><td><div>829</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (_set($settings-&gt;{log_file})) {</td></tr>
+<tr><td class="h">600</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>39</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ensure_dir(dirname($settings-&gt;{log_file}));</td></tr>
+<tr><td class="h">601</td><td><div class="c3">3</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$destination = { file =&gt; $settings-&gt;{log_file} };</td></tr>
+<tr><td class="h">602</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">603</td><td colspan="6"></td></tr><tr><td class="h">604</td><td><div class="c3">596</div></td><td></td><td></td><td></td><td><div>1218</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $logger = Log::Abstraction-&gt;new(</td></tr>
+<tr><td class="h">605</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $level,</td></tr>
+<tr><td class="h">606</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;format&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $format,</td></tr>
+<tr><td class="h">607</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Logging must never turn a handled error into a second, uncaught one.</td></tr>
+<tr><td class="h">608</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;croak_on_error =&gt; 0,</td></tr>
+<tr><td class="h">609</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logger&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $destination,</td></tr>
+<tr><td class="h">610</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
+<tr><td class="h">611</td><td colspan="6"></td></tr><tr><td class="h">612</td><td><div class="c3">596</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L612">100</a></div></td><td></td><td></td><td><div>62574</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$logger = $logger-&gt;new(level =&gt; &#39;debug&#39;) if $args-&gt;{verbose};</td></tr>
+<tr><td class="h">613</td><td><div class="c3">596</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Settings-pm--branch.html#L613">100</a></div></td><td></td><td></td><td><div>1017</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$logger = $logger-&gt;new(level =&gt; &#39;error&#39;) if $args-&gt;{quiet};</td></tr>
+<tr><td class="h">614</td><td colspan="6"></td></tr><tr><td class="h">615</td><td><div class="c3">596</div></td><td></td><td></td><td></td><td><div>3003</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $logger;</td></tr>
+<tr><td class="h">616</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">617</td><td colspan="6"></td></tr><tr><td class="h">618</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _set</td></tr>
+<tr><td class="h">619</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true for a value that is defined and not empty.</td></tr>
+<tr><td class="h">620</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any scalar.</td></tr>
+<tr><td class="h">621</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns 1 or 0.</td></tr>
+<tr><td class="h">622</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">623</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _set :Private {</td></tr>
+<tr><td class="h">624</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value) = @_;</td></tr>
+<tr><td class="h">625</td><td colspan="6"></td></tr><tr><td class="h">626</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (defined $value &amp;&amp; length $value) ? 1 : 0;</td></tr>
+<tr><td class="h">627</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L627">318</a></div></td><td><div>511</div><div>196</div><div>3025</div></td><td class="s">}</td></tr>
+<tr><td class="h">628</td><td colspan="6"></td></tr><tr><td class="h">629</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _default_config_path</td></tr>
+<tr><td class="h">630</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where the settings file would be when none is given.</td></tr>
+<tr><td class="h">631</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;none.</td></tr>
+<tr><td class="h">632</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns FILESYNC_SETTINGS, else HOME (or USERPROFILE on</td></tr>
+<tr><td class="h">633</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Windows) /.conf/app-filesync.json, else undef.</td></tr>
+<tr><td class="h">634</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none; existence is the caller&#39;s question.</td></tr>
+<tr><td class="h">635</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _default_config_path :Private {</td></tr>
+<tr><td class="h">636</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $home = first { _set($_) } @ENV{qw(HOME USERPROFILE)};</td></tr>
+<tr><td class="h">637</td><td colspan="6"></td></tr><tr><td class="h">638</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $path = _set($ENV{FILESYNC_SETTINGS}) ? $ENV{FILESYNC_SETTINGS}</td></tr>
+<tr><td class="h">639</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: defined $home ? File::Spec-&gt;catfile($home, $CONF_DIR, $CONFIG_BASENAME)</td></tr>
+<tr><td class="h">640</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: undef;</td></tr>
+<tr><td class="h">641</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $path;</td></tr>
+<tr><td class="h">642</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L642">318</a></div></td><td><div>63145</div><div>212</div><div>1391</div></td><td class="s">}</td></tr>
+<tr><td class="h">643</td><td colspan="6"></td></tr><tr><td class="h">644</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _defaults</td></tr>
+<tr><td class="h">645</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the built-in value of every setting.</td></tr>
+<tr><td class="h">646</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;none.</td></tr>
+<tr><td class="h">647</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns a fresh hashref (callers may change it).</td></tr>
+<tr><td class="h">648</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">649</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _defaults :Private {</td></tr>
+<tr><td class="h">650</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return {</td></tr>
+<tr><td class="h">651</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log_level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $DEFAULT_LEVEL,</td></tr>
+<tr><td class="h">652</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log_format&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $DEFAULT_FORMAT,</td></tr>
+<tr><td class="h">653</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log_file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;&#39;,</td></tr>
+<tr><td class="h">654</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh_identity&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;&#39;,</td></tr>
+<tr><td class="h">655</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh_known_hosts =&gt; &#39;&#39;,</td></tr>
+<tr><td class="h">656</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_command&nbsp;&nbsp;=&gt; $DEFAULT_SERVER_COMMAND,</td></tr>
+<tr><td class="h">657</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</td></tr>
+<tr><td class="h">658</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L658">318</a></div></td><td><div>46367</div><div>211</div><div>969</div></td><td class="s">}</td></tr>
+<tr><td class="h">659</td><td colspan="6"></td></tr><tr><td class="h">660</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _repo_label</td></tr>
+<tr><td class="h">661</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the provenance label for a value a repo&#39;s own entry supplied.</td></tr>
+<tr><td class="h">662</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$config_file may be undef.</td></tr>
+<tr><td class="h">663</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns &quot;FILE [name]&quot; or &quot;[name]&quot;.</td></tr>
+<tr><td class="h">664</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">665</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _repo_label :Private {</td></tr>
+<tr><td class="h">666</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($config_file, $name) = @_;</td></tr>
+<tr><td class="h">667</td><td colspan="6"></td></tr><tr><td class="h">668</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return _set($config_file) ? &quot;$config_file [$name]&quot; : &quot;[$name]&quot;;</td></tr>
+<tr><td class="h">669</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L669">318</a></div></td><td><div>45256</div><div>214</div><div>935</div></td><td class="s">}</td></tr>
+<tr><td class="h">670</td><td colspan="6"></td></tr><tr><td class="h">671</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _differs</td></tr>
+<tr><td class="h">672</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compare two setting values as strings, undef only equal to undef.</td></tr>
+<tr><td class="h">673</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;two scalars.</td></tr>
+<tr><td class="h">674</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns 1 if they differ, else 0.</td></tr>
+<tr><td class="h">675</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">676</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _differs :Private {</td></tr>
+<tr><td class="h">677</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($left, $right) = @_;</td></tr>
+<tr><td class="h">678</td><td colspan="6"></td></tr><tr><td class="h">679</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (defined $left xor defined $right) ? 1</td></tr>
+<tr><td class="h">680</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: !defined $left ? 0</td></tr>
+<tr><td class="h">681</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: (&quot;$left&quot; ne &quot;$right&quot;) ? 1 : 0;</td></tr>
+<tr><td class="h">682</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L682">318</a></div></td><td><div>44920</div><div>196</div><div>919</div></td><td class="s">}</td></tr>
+<tr><td class="h">683</td><td colspan="6"></td></tr><tr><td class="h">684</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _explanation</td></tr>
+<tr><td class="h">685</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ask Config::Abstraction which sources set each key of a section.</td></tr>
+<tr><td class="h">686</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$file exists; $section is the env prefix&#39;s stem.</td></tr>
+<tr><td class="h">687</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns a hashref (empty when the reader cannot be built).</td></tr>
+<tr><td class="h">688</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: reads $file.</td></tr>
+<tr><td class="h">689</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _explanation :Private {</td></tr>
+<tr><td class="h">690</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($file, $section) = @_;</td></tr>
+<tr><td class="h">691</td><td colspan="6"></td></tr><tr><td class="h">692</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $reader = Config::Abstraction-&gt;new(config_file =&gt; $file, env_prefix =&gt; &quot;${section}__&quot;);</td></tr>
+<tr><td class="h">693</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $explanation = $reader ? $reader-&gt;explain_sources() : undef;</td></tr>
+<tr><td class="h">694</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ref($explanation) eq &#39;HASH&#39; ? $explanation : {};</td></tr>
+<tr><td class="h">695</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L695">318</a></div></td><td><div>47784</div><div>199</div><div>934</div></td><td class="s">}</td></tr>
+<tr><td class="h">696</td><td colspan="6"></td></tr><tr><td class="h">697</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _env_key</td></tr>
+<tr><td class="h">698</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the name the environment actually uses for a variable.</td></tr>
+<tr><td class="h">699</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name is &quot;prefix__key&quot;.</td></tr>
+<tr><td class="h">700</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns the matching %ENV key, or undef.</td></tr>
+<tr><td class="h">701</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">702</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Config::Abstraction matches an env_prefix case-insensitively, and Windows</td></tr>
+<tr><td class="h">703</td><td></td><td></td><td></td><td></td><td></td><td class="s"># reports environment names upper-cased, so the report must name the variable</td></tr>
+<tr><td class="h">704</td><td></td><td></td><td></td><td></td><td></td><td class="s"># in the spelling that actually supplied the value.</td></tr>
+<tr><td class="h">705</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _env_key :Private {</td></tr>
+<tr><td class="h">706</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($name) = @_;</td></tr>
+<tr><td class="h">707</td><td colspan="6"></td></tr><tr><td class="h">708</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return exists $ENV{$name} ? $name : first { lc $_ eq lc $name } sort keys %ENV;</td></tr>
+<tr><td class="h">709</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L709">318</a></div></td><td><div>46520</div><div>217</div><div>859</div></td><td class="s">}</td></tr>
+<tr><td class="h">710</td><td colspan="6"></td></tr><tr><td class="h">711</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _pick</td></tr>
+<tr><td class="h">712</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the source that set a key in one section.</td></tr>
+<tr><td class="h">713</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$explanation is from _explanation.</td></tr>
+<tr><td class="h">714</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns { type, label, value } or undef.</td></tr>
+<tr><td class="h">715</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">716</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The last source wins, which is how Config::Abstraction layers a file under</td></tr>
+<tr><td class="h">717</td><td></td><td></td><td></td><td></td><td></td><td class="s"># its environment variables.</td></tr>
+<tr><td class="h">718</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _pick :Private {</td></tr>
+<tr><td class="h">719</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($explanation, $section, $key) = @_;</td></tr>
+<tr><td class="h">720</td><td colspan="6"></td></tr><tr><td class="h">721</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $full (&quot;$section.$key&quot;, &quot;global.$key&quot;, $key) {</td></tr>
+<tr><td class="h">722</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $entry = $explanation-&gt;{$full};</td></tr>
+<tr><td class="h">723</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next unless ref($entry) eq &#39;HASH&#39; &amp;&amp; ref($entry-&gt;{sources}) eq &#39;ARRAY&#39; &amp;&amp; @{ $entry-&gt;{sources} };</td></tr>
+<tr><td class="h">724</td><td colspan="6"></td></tr><tr><td class="h">725</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $winner = $entry-&gt;{sources}[-1];</td></tr>
+<tr><td class="h">726</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return { map { $_ =&gt; $winner-&gt;{$_} } qw(type label value) };</td></tr>
+<tr><td class="h">727</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">728</td><td colspan="6"></td></tr><tr><td class="h">729</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return undef;&nbsp;&nbsp;&nbsp;## no critic (Subroutines::ProhibitExplicitReturnUndef) -- callers test it in scalar context</td></tr>
+<tr><td class="h">730</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L730">318</a></div></td><td><div>53035</div><div>205</div><div>891</div></td><td class="s">}</td></tr>
+<tr><td class="h">731</td><td colspan="6"></td></tr><tr><td class="h">732</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _labels_for</td></tr>
+<tr><td class="h">733</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;every source label that mentions a key, for a merged value.</td></tr>
+<tr><td class="h">734</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;explanations from _explanation.</td></tr>
+<tr><td class="h">735</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns an arrayref of distinct labels, in order found.</td></tr>
+<tr><td class="h">736</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">737</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _labels_for :Private {</td></tr>
+<tr><td class="h">738</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($key, @explanations) = @_;</td></tr>
+<tr><td class="h">739</td><td colspan="6"></td></tr><tr><td class="h">740</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my (%seen, @labels);</td></tr>
+<tr><td class="h">741</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $explanation (@explanations) {</td></tr>
+<tr><td class="h">742</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $full (grep { $_ eq $key || /\.\Q$key\E\z/ } sort keys %{$explanation}) {</td></tr>
+<tr><td class="h">743</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @labels, grep { _set($_) &amp;&amp; !$seen{$_}++ }</td></tr>
+<tr><td class="h">744</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map { $_-&gt;{label} } @{ $explanation-&gt;{$full}{sources} || [] };</td></tr>
+<tr><td class="h">745</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">746</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">747</td><td colspan="6"></td></tr><tr><td class="h">748</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return \@labels;</td></tr>
+<tr><td class="h">749</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L749">318</a></div></td><td><div>55742</div><div>214</div><div>906</div></td><td class="s">}</td></tr>
+<tr><td class="h">750</td><td colspan="6"></td></tr><tr><td class="h">751</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _universal_file</td></tr>
+<tr><td class="h">752</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the universal settings file Object::Configure would read.</td></tr>
+<tr><td class="h">753</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$config_file is the settings file.</td></tr>
+<tr><td class="h">754</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns the first readable candidate, or undef.</td></tr>
+<tr><td class="h">755</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">756</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Mirrors Object::Configure&#39;s search: universal&lt;ext&gt; beside the settings</td></tr>
+<tr><td class="h">757</td><td></td><td></td><td></td><td></td><td></td><td class="s"># file, then the other config-file extensions, so the report matches.</td></tr>
+<tr><td class="h">758</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _universal_file :Private {</td></tr>
+<tr><td class="h">759</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($config_file) = @_;</td></tr>
+<tr><td class="h">760</td><td colspan="6"></td></tr><tr><td class="h">761</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($volume, $directory) = File::Spec-&gt;splitpath($config_file);</td></tr>
+<tr><td class="h">762</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $base = File::Spec-&gt;catpath($volume, $directory, &#39;&#39;);</td></tr>
+<tr><td class="h">763</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $ext = $config_file =~ /(\.[^.\/\\]+)\z/ ? $1 : &#39;&#39;;</td></tr>
+<tr><td class="h">764</td><td colspan="6"></td></tr><tr><td class="h">765</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my %seen;</td></tr>
+<tr><td class="h">766</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return first { -f $_ &amp;&amp; -r $_ }</td></tr>
+<tr><td class="h">767</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map { File::Spec-&gt;catfile($base, &quot;universal$_&quot;) }</td></tr>
+<tr><td class="h">768</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grep { !$seen{$_}++ } ($ext, @UNIVERSAL_EXTENSIONS);</td></tr>
+<tr><td class="h">769</td><td><div class="c3">318</div><div class="c3">318</div><div class="c3">318</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Settings-pm--subroutine.html#L769">318</a></div></td><td><div>57781</div><div>194</div><div>966</div></td><td class="s">}</td></tr>
+<tr><td class="h">770</td><td colspan="6"></td></tr><tr><td class="h">771</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
+<tr><td class="h">772</td><td colspan="6"></td></tr></table>
 </body>
 </html>

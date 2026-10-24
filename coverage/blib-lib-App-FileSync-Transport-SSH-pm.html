@@ -20,175 +20,461 @@ https://pjcj.net
 <h1>File Coverage</h1>
 <table>
 <tr><td class="h" align="right">File:</td><td align="left">blib/lib/App/FileSync/Transport/SSH.pm</td></tr>
-<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">69.1%</td></tr>
+<tr><td class="h" align="right">Coverage:</td><td align="left" class="c1">82.6%</td></tr>
 </table>
 <div><br/></div>
 <table>
 <tr><th>line</th><th>stmt</th><th>bran</th><th>cond</th><th>sub</th><th>time</th><th>code</th></tr>
 <tr><td class="h">1</td><td></td><td></td><td></td><td></td><td></td><td class="s">package App::FileSync::Transport::SSH;</td></tr>
-<tr><td class="h">2</td><td colspan="6"></td></tr><tr><td class="h">3</td><td><div class="c3">298</div><div class="c3">298</div><div class="c3">298</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L3">298</a></div></td><td><div>802</div><div>284</div><div>3855</div></td><td class="s">use strict;</td></tr>
-<tr><td class="h">4</td><td><div class="c3">298</div><div class="c3">298</div><div class="c3">298</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L4">298</a></div></td><td><div>485</div><div>210</div><div>4925</div></td><td class="s">use warnings;</td></tr>
-<tr><td class="h">5</td><td colspan="6"></td></tr><tr><td class="h">6</td><td><div class="c3">298</div><div class="c3">298</div><div class="c3">298</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L6">298</a></div></td><td><div>916</div><div>8050</div><div>1311</div></td><td class="s">use File::Temp ();</td></tr>
-<tr><td class="h">7</td><td><div class="c3">298</div><div class="c3">298</div><div class="c3">298</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L7">298</a></div></td><td><div>591</div><div>1396</div><div>2937</div></td><td class="s">use IPC::Open3 ();</td></tr>
-<tr><td class="h">8</td><td colspan="6"></td></tr><tr><td class="h">9</td><td><div class="c3">298</div><div class="c3">298</div><div class="c3">298</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L9">298</a></div></td><td><div>407</div><div>198</div><div>212867</div></td><td class="s">use App::FileSync qw(validate_client_id validate_repo_name);</td></tr>
-<tr><td class="h">10</td><td colspan="6"></td></tr><tr><td class="h">11</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $PROTO = 2;</td></tr>
-<tr><td class="h">12</td><td colspan="6"></td></tr><tr><td class="h">13</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Runs filesync-server on the server host over one ssh connection and speaks the</td></tr>
-<tr><td class="h">14</td><td></td><td></td><td></td><td></td><td></td><td class="s"># wire protocol on its pipes.&nbsp;&nbsp;The ssh argument list is built here and never</td></tr>
-<tr><td class="h">15</td><td></td><td></td><td></td><td></td><td></td><td class="s"># passed through a shell, so a repo or client id cannot become a command.</td></tr>
-<tr><td class="h">16</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub new {</td></tr>
-<tr><td class="h">17</td><td><div class="c3">9</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L17">9</a></div></td><td><div>34</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($class, %args) = @_;</td></tr>
-<tr><td class="h">18</td><td colspan="6"></td></tr><tr><td class="h">19</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $server = $args{server};</td></tr>
-<tr><td class="h">20</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L20">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L20">33</a></div></td><td></td><td><div>16</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: no server given\n&quot; unless defined $server &amp;&amp; length $server;</td></tr>
-<tr><td class="h">21</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L21">50</a></div></td><td></td><td></td><td><div>23</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: bad server &#39;$server&#39;\n&quot; unless valid_server($server);</td></tr>
-<tr><td class="h">22</td><td colspan="6"></td></tr><tr><td class="h">23</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $repo = $args{repo};</td></tr>
-<tr><td class="h">24</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L24">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L24">33</a></div></td><td></td><td><div>25</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: no repo given\n&quot; unless defined $repo &amp;&amp; length $repo;</td></tr>
-<tr><td class="h">25</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>25</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($repo_ok, $repo_reason) = validate_repo_name($repo);</td></tr>
-<tr><td class="h">26</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L26">50</a></div></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: bad repo name: $repo_reason\n&quot; unless $repo_ok;</td></tr>
-<tr><td class="h">27</td><td colspan="6"></td></tr><tr><td class="h">28</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $client = $args{client};</td></tr>
-<tr><td class="h">29</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L29">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L29">33</a></div></td><td></td><td><div>16</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: no client id given\n&quot; unless defined $client &amp;&amp; length $client;</td></tr>
-<tr><td class="h">30</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>22</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($client_ok, $client_reason) = validate_client_id($client);</td></tr>
-<tr><td class="h">31</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L31">50</a></div></td><td></td><td></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: bad client id: $client_reason\n&quot; unless $client_ok;</td></tr>
-<tr><td class="h">32</td><td colspan="6"></td></tr><tr><td class="h">33</td><td><div class="c3">9</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L33">50</a></div></td><td></td><td><div>50</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $role = $args{role} || &#39;client&#39;;</td></tr>
-<tr><td class="h">34</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L34">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L34">33</a></div></td><td></td><td><div>20</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: bad role &#39;$role&#39;\n&quot;</td></tr>
-<tr><td class="h">35</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless $role eq &#39;client&#39; || $role eq &#39;replica&#39;;</td></tr>
-<tr><td class="h">36</td><td colspan="6"></td></tr><tr><td class="h">37</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $program = defined $args{server_command} &amp;&amp; length $args{server_command}</td></tr>
-<tr><td class="h">38</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? $args{server_command}</td></tr>
-<tr><td class="h">39</td><td><div class="c3">9</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L39">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L39">33</a></div></td><td></td><td><div>32</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &#39;filesync-server&#39;;</td></tr>
-<tr><td class="h">40</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L40">50</a></div></td><td></td><td></td><td><div>21</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: bad server command &#39;$program&#39;\n&quot; unless valid_program($program);</td></tr>
-<tr><td class="h">41</td><td colspan="6"></td></tr><tr><td class="h">42</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $checking = defined $args{host_key_checking} &amp;&amp; length $args{host_key_checking}</td></tr>
-<tr><td class="h">43</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? $args{host_key_checking}</td></tr>
-<tr><td class="h">44</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L44">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L44">67</a></div></td><td></td><td><div>39</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &#39;yes&#39;;</td></tr>
-<tr><td class="h">45</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L45">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L45">67</a></div></td><td></td><td><div>19</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: bad host_key_checking &#39;$checking&#39;\n&quot;</td></tr>
-<tr><td class="h">46</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless $checking eq &#39;yes&#39; || $checking eq &#39;accept-new&#39;;</td></tr>
-<tr><td class="h">47</td><td colspan="6"></td></tr><tr><td class="h">48</td><td><div class="c3">9</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L48">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L48">33</a></div></td><td></td><td><div>21</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my @command = (defined $args{command} &amp;&amp; length $args{command} ? $args{command} : &#39;ssh&#39;);</td></tr>
-<tr><td class="h">49</td><td colspan="6"></td></tr><tr><td class="h">50</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>15</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;push @command, &#39;-T&#39;;</td></tr>
-<tr><td class="h">51</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;push @command, &#39;-o&#39;, &#39;BatchMode=yes&#39;;</td></tr>
-<tr><td class="h">52</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;push @command, &#39;-o&#39;, &#39;ServerAliveInterval=30&#39;;</td></tr>
-<tr><td class="h">53</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;push @command, &#39;-o&#39;, &#39;ConnectTimeout=10&#39;;</td></tr>
-<tr><td class="h">54</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;push @command, &#39;-o&#39;, &quot;StrictHostKeyChecking=$checking&quot;;</td></tr>
-<tr><td class="h">55</td><td colspan="6"></td></tr><tr><td class="h">56</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L56">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L56">67</a></div></td><td></td><td><div>18</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;if (defined $args{known_hosts} &amp;&amp; length $args{known_hosts}) {</td></tr>
-<tr><td class="h">57</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: bad known_hosts path\n&quot;</td></tr>
-<tr><td class="h">58</td><td><div class="c3">2</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L58">50</a></div></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if $args{known_hosts} =~ /[\0\n]/;</td></tr>
-<tr><td class="h">59</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @command, &#39;-o&#39;, &#39;UserKnownHostsFile=&#39; . $args{known_hosts};</td></tr>
-<tr><td class="h">60</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">61</td><td colspan="6"></td></tr><tr><td class="h">62</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L62">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L62">67</a></div></td><td></td><td><div>37</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;if (defined $args{identity} &amp;&amp; length $args{identity}) {</td></tr>
-<tr><td class="h">63</td><td><div class="c3">8</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L63">50</a></div></td><td></td><td></td><td><div>14</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: bad identity path\n&quot; if $args{identity} =~ /[\0\n]/;</td></tr>
-<tr><td class="h">64</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @command, &#39;-i&#39;, $args{identity};</td></tr>
-<tr><td class="h">65</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">66</td><td colspan="6"></td></tr><tr><td class="h">67</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L67">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L67">67</a></div></td><td></td><td><div>32</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;if (defined $args{port} &amp;&amp; length $args{port}) {</td></tr>
-<tr><td class="h">68</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: bad port &#39;$args{port}&#39;\n&quot;</td></tr>
-<tr><td class="h">69</td><td><div class="c3">8</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L69">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L69">25</a></div></td><td></td><td><div>32</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless $args{port} =~ /\A\d{1,5}\z/ &amp;&amp; $args{port} &gt; 0 &amp;&amp; $args{port} &lt; 65_536;</td></tr>
-<tr><td class="h">70</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>13</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @command, &#39;-p&#39;, $args{port};</td></tr>
-<tr><td class="h">71</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">72</td><td colspan="6"></td></tr><tr><td class="h">73</td><td><div class="c3">9</div><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L73">50</a></div></td><td></td><td></td><td><div>7</div><div>36</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;for my $extra (@{ $args{extra_args} || [] }) {</td></tr>
-<tr><td class="h">74</td><td><div class="c0">0</div></td><td><div class="c0" title="-/-"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L74">0</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L74">0</a></div></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;die &quot;SSH transport: bad extra argument\n&quot;</td></tr>
-<tr><td class="h">75</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if !defined($extra) || ref($extra) || $extra =~ /[\0\n]/;</td></tr>
-<tr><td class="h">76</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @command, $extra;</td></tr>
-<tr><td class="h">77</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">78</td><td colspan="6"></td></tr><tr><td class="h">79</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>7</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;push @command, $server;</td></tr>
-<tr><td class="h">80</td><td colspan="6"></td></tr><tr><td class="h">81</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# The remote shell splits this back into arguments; every value below is</td></tr>
-<tr><td class="h">82</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# restricted to characters that are inert in a POSIX shell.</td></tr>
-<tr><td class="h">83</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>20</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;push @command, $program,</td></tr>
-<tr><td class="h">84</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--repo&#39;,&nbsp;&nbsp;&nbsp;$repo,</td></tr>
-<tr><td class="h">85</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--client&#39;, $client,</td></tr>
-<tr><td class="h">86</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--role&#39;,&nbsp;&nbsp;&nbsp;$role,</td></tr>
-<tr><td class="h">87</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--proto&#39;,&nbsp;&nbsp;$PROTO;</td></tr>
-<tr><td class="h">88</td><td colspan="6"></td></tr><tr><td class="h">89</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# CreateProcess cannot start a batch file on its own, so a configured</td></tr>
-<tr><td class="h">90</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# .cmd/.bat wrapper is launched by the command interpreter explicitly.</td></tr>
-<tr><td class="h">91</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L91">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L91">33</a></div></td><td></td><td><div>17</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;if ($^O eq &#39;MSWin32&#39; &amp;&amp; $command[0] =~ /\.(?:cmd|bat)\z/i) {</td></tr>
-<tr><td class="h">92</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $comspec = defined $ENV{COMSPEC} &amp;&amp; length $ENV{COMSPEC}</td></tr>
-<tr><td class="h">93</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? $ENV{COMSPEC}</td></tr>
-<tr><td class="h">94</td><td><div class="c0">0</div></td><td><div class="c0" title="-/-"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L94">0</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L94">0</a></div></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &#39;cmd.exe&#39;;</td></tr>
-<tr><td class="h">95</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unshift @command, $comspec, &#39;/d&#39;, &#39;/c&#39;;</td></tr>
-<tr><td class="h">96</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">97</td><td colspan="6"></td></tr><tr><td class="h">98</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>53</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $errors = File::Temp-&gt;new(UNLINK =&gt; 1);</td></tr>
-<tr><td class="h">99</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>2077</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $err_path = $errors-&gt;filename;</td></tr>
-<tr><td class="h">100</td><td colspan="6"></td></tr><tr><td class="h">101</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# stderr is a file, not the protocol pipe: ssh and the remote shell both</td></tr>
-<tr><td class="h">102</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# write warnings there, and they must never be mistaken for a frame.</td></tr>
-<tr><td class="h">103</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L103">50</a></div></td><td></td><td></td><td><div>205</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;open my $err_fh, &#39;&gt;&#39;, $err_path</td></tr>
-<tr><td class="h">104</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or die &quot;SSH transport: cannot write $err_path: $!\n&quot;;</td></tr>
-<tr><td class="h">105</td><td colspan="6"></td></tr><tr><td class="h">106</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# IPC::Open3 rather than a hand-rolled fork/exec.&nbsp;&nbsp;On Windows fork() is a</td></tr>
-<tr><td class="h">107</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# pseudo-process, and perlfork warns that handles created by pipe() are not</td></tr>
-<tr><td class="h">108</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# always duplicated into it, which leaves a full-duplex session waiting on</td></tr>
-<tr><td class="h">109</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;# a pipe end that never closes.&nbsp;&nbsp;Open3 spawns natively there.</td></tr>
-<tr><td class="h">110</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($writer, $reader);</td></tr>
-<tr><td class="h">111</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>71</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $pid = IPC::Open3::open3(</td></tr>
-<tr><td class="h">112</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$writer, $reader, &#39;&gt;&amp;&#39; . fileno($err_fh), @command,</td></tr>
-<tr><td class="h">113</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;);</td></tr>
-<tr><td class="h">114</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>23703</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;close $err_fh;</td></tr>
-<tr><td class="h">115</td><td colspan="6"></td></tr><tr><td class="h">116</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>451</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return bless {</td></tr>
-<tr><td class="h">117</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $pid,</td></tr>
-<tr><td class="h">118</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;writer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $writer,</td></tr>
-<tr><td class="h">119</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reader&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $reader,</td></tr>
-<tr><td class="h">120</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errors&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; $errors,</td></tr>
-<tr><td class="h">121</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_path =&gt; $err_path,</td></tr>
-<tr><td class="h">122</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;command&nbsp;&nbsp;&nbsp;&nbsp;=&gt; \@command,</td></tr>
-<tr><td class="h">123</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; undef,</td></tr>
-<tr><td class="h">124</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stderr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; &#39;&#39;,</td></tr>
-<tr><td class="h">125</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}, $class;</td></tr>
-<tr><td class="h">126</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">127</td><td colspan="6"></td></tr><tr><td class="h">128</td><td><div class="c3">9</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L128">9</a></div></td><td><div>32</div></td><td class="s">sub reader { $_[0]{reader} }</td></tr>
-<tr><td class="h">129</td><td><div class="c3">9</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L129">9</a></div></td><td><div>82</div></td><td class="s">sub writer { $_[0]{writer} }</td></tr>
-<tr><td class="h">130</td><td colspan="6"></td></tr><tr><td class="h">131</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The argv that was run, minus the local ssh path; used by --verbose and tests.</td></tr>
-<tr><td class="h">132</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub command {</td></tr>
-<tr><td class="h">133</td><td><div class="c0">0</div></td><td></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L133">0</a></div></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">134</td><td><div class="c0">0</div><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return [ @{ $self-&gt;{command} } ];</td></tr>
-<tr><td class="h">135</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">136</td><td colspan="6"></td></tr><tr><td class="h">137</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub close {</td></tr>
-<tr><td class="h">138</td><td><div class="c3">9</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L138">9</a></div></td><td><div>16</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">139</td><td colspan="6"></td></tr><tr><td class="h">140</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L140">50</a></div></td><td></td><td></td><td><div>21</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return 1 if $self-&gt;{closed};</td></tr>
-<tr><td class="h">141</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>13</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;{closed} = 1;</td></tr>
-<tr><td class="h">142</td><td colspan="6"></td></tr><tr><td class="h">143</td><td><div class="c3">9</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L143">50</a></div></td><td></td><td></td><td><div>79</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;CORE::close($self-&gt;{writer}) if $self-&gt;{writer};</td></tr>
-<tr><td class="h">144</td><td><div class="c3">9</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L144">50</a></div></td><td></td><td></td><td><div>64</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;CORE::close($self-&gt;{reader}) if $self-&gt;{reader};</td></tr>
-<tr><td class="h">145</td><td colspan="6"></td></tr><tr><td class="h">146</td><td><div class="c3">9</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L146">50</a></div></td><td></td><td></td><td><div>18</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;if ($self-&gt;{pid}) {</td></tr>
-<tr><td class="h">147</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>8389844</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;waitpid($self-&gt;{pid}, 0);</td></tr>
-<tr><td class="h">148</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>96</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $status = $?;</td></tr>
-<tr><td class="h">149</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>50</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;{status} = $status &gt;&gt; 8;</td></tr>
-<tr><td class="h">150</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>32</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;{signal} = $status &amp; 127;</td></tr>
-<tr><td class="h">151</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>19</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;{pid} = 0;</td></tr>
-<tr><td class="h">152</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">153</td><td colspan="6"></td></tr><tr><td class="h">154</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>41</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;{stderr} = _slurp($self-&gt;{error_path});</td></tr>
-<tr><td class="h">155</td><td colspan="6"></td></tr><tr><td class="h">156</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L156">100</a></div></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L156">100</a></div></td><td></td><td><div>65</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return ($self-&gt;{status} || 0) == 0 ? 1 : 0;</td></tr>
-<tr><td class="h">157</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">158</td><td colspan="6"></td></tr><tr><td class="h">159</td><td><div class="c0">0</div></td><td></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L159">0</a></div></td><td><div>0</div></td><td class="s">sub exit_status { $_[0]{status} }</td></tr>
-<tr><td class="h">160</td><td colspan="6"></td></tr><tr><td class="h">161</td><td></td><td></td><td></td><td></td><td></td><td class="s"># What ssh or the remote shell said, for when the protocol itself failed.</td></tr>
-<tr><td class="h">162</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub error_text {</td></tr>
-<tr><td class="h">163</td><td><div class="c3">2</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L163">2</a></div></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
-<tr><td class="h">164</td><td colspan="6"></td></tr><tr><td class="h">165</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $text = $self-&gt;{stderr};</td></tr>
-<tr><td class="h">166</td><td><div class="c3">2</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L166">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L166">33</a></div></td><td></td><td><div>19</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$text = _slurp($self-&gt;{error_path}) unless defined $text &amp;&amp; length $text;</td></tr>
-<tr><td class="h">167</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$text =~ s/\A\s+//;</td></tr>
-<tr><td class="h">168</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>19</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$text =~ s/\s+\z//;</td></tr>
-<tr><td class="h">169</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;$text =~ s/\n+/\n/g;</td></tr>
-<tr><td class="h">170</td><td colspan="6"></td></tr><tr><td class="h">171</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>8</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $text;</td></tr>
-<tr><td class="h">172</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">173</td><td colspan="6"></td></tr><tr><td class="h">174</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _slurp {</td></tr>
-<tr><td class="h">175</td><td><div class="c3">9</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L175">9</a></div></td><td><div>31</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($path) = @_;</td></tr>
-<tr><td class="h">176</td><td colspan="6"></td></tr><tr><td class="h">177</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L177">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L177">33</a></div></td><td></td><td><div>116</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return &#39;&#39; unless defined $path &amp;&amp; -e $path;</td></tr>
-<tr><td class="h">178</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L178">50</a></div></td><td></td><td></td><td><div>258</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;open my $fh, &#39;&lt;&#39;, $path or return &#39;&#39;;</td></tr>
-<tr><td class="h">179</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>46</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;local $/;</td></tr>
-<tr><td class="h">180</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>206</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my $text = &lt;$fh&gt;;</td></tr>
-<tr><td class="h">181</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>40</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;CORE::close($fh);</td></tr>
-<tr><td class="h">182</td><td colspan="6"></td></tr><tr><td class="h">183</td><td><div class="c3">9</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L183">50</a></div></td><td></td><td></td><td><div>57</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return defined $text ? $text : &#39;&#39;;</td></tr>
-<tr><td class="h">184</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">185</td><td colspan="6"></td></tr><tr><td class="h">186</td><td></td><td></td><td></td><td></td><td></td><td class="s"># user@host, host, or a bracketed IPv6 literal.&nbsp;&nbsp;Anything that could be read as</td></tr>
-<tr><td class="h">187</td><td></td><td></td><td></td><td></td><td></td><td class="s"># an ssh option (a leading &#39;-&#39;) or that could split into another word is refused.</td></tr>
-<tr><td class="h">188</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub valid_server {</td></tr>
-<tr><td class="h">189</td><td><div class="c3">22</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L189">22</a></div></td><td><div>1310</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($value) = @_;</td></tr>
-<tr><td class="h">190</td><td colspan="6"></td></tr><tr><td class="h">191</td><td><div class="c3">22</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L191">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L191">67</a></div></td><td></td><td><div>35</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return 0 unless defined $value &amp;&amp; length $value;</td></tr>
-<tr><td class="h">192</td><td><div class="c3">21</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L192">100</a></div></td><td></td><td></td><td><div>43</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return 0 if $value =~ /[\s\0\n]/;</td></tr>
-<tr><td class="h">193</td><td colspan="6"></td></tr><tr><td class="h">194</td><td><div class="c3">18</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L194">100</a></div></td><td></td><td></td><td><div>100</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $value =~ /\A(?:[A-Za-z0-9._-]+@)?</td></tr>
-<tr><td class="h">195</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(?:[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?|\[[0-9A-Fa-f:]+\])\z/x ? 1 : 0;</td></tr>
-<tr><td class="h">196</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">197</td><td colspan="6"></td></tr><tr><td class="h">198</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub valid_program {</td></tr>
-<tr><td class="h">199</td><td><div class="c3">12</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L199">12</a></div></td><td><div>104</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;my ($value) = @_;</td></tr>
-<tr><td class="h">200</td><td colspan="6"></td></tr><tr><td class="h">201</td><td><div class="c3">12</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L201">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L201">33</a></div></td><td></td><td><div>28</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return 0 unless defined $value &amp;&amp; length $value;</td></tr>
-<tr><td class="h">202</td><td><div class="c3">12</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L202">100</a></div></td><td></td><td></td><td><div>21</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return 0 if $value =~ /[\s\0\n&#39;&quot;;&amp;|&lt;&gt;]/;</td></tr>
-<tr><td class="h">203</td><td><div class="c3">10</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L203">50</a></div></td><td></td><td></td><td><div>15</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return 0 if index($value, &#39;`&#39;) &gt;= 0;</td></tr>
-<tr><td class="h">204</td><td><div class="c3">10</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L204">50</a></div></td><td></td><td></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return 0 if index($value, &#39;$&#39;) &gt;= 0;</td></tr>
-<tr><td class="h">205</td><td><div class="c3">10</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L205">50</a></div></td><td></td><td></td><td><div>9</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return 0 if index($value, &#39;\\&#39;) &gt;= 0;</td></tr>
-<tr><td class="h">206</td><td colspan="6"></td></tr><tr><td class="h">207</td><td><div class="c3">10</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L207">50</a></div></td><td></td><td></td><td><div>42</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;return $value =~ m{\A[A-Za-z0-9._/-]+\z} ? 1 : 0;</td></tr>
-<tr><td class="h">208</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">209</td><td colspan="6"></td></tr><tr><td class="h">210</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
-</table>
+<tr><td class="h">2</td><td colspan="6"></td></tr><tr><td class="h">3</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Runs filesync-server on the server host over one ssh connection and speaks</td></tr>
+<tr><td class="h">4</td><td></td><td></td><td></td><td></td><td></td><td class="s"># the wire protocol on its pipes.&nbsp;&nbsp;The ssh argument list is built here and</td></tr>
+<tr><td class="h">5</td><td></td><td></td><td></td><td></td><td></td><td class="s"># never passed through a local shell, and every value that reaches the remote</td></tr>
+<tr><td class="h">6</td><td></td><td></td><td></td><td></td><td></td><td class="s"># shell is restricted to characters that are inert there, so a repo or client</td></tr>
+<tr><td class="h">7</td><td></td><td></td><td></td><td></td><td></td><td class="s"># id cannot become a command.</td></tr>
+<tr><td class="h">8</td><td colspan="6"></td></tr><tr><td class="h">9</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L9">314</a></div></td><td><div>433</div><div>165</div><div>1535</div></td><td class="s">use App::FileSync::Platform;</td></tr>
+<tr><td class="h">10</td><td colspan="6"></td></tr><tr><td class="h">11</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L11">314</a></div></td><td><div>294</div><div>154</div><div>1248</div></td><td class="s">use strict;</td></tr>
+<tr><td class="h">12</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L12">314</a></div></td><td><div>259</div><div>198</div><div>3607</div></td><td class="s">use warnings;</td></tr>
+<tr><td class="h">13</td><td colspan="6"></td></tr><tr><td class="h">14</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Not :all - this class has a close method, and autodie replaces a package&#39;s</td></tr>
+<tr><td class="h">15</td><td></td><td></td><td></td><td></td><td></td><td class="s"># subs named after the builtins it wraps.</td></tr>
+<tr><td class="h">16</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L16">314</a></div></td><td><div>270</div><div>173</div><div>437</div></td><td class="s">use autodie qw(open);</td></tr>
+<tr><td class="h">17</td><td colspan="6"></td></tr><tr><td class="h">18</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L18">314</a></div></td><td><div>22485</div><div>197</div><div>1188</div></td><td class="s">use File::Temp ();</td></tr>
+<tr><td class="h">19</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L19">314</a></div></td><td><div>395</div><div>892</div><div>1422</div></td><td class="s">use IPC::Open3 ();</td></tr>
+<tr><td class="h">20</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L20">314</a></div></td><td><div>329</div><div>207</div><div>5325</div></td><td class="s">use List::Util qw(any);</td></tr>
+<tr><td class="h">21</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L21">314</a></div></td><td><div>274</div><div>191</div><div>3521</div></td><td class="s">use Readonly;</td></tr>
+<tr><td class="h">22</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L22">314</a></div></td><td><div>301</div><div>277</div><div>706</div></td><td class="s">use Sub::Private { mode =&gt; &#39;enforce&#39; };</td></tr>
+<tr><td class="h">23</td><td colspan="6"></td></tr><tr><td class="h">24</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L24">314</a></div></td><td><div>18480</div><div>197</div><div>3166</div></td><td class="s">use App::FileSync qw(validate_client_id validate_repo_name);</td></tr>
+<tr><td class="h">25</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L25">314</a></div></td><td><div>341</div><div>214</div><div>2473</div></td><td class="s">use App::FileSync::Args qw(named);</td></tr>
+<tr><td class="h">26</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L26">314</a></div></td><td><div>291</div><div>175</div><div>8219</div></td><td class="s">use App::FileSync::Constants qw($PROTOCOL_VERSION $ROLE_CLIENT @ROLES $SERVER_PROGRAM);</td></tr>
+<tr><td class="h">27</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L27">314</a></div></td><td><div>272</div><div>177</div><div>2210</div></td><td class="s">use App::FileSync::I18N qw(throw);</td></tr>
+<tr><td class="h">28</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L28">314</a></div></td><td><div>267</div><div>167</div><div>143293</div></td><td class="s">use App::FileSync::IO qw(read_text);</td></tr>
+<tr><td class="h">29</td><td colspan="6"></td></tr><tr><td class="h">30</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $VERSION = &#39;0.001.1&#39;;</td></tr>
+<tr><td class="h">31</td><td colspan="6"></td></tr><tr><td class="h">32</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Kept for compatibility: the protocol version sent as --proto.</td></tr>
+<tr><td class="h">33</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $PROTO = $PROTOCOL_VERSION;</td></tr>
+<tr><td class="h">34</td><td colspan="6"></td></tr><tr><td class="h">35</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Options every session uses: no prompts, keepalives so a dead link is</td></tr>
+<tr><td class="h">36</td><td></td><td></td><td></td><td></td><td></td><td class="s"># noticed, and a bounded connect.</td></tr>
+<tr><td class="h">37</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my @SSH_OPTIONS =&gt; (</td></tr>
+<tr><td class="h">38</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;-T&#39;,</td></tr>
+<tr><td class="h">39</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;-o&#39;, &#39;BatchMode=yes&#39;,</td></tr>
+<tr><td class="h">40</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;-o&#39;, &#39;ServerAliveInterval=30&#39;,</td></tr>
+<tr><td class="h">41</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;-o&#39;, &#39;ConnectTimeout=10&#39;,</td></tr>
+<tr><td class="h">42</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
+<tr><td class="h">43</td><td colspan="6"></td></tr><tr><td class="h">44</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Host key policies a repo may choose.</td></tr>
+<tr><td class="h">45</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my @HOST_KEY_CHECKING =&gt; qw(yes accept-new);</td></tr>
+<tr><td class="h">46</td><td colspan="6"></td></tr><tr><td class="h">47</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The highest TCP port.</td></tr>
+<tr><td class="h">48</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $MAX_PORT =&gt; 65_535;</td></tr>
+<tr><td class="h">49</td><td colspan="6"></td></tr><tr><td class="h">50</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Characters that would end or split an argument.</td></tr>
+<tr><td class="h">51</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $UNSAFE_ARG =&gt; qr/[\0\n]/;</td></tr>
+<tr><td class="h">52</td><td colspan="6"></td></tr><tr><td class="h">53</td><td></td><td></td><td></td><td></td><td></td><td class="s"># user@host, host, or a bracketed IPv6 literal.&nbsp;&nbsp;Both the user and the host</td></tr>
+<tr><td class="h">54</td><td></td><td></td><td></td><td></td><td></td><td class="s"># start with a letter or digit, so neither can be read as an ssh option.</td></tr>
+<tr><td class="h">55</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $SERVER =&gt; qr/\A(?:[A-Za-z0-9][A-Za-z0-9._-]*@)?</td></tr>
+<tr><td class="h">56</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(?:[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?|\[[0-9A-Fa-f:]+\])\z/x;</td></tr>
+<tr><td class="h">57</td><td colspan="6"></td></tr><tr><td class="h">58</td><td></td><td></td><td></td><td></td><td></td><td class="s"># A remote program path: only characters inert in a POSIX shell, and not</td></tr>
+<tr><td class="h">59</td><td></td><td></td><td></td><td></td><td></td><td class="s"># starting with &#39;-&#39;.</td></tr>
+<tr><td class="h">60</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $PROGRAM =&gt; qr{\A[A-Za-z0-9._/][A-Za-z0-9._/-]*\z};</td></tr>
+<tr><td class="h">61</td><td colspan="6"></td></tr><tr><td class="h">62</td><td></td><td></td><td></td><td></td><td></td><td class="s">=encoding utf8</td></tr>
+<tr><td class="h">63</td><td colspan="6"></td></tr><tr><td class="h">64 - 153</td><td colspan="5"></td><td class="s"><pre>=head1 NAME
+
+App::FileSync::Transport::SSH - run the server over ssh
+
+=head1 SYNOPSIS
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $transport = App::FileSync::Transport::SSH-&gt;new(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server =&gt; &#39;filesync@files.example.com&#39;, repo =&gt; &#39;docs&#39;, client =&gt; &#39;laptop&#39;,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identity =&gt; &#39;~/.ssh/filesync_ed25519&#39;,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$transport-&gt;close or warn $transport-&gt;error_text;
+
+=head1 METHODS
+
+=head2 new
+
+Purpose: start C&lt;filesync-server&gt; on the server host for one session.
+
+Args: C&lt;server&gt; (C&lt;user@host&gt;, C&lt;host&gt; or C&lt;user@[v6]&gt;), C&lt;repo&gt;, C&lt;client&gt;,
+optional C&lt;role&gt; (default C&lt;client&gt;), C&lt;server_command&gt; (default
+C&lt;filesync-server&gt;), C&lt;host_key_checking&gt; (C&lt;yes&gt;, the default, or
+C&lt;accept-new&gt;), C&lt;known_hosts&gt;, C&lt;identity&gt;, C&lt;port&gt;, C&lt;command&gt; (the local
+ssh program), C&lt;extra_args&gt; (arrayref of extra ssh arguments).
+
+Returns: the transport.
+
+Side Effects: runs C&lt;ssh ... SERVER PROGRAM --repo R --client C --role X
+--proto 2&gt;.&nbsp;&nbsp;ssh&#39;s standard error goes to a temporary file, never the
+protocol pipe, and is available from L&lt;/error_text&gt;.&nbsp;&nbsp;On Windows a C&lt;.cmd&gt; or
+C&lt;.bat&gt; ssh wrapper is started through C&lt;COMSPEC&gt;, since CreateProcess cannot
+start one directly.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $transport = App::FileSync::Transport::SSH-&gt;new(%args);
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $t = App::FileSync::Transport::SSH-&gt;new(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server =&gt; &#39;backup&#39;, repo =&gt; &#39;photos&#39;, client =&gt; &#39;nas&#39;, role =&gt; &#39;replica&#39;, port =&gt; 2222,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print join(&#39; &#39;, @{ $t-&gt;command }), &quot;\n&quot;;
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, matches =&gt; $SERVER },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, min =&gt; 1, max =&gt; 64 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, min =&gt; 1, max =&gt; 64 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1, memberof =&gt; [ &#39;client&#39;, &#39;replica&#39; ] },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_command&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1, matches =&gt; $PROGRAM },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_key_checking =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1, memberof =&gt; [ &#39;yes&#39;, &#39;accept-new&#39; ] },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;known_hosts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;integer&#39;, optional =&gt; 1, min =&gt; 1, max =&gt; 65535 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extra_args&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; { type =&gt; &#39;arrayref&#39;, optional =&gt; 1 },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;object&#39;, isa =&gt; &#39;App::FileSync::Transport::SSH&#39; }
+
+=head3 MESSAGES
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meaning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolution
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transport.missing&nbsp;&nbsp;&nbsp;&nbsp;server, repo or client absent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix the repo config
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transport.bad_value&nbsp;&nbsp;a value is unsafe or out of range&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix the repo config or settings
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transport.bad_id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the repo or client is not a plain id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fix the repo config
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;io.write&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the error file cannot be created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check the temp directory
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pre server &acirc;&#136;&#136; SERVER &acirc;&#136;&sect; repo &acirc;&#136;&#136; Id &acirc;&#136;&sect; client &acirc;&#136;&#136; Id &acirc;&#136;&sect; role &acirc;&#136;&#136; ROLES &acirc;&#136;&sect; program &acirc;&#136;&#136; PROGRAM
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&acirc;&#136;&sect; (port = &acirc;&#138;&yen; &acirc;&#136;&uml; 0 &lt; port &acirc;&#137;&curren; 65535) &acirc;&#136;&sect; &acirc;&#136;&#128; a : extra_args &acirc;&#128;&cent; a &acirc;&#136;&#136; TEXT &acirc;&#136;&sect; &#39;\n&#39; &acirc;&#136;&#137; a
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;argv = &acirc;&#159;&uml;ssh&acirc;&#159;&copy; &acirc;&#129;&#128; options &acirc;&#129;&#128; &acirc;&#159;&uml;server, program, --repo, repo, --client, client, --role, role, --proto, PROTO&acirc;&#159;&copy;
+
+=head3 PSEUDOCODE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate every argument
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;build ssh&#39;s options: fixed ones, host key policy, known hosts, identity,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port, extra arguments
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;append the server, then the remote command
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wrap a .cmd/.bat ssh in COMSPEC on Windows
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start it with standard error going to a temporary file
+
+=cut</pre></td></tr>
+<tr><td class="h">154</td><td colspan="6"></td></tr><tr><td class="h">155</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub new {</td></tr>
+<tr><td class="h">156</td><td><div class="c3">9</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L156">9</a></div></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $class = shift;</td></tr>
+<tr><td class="h">157</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $args = named(\@_, {</td></tr>
+<tr><td class="h">158</td><td><div class="c3">9</div><div class="c3">90</div></td><td></td><td></td><td></td><td><div>21</div><div>85</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map({ $_ =&gt; { type =&gt; &#39;string&#39;, optional =&gt; 1 } }</td></tr>
+<tr><td class="h">159</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qw(server repo client role server_command host_key_checking known_hosts identity port command)),</td></tr>
+<tr><td class="h">160</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extra_args =&gt; { type =&gt; &#39;arrayref&#39;, optional =&gt; 1 },</td></tr>
+<tr><td class="h">161</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}, &#39;Transport::SSH-&gt;new&#39;);</td></tr>
+<tr><td class="h">162</td><td colspan="6"></td></tr><tr><td class="h">163</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>23</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $required (qw(server repo client)) {</td></tr>
+<tr><td class="h">164</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;transport.missing&#39;, { transport =&gt; &#39;SSH&#39;, what =&gt; $required })</td></tr>
+<tr><td class="h">165</td><td><div class="c3">27</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L165">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L165">33</a></div></td><td></td><td><div>39</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless defined $args-&gt;{$required} &amp;&amp; length $args-&gt;{$required};</td></tr>
+<tr><td class="h">166</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">167</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>19</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check(&#39;server&#39;, $args-&gt;{server}, valid_server($args-&gt;{server}));</td></tr>
+<tr><td class="h">168</td><td colspan="6"></td></tr><tr><td class="h">169</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>26</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $check ([ repo =&gt; \&amp;validate_repo_name ], [ client =&gt; \&amp;validate_client_id ]) {</td></tr>
+<tr><td class="h">170</td><td><div class="c3">18</div><div class="c3">18</div></td><td></td><td></td><td></td><td><div>28</div><div>18</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($field, $validate) = @{$check};</td></tr>
+<tr><td class="h">171</td><td><div class="c3">18</div></td><td></td><td></td><td></td><td><div>23</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($ok, $reason) = $validate-&gt;($args-&gt;{$field});</td></tr>
+<tr><td class="h">172</td><td><div class="c3">18</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L172">50</a></div></td><td></td><td></td><td><div>17</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;transport.bad_id&#39;, { reason =&gt; $reason }) unless $ok;</td></tr>
+<tr><td class="h">173</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">174</td><td colspan="6"></td></tr><tr><td class="h">175</td><td><div class="c3">9</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L175">33</a></div></td><td></td><td><div>14</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $role = $args-&gt;{role} || $ROLE_CLIENT;</td></tr>
+<tr><td class="h">176</td><td><div class="c3">9</div><div class="c3">9</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L176">9</a></div></td><td><div>35</div><div>33</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check(&#39;role&#39;, $role, any { $_ eq $role } @ROLES);</td></tr>
+<tr><td class="h">177</td><td colspan="6"></td></tr><tr><td class="h">178</td><td><div class="c3">9</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L178">33</a></div></td><td></td><td><div>19</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $program = _given($args-&gt;{server_command}) // $SERVER_PROGRAM;</td></tr>
+<tr><td class="h">179</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>15</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check(&#39;server_command&#39;, $program, valid_program($program));</td></tr>
+<tr><td class="h">180</td><td colspan="6"></td></tr><tr><td class="h">181</td><td><div class="c3">9</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L181">67</a></div></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $checking = _given($args-&gt;{host_key_checking}) // $HOST_KEY_CHECKING[0];</td></tr>
+<tr><td class="h">182</td><td><div class="c3">9</div><div class="c3">17</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L182">17</a></div></td><td><div>25</div><div>36</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check(&#39;host_key_checking&#39;, $checking, any { $_ eq $checking } @HOST_KEY_CHECKING);</td></tr>
+<tr><td class="h">183</td><td colspan="6"></td></tr><tr><td class="h">184</td><td><div class="c3">9</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L184">50</a></div></td><td></td><td><div>16</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my @command = (_given($args-&gt;{command}) // &#39;ssh&#39;, @SSH_OPTIONS, &#39;-o&#39;, &quot;StrictHostKeyChecking=$checking&quot;);</td></tr>
+<tr><td class="h">185</td><td colspan="6"></td></tr><tr><td class="h">186</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L186">100</a></div></td><td></td><td></td><td><div>100</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (defined(my $known = _given($args-&gt;{known_hosts}))) {</td></tr>
+<tr><td class="h">187</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check(&#39;known_hosts&#39;, $known, $known !~ $UNSAFE_ARG);</td></tr>
+<tr><td class="h">188</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @command, &#39;-o&#39;, &quot;UserKnownHostsFile=$known&quot;;</td></tr>
+<tr><td class="h">189</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">190</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L190">100</a></div></td><td></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (defined(my $identity = _given($args-&gt;{identity}))) {</td></tr>
+<tr><td class="h">191</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check(&#39;identity&#39;, $identity, $identity !~ $UNSAFE_ARG);</td></tr>
+<tr><td class="h">192</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @command, &#39;-i&#39;, $identity;</td></tr>
+<tr><td class="h">193</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">194</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L194">100</a></div></td><td></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (defined(my $port = _given($args-&gt;{port}))) {</td></tr>
+<tr><td class="h">195</td><td><div class="c3">8</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L195">33</a></div></td><td></td><td><div>56</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check(&#39;port&#39;, $port, $port =~ /\A\d{1,5}\z/ &amp;&amp; $port &gt; 0 &amp;&amp; $port &lt;= $MAX_PORT);</td></tr>
+<tr><td class="h">196</td><td><div class="c3">8</div></td><td></td><td></td><td></td><td><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @command, &#39;-p&#39;, $port;</td></tr>
+<tr><td class="h">197</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">198</td><td><div class="c3">9</div><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L198">50</a></div></td><td></td><td></td><td><div>9</div><div>17</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $extra (@{ $args-&gt;{extra_args} || [] }) {</td></tr>
+<tr><td class="h">199</td><td><div class="c0">0</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L199">0</a></div><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L199">0</a></div></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check(&#39;extra_args&#39;, $extra // &#39;&#39;, defined $extra &amp;&amp; !ref $extra &amp;&amp; $extra !~ $UNSAFE_ARG);</td></tr>
+<tr><td class="h">200</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @command, $extra;</td></tr>
+<tr><td class="h">201</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">202</td><td colspan="6"></td></tr><tr><td class="h">203</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The remote shell splits this back into arguments; every value is</td></tr>
+<tr><td class="h">204</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# restricted (above) to characters that are inert in a POSIX shell.</td></tr>
+<tr><td class="h">205</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push @command, $args-&gt;{server}, $program,</td></tr>
+<tr><td class="h">206</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>21</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;--repo&#39;, $args-&gt;{repo}, &#39;--client&#39;, $args-&gt;{client}, &#39;--role&#39;, $role, &#39;--proto&#39;, $PROTO;</td></tr>
+<tr><td class="h">207</td><td colspan="6"></td></tr><tr><td class="h">208</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L208">50</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L208">33</a></div></td><td></td><td><div>19</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ($^O eq &#39;MSWin32&#39; &amp;&amp; $command[0] =~ /\.(?:cmd|bat)\z/i) {</td></tr>
+<tr><td class="h">209</td><td><div class="c0">0</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L209">0</a></div></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unshift @command, _given($ENV{COMSPEC}) // &#39;cmd.exe&#39;, &#39;/d&#39;, &#39;/c&#39;;</td></tr>
+<tr><td class="h">210</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">211</td><td colspan="6"></td></tr><tr><td class="h">212</td><td><div class="c3">9</div><div class="c3">9</div></td><td></td><td></td><td></td><td><div>12</div><div>11</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return bless { command =&gt; \@command, status =&gt; undef, stderr =&gt; &#39;&#39;, %{ _spawn(\@command) } }, $class;</td></tr>
+<tr><td class="h">213</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">214</td><td colspan="6"></td></tr><tr><td class="h">215 - 258</td><td colspan="5"></td><td class="s"><pre>=head2 reader
+
+=head2 writer
+
+=head2 command
+
+=head2 exit_status
+
+Purpose: the session&#39;s pipes, the argv that was run, and ssh&#39;s exit status.
+
+Args: none.
+
+Returns: the read and write handles; a copy of the argv (for C&lt;--verbose&gt; and
+tests); the exit status after L&lt;/close&gt; (undef before).
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $argv = $transport-&gt;command;
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print &quot;ran: @{ $transport-&gt;command }\n&quot;;
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ { name =&gt; &#39;self&#39;, type =&gt; &#39;object&#39; } ]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;scalar&#39; }
+
+=head3 MESSAGES
+
+None.
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;command = copy(self.command) ; exit_status = self.status
+
+=cut</pre></td></tr>
+<tr><td class="h">259</td><td colspan="6"></td></tr><tr><td class="h">260</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub reader {</td></tr>
+<tr><td class="h">261</td><td><div class="c3">9</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L261">9</a></div></td><td><div>15</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">262</td><td colspan="6"></td></tr><tr><td class="h">263</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>40</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;{reader};</td></tr>
+<tr><td class="h">264</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">265</td><td colspan="6"></td></tr><tr><td class="h">266</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub writer {</td></tr>
+<tr><td class="h">267</td><td><div class="c3">9</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L267">9</a></div></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">268</td><td colspan="6"></td></tr><tr><td class="h">269</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>67</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;{writer};</td></tr>
+<tr><td class="h">270</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">271</td><td colspan="6"></td></tr><tr><td class="h">272</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub command {</td></tr>
+<tr><td class="h">273</td><td><div class="c0">0</div></td><td></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L273">0</a></div></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">274</td><td colspan="6"></td></tr><tr><td class="h">275</td><td><div class="c0">0</div><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return [ @{ $self-&gt;{command} } ];</td></tr>
+<tr><td class="h">276</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">277</td><td colspan="6"></td></tr><tr><td class="h">278</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub exit_status {</td></tr>
+<tr><td class="h">279</td><td><div class="c0">0</div></td><td></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L279">0</a></div></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">280</td><td colspan="6"></td></tr><tr><td class="h">281</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $self-&gt;{status};</td></tr>
+<tr><td class="h">282</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">283</td><td colspan="6"></td></tr><tr><td class="h">284 - 323</td><td colspan="5"></td><td class="s"><pre>=head2 close
+
+Purpose: end the ssh session.
+
+Args: none.
+
+Returns: 1 when ssh exited 0, else 0.&nbsp;&nbsp;Repeated calls return 1.
+
+Side Effects: closes both pipes, reaps ssh, records its exit status and
+signal, and reads what it wrote to standard error.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$transport-&gt;close or warn $transport-&gt;error_text, &quot;\n&quot;;
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless ($transport-&gt;close) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf &quot;ssh exited %d: %s\n&quot;, $transport-&gt;exit_status, $transport-&gt;error_text;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ { name =&gt; &#39;self&#39;, type =&gt; &#39;object&#39; } ]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;integer&#39;, memberof =&gt; [ 0, 1 ] }
+
+=head3 MESSAGES
+
+None.
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;close = 1 &acirc;&#135;&#148; closed &acirc;&#136;&uml; exit(ssh) = 0
+
+=cut</pre></td></tr>
+<tr><td class="h">324</td><td colspan="6"></td></tr><tr><td class="h">325</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub close {&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## no critic (Subroutines::ProhibitBuiltinHomonyms, Subroutines::ProhibitAmbiguousNames) -- transport interface</td></tr>
+<tr><td class="h">326</td><td><div class="c3">9</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L326">9</a></div></td><td><div>10</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">327</td><td colspan="6"></td></tr><tr><td class="h">328</td><td><div class="c3">9</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L328">50</a></div></td><td></td><td></td><td><div>19</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1 if $self-&gt;{closed}++;</td></tr>
+<tr><td class="h">329</td><td colspan="6"></td></tr><tr><td class="h">330</td><td><div class="c3">9</div><div class="c3">18</div><div class="c3">9</div></td><td></td><td></td><td></td><td><div>13</div><div>26</div><div>17</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $handle (grep { defined } @{$self}{qw(writer reader)}) {</td></tr>
+<tr><td class="h">331</td><td><div class="c3">18</div></td><td></td><td></td><td></td><td><div>78</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CORE::close($handle);</td></tr>
+<tr><td class="h">332</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">333</td><td colspan="6"></td></tr><tr><td class="h">334</td><td><div class="c3">9</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L334">50</a></div></td><td></td><td></td><td><div>26</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ($self-&gt;{pid}) {</td></tr>
+<tr><td class="h">335</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>4781303</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;waitpid($self-&gt;{pid}, 0);</td></tr>
+<tr><td class="h">336</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>79</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $status = $?;</td></tr>
+<tr><td class="h">337</td><td><div class="c3">9</div><div class="c3">9</div></td><td></td><td></td><td></td><td><div>27</div><div>42</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@{$self}{qw(status signal pid)} = ($status &gt;&gt; 8, $status &amp; 127, 0);</td></tr>
+<tr><td class="h">338</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">339</td><td><div class="c3">9</div></td><td></td><td></td><td></td><td><div>63</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$self-&gt;{stderr} = _slurp($self-&gt;{error_path});</td></tr>
+<tr><td class="h">340</td><td colspan="6"></td></tr><tr><td class="h">341</td><td><div class="c3">9</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L341">100</a></div></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L341">100</a></div></td><td></td><td><div>51</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ($self-&gt;{status} || 0) == 0 ? 1 : 0;</td></tr>
+<tr><td class="h">342</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">343</td><td colspan="6"></td></tr><tr><td class="h">344 - 380</td><td colspan="5"></td><td class="s"><pre>=head2 error_text
+
+Purpose: what ssh or the remote shell said, for when the protocol failed.
+
+Args: none.
+
+Returns: the text, trimmed, with blank lines collapsed.
+
+Side Effects: reads the error file if L&lt;/close&gt; has not yet.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $why = $transport-&gt;error_text;
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print $transport-&gt;error_text, &quot;\n&quot;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# &quot;Permission denied (publickey).&quot;
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ { name =&gt; &#39;self&#39;, type =&gt; &#39;object&#39; } ]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;string&#39; }
+
+=head3 MESSAGES
+
+None.
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_text = squeeze(trim(stderr))
+
+=cut</pre></td></tr>
+<tr><td class="h">381</td><td colspan="6"></td></tr><tr><td class="h">382</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub error_text {</td></tr>
+<tr><td class="h">383</td><td><div class="c3">2</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L383">2</a></div></td><td><div>2</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($self) = @_;</td></tr>
+<tr><td class="h">384</td><td colspan="6"></td></tr><tr><td class="h">385</td><td><div class="c3">2</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L385">50</a></div></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $text = length $self-&gt;{stderr} ? $self-&gt;{stderr} : _slurp($self-&gt;{error_path});</td></tr>
+<tr><td class="h">386</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>12</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$text =~ s/\A\s+|\s+\z//g;</td></tr>
+<tr><td class="h">387</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>4</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$text =~ s/\n+/\n/g;</td></tr>
+<tr><td class="h">388</td><td><div class="c3">2</div></td><td></td><td></td><td></td><td><div>5</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $text;</td></tr>
+<tr><td class="h">389</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">390</td><td colspan="6"></td></tr><tr><td class="h">391 - 437</td><td colspan="5"></td><td class="s"><pre>=head2 valid_server
+
+=head2 valid_program
+
+Purpose: check a server address and a remote program path.
+
+Args: the value.
+
+Returns: 1 or 0.
+
+A server is C&lt;user@host&gt;, C&lt;host&gt; or C&lt;user@[ipv6]&gt;; the user and host must
+start with a letter or digit, so neither can be read as an ssh option (a
+leading C&lt;-&gt;) and nothing can split into another word.&nbsp;&nbsp;A program is a path of
+letters, digits, C&lt;.&gt;, C&lt;_&gt;, C&lt;/&gt; and C&lt;-&gt;, not starting with C&lt;-&gt;.
+
+Side Effects: none.
+
+Usage:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;die &quot;bad server\n&quot; unless App::FileSync::Transport::SSH::valid_server($server);
+
+=head3 EXAMPLE
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App::FileSync::Transport::SSH::valid_server(&#39;filesync@files.example.com&#39;);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App::FileSync::Transport::SSH::valid_server(&#39;-oProxyCommand=sh&#39;);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 0
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App::FileSync::Transport::SSH::valid_server(&#39;-v@host&#39;);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 0
+
+=head3 API SPECIFICATION
+
+=head4 INPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ { name =&gt; &#39;value&#39;, type =&gt; &#39;string&#39;, optional =&gt; 1 } ]
+
+=head4 OUTPUT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ type =&gt; &#39;integer&#39;, memberof =&gt; [ 0, 1 ] }
+
+=head3 MESSAGES
+
+None.
+
+=head3 FORMAL SPECIFICATION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_server(v) &acirc;&#135;&#148; v &acirc;&#136;&#136; SERVER
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_program(v) &acirc;&#135;&#148; v &acirc;&#136;&#136; PROGRAM
+
+=cut</pre></td></tr>
+<tr><td class="h">438</td><td colspan="6"></td></tr><tr><td class="h">439</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub valid_server {</td></tr>
+<tr><td class="h">440</td><td><div class="c3">25</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L440">25</a></div></td><td><div>1013</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value) = @_;</td></tr>
+<tr><td class="h">441</td><td colspan="6"></td></tr><tr><td class="h">442</td><td><div class="c3">25</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L442">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L442">67</a></div></td><td></td><td><div>41</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (defined $value &amp;&amp; $value =~ $SERVER) ? 1 : 0;</td></tr>
+<tr><td class="h">443</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">444</td><td colspan="6"></td></tr><tr><td class="h">445</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub valid_program {</td></tr>
+<tr><td class="h">446</td><td><div class="c3">14</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L446">14</a></div></td><td><div>63</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value) = @_;</td></tr>
+<tr><td class="h">447</td><td colspan="6"></td></tr><tr><td class="h">448</td><td><div class="c3">14</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-Transport-SSH-pm--branch.html#L448">100</a></div></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--condition.html#L448">100</a></div></td><td></td><td><div>33</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (defined $value &amp;&amp; $value =~ $PROGRAM) ? 1 : 0;</td></tr>
+<tr><td class="h">449</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">450</td><td colspan="6"></td></tr><tr><td class="h">451</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _spawn</td></tr>
+<tr><td class="h">452</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start ssh with stderr going to a temporary file.</td></tr>
+<tr><td class="h">453</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$command is the full argv.</td></tr>
+<tr><td class="h">454</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns { pid, writer, reader, errors, error_path }.</td></tr>
+<tr><td class="h">455</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: creates the error file (removed when the object goes) and</td></tr>
+<tr><td class="h">456</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;starts the process.&nbsp;&nbsp;IPC::Open3 rather than fork/exec: on</td></tr>
+<tr><td class="h">457</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Windows fork() is a pseudo-process whose pipe handles are</td></tr>
+<tr><td class="h">458</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;not always duplicated, which leaves a full-duplex session</td></tr>
+<tr><td class="h">459</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;waiting on a pipe end that never closes.</td></tr>
+<tr><td class="h">460</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _spawn :Private {</td></tr>
+<tr><td class="h">461</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($command) = @_;</td></tr>
+<tr><td class="h">462</td><td colspan="6"></td></tr><tr><td class="h">463</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $errors = File::Temp-&gt;new(UNLINK =&gt; 1);</td></tr>
+<tr><td class="h">464</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $error_path = $errors-&gt;filename;</td></tr>
+<tr><td class="h">465</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;open my $err_fh, &#39;&gt;&#39;, $error_path;</td></tr>
+<tr><td class="h">466</td><td colspan="6"></td></tr><tr><td class="h">467</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($writer, $reader);</td></tr>
+<tr><td class="h">468</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $pid = IPC::Open3::open3($writer, $reader, &#39;&gt;&amp;&#39; . fileno($err_fh), @{$command});</td></tr>
+<tr><td class="h">469</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CORE::close($err_fh);</td></tr>
+<tr><td class="h">470</td><td colspan="6"></td></tr><tr><td class="h">471</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return { pid =&gt; $pid, writer =&gt; $writer, reader =&gt; $reader, errors =&gt; $errors, error_path =&gt; $error_path };</td></tr>
+<tr><td class="h">472</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L472">314</a></div></td><td><div>513</div><div>180</div><div>2871</div></td><td class="s">}</td></tr>
+<tr><td class="h">473</td><td colspan="6"></td></tr><tr><td class="h">474</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _check</td></tr>
+<tr><td class="h">475</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refuse an unsafe or out-of-range argument.</td></tr>
+<tr><td class="h">476</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ok is the result of the check.</td></tr>
+<tr><td class="h">477</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns 1.</td></tr>
+<tr><td class="h">478</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: raises transport.bad_value naming the field.</td></tr>
+<tr><td class="h">479</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _check :Private {</td></tr>
+<tr><td class="h">480</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($field, $value, $ok) = @_;</td></tr>
+<tr><td class="h">481</td><td colspan="6"></td></tr><tr><td class="h">482</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;transport.bad_value&#39;, { field =&gt; $field, value =&gt; $value }) unless $ok;</td></tr>
+<tr><td class="h">483</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;</td></tr>
+<tr><td class="h">484</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L484">314</a></div></td><td><div>33336</div><div>236</div><div>1139</div></td><td class="s">}</td></tr>
+<tr><td class="h">485</td><td colspan="6"></td></tr><tr><td class="h">486</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _given</td></tr>
+<tr><td class="h">487</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;treat an empty string like an absent value.</td></tr>
+<tr><td class="h">488</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any scalar.</td></tr>
+<tr><td class="h">489</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns the value, or undef if undefined or empty.</td></tr>
+<tr><td class="h">490</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">491</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _given :Private {</td></tr>
+<tr><td class="h">492</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value) = @_;</td></tr>
+<tr><td class="h">493</td><td colspan="6"></td></tr><tr><td class="h">494</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (defined $value &amp;&amp; length $value) ? $value : undef;</td></tr>
+<tr><td class="h">495</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L495">314</a></div></td><td><div>24108</div><div>181</div><div>914</div></td><td class="s">}</td></tr>
+<tr><td class="h">496</td><td colspan="6"></td></tr><tr><td class="h">497</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _slurp</td></tr>
+<tr><td class="h">498</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the error file&#39;s contents.</td></tr>
+<tr><td class="h">499</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$path may be undef or gone.</td></tr>
+<tr><td class="h">500</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns the text, or &#39;&#39;.</td></tr>
+<tr><td class="h">501</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: reads the file; an unreadable one is treated as empty</td></tr>
+<tr><td class="h">502</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(there is nothing better to report).</td></tr>
+<tr><td class="h">503</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _slurp :Private {</td></tr>
+<tr><td class="h">504</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($path) = @_;</td></tr>
+<tr><td class="h">505</td><td colspan="6"></td></tr><tr><td class="h">506</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return &#39;&#39; unless defined $path &amp;&amp; -e $path;</td></tr>
+<tr><td class="h">507</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $text = eval { read_text($path) };</td></tr>
+<tr><td class="h">508</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return defined $text ? $text : &#39;&#39;;</td></tr>
+<tr><td class="h">509</td><td><div class="c3">314</div><div class="c3">314</div><div class="c3">314</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Transport-SSH-pm--subroutine.html#L509">314</a></div></td><td><div>24878</div><div>182</div><div>840</div></td><td class="s">}</td></tr>
+<tr><td class="h">510</td><td colspan="6"></td></tr><tr><td class="h">511</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
+<tr><td class="h">512</td><td colspan="6"></td></tr></table>
 </body>
 </html>
