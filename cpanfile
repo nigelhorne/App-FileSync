@@ -36,7 +36,7 @@ requires 'autodie', '2.37';
 requires 'version', '0.77';
 
 on 'configure' => sub {
-	requires 'ExtUtils::MakeMaker', '6.64';
+	requires 'ExtUtils::MakeMaker', '6.64';   # first to honour TEST_REQUIRES
 };
 
 on 'test' => sub {
