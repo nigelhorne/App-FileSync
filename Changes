@@ -1,6 +1,6 @@
 Revision history for App-FileSync
 
-0.001.2
+0.001.2	Sat Oct 24 09:02:12 PM EDT 2026
 	[ Bug Fixes ]
         - filesync-admin repo create names the server root and the directory
           that blocks it when the root cannot be written, and says to chown
@@ -10,15 +10,15 @@ Revision history for App-FileSync
           a full disk or a root that is a file keeps its own error.
 
 	[ Documentation ]
-        - README: the examples are split by machine - what to run on the
+        - The examples are split by machine - what to run on the
           server, on each client, and from cron - and keep the master in a
           home directory, so nothing needs sudo.
-        - README: what a /srv/filesync root needs instead, the wrapper that
+        - What a /srv/filesync root needs instead, the wrapper that
           adds --root to filesync-server, and the ssh key the first sync
           requires.
-        - README: the backup and restore commands follow the example's master
+        - The backup and restore commands follow the example's master
           layout, and make the backup directory before cron mirrors into it.
-        - README: the synopsis creates the repo first, so it runs as printed.
+        - The synopsis creates the repo first, so it runs as printed.
 
 0.001.1 Sat Oct 24 09:52:47 AM EDT 2026
 	[ Bug Fixes ]
