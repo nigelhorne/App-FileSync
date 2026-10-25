@@ -44,7 +44,7 @@ WriteMakefile(
 		'IPC::System::Simple' => '1.30',
 		'JSON::PP'       => 0,
 		'List::Util'     => '1.54',
-		'Log::Abstraction' => 0,
+		'Log::Abstraction' => '0.36',	# structured fields
 		'Object::Configure' => 0,
 		'Params::Get'    => '0.17',
 		'Params::Validate::Strict' => '0.41',

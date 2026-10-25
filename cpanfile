@@ -21,7 +21,7 @@ requires 'IPC::Open3';
 requires 'IPC::System::Simple', '1.30';
 requires 'JSON::PP';
 requires 'List::Util', '1.54';
-requires 'Log::Abstraction';
+requires 'Log::Abstraction', '0.36';   # structured fields
 requires 'Object::Configure';
 requires 'Params::Get', '0.17';
 requires 'Params::Validate::Strict', '0.41';
