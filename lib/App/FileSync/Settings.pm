@@ -28,7 +28,7 @@ use App::FileSync::Args qw(named);
 use App::FileSync::I18N qw(throw);
 use App::FileSync::IO qw(ensure_dir);
 
-use version; our $VERSION = version->declare('0.001.2');
+use version; our $VERSION = version->declare('0.001.3');
 
 # The hook predicates moved to App::FileSync::Platform, which must load before
 # this module's dependencies; these names are kept for existing callers.

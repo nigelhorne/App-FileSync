@@ -4,7 +4,7 @@ App::FileSync - cron-driven file synchronisation without a daemon
 
 ## Version
 
-0.001.2
+0.001.3
 
 ## Synopsis
 
