@@ -21,7 +21,7 @@ use App::FileSync::Constants qw($MAX_ID_LENGTH $SECONDS_PER_DAY);
 use App::FileSync::I18N qw(message throw);
 use App::FileSync::IO qw(write_atomic read_text set_mtime);
 
-use version; our $VERSION = version->declare('0.001.1');
+use version; our $VERSION = version->declare('0.001.2');
 
 our @EXPORT_OK = qw(
 	json_encode json_decode
@@ -79,7 +79,7 @@ App::FileSync - cron-driven file synchronisation without a daemon
 
 =head1 VERSION
 
-0.001.1
+0.001.2
 
 =head1 SYNOPSIS
 
@@ -759,47 +759,63 @@ __END__
 
 =head1 EXAMPLES
 
-The client keeps the copy named by C<--root>; the master lives on the server
-under its root, F</srv/filesync> unless C<filesync-server> is started with
-C<--root> or C<FILESYNC_ROOT>.  C</srv> is not writable by ordinary accounts,
-so make the root once and give it to the account the clients log in to -
-called C<filesync> here, though it can be your own login account - then
-install the distribution and create the repo as that account:
+Two machines are involved: the server, which holds the master, and each
+client, which holds a copy.  Install App::FileSync on both - C<cpanm
+App::FileSync>, say - because C<filesync-admin> and C<filesync-server> run on
+the server and C<filesync> on the clients.
 
-	# once, on the server, as an administrator
-	sudo mkdir -p /srv/filesync
-	sudo chown -R filesync /srv/filesync
-	sudo cpanm App::FileSync
+The example keeps the master in the server account's home directory, so
+nothing has to run as root.  F</srv/filesync> is the built-in default root;
+"A root of /srv/filesync instead" below says what changes if you prefer it.
 
-	# then, as filesync
-	sudo -u filesync filesync-admin repo create documents
-	sudo -u filesync filesync-admin client allow laptop --repo documents
+=head2 On the server
+
+Create the repo as the account the clients log in to.  A session over ssh
+carries only the repo, the client id and the role, so the client never tells
+the server which root to use: name the same C<--root> on every server command.
+
+	# on the server, once
+	filesync-admin --root ~/filesync repo create documents
+	filesync-admin --root ~/filesync client allow laptop --repo documents
 
 C<repo create> makes the master directory and the metadata beside it, printing
-both paths; C<client allow> is optional, because a repo with no clients lets
-every client in.  The client is never told the root - a session that arrives
-over ssh names the repo and the client id only - so C<filesync-admin --root>
-must be the directory the server itself uses.
+both paths.  C<client allow> is optional, because a repo with no clients
+admits every client.
 
-Then, once on each client, register the directory with the id the server knows
-it by, and check the first run:
+The server also needs C<--root> when C<filesync-server> starts, and the client
+cannot pass one, so wrap it:
 
-	# once, on the client
+	# on the server, once
+	cat > ~/bin/filesync-server-home <<'EOF'
+	#!/bin/sh
+	exec /usr/local/bin/filesync-server --root "$HOME/filesync" "$@"
+	EOF
+	chmod +x ~/bin/filesync-server-home
+
+Use the path C<filesync-server> was actually installed to, which
+C<ssh srv 'command -v filesync-server'> shows: a non-interactive ssh command
+can see a shorter PATH than an interactive login shell.
+
+=head2 On each client
+
+Register the directory with the id the server knows it by - the one given to
+C<client allow>; without C<--id> the client uses its host name - and name the
+wrapper as the server program:
+
+	# on the client, once
 	filesync init --repo documents --root /home/foo/Documents \
-		--server filesync@srv --id laptop
+		--server foo@srv --id laptop \
+		--server-command /home/foo/bin/filesync-server-home
 	filesync sync --repo documents --dry-run
 	filesync sync --repo documents
 
 ssh runs with C<BatchMode=yes>, so the client's key must already be in the
 server account's F<authorized_keys>, or loaded in C<ssh-agent>: cron cannot
-answer a password prompt.  If C<filesync-server> is not in the PATH a
-non-interactive ssh command gets - a per-user Perl install puts it in
-F<~/perl5/bin>, say - give its full path to C<filesync init> as
-C<--server-command>.
+answer a password prompt.
 
-Finally add the cron entry that keeps the two in step:
+=head2 From cron
 
-	# crontab -e, for foo on each client
+	# crontab -e, on each client
 	* * * * * /usr/local/bin/filesync sync --repo documents --quiet >/dev/null
 
 The summary line is dropped so cron does not mail on every successful run;
@@ -807,13 +823,16 @@ diagnostics still go to standard error, so a failure is mailed.  Every attempt,
 successful or not, is also appended to F<~/.filesync/logs/documents.jsonl>, and
 C<filesync log --repo documents --exit 1> lists the ones that failed.
 
+=head2 On Windows
+
 Windows clients use a scheduled task rather than cron.  With the script in
 F<C:\filesync> and Strawberry Perl installed, the same job is set up from a
 command prompt:
 
-	REM once, on the client
+	REM on the client, once
 	C:\Strawberry\perl\bin\perl.exe C:\filesync\bin\filesync init ^
-	  --repo documents --root C:\Users\foo\Documents --server srv
+	  --repo documents --root C:\Users\foo\Documents --server foo@srv ^
+	  --id laptop --server-command /home/foo/bin/filesync-server-home
 
 	REM then create the task; it runs every minute as the current user
 	schtasks /Create /SC MINUTE /MO 1 /TN FileSync /F ^
@@ -823,41 +842,31 @@ The task runs only while that user is logged on, which suits a Documents
 folder; its run log is still written under F<%USERPROFILE%\.filesync\logs>, so
 C<filesync log --repo documents --warnings> works there too.
 
-=head2 A root in the home directory
+=head2 A root of /srv/filesync instead
 
-F</srv/filesync> is only the default: any directory the server account can
-write will do.  A session that arrives over ssh is never told the root, so move
-it on the server side and name the same directory in every C<filesync-admin>
-call.  Give C<filesync init> a wrapper that adds C<--root> to the server's
-command line:
+To keep the master outside a home directory, create the default root once for
+the account the clients log in to.  Then no C<--root> is needed on the server
+commands, and no C<--server-command> on the client:
 
-	#!/bin/sh
-	# /home/foo/bin/filesync-server-home; use the installed filesync-server
-	exec /usr/local/bin/filesync-server --root /home/foo/filesync "$@"
+	# on the server, as an administrator
+	sudo mkdir -p /srv/filesync
+	sudo chown -R foo /srv/filesync
 
-Then nothing needs sudo, because the root is the account's own directory:
+C<filesync-admin repo create documents> works as it is, and the master is
+F</srv/filesync/master/documents>.
 
-	filesync-admin --root /home/foo/filesync repo create documents
-	filesync-admin --root /home/foo/filesync client allow laptop --repo documents
-
-	filesync init --repo documents --root /home/foo/Documents \
-		--server foo@srv --id laptop \
-		--server-command /home/foo/bin/filesync-server-home
-
-Pinning the same C<--root> in the F<authorized_keys> forced command does the
-same job without a wrapper.  The backup and restore commands below name
-F</srv/filesync/master/documents>, so change that prefix to your root.
+=head2 Backup and restore
 
 The master directory is an ordinary directory tree, so it can be mirrored to a
 backup directory from the server account's crontab.  Make the backup directory
 once - rsync creates the last component only - then let cron keep it in step:
 
-	# once, as filesync on the server
-	mkdir -p /srv/backups/FileSync/documents
+	# on the server, once
+	mkdir -p /home/foo/backups/documents
 
-	# crontab -e, as filesync on the server
+	# crontab -e, on the server
 	* * * * * rsync -a --delete --exclude '.filesync-tmp-*' \
-	    /srv/filesync/master/documents/ /srv/backups/FileSync/documents/
+	    /home/foo/filesync/master/documents/ /home/foo/backups/documents/
 
 Filesync writes each file to a temporary name and renames it into place, so the
 mirror never catches a half-written upload; the exclusion keeps the temporary
@@ -870,7 +879,7 @@ backup job cannot copy a half-restored tree back into the backup.  Let any
 running sync finish, then mirror the backup back:
 
 	rsync -a --delete --checksum \
-	    /srv/backups/FileSync/documents/ /srv/filesync/master/documents/
+	    /home/foo/backups/documents/ /home/foo/filesync/master/documents/
 
 C<--checksum> compares the contents, so a restored file is not skipped just
 because its size and modification time happen to match the newer copy.  This is
@@ -886,7 +895,7 @@ Before re-enabling the jobs, check that the copy is exact with a read-only
 comparison against the backup:
 
 	rsync -a --delete --checksum --dry-run --itemize-changes \
-	    /srv/backups/FileSync/documents/ /srv/filesync/master/documents/
+	    /home/foo/backups/documents/ /home/foo/filesync/master/documents/
 
 No output and exit 0 mean the master matches the backup.  Any line beginning
 C<< >f >> names a path that still differs, and C<*deleting> names one the
@@ -894,8 +903,8 @@ rollback should have removed.  The index still describes the pre-rollback tree,
 so C<filesync-admin verify> may report drift at this point; that is expected.
 Rebuild it and check it:
 
-	sudo -u filesync filesync-admin reindex documents
-	sudo -u filesync filesync-admin verify documents --deep
+	filesync-admin --root ~/filesync reindex documents
+	filesync-admin --root ~/filesync verify documents --deep
 
 C<reindex> hashes every file in the master and replaces the index atomically; it
 refuses to run while a sync session holds the repo lock, and it names any paths
@@ -906,10 +915,10 @@ To restore just one file or directory, copy that path back instead of mirroring
 the whole tree, with the jobs paused as above so nothing changes the tree while
 the copy runs:
 
-	rsync -a --checksum /srv/backups/FileSync/documents/notes/plan.txt \
-	    /srv/filesync/master/documents/notes/
-	rsync -a --checksum /srv/backups/FileSync/documents/photos/ \
-	    /srv/filesync/master/documents/photos/
+	rsync -a --checksum /home/foo/backups/documents/notes/plan.txt \
+	    /home/foo/filesync/master/documents/notes/
+	rsync -a --checksum /home/foo/backups/documents/photos/ \
+	    /home/foo/filesync/master/documents/photos/
 
 The trailing slash on the second source copies the directory's contents; without
 it rsync would put the directory itself inside the destination.  Add C<--delete>
