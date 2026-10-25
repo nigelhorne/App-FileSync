@@ -33,7 +33,7 @@ use App::FileSync::Server;
 use App::FileSync::Settings;
 use App::FileSync::Transport::SSH;
 
-use version; our $VERSION = version->declare('0.001.3');
+use version; our $VERSION = version->declare('0.001.4');
 
 # What the marker file says to anyone who finds it.  File content, not a
 # message: it must not change with the reader's language.
