@@ -1,5 +1,18 @@
 Revision history for App-FileSync
 
+0.001.4
+	[ Bug Fixes ]
+	- t/ssh.t: the stand-in for ssh now names the perl running the tests on
+	  its first line instead of "#!/usr/bin/env perl".  The transport starts
+	  that file as a program, so the kernel picked whichever perl came first
+	  on PATH - on a smoke tester the system perl, which cannot see the
+	  modules the build installed - and the filesync-server it then ran died
+	  with "Can't locate Params/Validate/Strict.pm" against a build that never
+	  lacked it (GitHub issue #4).  The Windows wrapper already named $^X.
+	[ Tests ]
+	- t/ssh.t checks the interpreter line of the stand-in it writes, so the
+	  PATH-dependent first line cannot come back unnoticed.
+
 0.001.3	Sun Oct 25 07:25:08 AM EDT 2026
 	[ Documentation ]
 	- More improvements
