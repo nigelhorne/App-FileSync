@@ -4,7 +4,7 @@ requires 'perl', '5.014';
 
 requires 'Carp';
 requires 'Compress::Raw::Zlib';
-requires 'Config::Abstraction';
+requires 'Config::Abstraction', '0.41';   # explain_sources()
 requires 'Cwd';
 requires 'Digest::SHA';
 requires 'Exporter';

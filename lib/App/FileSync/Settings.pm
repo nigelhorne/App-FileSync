@@ -13,7 +13,9 @@ use strict;
 use warnings;
 use autodie qw(:all);
 
-use Config::Abstraction;
+# 0.41 for explain_sources(), which the settings report uses; an older copy
+# autoloads that name as a config key and dies with "No such config key".
+use Config::Abstraction 0.41;
 use File::Basename qw(dirname);
 use File::Spec;
 use List::Util qw(any first);

@@ -27,7 +27,7 @@ WriteMakefile(
 		'autodie'        => '2.37',
 		'Carp'           => 0,
 		'Compress::Raw::Zlib' => 0,
-		'Config::Abstraction' => 0,
+		'Config::Abstraction' => '0.41',	# explain_sources()
 		'Cwd'            => 0,
 		'Digest::SHA'    => 0,
 		'Exporter'       => 0,
