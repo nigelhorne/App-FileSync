@@ -9,6 +9,7 @@ use strict;
 use warnings;
 use autodie qw(:all);
 
+use File::Basename qw(dirname);
 use File::Spec;
 use List::Util qw(any);
 use Readonly;
@@ -216,20 +217,21 @@ Usage:
 
 =head3 MESSAGES
 
-	Key                  Meaning                      Resolution
-	admin.bad_repo       the name is not a valid id   letters, digits, . _ - ; at most 64
-	admin.repo_exists    the repo already exists      choose another name
-	io.mkdir / io.write  the files cannot be written  check permissions
+	Key                    Meaning                       Resolution
+	admin.bad_repo         the name is not a valid id    letters, digits, . _ - ; at most 64
+	admin.repo_exists      the repo already exists       choose another name
+	admin.root_unwritable  the root cannot be written    chown it, or use --root elsewhere
+	io.mkdir / io.write    the files cannot be written   check permissions
 
 =head3 FORMAL SPECIFICATION
 
 	ΔFS
-	pre name ∈ Id ∧ repo_config_path(root, name) ∉ dom FS
+	pre name ∈ Id ∧ repo_config_path(root, name) ∉ dom FS ∧ writable(root)
 	post repo_config_path(root, name) ∈ dom FS' ∧ index(name) = ∅
 
 =head3 PSEUDOCODE
 
-	validate the name; refuse if the repo exists
+	validate the name; refuse if the repo exists or the root cannot be written
 	start from the default policy; apply the given limits and ignore list
 	create the master and metadata directories
 	save the policy and an empty index
@@ -251,6 +253,9 @@ sub repo_create {
 	my $config_path = App::FileSync::Config::repo_config_path($self->{root}, $name);
 	$self->_throw('admin.repo_exists', { repo => $name, path => $config_path }) if -e $config_path;
 
+	my $master = File::Spec->catdir($self->{root}, 'master', $name);
+	my $meta = App::FileSync::Config::repo_meta_dir($self->{root}, $name);
+
 	my $config = App::FileSync::Config::default_repo_config($name);
 	for my $limit (qw(trash_days max_deletes max_delete_percent)) {
 		$config->{$limit} = $args->{$limit} + 0 if defined $args->{$limit};
@@ -258,9 +263,21 @@ sub repo_create {
 	# A copy: the caller's list must not become the stored policy's storage.
 	$config->{ignore} = [ @{ $args->{ignore} } ] if $args->{ignore} && @{ $args->{ignore} };
 
-	my $master = File::Spec->catdir($self->{root}, 'master', $name);
-	my $meta = App::FileSync::Config::repo_meta_dir($self->{root}, $name);
-	ensure_dir($_) for $master, map { File::Spec->catdir($meta, $_) } @META_DIRS;
+	my $made = eval {
+		ensure_dir($_) for $master, map { File::Spec->catdir($meta, $_) } @META_DIRS;
+		1;
+	};
+	unless ($made) {
+		my $error = $@;
+		# A root another account owns is a setup mistake.  Name the directory
+		# to fix rather than the deepest one make_path could not create, which
+		# is several levels below the one the administrator passed.  Only when
+		# that directory really is unwritable: a full disk or a bad path keeps
+		# its own error.
+		my $blocked = _unwritable_base($master) // _unwritable_base($meta);
+		$self->_throw('admin.root_unwritable', { root => $self->{root}, blocked => $blocked }) if defined $blocked;
+		die $error;
+	}
 
 	App::FileSync::Config::save_repo($self->{root}, $name, $config);
 	$self->_store($name, $config)->save_index({});
@@ -980,6 +997,22 @@ sub restore {
 		date => App::FileSync::Trash::date_of($chosen),
 		into_master => $into_master ? 1 : 0,
 	};
+}
+
+# _unwritable_base
+# Purpose:     find the nearest existing directory above a path that this
+#              account cannot write.
+# Entry:       $path is the file or directory about to be created.
+# Exit:        returns that directory, or undef when every existing one is
+#              writable (so creation should succeed).
+# Side effects: none.
+sub _unwritable_base :Private {
+	my ($path) = @_;
+
+	my $base = $path;
+	$base = dirname($base) while !-d $base && dirname($base) ne $base;
+
+	return (-d $base && !-w $base) ? $base : undef;
 }
 
 # _store

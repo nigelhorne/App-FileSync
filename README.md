@@ -9,8 +9,9 @@ App::FileSync - cron-driven file synchronisation without a daemon
 ## Synopsis
 
 ```
+    filesync-admin --root ~/filesync repo create documents
     filesync init --repo documents --root ~/Documents \
-            --transport local --server-root /srv/filesync --remote-repo documents
+            --transport local --server-root ~/filesync --remote-repo documents
     filesync sync --repo documents --dry-run
     filesync sync --repo documents
 ```
@@ -598,13 +599,51 @@ Re-exported from [App::FileSync::IO](https://metacpan.org/pod/App%3A%3AFileSync%
 
 ## Examples
 
-On the server, create the master copy and allow the client once.  Then, on each
-client, register the directory and add a cron entry that runs every minute:
+The client keeps the copy named by `--root`; the master lives on the server
+under its root, `/srv/filesync` unless `filesync-server` is started with
+`--root` or `FILESYNC_ROOT`.  `/srv` is not writable by ordinary accounts,
+so make the root once and give it to the account the clients log in to -
+called `filesync` here, though it can be your own login account - then
+install the distribution and create the repo as that account:
+
+```
+    # once, on the server, as an administrator
+    sudo mkdir -p /srv/filesync
+    sudo chown -R filesync /srv/filesync
+    sudo cpanm App::FileSync
+
+    # then, as filesync
+    sudo -u filesync filesync-admin repo create documents
+    sudo -u filesync filesync-admin client allow laptop --repo documents
+```
+
+`repo create` makes the master directory and the metadata beside it, printing
+both paths; `client allow` is optional, because a repo with no clients lets
+every client in.  The client is never told the root - a session that arrives
+over ssh names the repo and the client id only - so `filesync-admin --root`
+must be the directory the server itself uses.
+
+Then, once on each client, register the directory with the id the server knows
+it by, and check the first run:
 
 ```
     # once, on the client
-    filesync init --repo documents --root /home/foo/Documents --server srv
+    filesync init --repo documents --root /home/foo/Documents \
+            --server filesync@srv --id laptop
+    filesync sync --repo documents --dry-run
+    filesync sync --repo documents
+```
 
+ssh runs with `BatchMode=yes`, so the client's key must already be in the
+server account's `authorized_keys`, or loaded in `ssh-agent`: cron cannot
+answer a password prompt.  If `filesync-server` is not in the PATH a
+non-interactive ssh command gets - a per-user Perl install puts it in
+`~/perl5/bin`, say - give its full path to `filesync init` as
+`--server-command`.
+
+Finally add the cron entry that keeps the two in step:
+
+```
     # crontab -e, for foo on each client
     * * * * * /usr/local/bin/filesync sync --repo documents --quiet >/dev/null
 ```
@@ -632,13 +671,46 @@ The task runs only while that user is logged on, which suits a Documents
 folder; its run log is still written under `%USERPROFILE%\.filesync\logs`, so
 `filesync log --repo documents --warnings` works there too.
 
-The master copy on the server is an ordinary directory tree, so it can be
-mirrored to a backup directory from the same crontab:
+### A Root in the Home Directory
+
+`/srv/filesync` is only the default: any directory the server account can
+write will do.  A session that arrives over ssh is never told the root, so move
+it on the server side and name the same directory in every `filesync-admin`
+call.  Give `filesync init` a wrapper that adds `--root` to the server's
+command line:
+
+```perl
+    #!/bin/sh
+    # /home/foo/bin/filesync-server-home; use the installed filesync-server
+    exec /usr/local/bin/filesync-server --root /home/foo/filesync "$@"
+```
+
+Then nothing needs sudo, because the root is the account's own directory:
 
 ```
-    # crontab -e, for foo on the server
+    filesync-admin --root /home/foo/filesync repo create documents
+    filesync-admin --root /home/foo/filesync client allow laptop --repo documents
+
+    filesync init --repo documents --root /home/foo/Documents \
+            --server foo@srv --id laptop \
+            --server-command /home/foo/bin/filesync-server-home
+```
+
+Pinning the same `--root` in the `authorized_keys` forced command does the
+same job without a wrapper.  The backup and restore commands below name
+`/srv/filesync/master/documents`, so change that prefix to your root.
+
+The master directory is an ordinary directory tree, so it can be mirrored to a
+backup directory from the server account's crontab.  Make the backup directory
+once - rsync creates the last component only - then let cron keep it in step:
+
+```
+    # once, as filesync on the server
+    mkdir -p /srv/backups/FileSync/documents
+
+    # crontab -e, as filesync on the server
     * * * * * rsync -a --delete --exclude '.filesync-tmp-*' \
-        /home/foo/FileSync/ /home/foo/backups/FileSync/
+        /srv/filesync/master/documents/ /srv/backups/FileSync/documents/
 ```
 
 Filesync writes each file to a temporary name and renames it into place, so the
@@ -652,7 +724,8 @@ backup job cannot copy a half-restored tree back into the backup.  Let any
 running sync finish, then mirror the backup back:
 
 ```
-    rsync -a --delete --checksum /home/foo/backups/FileSync/ /home/foo/FileSync/
+    rsync -a --delete --checksum \
+        /srv/backups/FileSync/documents/ /srv/filesync/master/documents/
 ```
 
 `--checksum` compares the contents, so a restored file is not skipped just
@@ -670,7 +743,7 @@ comparison against the backup:
 
 ```
     rsync -a --delete --checksum --dry-run --itemize-changes \
-        /home/foo/backups/FileSync/ /home/foo/FileSync/
+        /srv/backups/FileSync/documents/ /srv/filesync/master/documents/
 ```
 
 No output and exit 0 mean the master matches the backup.  Any line beginning
@@ -694,8 +767,10 @@ the whole tree, with the jobs paused as above so nothing changes the tree while
 the copy runs:
 
 ```
-    rsync -a --checksum /home/foo/backups/FileSync/notes/plan.txt /home/foo/FileSync/notes/
-    rsync -a --checksum /home/foo/backups/FileSync/photos/ /home/foo/FileSync/photos/
+    rsync -a --checksum /srv/backups/FileSync/documents/notes/plan.txt \
+        /srv/filesync/master/documents/notes/
+    rsync -a --checksum /srv/backups/FileSync/documents/photos/ \
+        /srv/filesync/master/documents/photos/
 ```
 
 The trailing slash on the second source copies the directory's contents; without

@@ -252,6 +252,33 @@ subtest 'Store and Admin reject names that would escape the root' => sub {
 	throws_ok { $admin->client_allow(repo => 'nope', client => 'x') } qr/nope/, 'an unknown repo';
 };
 
+subtest 'Admin: repo create says how to fix an unwritable root' => sub {
+	plan skip_all => 'permission checks are not enforced here' if $> == 0 || $^O eq 'MSWin32';
+
+	my $parent = tempdir(CLEANUP => 1);
+	my $root = File::Spec->catdir($parent, 'filesync');
+	make_path($root);
+	chmod 0555, $root or die "chmod: $!";
+
+	my $admin = App::FileSync::Admin->new(root => $root);
+
+	# Old: make_path reported "Cannot create directory .../master/docs:
+	# Permission denied", naming a path below the root the caller passed.
+	throws_ok { $admin->repo_create(name => 'docs') }
+		qr/not writable by this account .*chown/s, 'the root and the remedy are named';
+
+	# The same mistake one level down: the root is ours, its master is not.
+	chmod 0755, $root or die "chmod: $!";
+	my $master = File::Spec->catdir($root, 'master');
+	make_path($master);
+	chmod 0555, $master or die "chmod: $!";
+	throws_ok { $admin->repo_create(name => 'docs') }
+		qr/not writable by this account \(\Q$master\E\)/, 'an unwritable master directory is named';
+	chmod 0755, $master or die "chmod: $!";
+
+	lives_ok { $admin->repo_create(name => 'docs') } 'a writable root still creates the repo';
+};
+
 subtest 'Admin: journal_read works under a root containing spaces' => sub {
 	my $parent = tempdir(CLEANUP => 1);
 	my $root = File::Spec->catdir($parent, 'with some spaces');
