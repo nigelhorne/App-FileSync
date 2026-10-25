@@ -1,6 +1,6 @@
 Revision history for App-FileSync
 
-0.001.4
+0.001.4	Sun Oct 25 09:31:17 AM EDT 2026
 	[ Bug Fixes ]
 	- t/ssh.t: the stand-in for ssh now names the perl running the tests on
 	  its first line instead of "#!/usr/bin/env perl".  The transport starts
