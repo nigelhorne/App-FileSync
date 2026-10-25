@@ -412,6 +412,13 @@ sub _client_version :Private {
 sub _client_init :Private {
 	my (@args) = @_;
 
+	# init has defaults that are not obvious, the client id above all, so
+	# --help prints them instead of failing as an unknown option.
+	if (grep { $_ eq '--help' || $_ eq '-h' } @args) {
+		print message('cli.help.init');
+		return $EXIT_OK;
+	}
+
 	my %opt;
 	_options(\@args, {
 		(map { ("$_=s" => \$opt{$_}) } qw(repo root server remote-repo id identity role transport server-root config known-hosts server-command snapshot-mode)),
