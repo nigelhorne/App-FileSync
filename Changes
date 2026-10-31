@@ -1,5 +1,9 @@
 Revision history for App-FileSync
 
+0.002.0
+	[ Enhancements ]
+	- Created a website
+
 0.001.5 Sun Oct 25 12:53:45 PM EDT 2026
 	[ Bug Fixes ]
 	- Log::Abstraction 0.36 is now required, because the client logs its
