@@ -5,15 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Commands &mdash; App::FileSync</title>
 <meta name="description" content="Reference for filesync, filesync-admin and filesync-server: every subcommand, option and exit code.">
+<meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12161b" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="commands.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="App::FileSync">
+<meta property="og:title" content="Commands &mdash; App::FileSync">
+<meta property="og:description" content="Reference for filesync, filesync-admin and filesync-server: every subcommand, option and exit code.">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="../css/site.css">
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip" href="#main">Skip to content</a>
 
 <header class="site-header">
-	<div class="wrap">
-		<a class="brand" href="index.html">App::FileSync</a>
-		<p class="tagline">cron-driven file synchronisation without a daemon</p>
+	<div class="wrap header-inner">
+		<a class="brand" href="index.html">
+			<span class="brand-name">App::FileSync</span>
+			<span class="brand-tag">file synchronisation without a daemon</span>
+		</a>
 		<nav class="site-nav" aria-label="Main">
 			<a href="index.html">Overview</a>
 			<a href="quickstart.html">Quick start</a>
@@ -125,7 +135,7 @@ filesync version</code></pre>
 			<tr><td><code>--no-prune</code></td><td>Do not prune this repo's local trash during the run.</td></tr>
 			<tr><td><code>--no-delta</code></td><td>Send whole files instead of block deltas.</td></tr>
 			<tr><td><code>--verbose</code></td><td>Raise the log level to <code>debug</code> for this run.</td></tr>
-			<tr><td><code>--quiet</code></td><td>Lower the log level to <code>error</code>; the summary line is still printed.</td></tr>
+			<tr><td><code>--quiet</code></td><td>Lower the log level to <code>error</code>. The summary line is still printed when the sync did something; a repo where nothing happened prints nothing.</td></tr>
 			<tr><td><code>--json</code></td><td>Print one JSON document instead of text.</td></tr>
 		</tbody>
 	</table>

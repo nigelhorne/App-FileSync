@@ -327,7 +327,6 @@ sub _one_repo :Private {
 # Purpose:     a Client for one configured repo.
 # Entry:       %extra is passed to Client->new.
 # Exit:        returns the client.
-# Side effects: none.
 sub _client :Private {
 	my ($config, $name, %extra) = @_;
 
@@ -552,7 +551,7 @@ sub _client_sync :Private {
 			next;
 		}
 
-		_print_sync($name, $result, \%opt) unless $opt{json};
+		_print_sync($name, $result, \%opt) unless $opt{json} || ($opt{quiet} && _idle($result));
 	}
 
 	print json_encode({ results => \@results, errors => \@errors }), "\n" if $opt{json};
@@ -560,6 +559,20 @@ sub _client_sync :Private {
 	# Severity order, not numeric order: a failure outranks warnings, which
 	# outrank a lock refusal (nothing went wrong; it just did not run).
 	return (first { $seen{$_} } $EXIT_FATAL, $EXIT_WARNINGS, $EXIT_LOCKED) // $EXIT_OK;
+}
+
+# _idle
+# Purpose:     did a sync do nothing at all?  --quiet prints no report for
+#              such a run, so a cron job that finds nothing to do is silent.
+# Entry:       $result is a sync result.
+# Exit:        returns true when nothing was planned, moved, deleted,
+#              conflicted or skipped and no bytes crossed the wire.
+sub _idle :Private {
+	my ($result) = @_;
+
+	my $summary = $result->{summary} || {};
+	return 0 if @{ $result->{actions} || [] };
+	return !any { $summary->{$_} } qw(pulled pushed deleted conflicts skipped delta_pulled delta_pushed bytes_sent bytes_received);
 }
 
 # _print_sync
