@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Changes &mdash; App::FileSync</title>
-<meta name="description" content="Release history for App::FileSync, from the first draft to 0.001.5.">
+<meta name="description" content="Release history for App::FileSync, from the first draft to 0.002.0.">
 <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#12161b" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="changelog.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="App::FileSync">
 <meta property="og:title" content="Changes &mdash; App::FileSync">
-<meta property="og:description" content="Release history for App::FileSync, from the first draft to 0.001.5.">
+<meta property="og:description" content="Release history for App::FileSync, from the first draft to 0.002.0.">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="../css/site.css">
 </head>
@@ -42,6 +42,25 @@
 
 	<p class="lede">Revision history, newest first. The authoritative list is the
 	<code>Changes</code> file in the distribution.</p>
+
+	<h2 id="v0-002-0">0.002.0 <span class="muted">&mdash; 4 November 2026</span></h2>
+
+	<h3>Enhancements</h3>
+	<ul>
+		<li>Created this website.</li>
+		<li><code>filesync sync --quiet</code> prints nothing for a repo where
+		nothing happened, instead of an all-zero summary and transfer line, so a
+		cron job that finds nothing to do stays silent.</li>
+	</ul>
+
+	<h3>Bug fixes</h3>
+	<ul>
+		<li>The system-locale tests in <code>t/locales.t</code> failed on Windows:
+		they passed a multi-line child program to <code>perl -e</code>, which
+		Windows cut at the first newline, and imported <code>LC_MESSAGES</code>,
+		which Windows' POSIX lacks. The child is now a script file and falls back
+		to <code>LC_CTYPE</code>.</li>
+	</ul>
 
 	<h2 id="v0-001-5">0.001.5 <span class="muted">&mdash; 25 October 2026</span></h2>
 
@@ -172,7 +191,7 @@
 
 <footer class="site-footer">
 	<div class="wrap">
-		<p>App::FileSync 0.001.5 &middot; Copyright 2026 Nigel Horne &middot; GPL-2.0</p>
+		<p>App::FileSync 0.002.0 &middot; Copyright 2026 Nigel Horne &middot; GPL-2.0</p>
 		<p><a href="https://metacpan.org/dist/App-FileSync">CPAN</a> &middot;
 		<a href="https://github.com/nigelhorne/App-FileSync">GitHub</a> &middot;
 		<a href="https://github.com/nigelhorne/App-FileSync/issues">Issues</a> &middot;
