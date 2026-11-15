@@ -12,7 +12,7 @@ use autodie qw(:all);
 use feature 'current_sub';
 
 use Exporter qw(import);
-use JSON::PP ();
+use JSON::MaybeXS ();
 use Readonly;
 use Sub::Private { mode => 'enforce' };
 use Time::Local ();
@@ -47,21 +47,17 @@ Readonly my $ID_PATTERN => qr/\A[A-Za-z0-9][A-Za-z0-9._-]*\z/;
 # What an unusable client id is replaced with in a conflict-copy name.
 Readonly my $UNKNOWN_CLIENT => 'unknown';
 
-# The JSON encoders, fastest first.  Cpanel::JSON::XS is optional (Makefile.PL
-# recommends it): on a 100,000-file manifest it decodes in 0.2s where JSON::PP,
-# which is core, takes about 15s.  Both read any valid JSON, so a client and a
-# server using different backends still understand each other.  The text
-# differs only in number formatting (the XS encoder writes a whole-valued float
-# as 1000.0), which decodes to the same value either way.
-Readonly my $JSON_XS => 'Cpanel::JSON::XS';
-Readonly my $JSON_PP => 'JSON::PP';
-
+# JSON::MaybeXS picks Cpanel::JSON::XS, then JSON::XS, then the core JSON::PP,
+# and installing it pulls in Cpanel::JSON::XS wherever there is a compiler.  On
+# a 100,000-file manifest Cpanel::JSON::XS decodes in 0.2s where JSON::PP takes
+# about 15s.  All three read any valid JSON, so a client and a server using
+# different backends still understand each other.  The text differs only in
+# number formatting (Cpanel::JSON::XS writes a whole-valued float as 1000.0),
+# which decodes to the same value everywhere.
+#
 # Deliberately utf8(0): paths are byte strings on the wire, and both ends of the
 # protocol are this implementation.
-my $JSON = do {
-	my $class = eval { require Cpanel::JSON::XS; 1 } ? $JSON_XS : $JSON_PP;
-	$class->new->canonical->allow_nonref;
-};
+my $JSON = JSON::MaybeXS->new->canonical->allow_nonref;
 
 # Both backends return UTF8-flagged strings even though paths are byte strings on
 # disk.  Left alone, the flag makes -e/stat encode the name a second time and
@@ -172,7 +168,8 @@ Usage:
 =head3 MESSAGES
 
 The JSON backend's own error for a value it cannot encode (a code reference,
-say): L<Cpanel::JSON::XS> when it is installed, else L<JSON::PP>.
+say).  L<JSON::MaybeXS> chooses the backend: L<Cpanel::JSON::XS>, else
+L<JSON::XS>, else L<JSON::PP>.
 
 =head3 FORMAL SPECIFICATION
 
@@ -219,8 +216,9 @@ Usage:
 
 =head3 MESSAGES
 
-The JSON backend's own error for malformed JSON (L<Cpanel::JSON::XS> when it
-is installed, else L<JSON::PP>), so its wording depends on which is in use.
+The JSON backend's own error for malformed JSON, so its wording depends on
+which backend L<JSON::MaybeXS> chose (L<Cpanel::JSON::XS>, else L<JSON::XS>,
+else L<JSON::PP>).
 
 =head3 FORMAL SPECIFICATION
 
@@ -986,9 +984,10 @@ until an administrator points them at a rebuilt master.
 per file and the server answers with the whole plan as a single JSON line, so
 a run costs O(files) in time, memory and bandwidth even when nothing changed.
 A tree of a million files means a plan message of the order of a hundred
-megabytes.  Install L<Cpanel::JSON::XS> for a large tree: it is used when
-present, and decodes about 70 times faster than the core L<JSON::PP> (0.2
-seconds against 15 for a 100,000-file manifest).  A change journal or Merkle summary would remove that, at the cost
+megabytes.  JSON goes through L<JSON::MaybeXS>, which installs and uses
+L<Cpanel::JSON::XS> wherever there is a compiler: it decodes about 70 times
+faster than the core L<JSON::PP> (0.2 seconds against 15 for a 100,000-file
+manifest).  A pure-Perl install (C<PUREPERL_ONLY=1>) falls back to JSON::PP.  A change journal or Merkle summary would remove that, at the cost
 of the "everything is inspectable with cat" property.
 
 =item * B<No line-length cap on the wire.>  Because of the previous point, a

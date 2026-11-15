@@ -7,11 +7,12 @@ Revision history for App-FileSync
 	  takes about 3.  Signatures (the receiver's description of its copy)
 	  are computed about twice as fast.  The wire format is unchanged, so
 	  old and new clients and servers still work together.
-	- JSON is read and written by Cpanel::JSON::XS when it is installed,
-	  and by JSON::PP otherwise.  Reading a 100,000-file manifest took
-	  about 15 seconds with JSON::PP and takes under half a second with
-	  Cpanel::JSON::XS, which is now a recommended dependency.  Either
-	  side of a sync may use either backend.
+	- JSON now goes through JSON::MaybeXS (a new dependency), which
+	  installs and uses Cpanel::JSON::XS wherever there is a compiler.
+	  Reading a 100,000-file manifest took about 15 seconds with JSON::PP
+	  and takes under half a second with Cpanel::JSON::XS.  Pure-Perl
+	  installs still work, on JSON::PP, and either side of a sync may use
+	  either backend.
 	- Paths read back from JSON as hash keys (manifests are keyed by
 	  path) kept Perl's UTF-8 flag, so a file test on a non-ASCII name
 	  looked for a differently encoded file.  "verify" silently left such

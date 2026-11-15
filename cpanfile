@@ -19,6 +19,7 @@ requires 'Getopt::Long';
 requires 'IO::Handle';
 requires 'IPC::Open3';
 requires 'IPC::System::Simple', '1.30';
+requires 'JSON::MaybeXS', '1.004';   # pulls in Cpanel::JSON::XS given a compiler
 requires 'JSON::PP';
 requires 'List::Util', '1.54';
 requires 'Log::Abstraction', '0.36';   # structured fields
@@ -35,7 +36,7 @@ requires 'Time::Local';
 requires 'autodie', '2.37';
 requires 'version', '0.77';
 
-recommends 'Cpanel::JSON::XS';   # JSON about 70x faster than JSON::PP
+recommends 'Cpanel::JSON::XS';   # JSON::MaybeXS adds it given a compiler
 
 on 'configure' => sub {
 	requires 'ExtUtils::MakeMaker', '6.64';   # first to honour TEST_REQUIRES

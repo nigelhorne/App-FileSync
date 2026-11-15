@@ -42,6 +42,7 @@ WriteMakefile(
 		'IO::Handle'     => 0,
 		'IPC::Open3'     => 0,
 		'IPC::System::Simple' => '1.30',
+		'JSON::MaybeXS'  => '1.004',	# pulls in Cpanel::JSON::XS given a compiler
 		'JSON::PP'       => 0,
 		'List::Util'     => '1.54',
 		'Log::Abstraction' => '0.36',	# structured fields
@@ -69,7 +70,7 @@ WriteMakefile(
 		prereqs     => {
 			runtime => {
 				recommends => {
-					'Cpanel::JSON::XS' => 0,	# JSON about 70x faster than JSON::PP
+					'Cpanel::JSON::XS' => 0,	# JSON::MaybeXS adds it given a compiler
 				},
 			},
 		},

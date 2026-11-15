@@ -82,7 +82,8 @@ Usage:
 #### Messages
 
 The JSON backend's own error for a value it cannot encode (a code reference,
-say): [Cpanel::JSON::XS](https://metacpan.org/pod/Cpanel%3A%3AJSON%3A%3AXS) when it is installed, else [JSON::PP](https://metacpan.org/pod/JSON%3A%3APP).
+say).  [JSON::MaybeXS](https://metacpan.org/pod/JSON%3A%3AMaybeXS) chooses the backend: [Cpanel::JSON::XS](https://metacpan.org/pod/Cpanel%3A%3AJSON%3A%3AXS), else
+[JSON::XS](https://metacpan.org/pod/JSON%3A%3AXS), else [JSON::PP](https://metacpan.org/pod/JSON%3A%3APP).
 
 #### Formal Specification
 
@@ -131,8 +132,9 @@ Usage:
 
 #### Messages
 
-The JSON backend's own error for malformed JSON ([Cpanel::JSON::XS](https://metacpan.org/pod/Cpanel%3A%3AJSON%3A%3AXS) when it
-is installed, else [JSON::PP](https://metacpan.org/pod/JSON%3A%3APP)), so its wording depends on which is in use.
+The JSON backend's own error for malformed JSON, so its wording depends on
+which backend [JSON::MaybeXS](https://metacpan.org/pod/JSON%3A%3AMaybeXS) chose ([Cpanel::JSON::XS](https://metacpan.org/pod/Cpanel%3A%3AJSON%3A%3AXS), else [JSON::XS](https://metacpan.org/pod/JSON%3A%3AXS),
+else [JSON::PP](https://metacpan.org/pod/JSON%3A%3APP)).
 
 #### Formal Specification
 
@@ -820,9 +822,10 @@ until an administrator points them at a rebuilt master.
 per file and the server answers with the whole plan as a single JSON line, so
 a run costs O(files) in time, memory and bandwidth even when nothing changed.
 A tree of a million files means a plan message of the order of a hundred
-megabytes.  Install [Cpanel::JSON::XS](https://metacpan.org/pod/Cpanel%3A%3AJSON%3A%3AXS) for a large tree: it is used when
-present, and decodes about 70 times faster than the core [JSON::PP](https://metacpan.org/pod/JSON%3A%3APP) (0.2
-seconds against 15 for a 100,000-file manifest).  A change journal or Merkle summary would remove that, at the cost
+megabytes.  JSON goes through [JSON::MaybeXS](https://metacpan.org/pod/JSON%3A%3AMaybeXS), which installs and uses
+[Cpanel::JSON::XS](https://metacpan.org/pod/Cpanel%3A%3AJSON%3A%3AXS) wherever there is a compiler: it decodes about 70 times
+faster than the core [JSON::PP](https://metacpan.org/pod/JSON%3A%3APP) (0.2 seconds against 15 for a 100,000-file
+manifest).  A pure-Perl install (`PUREPERL_ONLY=1`) falls back to JSON::PP.  A change journal or Merkle summary would remove that, at the cost
 of the "everything is inspectable with cat" property.
 - **No line-length cap on the wire.**  Because of the previous point, a
 control message cannot be bounded without breaking large trees.  The peer is

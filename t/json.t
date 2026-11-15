@@ -2,16 +2,17 @@ use strict;
 use warnings;
 use Test::Most;
 
+use JSON::MaybeXS ();
 use JSON::PP ();
 
 use App::FileSync qw(json_encode json_decode);
 
-# json_encode and json_decode use Cpanel::JSON::XS when it is installed and
-# JSON::PP otherwise.  A client and a server may differ, so whichever backend
-# is in use here must read what either one writes, and paths must come back
-# as the bytes they were.
+# json_encode and json_decode use whichever backend JSON::MaybeXS chooses:
+# Cpanel::JSON::XS, else JSON::XS, else JSON::PP.  A client and a server may
+# differ, so the backend in use here must read what any of them writes, and
+# paths must come back as the bytes they were.
 
-my $backend = $INC{'Cpanel/JSON/XS.pm'} ? 'Cpanel::JSON::XS' : 'JSON::PP';
+my $backend = JSON::MaybeXS::JSON();
 note("backend in use: $backend");
 
 my %paths = (
@@ -41,7 +42,7 @@ throws_ok { json_decode('{"open":') } qr/\S/, 'malformed JSON raises';
 # --- reading what each backend writes --------------------------------------
 
 # Values whose text differs between the encoders: Cpanel::JSON::XS writes a
-# whole-valued float as 1000.0 and negative zero as -0.0.
+# whole-valued float as 1000.0 and negative zero as -0.0, JSON::XS writes -0.
 my $data = {
 	"caf\xc3\xa9.txt" => { s => 12, m => 1_700_000_000.0, h => 'a' x 64, t => 'f' },
 	"caf\xe9.txt"     => { m => 1_792_689_244.19712, whole => 1000.0, neg => -0.0, int => 1000, str => '007' },
@@ -52,8 +53,10 @@ my $data = {
 my %writers = (
 	'JSON::PP' => JSON::PP->new->canonical->allow_nonref,
 );
-$writers{'Cpanel::JSON::XS'} = Cpanel::JSON::XS->new->canonical->allow_nonref
-	if eval { require Cpanel::JSON::XS; 1 };
+for my $class ('Cpanel::JSON::XS', 'JSON::XS') {
+	(my $file = "$class.pm") =~ s{::}{/}g;
+	$writers{$class} = $class->new->canonical->allow_nonref if eval { require $file; 1 };
+}
 
 my $expected = json_decode(json_encode($data));
 for my $writer (sort keys %writers) {
@@ -73,11 +76,10 @@ for my $writer (sort keys %writers) {
 	is_deeply($got->{list}, $expected->{list}, "$writer: a list keeps its values and nulls");
 }
 
-SKIP: {
-	skip('Cpanel::JSON::XS is not installed', 1) unless $writers{'Cpanel::JSON::XS'};
-	is(json_encode({ "caf\xc3\xa9.txt" => 1, list => [ 1, 'two' ] }),
-		JSON::PP->new->canonical->allow_nonref->encode({ "caf\xc3\xa9.txt" => 1, list => [ 1, 'two' ] }),
-		'for strings and integers both encoders write the same text');
+# For strings and integers every encoder writes the same text.
+my $plain = { "caf\xc3\xa9.txt" => 1, list => [ 1, 'two' ] };
+for my $writer (sort keys %writers) {
+	is($writers{$writer}->encode($plain), json_encode($plain), "$writer writes the same text as $backend for strings and integers");
 }
 
 done_testing();
