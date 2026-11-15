@@ -243,6 +243,9 @@ our %MESSAGES = (
 	'transport.bad_value' => q{SSH transport: bad %{field}s '%{value}s'},
 	'transport.bad_id'    => 'SSH transport: %{reason}s',
 
+	'process.spawn'   => q{Cannot start '%{program}s': %{error}s},
+	'process.inherit' => 'Cannot stop a child process inheriting a pipe: %{error}s',
+
 	'cli.help.client' => <<'USAGE',
 filesync - keep a directory in step with a master copy
 

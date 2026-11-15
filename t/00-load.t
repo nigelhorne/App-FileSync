@@ -18,6 +18,7 @@ use_ok('App::FileSync::IO');
 use_ok('App::FileSync::Lock');
 use_ok('App::FileSync::Merge');
 use_ok('App::FileSync::Platform');
+use_ok('App::FileSync::Process');
 use_ok('App::FileSync::Protocol');
 use_ok('App::FileSync::Scan');
 use_ok('App::FileSync::Server');

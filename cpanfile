@@ -39,6 +39,10 @@ requires 'version', '0.77';
 
 recommends 'Cpanel::JSON::XS';   # JSON::MaybeXS adds it given a compiler
 
+if ($^O eq 'MSWin32') {
+	requires 'Win32API::File';   # Process: pipe ends the child must not inherit
+}
+
 on 'configure' => sub {
 	requires 'ExtUtils::MakeMaker', '6.64';   # first to honour TEST_REQUIRES
 };

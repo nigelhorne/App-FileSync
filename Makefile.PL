@@ -58,6 +58,7 @@ WriteMakefile(
 		'Time::HiRes'    => 0,
 		'Time::Local'    => 0,
 		'version'        => '0.77',
+		($^O eq 'MSWin32' ? ('Win32API::File' => 0) : ()),	# Process: pipe ends the child must not inherit
 	}, TEST_REQUIRES   => {
 		'Errno'          => 0,
 		'File::Find'     => 0,

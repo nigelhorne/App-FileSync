@@ -20,10 +20,12 @@ use App::FileSync::Client;
 use App::FileSync::Config;
 use App::FileSync::I18N qw(strip_location);
 use App::FileSync::Ignore;
+use App::FileSync::Process;
 use App::FileSync::Protocol;
 use App::FileSync::Scan;
 use App::FileSync::Store;
 use App::FileSync::Transport::Local;
+use App::FileSync::Transport::SSH;
 use App::FileSync::Trash;
 use App::FileSync::Verify;
 
@@ -442,6 +444,58 @@ subtest 'json_decode: non-ASCII hash keys come back as bytes' => sub {
 
 	my $result = App::FileSync::Verify::verify(root => $root, entries => $entries, sample => 10);
 	is($result->{sampled}, 2, 'verify samples the non-ASCII file too');
+};
+
+# --- Transports: closing a session part-way ---------------------------------
+
+subtest 'Transport::Local: closing mid-session lets the server exit by itself' => sub {
+	# Old: on Windows the server inherited the client's end of its own stdin
+	# pipe, so closing it never gave the server end of file, and close()
+	# waited for it forever.  Every Windows CI run hung here.
+	local $App::FileSync::Process::GRACE_SECONDS = 10;
+	my $env = conflict_env();
+	my $s = session($env);
+	my $content = "client\n";
+	ok(call($s, { cmd => 'put', p => 'a.txt', s => length $content, h => sha256_hex($content), m => $T0 + 20, mode => 0644 })->{ok},
+		'put accepted; the server now waits for the data');
+	$s->{transport}->close();
+	is($s->{transport}{end}{killed}, 0, 'the server saw end of file and exited without being stopped');
+};
+
+subtest 'Process: reap stops a child that will not exit' => sub {
+	my $child = App::FileSync::Process::spawn(command => [ $^X, '-e', 'sleep 300' ], stderr => fileno(STDERR));
+	close $child->{writer};
+	close $child->{reader};
+	my $started = time;
+	my $end = App::FileSync::Process::reap(pid => $child->{pid}, grace => 0.2);
+	is($end->{killed}, 1, 'it was stopped');
+	cmp_ok(time - $started, '<', 30, 'promptly (old: waitpid with no limit)');
+	is(waitpid($child->{pid}, 0), -1, 'and reaped');
+
+	$child = App::FileSync::Process::spawn(command => [ $^X, '-e', 'exit 7' ], stderr => fileno(STDERR));
+	$end = App::FileSync::Process::reap(pid => $child->{pid}, grace => 10);
+	is_deeply($end, { status => 7, signal => 0, killed => 0 }, 'a child that exits keeps its status');
+};
+
+subtest 'Process: a program that cannot start is named' => sub {
+	my $missing = File::Spec->catfile(tempdir(CLEANUP => 1), 'no-such-program');
+	throws_ok { App::FileSync::Process::spawn(command => [ $missing ], stderr => fileno(STDERR)) }
+		qr/Cannot start '\Q$missing\E'/, 'process.spawn';
+};
+
+subtest 'Transport::SSH: an ssh that has to be stopped is a failed close' => sub {
+	plan skip_all => 'the stand-in ssh is a #! script' if $^O eq 'MSWin32';
+	local $App::FileSync::Process::GRACE_SECONDS = 0.2;
+
+	my $fake = File::Spec->catfile(tempdir(CLEANUP => 1), 'stuck-ssh');
+	open my $fh, '>', $fake or die "Cannot write $fake: $!";
+	print {$fh} "#!$^X\nsleep 300;\n";
+	close $fh;
+	chmod 0755, $fake or die "chmod: $!";
+
+	my $ssh = App::FileSync::Transport::SSH->new(server => 'host', repo => 'docs', client => 'test-1', command => $fake);
+	is($ssh->close(), 0, 'close reports the failure (old: it would have waited for ssh forever)');
+	ok($ssh->{killed}, 'and records that ssh was stopped');
 };
 
 subtest 'Sub::Private is enforced outside the test harness' => sub {
