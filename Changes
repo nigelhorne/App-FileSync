@@ -1,6 +1,6 @@
 Revision history for App-FileSync
 
-0.002.1
+0.002.1	Sun Nov 15 03:36:05 PM EST 2026
 	[ Enhancements ]
 	- Block deltas are much faster to compute.  A changed file of 8 MiB or
 	  more with no blocks in common took about 45 seconds to diff; it now
