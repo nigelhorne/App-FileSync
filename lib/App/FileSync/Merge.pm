@@ -21,7 +21,7 @@ use App::FileSync::Constants qw(
 );
 use App::FileSync::I18N qw(message);
 
-use version; our $VERSION = version->declare('0.002.0');
+use version; our $VERSION = version->declare('0.002.1');
 
 # max_delete_percent is a percentage of the repo's size.
 Readonly::Scalar my $PERCENT => 100;

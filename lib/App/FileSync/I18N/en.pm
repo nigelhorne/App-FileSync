@@ -7,7 +7,7 @@ package App::FileSync::I18N::en;
 use strict;
 use warnings;
 
-use version; our $VERSION = version->declare('0.002.0');
+use version; our $VERSION = version->declare('0.002.1');
 
 our %MESSAGES = (
 	# ---------------------------------------------------------- i18n itself

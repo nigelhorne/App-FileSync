@@ -46,7 +46,7 @@ use App::FileSync::Transport::SSH;
 use App::FileSync::Trash;
 use App::FileSync::Verify;
 
-use version; our $VERSION = version->declare('0.002.0');
+use version; our $VERSION = version->declare('0.002.1');
 
 # Tunables, kept as package variables so tests can localise them.
 our $CHUNK          = 262_144;
@@ -78,6 +78,10 @@ Readonly my @SUMMARY_KEYS => qw(pulled pushed deleted conflicts skipped delta_pu
 =head1 NAME
 
 App::FileSync::Client - sync one repo, and the client-side repo commands
+
+=head1 VERSION
+
+0.002.1
 
 =head1 SYNOPSIS
 

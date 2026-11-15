@@ -100,7 +100,7 @@ use App::FileSync::Constants qw($MAX_ID_LENGTH $SECONDS_PER_DAY);
 use App::FileSync::I18N qw(message throw);
 use App::FileSync::IO qw(write_atomic read_text set_mtime);
 
-use version; our $VERSION = version->declare('0.002.0');
+use version; our $VERSION = version->declare('0.002.1');
 
 our @EXPORT_OK = qw(
 	json_encode json_decode
@@ -182,7 +182,7 @@ App::FileSync - cron-driven file synchronisation without a daemon
 
 =head1 VERSION
 
-0.002.0
+0.002.1
 
 =head1 SYNOPSIS
 
