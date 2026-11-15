@@ -290,7 +290,7 @@ a.intra-dot:hover { color: #7700bb; }
 <body>
 <button class="toggle" onclick="toggleTheme()">🌙 Toggle Theme</button>
 <div class="nav"><a href="../../../../../index.html">&uarr; Dashboard</a> &nbsp; <a href="SSH.pm.html">lib/App/FileSync/Transport/SSH.pm</a> &rarr; &nbsp; &nbsp;
-<a href="https://github.com/nigelhorne/App-FileSync/blob/30a66cd5ff1d35e70211f49c67de0c05172bc6af/lib/App/FileSync/Transport/Local.pm" target="_blank">View on GitHub &#128269;</a></div>
+<a href="https://github.com/nigelhorne/App-FileSync/blob/96b52b8cf987cc486f6019a66ad8d51bd954cb35/lib/App/FileSync/Transport/Local.pm" target="_blank">View on GitHub &#128269;</a></div>
 <h1>lib/App/FileSync/Transport/Local.pm &mdash; Duplicate Code Regions</h1>
 <div class="legend cpd-legend">
   <span class="cpd-dot">&#9670;</span> Amber lines duplicate code in another file &mdash; hover for location.<br>
@@ -314,13 +314,13 @@ a.intra-dot:hover { color: #7700bb; }
    15: 
    16: use File::Basename qw(dirname);
    17: use File::Spec;
-   18: use IPC::Open3 ();
-   19: use Readonly;
-   20: use Sub::Private { mode =&gt; 'enforce' };
-   21: 
-   22: use App::FileSync::Args qw(named);
-   23: use App::FileSync::Constants qw($ROLE_CLIENT $SERVER_PROGRAM);
-   24: use App::FileSync::I18N qw(throw);
+   18: use Readonly;
+   19: use Sub::Private { mode =&gt; 'enforce' };
+   20: 
+   21: use App::FileSync::Args qw(named);
+   22: use App::FileSync::Constants qw($ROLE_CLIENT $SERVER_PROGRAM);
+   23: use App::FileSync::I18N qw(throw);
+   24: use App::FileSync::Process;
    25: 
    26: use version; our $VERSION = version-&gt;declare('0.002.1');
    27: 
@@ -415,79 +415,79 @@ a.intra-dot:hover { color: #7700bb; }
   116: 		'--role',   $args-&gt;{role} || $ROLE_CLIENT,
   117: 	);
   118: 
-  119: 	# '&gt;&amp;STDERR' dups the parent's stderr.  Passing a filehandle here would not
-  120: 	# redirect the child at all: it would write into an unread pipe, and the
-  121: 	# first log line would kill it with SIGPIPE.
-  122: 	my ($writer, $reader);
-  123: 	my $pid = IPC::Open3::open3($writer, $reader, '&gt;&amp;STDERR', @command);
-  124: 
-  125: 	return bless { pid =&gt; $pid, writer =&gt; $writer, reader =&gt; $reader }, $class;
-  126: }
+  119: 	# The child's stderr is a dup of ours.  A pipe here would not be read, and
+  120: 	# the first log line would kill the server with SIGPIPE.
+  121: 	my $child = App::FileSync::Process::spawn(command =&gt; \@command, stderr =&gt; fileno(STDERR));
+  122: 
+  123: 	return bless { %{$child} }, $class;
+  124: }
+  125: 
+  126: =head2 reader
   127: 
-  128: =head2 reader
+  128: Documented with L&lt;/writer&gt; below.
   129: 
-  130: Documented with L&lt;/writer&gt; below.
+  130: =head2 writer
   131: 
-  132: =head2 writer
+  132: Purpose: the pipes to and from the server.
   133: 
-  134: Purpose: the pipes to and from the server.
+  134: Args: none.
   135: 
-  136: Args: none.
+  136: Returns: the read handle (server's stdout) or write handle (its stdin).
   137: 
-  138: Returns: the read handle (server's stdout) or write handle (its stdin).
+  138: Side Effects: none.
   139: 
-  140: Side Effects: none.
+  140: Usage:
   141: 
-  142: Usage:
+  142: 	my $in = $transport-&gt;reader;
   143: 
-  144: 	my $in = $transport-&gt;reader;
+  144: =head3 EXAMPLE
   145: 
-  146: =head3 EXAMPLE
+  146: 	App::FileSync::Protocol-&gt;new(in =&gt; $t-&gt;reader, out =&gt; $t-&gt;writer);
   147: 
-  148: 	App::FileSync::Protocol-&gt;new(in =&gt; $t-&gt;reader, out =&gt; $t-&gt;writer);
+  148: =head3 API SPECIFICATION
   149: 
-  150: =head3 API SPECIFICATION
+  150: =head4 INPUT
   151: 
-  152: =head4 INPUT
+  152: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
   153: 
-  154: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
+  154: =head4 OUTPUT
   155: 
-  156: =head4 OUTPUT
+  156: 	{ type =&gt; 'object' }
   157: 
-  158: 	{ type =&gt; 'object' }
+  158: =head3 MESSAGES
   159: 
-  160: =head3 MESSAGES
+  160: None.
   161: 
-  162: None.
+  162: =head3 FORMAL SPECIFICATION
   163: 
-  164: =head3 FORMAL SPECIFICATION
+  164: 	reader = self.reader ; writer = self.writer
   165: 
-  166: 	reader = self.reader ; writer = self.writer
+  166: =cut
   167: 
-  168: =cut
-  169: 
-  170: sub reader {
-  171: 	my ($self) = @_;
-  172: 
-  173: 	return $self-&gt;{reader};
-  174: }
-  175: 
-  176: sub writer {
-  177: 	my ($self) = @_;
-  178: 
-  179: 	return $self-&gt;{writer};
-  180: }
+  168: sub reader {
+  169: 	my ($self) = @_;
+  170: 
+  171: 	return $self-&gt;{reader};
+  172: }
+  173: 
+  174: sub writer {
+  175: 	my ($self) = @_;
+  176: 
+  177: 	return $self-&gt;{writer};
+  178: }
+  179: 
+  180: =head2 close
   181: 
-  182: =head2 close
+  182: Purpose: end the session's process.
   183: 
-  184: Purpose: end the session's process.
+  184: Args: none.
   185: 
-  186: Args: none.
+  186: Returns: 1.  Repeated calls do nothing.
   187: 
-  188: Returns: 1.  Repeated calls do nothing.
-  189: 
-  190: Side Effects: closes both pipes (the server sees end of file) and reaps the
-  191: child.
+  188: Side Effects: closes both pipes (the server sees end of file) and reaps the
+  189: child.  A server that has not exited after
+  190: C&lt;$App::FileSync::Process::GRACE_SECONDS&gt; is stopped, so a server that never
+  191: sees end of file cannot hang the client.
   192: 
   193: Usage:
   194: 
@@ -526,102 +526,105 @@ a.intra-dot:hover { color: #7700bb; }
   227: 	for my $handle (grep { defined } @{$self}{qw(writer reader)}) {
   228: 		CORE::close($handle);
   229: 	}
-  230: 	waitpid($self-&gt;{pid}, 0) if $self-&gt;{pid};
-  231: 
-  232: 	return 1;
-  233: }
+  230: 	if ($self-&gt;{pid}) {
+  231: 		$self-&gt;{end} = App::FileSync::Process::reap(pid =&gt; $self-&gt;{pid});
+  232: 		$self-&gt;{pid} = 0;
+  233: 	}
   234: 
-  235: =head2 error_text
-  236: 
-  237: Purpose: what the transport itself said, for when the protocol failed.
-  238: 
-  239: Args: none.
-  240: 
-  241: Returns: an empty string: the local server writes its diagnostics to this
-  242: process's own standard error, which the user already sees.
+  235: 	return 1;
+  236: }
+  237: 
+  238: =head2 error_text
+  239: 
+  240: Purpose: what the transport itself said, for when the protocol failed.
+  241: 
+  242: Args: none.
   243: 
-  244: Side Effects: none.
-  245: 
-  246: Usage:
-  247: 
-  248: 	my $text = $transport-&gt;error_text;
-  249: 
-  250: =head3 EXAMPLE
-  251: 
-  252: 	print $transport-&gt;error_text, "\n";
-  253: 
-  254: =head3 API SPECIFICATION
-  255: 
-  256: =head4 INPUT
-  257: 
-  258: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
-  259: 
-  260: =head4 OUTPUT
-  261: 
-  262: 	{ type =&gt; 'string' }
-  263: 
-  264: =head3 MESSAGES
-  265: 
-  266: None.
-  267: 
-  268: =head3 FORMAL SPECIFICATION
-  269: 
-  270: 	error_text = ""
-  271: 
-  272: =cut
-  273: 
-  274: sub error_text {
-  275: 	return '';
-  276: }
-  277: 
-  278: # _default_server_bin
-  279: # Purpose:     find the server program when none is configured.
-  280: # Entry:       none.
-  281: # Exit:        returns FILESYNC_SERVER_BIN, a bin/filesync-server found by
-  282: #              walking up from this file (a checkout, or blib under
-  283: #              "make test"), or the bare name (installed, on the PATH).
-  284: # Side effects: none.
-  285: sub _default_server_bin :Private {
-  286: 	my $configured = $ENV{FILESYNC_SERVER_BIN};
-  287: 	return $configured if defined $configured &amp;&amp; length $configured;
-  288: 
-  289: 	my $directory = dirname(__FILE__);
-  290: 	for (1 .. $SEARCH_DEPTH) {
-  291: 		my $candidate = File::Spec-&gt;catfile($directory, 'bin', $SERVER_PROGRAM);
-  292: 		return $candidate if -f $candidate;
-  293: 		$directory = dirname($directory);
-  294: 	}
-  295: 
-  296: 	return $SERVER_PROGRAM;
-  297: }
+  244: Returns: an empty string: the local server writes its diagnostics to this
+  245: process's own standard error, which the user already sees.
+  246: 
+  247: Side Effects: none.
+  248: 
+  249: Usage:
+  250: 
+  251: 	my $text = $transport-&gt;error_text;
+  252: 
+  253: =head3 EXAMPLE
+  254: 
+  255: 	print $transport-&gt;error_text, "\n";
+  256: 
+  257: =head3 API SPECIFICATION
+  258: 
+  259: =head4 INPUT
+  260: 
+  261: 	[ { name =&gt; 'self', type =&gt; 'object' } ]
+  262: 
+  263: =head4 OUTPUT
+  264: 
+  265: 	{ type =&gt; 'string' }
+  266: 
+  267: =head3 MESSAGES
+  268: 
+  269: None.
+  270: 
+  271: =head3 FORMAL SPECIFICATION
+  272: 
+  273: 	error_text = ""
+  274: 
+  275: =cut
+  276: 
+  277: sub error_text {
+  278: 	return '';
+  279: }
+  280: 
+  281: # _default_server_bin
+  282: # Purpose:     find the server program when none is configured.
+  283: # Entry:       none.
+  284: # Exit:        returns FILESYNC_SERVER_BIN, a bin/filesync-server found by
+  285: #              walking up from this file (a checkout, or blib under
+  286: #              "make test"), or the bare name (installed, on the PATH).
+  287: # Side effects: none.
+  288: sub _default_server_bin :Private {
+  289: 	my $configured = $ENV{FILESYNC_SERVER_BIN};
+  290: 	return $configured if defined $configured &amp;&amp; length $configured;
+  291: 
+  292: 	my $directory = dirname(__FILE__);
+  293: 	for (1 .. $SEARCH_DEPTH) {
+  294: 		my $candidate = File::Spec-&gt;catfile($directory, 'bin', $SERVER_PROGRAM);
+  295: 		return $candidate if -f $candidate;
+  296: 		$directory = dirname($directory);
+  297: 	}
   298: 
-  299: 1;
-  300: 
-  301: __END__
-  302: 
-  303: =head1 LIMITATIONS
-  304: 
-  305: =over 4
-  306: 
-  307: =item * The child runs with this process's privileges: a local transport
-  308: cannot enforce the separation an SSH forced command gives, so anyone who can
-  309: run it can write the server root directly anyway.
-  310: 
-  311: =back
-  312: 
-  313: =head1 AUTHOR
-  314: 
-  315: Nigel Horne, C&lt;&lt; &lt;njh at nigelhorne.com&gt; &gt;&gt;
-  316: 
-  317: =head1 LICENCE AND COPYRIGHT
-  318: 
-  319: Copyright 2026 Nigel Horne.
-  320: 
-  321: Usage is subject to the GPL2 licence terms.
-  322: If you use it,
-  323: please let me know.
-  324: 
-  325: =cut
+  299: 	return $SERVER_PROGRAM;
+  300: }
+  301: 
+  302: 1;
+  303: 
+  304: __END__
+  305: 
+  306: =head1 LIMITATIONS
+  307: 
+  308: =over 4
+  309: 
+  310: =item * The child runs with this process's privileges: a local transport
+  311: cannot enforce the separation an SSH forced command gives, so anyone who can
+  312: run it can write the server root directly anyway.
+  313: 
+  314: =back
+  315: 
+  316: =head1 AUTHOR
+  317: 
+  318: Nigel Horne, C&lt;&lt; &lt;njh at nigelhorne.com&gt; &gt;&gt;
+  319: 
+  320: =head1 LICENCE AND COPYRIGHT
+  321: 
+  322: Copyright 2026 Nigel Horne.
+  323: 
+  324: Usage is subject to the GPL2 licence terms.
+  325: If you use it,
+  326: please let me know.
+  327: 
+  328: =cut
 </pre>
 
 <script>
