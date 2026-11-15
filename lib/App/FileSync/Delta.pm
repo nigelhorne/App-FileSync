@@ -50,20 +50,36 @@ Readonly my $KIB => 1024;
 # Each half of the weak checksum is a 16-bit sum.
 Readonly my $HALF => 0xffff;
 
+# The weak checksum unpacks this many bytes at a time.
+Readonly my $SUM_SLICE => 65_536;
+
 # rsync's weak checksum: two 16-bit sums, cheap to roll by one byte.  Lexical:
 # it runs once per block.
+#
+# b is defined as the sum of (length - i) * byte[i].  Adding each byte to a,
+# then a to b, gives the same total: byte[i] is in a for the length - i steps
+# from i on.  That needs no multiply and no index, and unpack walks the bytes
+# in C.  Unpacking a slice at a time keeps a large block from becoming one
+# huge list, and masking after each slice keeps both sums small integers
+# however long the block (the old per-byte product passed 2**63, and lost
+# precision, for blocks over about 256 MiB).  Masking early is safe: both
+# sums are only ever used modulo 2**16.
 my $weak_parts = sub {
 	my ($window) = @_;
 
-	my $length = length $window;
+	# Readonly scalars are tied, so each is read once, not once per byte.
+	my ($half, $slice) = ($HALF, $SUM_SLICE);
 	my ($a, $b) = (0, 0);
-	for my $index (0 .. $length - 1) {
-		my $value = vec($window, $index, 8);
-		$a += $value;
-		$b += ($length - $index) * $value;
+	for (my $offset = 0; $offset < length $window; $offset += $slice) {
+		for my $value (unpack 'C*', substr($window, $offset, $slice)) {
+			$a += $value;
+			$b += $a;
+		}
+		$a &= $half;
+		$b &= $half;
 	}
 
-	return ($a & $HALF, $b & $HALF);
+	return ($a, $b);
 };
 
 my $weak = sub {
@@ -182,6 +198,11 @@ Usage:
 	                = ⟨size ↦ #F, blocklen ↦ b,
 	                   blocks ↦ ⟨(weak(F[i]), sha256(F[i])) | i ∈ 0 .. ⌊#F / b⌋ − 1⟩⟩
 	                  where F = FS(p), F[i] = bytes i×b .. (i+1)×b − 1
+
+	weak(B) = 2¹⁶ × (s₂ mod 2¹⁶) + (s₁ mod 2¹⁶)
+	  where s₁ = Σ { B[i] | i ∈ 0 .. #B − 1 }
+	        s₂ = Σ { (#B − i) × B[i] | i ∈ 0 .. #B − 1 }
+	           = Σ { Σ { B[j] | j ∈ 0 .. k } | k ∈ 0 .. #B − 1 }
 
 =cut
 
@@ -723,21 +744,35 @@ sub _rolling_scan :Private {
 	my %by_weak;
 	push @{ $by_weak{ $blocks->[$_][0] } }, [ $_, $blocks->[$_][1] ] for 0 .. $#{$blocks};
 
+	# A one-bit-per-value table of the low halves (a) of the receiver's weak
+	# sums, as rsync keeps.  Most windows fail this vec() test, which skips
+	# turning the sum into a string for the hash lookup.
+	my $tags = '';
+	vec($tags, $_->[0] & $HALF, 1) = 1 for @{$blocks};
+
+	# This loop runs once per byte that matches nothing, so its body calls no
+	# sub (the :Private wrapper costs about 1.4us a call) and reads no Readonly
+	# scalar (each read is a tied FETCH).  Unmatched bytes are not queued one
+	# at a time: $run_start marks where the current literal run began, and
+	# the run is queued in one piece when a match or the end of the buffer
+	# closes it.  $a and $b are always already masked.
+	my $half = $HALF;
 	my $last = $limit > $SCAN_LIMIT ? $SCAN_LIMIT : $limit;
 	my ($a, $b) = $weak_parts->(substr($buffer, 0, $block));
-	my $position = 0;
+	my ($position, $run_start) = (0, 0);
 
 	while ($position <= $last) {
-		my $winner = _strong_match(\%by_weak, (($b & $HALF) << 16) | ($a & $HALF), $buffer, $position, $block);
-
-		if (defined $winner) {
-			_add_copy($state, $winner * $block, $block);
-			$position += $block;
-			($a, $b) = $weak_parts->(substr($buffer, $position, $block)) if $position <= $last;
-			next;
+		if (vec($tags, $a, 1) and my $candidates = $by_weak{ ($b << 16) | $a }) {
+			my $winner = _strong_match($candidates, $buffer, $position, $block);
+			if (defined $winner) {
+				_add_literal($state, substr($buffer, $run_start, $position - $run_start)) if $position > $run_start;
+				_add_copy($state, $winner * $block, $block);
+				$position += $block;
+				$run_start = $position;
+				($a, $b) = $weak_parts->(substr($buffer, $position, $block)) if $position <= $last;
+				next;
+			}
 		}
-
-		_add_literal($state, substr($buffer, $position, 1));
 
 		# Roll the window forward one byte, unless this was the last full
 		# window in the buffer.  The byte entering the window is the one just
@@ -745,25 +780,27 @@ sub _rolling_scan :Private {
 		if ($position < $last) {
 			my $out_byte = vec($buffer, $position, 8);
 			my $in_byte  = vec($buffer, $position + $block, 8);
-			$a = ($a - $out_byte + $in_byte) & $HALF;
-			$b = ($b - $block * $out_byte + $a) & $HALF;
+			$a = ($a - $out_byte + $in_byte) & $half;
+			$b = ($b - $block * $out_byte + $a) & $half;
 		}
 		$position++;
 	}
 
-	_add_literal($state, substr($buffer, $position)) if $position < length($buffer);
+	# The open run and everything past the last full window.
+	_add_literal($state, substr($buffer, $run_start)) if $run_start < length($buffer);
 	return 1;
 }
 
 # _strong_match
 # Purpose:     confirm a weak-checksum hit with the strong hash.
-# Entry:       $by_weak maps weak sums to [ index, sha256 ] candidates.
+# Entry:       $candidates are the [ index, sha256 ] pairs whose weak sum
+#              matched the window at $position (the caller looks them up, so
+#              a byte with no weak hit costs no call).
 # Exit:        returns the matching block index, or undef.
 # Side effects: none.
 sub _strong_match :Private {
-	my ($by_weak, $weak_sum, $buffer, $position, $block) = @_;
+	my ($candidates, $buffer, $position, $block) = @_;
 
-	my $candidates = $by_weak->{$weak_sum} or return undef;	## no critic (Subroutines::ProhibitExplicitReturnUndef)
 	my $strong = Digest::SHA::sha256(substr($buffer, $position, $block));
 	my ($hit) = grep { $_->[1] eq $strong } @{$candidates};
 
@@ -787,15 +824,24 @@ sub _add_copy :Private {
 }
 
 # _add_literal
-# Purpose:     queue literal bytes, writing a record once enough accumulate.
-# Entry:       $bytes may be empty.
-# Exit:        returns 1.
-# Side effects: may write to the output.
+# Purpose:     queue literal bytes, writing a record for each $LITERAL bytes
+#              that accumulate.
+# Entry:       $bytes may be empty, or a run of many megabytes.
+# Exit:        returns 1; fewer than $LITERAL bytes stay queued.
+# Side effects: may write to the output.  A long run is cut into $LITERAL
+#              records by offset, so the run is copied once, not once per
+#              record.
 sub _add_literal :Private {
 	my ($state, $bytes) = @_;
 
-	$state->{literal} .= $bytes;
-	_flush($state) if length($state->{literal}) >= $LITERAL;
+	my $pending = $state->{literal} . $bytes;
+	my $offset = 0;
+	while (length($pending) - $offset >= $LITERAL) {
+		$state->{literal} = substr($pending, $offset, $LITERAL);
+		_flush($state);
+		$offset += $LITERAL;
+	}
+	$state->{literal} = substr($pending, $offset);
 
 	return 1;
 }
@@ -827,7 +873,8 @@ __END__
 
 =over 4
 
-=item * Pure Perl: the rolling loop runs at a few MB/s, which is why only
+=item * Pure Perl: the rolling loop runs at a few MB/s (about 2.5 MB/s
+when nothing matches), which is why only
 C<$SCAN_LIMIT> bytes after the matched prefix are scanned.  An edit near the
 end of a large file whose earlier blocks also shifted is sent mostly
 literally.

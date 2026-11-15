@@ -51,6 +51,11 @@
 		<li><code>filesync sync --quiet</code> prints nothing for a repo where
 		nothing happened, instead of an all-zero summary and transfer line, so a
 		cron job that finds nothing to do stays silent.</li>
+		<li>Block deltas are much faster to compute. A changed file of 8 MiB or
+		more with no blocks in common took about 45 seconds to diff; it now
+		takes about 3. Signatures are computed about twice as fast. The wire
+		format is unchanged, so old and new clients and servers still work
+		together.</li>
 	</ul>
 
 	<h3>Bug fixes</h3>
