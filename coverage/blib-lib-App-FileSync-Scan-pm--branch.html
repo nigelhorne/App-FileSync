@@ -30,7 +30,7 @@ https://pjcj.net
 <tr><td class="h"><a id="L254">254</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless list_dir($dir)</td></tr>
 <tr><td class="h"><a id="L256">256</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless my(@stat) = &amp;Time::HiRes::lstat($path)</td></tr>
 <tr><td class="h"><a id="L257">257</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (-d _) { }</td></tr>
-<tr><td class="h"></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">elsif ($name =~ /$TEMP_NAME/ and $now - $stat[9] &gt;= $max_age) { }</td></tr>
+<tr><td class="h"></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">elsif ($name =~ /$TEMP_NAME/ and $now - $stat[$App::FileSync::Scan::STAT_MTIME] &gt;= $max_age) { }</td></tr>
 <tr><td class="h"><a id="L261">261</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">if unlink $path</td></tr>
 </table>
 </body>

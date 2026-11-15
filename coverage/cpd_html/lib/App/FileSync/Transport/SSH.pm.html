@@ -290,7 +290,7 @@ a.intra-dot:hover { color: #7700bb; }
 <body>
 <button class="toggle" onclick="toggleTheme()">🌙 Toggle Theme</button>
 <div class="nav">&larr; <a href="Local.pm.html">lib/App/FileSync/Transport/Local.pm</a> &nbsp; <a href="../../../../../index.html">&uarr; Dashboard</a> &nbsp; &nbsp;
-<a href="https://github.com/nigelhorne/App-FileSync/blob/91721f71ba6c71723c6c6d6d639ca82818f5fd9d/lib/App/FileSync/Transport/SSH.pm" target="_blank">View on GitHub &#128269;</a></div>
+<a href="https://github.com/nigelhorne/App-FileSync/blob/a16a67b8867c0fd793ae909475f4cca6915a1308/lib/App/FileSync/Transport/SSH.pm" target="_blank">View on GitHub &#128269;</a></div>
 <h1>lib/App/FileSync/Transport/SSH.pm &mdash; Duplicate Code Regions</h1>
 <div class="legend cpd-legend">
   <span class="cpd-dot">&#9670;</span> Amber lines duplicate code in another file &mdash; hover for location.<br>
@@ -344,7 +344,7 @@ a.intra-dot:hover { color: #7700bb; }
    45: Readonly my @HOST_KEY_CHECKING =&gt; qw(yes accept-new);
    46: 
    47: # The highest TCP port.
-   48: Readonly my $MAX_PORT =&gt; 65_535;
+   48: Readonly::Scalar my $MAX_PORT =&gt; 65_535;
    49: 
    50: # Characters that would end or split an argument.
    51: Readonly my $UNSAFE_ARG =&gt; qr/[\0\n]/;
@@ -800,9 +800,9 @@ a.intra-dot:hover { color: #7700bb; }
   511: sub _slurp :Private {
   512: 	my ($path) = @_;
   513: 
-  514: 	return '' unless defined $path &amp;&amp; -e $path;
-  515: 	my $text = eval { read_text($path) };
-  516: 	return defined $text ? $text : '';
+  514: 	# Diagnostics only: a file that is missing or unreadable says nothing.
+  515: 	my $text = (defined $path &amp;&amp; -e $path) ? eval { read_text($path) } : undef;
+  516: 	return $text // '';
   517: }
   518: 
   519: 1;
