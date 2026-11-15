@@ -35,6 +35,8 @@ requires 'Time::Local';
 requires 'autodie', '2.37';
 requires 'version', '0.77';
 
+recommends 'Cpanel::JSON::XS';   # JSON about 70x faster than JSON::PP
+
 on 'configure' => sub {
 	requires 'ExtUtils::MakeMaker', '6.64';   # first to honour TEST_REQUIRES
 };

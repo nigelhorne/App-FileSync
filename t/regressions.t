@@ -25,6 +25,7 @@ use App::FileSync::Scan;
 use App::FileSync::Store;
 use App::FileSync::Transport::Local;
 use App::FileSync::Trash;
+use App::FileSync::Verify;
 
 my $T0 = 1_700_000_000;
 
@@ -419,6 +420,28 @@ subtest 'CLI: sync --quiet says nothing when nothing happened' => sub {
 	$env->write_file('client', 'b.txt', "beta\n", 1_700_000_100);
 	$output = `$^X -Ilib $filesync sync --repo docs --quiet --dry-run 2>&1`;
 	like($output, qr/would push b\.txt/, '--quiet --dry-run still lists what it would do');
+};
+
+subtest 'json_decode: non-ASCII hash keys come back as bytes' => sub {
+	# json_decode downgraded values but not hash keys, and manifests are keyed
+	# by path.  A key such as "h\xc3\xa9llo.txt" kept the UTF-8 flag, so a
+	# file test on it looked for a differently-encoded name: verify's random
+	# sample silently skipped every non-ASCII file (sampled 1 of 2 here).
+	my $root = tempdir(CLEANUP => 1);
+	for my $name ("h\xc3\xa9llo.txt", 'plain.txt') {
+		open my $fh, '>:raw', File::Spec->catfile($root, $name) or die "Cannot write $name: $!";
+		print {$fh} "x\n";
+		close $fh;
+	}
+	my $manifest = App::FileSync::Scan::scan(root => $root)->{manifest};
+	my $entries = App::FileSync::json_decode(App::FileSync::json_encode($manifest));
+
+	my ($key) = grep { /[^\x00-\x7f]/ } keys %{$entries};
+	ok(!utf8::is_utf8($key), 'the decoded key carries no UTF-8 flag');
+	ok(-e File::Spec->catfile($root, $key), 'and names the file on disk');
+
+	my $result = App::FileSync::Verify::verify(root => $root, entries => $entries, sample => 10);
+	is($result->{sampled}, 2, 'verify samples the non-ASCII file too');
 };
 
 subtest 'Sub::Private is enforced outside the test harness' => sub {

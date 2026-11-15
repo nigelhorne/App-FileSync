@@ -66,6 +66,13 @@ WriteMakefile(
 		'Test::Most'     => 0,
 	}, META_MERGE      => {
 		'meta-spec' => { version => 2 },
+		prereqs     => {
+			runtime => {
+				recommends => {
+					'Cpanel::JSON::XS' => 0,	# JSON about 70x faster than JSON::PP
+				},
+			},
+		},
 		dynamic_config => 0,
 		no_index    => {
 			directory => [ 't', 'xt' ],	# t/lib/TestSync.pm is not for CPAN

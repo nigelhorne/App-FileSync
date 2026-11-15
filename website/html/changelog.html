@@ -56,10 +56,19 @@
 		takes about 3. Signatures are computed about twice as fast. The wire
 		format is unchanged, so old and new clients and servers still work
 		together.</li>
+		<li>JSON is read and written by <code>Cpanel::JSON::XS</code> when it is
+		installed, and by <code>JSON::PP</code> otherwise. Reading a 100,000-file
+		manifest took about 15 seconds with <code>JSON::PP</code> and takes under
+		half a second with <code>Cpanel::JSON::XS</code>, which is now a
+		recommended dependency. Either side of a sync may use either backend.</li>
 	</ul>
 
 	<h3>Bug fixes</h3>
 	<ul>
+		<li>Paths read back from JSON as hash keys (manifests are keyed by path)
+		kept Perl's UTF-8 flag, so a file test on a non-ASCII name looked for a
+		differently encoded file. <code>verify</code> silently left such files out
+		of its random sample. Keys are now byte strings, like values.</li>
 		<li>The system-locale tests in <code>t/locales.t</code> failed on Windows:
 		they passed a multi-line child program to <code>perl -e</code>, which
 		Windows cut at the first newline, and imported <code>LC_MESSAGES</code>,
