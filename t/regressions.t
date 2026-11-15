@@ -23,6 +23,7 @@ use App::FileSync::Ignore;
 use App::FileSync::Process;
 use App::FileSync::Protocol;
 use App::FileSync::Scan;
+use App::FileSync::Settings;
 use App::FileSync::Store;
 use App::FileSync::Transport::Local;
 use App::FileSync::Transport::SSH;
@@ -354,7 +355,8 @@ subtest 'Client: restore still finds files in the old shared trash' => sub {
 	my $env = TestSync->new_env();
 	my $src = tempdir(CLEANUP => 1);
 	my $file = File::Spec->catfile($src, 'legacy.txt');
-	open my $fh, '>', $file or die $!;
+	# Raw: in text mode Windows writes "legacy\r\n", and restore copies bytes.
+	open my $fh, '>:raw', $file or die $!;
 	print {$fh} "legacy\n";
 	close $fh;
 	App::FileSync::Trash::move_to_trash(src => $file, rel => 'legacy.txt', root => File::Spec->catdir($env->{home}, 'trash'));
@@ -470,7 +472,12 @@ subtest 'Process: reap stops a child that will not exit' => sub {
 	my $end = App::FileSync::Process::reap(pid => $child->{pid}, grace => 0.2);
 	is($end->{killed}, 1, 'it was stopped');
 	cmp_ok(time - $started, '<', 30, 'promptly (old: waitpid with no limit)');
-	is(waitpid($child->{pid}, 0), -1, 'and reaped');
+	SKIP: {
+		# Windows waitpid() falls back to OpenProcess() for a pid that is no
+		# longer its child, so asking again can return the pid.
+		skip 'waitpid on a reaped pid is not -1 on Windows', 1 if $^O eq 'MSWin32';
+		is(waitpid($child->{pid}, 0), -1, 'and reaped');
+	}
 
 	$child = App::FileSync::Process::spawn(command => [ $^X, '-e', 'exit 7' ], stderr => fileno(STDERR));
 	$end = App::FileSync::Process::reap(pid => $child->{pid}, grace => 10);
@@ -479,6 +486,16 @@ subtest 'Process: reap stops a child that will not exit' => sub {
 
 subtest 'Process: a program that cannot start is named' => sub {
 	my $missing = File::Spec->catfile(tempdir(CLEANUP => 1), 'no-such-program');
+	if ($^O eq 'MSWin32') {
+		# Perl on Windows retries a program it cannot start through cmd.exe,
+		# so the start succeeds and the failure is cmd.exe's exit status.
+		open my $null, '>', File::Spec->devnull() or die "null: $!";
+		my $child = App::FileSync::Process::spawn(command => [ $missing ], stderr => fileno($null));
+		close $child->{writer};
+		close $child->{reader};
+		isnt(App::FileSync::Process::reap(pid => $child->{pid}, grace => 30)->{status}, 0, 'the child reports failure');
+		return;
+	}
 	throws_ok { App::FileSync::Process::spawn(command => [ $missing ], stderr => fileno(STDERR)) }
 		qr/Cannot start '\Q$missing\E'/, 'process.spawn';
 };
@@ -496,6 +513,29 @@ subtest 'Transport::SSH: an ssh that has to be stopped is a failed close' => sub
 	my $ssh = App::FileSync::Transport::SSH->new(server => 'host', repo => 'docs', client => 'test-1', command => $fake);
 	is($ssh->close(), 0, 'close reports the failure (old: it would have waited for ssh forever)');
 	ok($ssh->{killed}, 'and records that ssh was stopped');
+};
+
+# --- Settings ---------------------------------------------------------------
+
+subtest 'Settings: an environment variable is named as the environment spells it' => sub {
+	# Old: _env_key asked "exists $ENV{name}" first.  On Windows that lookup
+	# ignores case, so "filesync settings" named App__FileSync__ssh_identity
+	# when the environment holds APP__FILESYNC__SSH_IDENTITY.  A tied %ENV
+	# whose exists() ignores case stands in for Windows here.
+	{
+		package CaseBlindEnv;
+		require Tie::Hash;
+		our @ISA = ('Tie::StdHash');
+		sub EXISTS { my ($self, $key) = @_; return scalar grep { lc $_ eq lc $key } keys %{$self} }
+	}
+	# Keep the real variables: HARNESS_ACTIVE lets the test call a :Private sub.
+	my %real = map { $_ => $ENV{$_} } grep { !/\Aapp__filesync__/i } keys %ENV;
+	local *ENV;
+	tie %ENV, 'CaseBlindEnv';
+	%ENV = (%real, APP__FILESYNC__SSH_IDENTITY => '/tmp/id');
+	is(App::FileSync::Settings::_env_key('App__FileSync__ssh_identity'), 'APP__FILESYNC__SSH_IDENTITY', 'the stored spelling');
+	is(App::FileSync::Settings::_env_key('APP__FILESYNC__SSH_IDENTITY'), 'APP__FILESYNC__SSH_IDENTITY', 'an exact match');
+	is(App::FileSync::Settings::_env_key('App__FileSync__log_level'), undef, 'an unset variable');
 };
 
 subtest 'Sub::Private is enforced outside the test harness' => sub {

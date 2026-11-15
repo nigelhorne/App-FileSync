@@ -715,7 +715,10 @@ sub _explanation :Private {
 sub _env_key :Private {
 	my ($name) = @_;
 
-	return exists $ENV{$name} ? $name : first { lc $_ eq lc $name } sort keys %ENV;
+	# Not "exists $ENV{$name}": on Windows that lookup ignores case too, so it
+	# answered with the caller's spelling instead of the environment's.
+	my @names = sort keys %ENV;
+	return (first { $_ eq $name } @names) // first { lc $_ eq lc $name } @names;
 }
 
 # _pick

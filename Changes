@@ -26,6 +26,11 @@ Revision history for App-FileSync
 	  pipe ends are no longer inheritable, and a server or ssh that has not
 	  exited 30 seconds after the session ends is stopped.  The Windows test
 	  runs had hung in t/regressions.t since 0.001.1.
+	- "filesync settings" on Windows named an environment variable in the
+	  spelling it was looked up with (App__FileSync__ssh_identity) rather
+	  than the one the environment holds (APP__FILESYNC__SSH_IDENTITY):
+	  Windows' %ENV lookups ignore case, so the exact-match test always
+	  succeeded.
 
 0.002.0	Wed Nov  4 09:44:06 PM EST 2026
 	[ Enhancements ]

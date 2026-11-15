@@ -177,7 +177,9 @@ been reaped), C<signal> (the signal that ended it, or 0) and C<killed> (1 if
 C<reap> had to stop it).
 
 Side Effects: waits up to C<grace> seconds, then sends SIGTERM, waits up to
-C<$TERM_SECONDS> more, then sends SIGKILL.  Sets C<$?>.
+C<$TERM_SECONDS> more, then sends SIGKILL.  On Windows it sends SIGKILL
+(TerminateProcess) straight away, since Perl delivers SIGTERM there as a
+console Ctrl-Break.  Sets C<$?>.
 
 Usage:
 
@@ -224,7 +226,7 @@ Usage:
 
 	wait up to grace seconds for the child to exit
 	if it has not:
-		send TERM and wait up to TERM_SECONDS
+		send TERM and wait up to TERM_SECONDS (not on Windows)
 		if it still has not: send KILL and wait for it
 	return its exit status and signal, and whether it was stopped
 
@@ -241,8 +243,11 @@ sub reap {
 
 	unless (_wait_for($pid, $args->{grace} // $GRACE_SECONDS)) {
 		$killed = 1;
-		CORE::kill('TERM', $pid);
-		unless (_wait_for($pid, $TERM_SECONDS)) {
+		# Windows has no polite stop: Perl turns TERM into a console Ctrl-Break
+		# event, which can reach other processes on the console.  KILL there is
+		# TerminateProcess, for that child alone.
+		CORE::kill('TERM', $pid) unless $IS_WINDOWS;
+		unless (!$IS_WINDOWS && _wait_for($pid, $TERM_SECONDS)) {
 			CORE::kill('KILL', $pid);
 			waitpid($pid, 0);
 		}
