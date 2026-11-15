@@ -35,10 +35,10 @@ our $MAX_WIRE     = 64 * 1024 * 1024;
 our $MAX_INFLATED = 64 * 1024 * 1024;
 
 # zlib level: the default trade-off between speed and size.
-Readonly my $DEFLATE_LEVEL => 6;
+Readonly::Scalar my $DEFLATE_LEVEL => 6;
 
 # Bytes asked of the pipe per sysread.
-Readonly my $READ_SIZE => 65_536;
+Readonly::Scalar my $READ_SIZE => 65_536;
 
 =encoding utf8
 

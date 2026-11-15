@@ -276,7 +276,7 @@ sub repo_create {
 		# its own error.
 		my $blocked = _unwritable_base($master) // _unwritable_base($meta);
 		$self->_throw('admin.root_unwritable', { root => $self->{root}, blocked => $blocked }) if defined $blocked;
-		die $error;
+		die $error;	## no critic (ErrorHandling::RequireCarping) -- rethrow unchanged
 	}
 
 	App::FileSync::Config::save_repo($self->{root}, $name, $config);

@@ -26,6 +26,7 @@ requires 'Log::Abstraction', '0.36';   # structured fields
 requires 'Object::Configure';
 requires 'Params::Get', '0.17';
 requires 'Params::Validate::Strict', '0.41';
+requires 'POSIX';
 requires 'Readonly', '2.05';
 requires 'Scalar::Util';
 requires 'Sub::Private', '0.07';
@@ -46,7 +47,6 @@ on 'test' => sub {
 	requires 'Errno';
 	requires 'File::Find';
 	requires 'File::Temp';
-	requires 'POSIX';
 	requires 'Test::Exception';
 	requires 'Test::Mockingbird::TimeTravel', '0.14';
 	requires 'Test::Most';

@@ -13,6 +13,7 @@ use feature 'current_sub';
 
 use Exporter qw(import);
 use JSON::MaybeXS ();
+use POSIX qw(strftime);
 use Readonly;
 use Sub::Private { mode => 'enforce' };
 use Time::Local ();
@@ -38,14 +39,17 @@ our $MAX_COMPONENT_BYTES = 255;
 
 # A conflict-copy name is kept this far inside the common 255-byte limit, and
 # never trims the original stem below the minimum.
-Readonly my $CONFLICT_NAME_BYTES => 200;
-Readonly my $MIN_STEM_BYTES      => 16;
+Readonly::Scalar my $CONFLICT_NAME_BYTES => 200;
+Readonly::Scalar my $MIN_STEM_BYTES      => 16;
 
 # The alphabet of a repo or client id: it becomes a directory name.
 Readonly my $ID_PATTERN => qr/\A[A-Za-z0-9][A-Za-z0-9._-]*\z/;
 
 # What an unusable client id is replaced with in a conflict-copy name.
-Readonly my $UNKNOWN_CLIENT => 'unknown';
+Readonly::Scalar my $UNKNOWN_CLIENT => 'unknown';
+
+# format_utc's ISO 8601 basic format: 20261104T014157Z.
+Readonly::Scalar my $UTC_STAMP => '%Y%m%dT%H%M%SZ';
 
 # JSON::MaybeXS picks Cpanel::JSON::XS, then JSON::XS, then the core JSON::PP,
 # and installing it pulls in Cpanel::JSON::XS wherever there is a compiler.  On
@@ -587,9 +591,7 @@ None.
 sub format_utc {
 	my ($epoch) = @_;
 
-	my @t = gmtime(defined $epoch ? $epoch : time);
-	return sprintf('%04d%02d%02dT%02d%02d%02dZ',
-		$t[5] + 1900, $t[4] + 1, $t[3], $t[2], $t[1], $t[0]);
+	return strftime($UTC_STAMP, gmtime($epoch // time));
 }
 
 =head2 split_name
@@ -1023,6 +1025,12 @@ C<enforce> mode, which costs about 1.4 microseconds per call (measured on
 the JSON byte downgrade, the rolling checksum) are therefore lexical code
 references: private by scope, with no wrapper.  Both Sub::Private and
 L<Sub::Protected> are bypassed while C<HARNESS_ACTIVE> is set.
+
+=item * B<Log event names are English.>  Log lines carry a fixed event name
+(C<sync finished>, C<session opened>) with structured fields, so that log
+tools and tests can match them.  Those names are identifiers, not messages,
+and are not translated; warnings and errors in the log go through the
+message catalogue like everything else.
 
 =item * B<Validation costs.>  L<Params::Validate::Strict> costs about 11
 microseconds per call, so it guards the public entry points that run a few

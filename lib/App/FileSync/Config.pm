@@ -112,14 +112,16 @@ Usage:
 =cut
 
 sub home_dir {
-	my $explicit = _env('FILESYNC_HOME');
-	return $explicit if defined $explicit;
+	# FILESYNC_HOME names the directory itself; otherwise it sits in the
+	# user's home (USERPROFILE on Windows, where HOME is often unset).
+	my $directory = _env('FILESYNC_HOME');
+	unless (defined $directory) {
+		my $home = _env('HOME') // _env('USERPROFILE');
+		throw('config.no_home') unless defined $home;
+		$directory = File::Spec->catdir($home, '.filesync');
+	}
 
-	my $home = _env('HOME');
-	$home = _env('USERPROFILE') unless defined $home;
-	throw('config.no_home') unless defined $home;
-
-	return File::Spec->catdir($home, '.filesync');
+	return $directory;
 }
 
 =head2 client_config_path

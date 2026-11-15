@@ -853,6 +853,11 @@ case-insensitive client cannot hold two master paths that differ only in case.
 the JSON byte downgrade, the rolling checksum) are therefore lexical code
 references: private by scope, with no wrapper.  Both Sub::Private and
 [Sub::Protected](https://metacpan.org/pod/Sub%3A%3AProtected) are bypassed while `HARNESS_ACTIVE` is set.
+- **Log event names are English.**  Log lines carry a fixed event name
+(`sync finished`, `session opened`) with structured fields, so that log
+tools and tests can match them.  Those names are identifiers, not messages,
+and are not translated; warnings and errors in the log go through the
+message catalogue like everything else.
 - **Validation costs.**  [Params::Validate::Strict](https://metacpan.org/pod/Params%3A%3AValidate%3A%3AStrict) costs about 11
 microseconds per call, so it guards the public entry points that run a few
 times per command (constructors, admin and client operations).  Functions that

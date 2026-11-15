@@ -147,6 +147,7 @@ our %MESSAGES = (
 	'server.no_connection'   => 'Server: no connection',
 	'server.locked'          => q{Another sync session holds the lock for repo '%{repo}s'},
 	'server.unknown_error'   => 'unknown server error',
+	'server.journal_failed'  => 'cannot journal the failed session: %{error}s',
 	'server.not_allowed'     => q{Client '%{client}s' is not allowed on repo '%{repo}s'},
 	'server.wrong_role'      => q{Client '%{client}s' is registered as '%{registered}s', not '%{asked}s'},
 	'server.proto'           => 'Unsupported protocol version',

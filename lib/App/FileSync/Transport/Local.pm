@@ -27,7 +27,7 @@ use version; our $VERSION = version->declare('0.002.0');
 
 # How far up from this file to look for a checkout's bin/filesync-server:
 # lib/App/FileSync/Transport is four levels, blib/lib/... five.
-Readonly my $SEARCH_DEPTH => 6;
+Readonly::Scalar my $SEARCH_DEPTH => 6;
 
 =encoding utf8
 

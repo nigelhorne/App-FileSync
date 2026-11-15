@@ -34,24 +34,29 @@ our $SCAN_LIMIT = 8 * 1024 * 1024;
 our $LITERAL    = 262_144;
 
 # Wire format of a signature record: a 32-bit weak sum then a SHA-256.
-Readonly my $WEAK_BYTES   => 4;
-Readonly my $STRONG_BYTES => 32;
-Readonly my $RECORD_BYTES => $WEAK_BYTES + $STRONG_BYTES;
+Readonly::Scalar my $WEAK_BYTES   => 4;
+Readonly::Scalar my $STRONG_BYTES => 32;
+Readonly::Scalar my $RECORD_BYTES => $WEAK_BYTES + $STRONG_BYTES;
 
 # Delta records: "C" + offset + length, or "L" + length + bytes.
-Readonly my $COPY        => 'C';
-Readonly my $LIT         => 'L';
-Readonly my $COPY_HEADER => 8;
-Readonly my $LIT_HEADER  => 4;
+Readonly::Scalar my $COPY        => 'C';
+Readonly::Scalar my $LIT         => 'L';
+Readonly::Scalar my $COPY_HEADER => 8;
+Readonly::Scalar my $LIT_HEADER  => 4;
 
 # Block sizes are rounded to whole kibibytes.
-Readonly my $KIB => 1024;
+Readonly::Scalar my $KIB => 1024;
 
-# Each half of the weak checksum is a 16-bit sum.
-Readonly my $HALF => 0xffff;
+# Each half of the weak checksum is a 16-bit sum; the second half is packed
+# above the first.
+Readonly::Scalar my $HALF      => 0xffff;
+Readonly::Scalar my $HALF_BITS => 16;
+
+# The rolling window reads the buffer a byte at a time with vec().
+Readonly::Scalar my $BYTE_BITS => 8;
 
 # The weak checksum unpacks this many bytes at a time.
-Readonly my $SUM_SLICE => 65_536;
+Readonly::Scalar my $SUM_SLICE => 65_536;
 
 # rsync's weak checksum: two 16-bit sums, cheap to roll by one byte.  Lexical:
 # it runs once per block.
@@ -67,16 +72,14 @@ Readonly my $SUM_SLICE => 65_536;
 my $weak_parts = sub {
 	my ($window) = @_;
 
-	# Readonly scalars are tied, so each is read once, not once per byte.
-	my ($half, $slice) = ($HALF, $SUM_SLICE);
 	my ($a, $b) = (0, 0);
-	for (my $offset = 0; $offset < length $window; $offset += $slice) {
-		for my $value (unpack 'C*', substr($window, $offset, $slice)) {
+	for (my $offset = 0; $offset < length $window; $offset += $SUM_SLICE) {
+		for my $value (unpack 'C*', substr($window, $offset, $SUM_SLICE)) {
 			$a += $value;
 			$b += $a;
 		}
-		$a &= $half;
-		$b &= $half;
+		$a &= $HALF;
+		$b &= $HALF;
 	}
 
 	return ($a, $b);
@@ -84,7 +87,7 @@ my $weak_parts = sub {
 
 my $weak = sub {
 	my ($a, $b) = $weak_parts->($_[0]);
-	return (($b & $HALF) << 16) | ($a & $HALF);
+	return (($b & $HALF) << $HALF_BITS) | ($a & $HALF);
 };
 
 =encoding utf8
@@ -751,18 +754,16 @@ sub _rolling_scan :Private {
 	vec($tags, $_->[0] & $HALF, 1) = 1 for @{$blocks};
 
 	# This loop runs once per byte that matches nothing, so its body calls no
-	# sub (the :Private wrapper costs about 1.4us a call) and reads no Readonly
-	# scalar (each read is a tied FETCH).  Unmatched bytes are not queued one
-	# at a time: $run_start marks where the current literal run began, and
-	# the run is queued in one piece when a match or the end of the buffer
-	# closes it.  $a and $b are always already masked.
-	my $half = $HALF;
+	# sub (the :Private wrapper costs about 1.4us a call).  Unmatched bytes are
+	# not queued one at a time: $run_start marks where the current literal run
+	# began, and the run is queued in one piece when a match or the end of the
+	# buffer closes it.  $a and $b are always already masked.
 	my $last = $limit > $SCAN_LIMIT ? $SCAN_LIMIT : $limit;
 	my ($a, $b) = $weak_parts->(substr($buffer, 0, $block));
 	my ($position, $run_start) = (0, 0);
 
 	while ($position <= $last) {
-		if (vec($tags, $a, 1) and my $candidates = $by_weak{ ($b << 16) | $a }) {
+		if (vec($tags, $a, 1) and my $candidates = $by_weak{ ($b << $HALF_BITS) | $a }) {
 			my $winner = _strong_match($candidates, $buffer, $position, $block);
 			if (defined $winner) {
 				_add_literal($state, substr($buffer, $run_start, $position - $run_start)) if $position > $run_start;
@@ -778,10 +779,10 @@ sub _rolling_scan :Private {
 		# window in the buffer.  The byte entering the window is the one just
 		# past its end.
 		if ($position < $last) {
-			my $out_byte = vec($buffer, $position, 8);
-			my $in_byte  = vec($buffer, $position + $block, 8);
-			$a = ($a - $out_byte + $in_byte) & $half;
-			$b = ($b - $block * $out_byte + $a) & $half;
+			my $out_byte = vec($buffer, $position, $BYTE_BITS);
+			my $in_byte  = vec($buffer, $position + $block, $BYTE_BITS);
+			$a = ($a - $out_byte + $in_byte) & $HALF;
+			$b = ($b - $block * $out_byte + $a) & $HALF;
 		}
 		$position++;
 	}

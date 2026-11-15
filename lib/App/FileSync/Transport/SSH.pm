@@ -45,7 +45,7 @@ Readonly my @SSH_OPTIONS => (
 Readonly my @HOST_KEY_CHECKING => qw(yes accept-new);
 
 # The highest TCP port.
-Readonly my $MAX_PORT => 65_535;
+Readonly::Scalar my $MAX_PORT => 65_535;
 
 # Characters that would end or split an argument.
 Readonly my $UNSAFE_ARG => qr/[\0\n]/;
@@ -511,9 +511,9 @@ sub _given :Private {
 sub _slurp :Private {
 	my ($path) = @_;
 
-	return '' unless defined $path && -e $path;
-	my $text = eval { read_text($path) };
-	return defined $text ? $text : '';
+	# Diagnostics only: a file that is missing or unreadable says nothing.
+	my $text = (defined $path && -e $path) ? eval { read_text($path) } : undef;
+	return $text // '';
 }
 
 1;
