@@ -159,7 +159,8 @@
 	<p>A deletion is a plan action like any other, but it is bounded: by default a
 	session may delete at most 200 files or 10% of the known files, whichever
 	limit is reached first. A tree that suddenly looks empty therefore stops the
-	run instead of being propagated. <code>filesync sync --force</code> proceeds
+	run instead of being propagated. Each limit is set per repo, and a limit of 0
+	switches it off. <code>filesync sync --force</code> proceeds
 	when that is really what you want.</p>
 
 	<p>On the client, a removed file is moved into that repo's local trash, kept

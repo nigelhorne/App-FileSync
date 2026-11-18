@@ -237,6 +237,31 @@ my $T0 = 1_700_000_000;
 	is($stable->{summary}{pulled}, 0, 'and nothing is left to pull');
 }
 
+# A limit of 0 switches that limit off; the other one still applies.  Ten of
+# twenty files is over both defaults (and over a max_deletes of 5).
+for my $case (
+	{ name => 'both limits 0', policy => { max_deletes => 0, max_delete_percent => 0 }, refused => undef },
+	{ name => 'max_deletes 0', policy => { max_deletes => 0 }, refused => qr/known files/ },
+	{ name => 'max_delete_percent 0', policy => { max_deletes => 5, max_delete_percent => 0 }, refused => qr/limit is 5\b/ },
+) {
+	my $env = TestSync->new_env();
+	my $policy = App::FileSync::Config::load_repo($env->{server}, 'docs');
+	@{$policy}{ keys %{ $case->{policy} } } = values %{ $case->{policy} };
+	App::FileSync::Config::save_repo($env->{server}, 'docs', $policy);
+
+	$env->write_file('client', sprintf('file%02d.txt', $_), "content $_\n", $T0 + $_) for 1 .. 20;
+	$env->sync();
+	unlink $env->client_path(sprintf 'file%02d.txt', $_) for 1 .. 10;
+
+	if ($case->{refused}) {
+		throws_ok { $env->sync() } $case->{refused}, "$case->{name}: the other limit still refuses";
+		ok($env->exists_in('server', 'file01.txt'), "$case->{name}: the master was not touched");
+	} else {
+		is($env->sync()->{summary}{deleted}, 10, "$case->{name}: the deletions proceed without --force");
+		ok(!$env->exists_in('server', 'file01.txt'), "$case->{name}: and reach the master");
+	}
+}
+
 # One more local deletion than the allowance is refused before the master is
 # touched, even though the client has already removed the files from its tree.
 {

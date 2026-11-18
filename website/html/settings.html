@@ -261,8 +261,8 @@ server_command   /usr/local/bin/filesync-server  /home/foo/.conf/app-filesync.js
 		</thead>
 		<tbody>
 			<tr><td><code>trash_days</code></td><td>30</td><td>How many days the server keeps deleted files; 0 keeps them forever.</td></tr>
-			<tr><td><code>max_deletes</code></td><td>200</td><td>Most files one session may delete.</td></tr>
-			<tr><td><code>max_delete_percent</code></td><td>10</td><td>Largest fraction of known files one session may delete.</td></tr>
+			<tr><td><code>max_deletes</code></td><td>200</td><td>Most files one session may delete; 0 switches this limit off.</td></tr>
+			<tr><td><code>max_delete_percent</code></td><td>10</td><td>Largest percentage of known files one session may delete; 0 switches this limit off.</td></tr>
 			<tr><td><code>conflicts</code></td><td><code>inline</code></td><td>Keep the losing version beside the winner.</td></tr>
 			<tr><td><code>preserve_mode</code></td><td><code>true</code></td><td>Carry permission bits between POSIX systems.</td></tr>
 			<tr><td><code>allow_symlinks</code></td><td><code>false</code></td><td>Whether the tree may contain symlinks.</td></tr>

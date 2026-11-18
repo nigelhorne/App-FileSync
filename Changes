@@ -7,6 +7,15 @@ Revision history for App-FileSync
 	  forever.  0 now means "keep forever" on both sides, and the
 	  documentation says so.  "filesync-admin repo show" prints
 	  "kept forever" for such a repo instead of "0 days".
+	- "filesync-admin repo show" printed "0 files / 0%" for a repo whose
+	  deletion limits are switched off, which read as "nothing may be
+	  deleted".  It now says "no file limit", "no percentage limit", or
+	  "none (any number of deletions)" when both are off.
+
+	[ Documentation ]
+	- "filesync-admin help", the repo_create POD and the website now
+	  describe the repo create options, and say that a --max-deletes or
+	  --max-delete-percent of 0 switches that deletion limit off.
 
 0.002.1	Sun Nov 15 03:36:05 PM EST 2026
 	[ Enhancements ]

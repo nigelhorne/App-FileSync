@@ -178,7 +178,9 @@ empty index.
 Args: C<name> (a repo id), optional C<trash_days>, C<max_deletes>,
 C<max_delete_percent> (non-negative integers) and C<ignore> (patterns; the
 default ignore list when absent or empty).  A C<trash_days> of 0 keeps the
-server's trash forever.
+server's trash forever.  A C<max_deletes> or C<max_delete_percent> of 0
+switches that deletion limit off; the other still applies, and setting both
+to 0 lets a sync delete any number of files without C<--force>.
 
 Returns: C<{ name, master, config }> (the master and config paths).
 

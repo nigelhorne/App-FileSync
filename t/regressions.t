@@ -368,6 +368,34 @@ subtest 'Store: trash_days 0 keeps the server trash forever, as on the client' =
 	like($show->('default'), qr/^trash:\s+kept 30 days$/m, 'a policy without trash_days shows the default');
 };
 
+subtest 'CLI: repo show says when a deletion limit is switched off' => sub {
+	my $root = tempdir(CLEANUP => 1);
+	my $admin = App::FileSync::Admin->new(root => $root);
+	my %repos = (
+		defaults => [ {}, qr{200 files / 10%} ],
+		one      => [ { max_deletes => 1 }, qr{1 file / 10%} ],
+		nofiles  => [ { max_deletes => 0 }, qr{no file limit / 10%} ],
+		nopct    => [ { max_delete_percent => 0 }, qr{200 files / no percentage limit} ],
+		none     => [ { max_deletes => 0, max_delete_percent => 0 }, qr{none \(any number of deletions\)} ],
+	);
+
+	# Old: both limits at 0 printed "limits:  0 files / 0%", which reads as
+	# "nothing may be deleted" when it means "anything may".
+	for my $repo (sort keys %repos) {
+		my ($limits, $expected) = @{ $repos{$repo} };
+		$admin->repo_create(name => $repo, %{$limits});
+		my $out = `$^X -Ilib bin/filesync-admin --root "$root" repo show $repo 2>&1`;
+		like($out, qr/^limits:\s+$expected$/m, "$repo: the limits line");
+	}
+
+	# A policy missing both limits is checked at the defaults, so says so.
+	my $policy = App::FileSync::Config::load_repo($root, 'none');
+	delete @{$policy}{qw(max_deletes max_delete_percent)};
+	App::FileSync::Config::save_repo($root, 'none', $policy);
+	like(scalar `$^X -Ilib bin/filesync-admin --root "$root" repo show none 2>&1`,
+		qr{^limits:\s+200 files / 10%$}m, 'missing limits show the defaults');
+};
+
 # --- Client -----------------------------------------------------------------
 
 subtest 'Client: each repo has its own local trash' => sub {

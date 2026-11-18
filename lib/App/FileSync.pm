@@ -7,9 +7,6 @@ package App::FileSync;
 # TODO: from the 0.002.0 gap analysis.  Pre-release blockers first.
 #
 # Behaviour that is silently wrong or inconsistent:
-# TODO: document for users that 0 switches off --max-deletes and
-#	--max-delete-percent (only Merge's internal POD says so; not the help
-#	text, the admin POD or website/html/commands.html).
 # TODO: give --max-delete-percent an upper bound of 100 (150 is accepted).
 # TODO: Params::Validate::Strict failures bypass the catalogue and name the
 #	internal parameter ('trash_days') instead of the option (--trash-days).

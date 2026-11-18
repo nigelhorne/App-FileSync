@@ -328,6 +328,17 @@ filesync-admin --root DIR <command>
     log NAME... [-n N] [--client ID] [--since YYYY-MM-DD|EPOCH]
                   [--until YYYY-MM-DD|EPOCH] [--exit N]... [--warnings] [--json]
 
+repo create options:
+  --trash-days N          days the server keeps deleted files; default 30,
+                          0 keeps them forever
+  --max-deletes N         most files one sync may delete; default 200,
+                          0 switches this limit off
+  --max-delete-percent N  most deletions in one sync, as a percentage of
+                          the files the client last synced; default 10,
+                          0 switches this limit off
+  A sync stops at whichever limit it reaches first, unless it is run with
+  "filesync sync --force".
+
 Exit codes: 0 ok, 1 fatal, 4 verification found drift.
 USAGE
 
@@ -474,14 +485,20 @@ USAGE
 	'cli.admin.unknown_verb' => q{Unknown %{group}s command '%{verb}s'},
 	'cli.admin.empty_name'   => 'log: NAME must not be empty',
 
-	'cli.repo.created.name'   => q{Created repo '%{repo}s'},
-	'cli.repo.created.master' => '  master: %{master}s',
-	'cli.repo.created.config' => '  config: %{config}s',
-	'cli.repo.none'           => 'No repos under %{root}s',
-	'cli.repo.no_clients'     => '(none)',
-	'cli.repo.trash_days'     => { _by => 'count', one => 'kept %{count}d day', other => 'kept %{count}d days' },
-	'cli.repo.trash_forever'  => 'kept forever',
-	'cli.repo.show'           => "name:    %{name}s\nmaster:  %{master}s\nmeta:    %{meta}s\ntrash:   %{trash}s\nlimits:  %{max_deletes}s files / %{max_delete_percent}s%%\nclients: %{clients}s",
+	'cli.repo.created.name'      => q{Created repo '%{repo}s'},
+	'cli.repo.created.master'    => '  master: %{master}s',
+	'cli.repo.created.config'    => '  config: %{config}s',
+	'cli.repo.none'              => 'No repos under %{root}s',
+	'cli.repo.no_clients'        => '(none)',
+	'cli.repo.trash_days'        => { _by => 'count', one => 'kept %{count}d day', other => 'kept %{count}d days' },
+	'cli.repo.trash_forever'     => 'kept forever',
+	'cli.repo.limits'            => '%{files}s / %{percent}s',
+	'cli.repo.limits_off'        => 'none (any number of deletions)',
+	'cli.repo.limit_files'       => { _by => 'count', one => '%{count}d file', other => '%{count}d files' },
+	'cli.repo.limit_files_off'   => 'no file limit',
+	'cli.repo.limit_percent'     => '%{percent}s%%',
+	'cli.repo.limit_percent_off' => 'no percentage limit',
+	'cli.repo.show'              => "name:    %{name}s\nmaster:  %{master}s\nmeta:    %{meta}s\ntrash:   %{trash}s\nlimits:  %{limits}s\nclients: %{clients}s",
 
 	'cli.reindex.would'   => '%{repo}s: would index %{files}s, %{dirs}s (%{size}s); index unchanged',
 	'cli.reindex.done'    => '%{repo}s: indexed %{files}s, %{dirs}s (%{size}s); master index written',

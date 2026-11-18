@@ -25,7 +25,7 @@ use App::FileSync::Config;
 use App::FileSync::Constants qw(
 	$EXIT_OK $EXIT_FATAL $EXIT_LOCKED $EXIT_WARNINGS $EXIT_DRIFT $EXIT_MAX
 	$DEFAULT_SERVER_ROOT $PROTOCOL_VERSION $ROLE_CLIENT @ROLES $ROOT_MARKER $MAX_ID_LENGTH $TYPE_FILE
-	$TRASH_DAYS
+	$TRASH_DAYS $MAX_DELETES $MAX_DELETE_PERCENT
 );
 use App::FileSync::I18N qw(message throw strip_location);
 use App::FileSync::IO qw(ensure_dir);
@@ -1216,12 +1216,22 @@ sub _admin_repo_show :Private {
 
 	my $info = $admin->repo_show(_require(shift @args, 'repo show', 'NAME'));
 	my $config = $info->{config};
-	# A policy without trash_days prunes at the default (Store::prune_trash);
-	# 0 keeps the trash forever.
-	my $days = $config->{trash_days} // $TRASH_DAYS;
+	# A missing setting means its default, as in Store::prune_trash and
+	# Merge::check_delete_limit; 0 keeps the trash forever or switches a
+	# deletion limit off.
+	my $days    = $config->{trash_days} // $TRASH_DAYS;
+	my $files   = $config->{max_deletes} // $MAX_DELETES;
+	my $percent = $config->{max_delete_percent} // $MAX_DELETE_PERCENT;
+	my $limits = ($files || $percent)
+		? message('cli.repo.limits', {
+			files   => $files ? message('cli.repo.limit_files', { count => $files }) : message('cli.repo.limit_files_off'),
+			percent => $percent ? message('cli.repo.limit_percent', { percent => $percent }) : message('cli.repo.limit_percent_off'),
+		})
+		: message('cli.repo.limits_off');
 	_say('cli.repo.show', {
 		%{$config},
 		trash   => $days ? message('cli.repo.trash_days', { count => $days }) : message('cli.repo.trash_forever'),
+		limits  => $limits,
 		master  => $info->{master},
 		meta    => $info->{meta},
 		clients => @{ $info->{clients} } ? join(', ', @{ $info->{clients} }) : message('cli.repo.no_clients'),
