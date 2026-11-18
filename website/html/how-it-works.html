@@ -169,6 +169,11 @@
 	keeps its own trash, with the retention set per repo
 	(<code>trash_days</code>, where 0 likewise means forever).</p>
 
+	<p>When a directory on one side becomes a file on the other, the files the
+	sync knows about are deleted first. Anything it does not track, such as an
+	ignored <code>.DS_Store</code>, goes to the trash with the directory, so
+	nothing is lost and the file can take its place.</p>
+
 <pre><code>filesync restore notes/a.txt --list
 filesync restore notes/a.txt
 filesync restore notes/a.txt --to /tmp/recovered</code></pre>

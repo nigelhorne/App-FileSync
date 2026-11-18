@@ -481,6 +481,56 @@ subtest 'Merge: max_delete_percent above 100 is refused' => sub {
 		'100 is accepted';
 };
 
+subtest 'Sync: a directory holding ignored files can become a file' => sub {
+	# Old: the sync deleted the directory's listed files, then install_file
+	# found it still holding an ignored .DS_Store and refused with "Cannot
+	# replace non-empty directory", on this and every later sync.
+	# The trashed directory is a version of x (x/y went to the trash first, so
+	# it is usually x.1) that holds the .DS_Store.
+	my $ds_store = sub {
+		my $root = shift;
+		return [ grep { -f File::Spec->catfile($_, '.DS_Store') } @{ App::FileSync::Trash::versions(root => $root, rel => 'x') } ];
+	};
+
+	# Pushed: the master's x/ holds the ignored file.
+	{
+		my $env = TestSync->new_env();
+		$env->write_file('client', 'x/y', "inside\n", $T0);
+		$env->sync();
+		$env->write_file('server', 'x/.DS_Store', "finder\n", $T0);
+		File::Path::remove_tree($env->client_path('x'));
+		$env->write_file('client', 'x', "now a file\n", $T0 + 5);
+
+		my $result = $env->sync();
+		is($result->{exit}, 0, 'push: the sync succeeds');
+		is($env->read_file('server', 'x'), "now a file\n", 'push: the master has the file');
+		my $store = App::FileSync::Store->new(root => $env->{server}, repo => 'docs');
+		is(scalar @{ $ds_store->($store->trash_dir()) }, 1, 'push: the ignored file is in the server trash');
+		my ($event) = grep { ($_->{reason} // '') eq 'replaced by a file' }
+			@{ App::FileSync::Admin->new(root => $env->{server})->journal_read(repo => 'docs') };
+		is($event && $event->{path}, 'x', 'push: the journal records the directory going to the trash');
+		is($env->sync()->{exit}, 0, 'push: and the next sync is clean');
+	}
+
+	# Pulled: the client's x/ holds the ignored file.
+	{
+		my $env = TestSync->new_env();
+		$env->write_file('client', 'x/y', "inside\n", $T0);
+		$env->sync();
+		$env->write_file('client', 'x/.DS_Store', "finder\n", $T0);
+		File::Path::remove_tree($env->server_path('x'));
+		$env->write_file('server', 'x', "now a file\n", $T0 + 5);
+		App::FileSync::Admin->new(root => $env->{server})->reindex(repo => 'docs');
+
+		my $result = do { local $SIG{__WARN__} = sub {}; $env->sync() };
+		is($result->{exit}, 0, 'pull: the sync succeeds');
+		is($env->read_file('client', 'x'), "now a file\n", 'pull: the client has the file');
+		my $trash = File::Spec->catdir($env->{home}, 'trash', 'repos', 'docs');
+		is(scalar @{ $ds_store->($trash) }, 1, 'pull: the ignored file is in the local trash');
+		is($env->sync()->{exit}, 0, 'pull: and the next sync is clean');
+	}
+};
+
 # --- Client -----------------------------------------------------------------
 
 subtest 'Client: each repo has its own local trash' => sub {

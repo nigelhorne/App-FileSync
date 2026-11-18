@@ -6,7 +6,7 @@ use Errno qw(ENOSPC);
 use File::Spec;
 use File::Temp qw(tempdir);
 
-use App::FileSync::IO qw(write_atomic read_text);
+use App::FileSync::IO qw(clear_target write_atomic read_text);
 
 # The names in a directory, so a test can see that no temporary file is left.
 sub names {
@@ -74,6 +74,46 @@ SKIP: {
 		qr/\ACannot move \Q$dir\E\S+ to \Q$path\E: /, 'a failed rename is io.rename';
 	ok(-d $path && -e File::Spec->catfile($path, 'keep'), 'the directory in the way is untouched');
 	is_deeply(names($dir), ['state.json'], 'and the temporary file is discarded');
+}
+
+# --- clear_target --------------------------------------------------------------
+
+# install_file clears whatever is at the target before the rename: a file or
+# a symlink is unlinked, an empty directory removed, and a directory that
+# still holds anything is refused rather than emptied.
+{
+	my $dir = tempdir(CLEANUP => 1);
+	my $at = sub { File::Spec->catfile($dir, @_) };
+	my $touch = sub { open my $fh, '>', $_[0] or die "Cannot write $_[0]: $!"; close $fh };
+
+	is(clear_target($at->('missing')), 1, 'nothing there: nothing to do');
+
+	$touch->($at->('file'));
+	clear_target($at->('file'));
+	ok(!-e $at->('file'), 'a file is removed');
+
+	mkdir $at->('empty') or die $!;
+	clear_target($at->('empty'));
+	ok(!-e $at->('empty'), 'an empty directory is removed');
+
+	mkdir $at->('full') or die $!;
+	$touch->($at->('full', 'keep'));
+	throws_ok { clear_target($at->('full')) }
+		qr/\ACannot replace non-empty directory \Q${\ $at->('full') }\E$/m, 'a non-empty directory is io.replace_dir';
+	ok(-e $at->('full', 'keep'), 'and nothing in it is touched');
+
+	SKIP: {
+		mkdir $at->('target') or die $!;
+		$touch->($at->('target', 'inside'));
+		skip 'symlinks are not available here', 4
+			unless eval { symlink $at->('target'), $at->('to-dir') } && eval { symlink $at->('none'), $at->('dangling') };
+		clear_target($at->('to-dir'));
+		ok(!-l $at->('to-dir'), 'a symlink to a directory is unlinked, not followed');
+		ok(-e $at->('target', 'inside'), 'and its target keeps its contents');
+		clear_target($at->('dangling'));
+		ok(!-l $at->('dangling'), 'a dangling symlink is unlinked');
+		is_deeply(names($dir), [qw(full target)], 'only the refused directory and the link target remain');
+	}
 }
 
 done_testing();

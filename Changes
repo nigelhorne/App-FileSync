@@ -19,6 +19,13 @@ Revision history for App-FileSync
 	  Parameter 'trash_days' (-1) must be at least 0".  It is now a
 	  catalogued message, and the programs name the option that was
 	  typed: "--trash-days must be at least 0, not -1".
+	- A directory that became a file could not be synced if it still
+	  held an ignored file (a .DS_Store, say): the sync failed with
+	  "Cannot replace non-empty directory", then and on every later run.
+	  The directory, with whatever the sync does not track, now goes to
+	  the trash (the server's or the client's local one) and the file
+	  takes its place.  The server journals it; the client logs a
+	  warning naming the trash.
 
 	[ Documentation ]
 	- "filesync-admin help", the repo_create POD and the website now

@@ -31,6 +31,7 @@ use App::FileSync::Constants qw(
 );
 use App::FileSync::Delta;
 use App::FileSync::I18N qw(message os_error strip_location);
+use App::FileSync::IO qw(list_dir);
 use App::FileSync::Merge;
 use App::FileSync::Protocol;
 use App::FileSync::Settings;
@@ -1256,6 +1257,16 @@ sub _commit_upload :Private {
 	if ($key) {
 		eval { unlink $upload->{temp} };
 		$self->_throw($key, \%args);
+	}
+
+	# A directory where the file goes still holds what the sync does not list
+	# (ignored files such as .DS_Store): its listed contents were deleted
+	# earlier in this plan.  Keep it in the trash rather than refuse the file,
+	# which would fail this and every later sync.
+	my $abs = $self->{store}->abs_path($path);
+	if (-d $abs && !-l $abs && @{ list_dir($abs) || [$abs] }) {
+		my $trashed = $self->{store}->move_to_trash($path, time);
+		$self->_journal({ action => 'delete', path => $path, trash => $trashed, reason => 'replaced by a file', result => 'ok' });
 	}
 
 	$self->{store}->commit_temp($path, $upload->{temp}, $upload->{mtime}, $upload->{mode});

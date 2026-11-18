@@ -7,15 +7,13 @@ package App::FileSync;
 # TODO: from the 0.002.0 gap analysis.  Pre-release blockers first.
 #
 # Behaviour that is silently wrong or inconsistent:
-#
-# Failure and rollback paths no test runs:
-# TODO: type changes: moving a directory into the trash (Trash::move_to_trash)
-#	and replacing a directory with a file (IO::clear_target).
-# TODO: the admin root-not-writable path in Admin::repo_create.
+# TODO: errors the server sends a client name absolute server paths, such as
+#	"Cannot store x on the server: Cannot replace non-empty directory
+#	/srv/filesync/master/docs/x".  strip_location removes only Perl's file
+#	and line; report the path relative to the repo, keeping the absolute
+#	one for the server's own log and journal.
 #
 # Commands and APIs with no tests:
-# TODO: filesync-admin "client list" (Admin::client_list) never runs,
-#	in-process or through the CLI.
 # TODO: Protocol::close, Transport::SSH::command and exit_status,
 #	Transport::Local::error_text, Store::root and Store::repo.
 # TODO: the extra_args check in Transport::SSH->new has never run.

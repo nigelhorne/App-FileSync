@@ -248,6 +248,7 @@ our %MESSAGES = (
 	'client.need_server'      => 'Repo %{repo}s needs a server (user@host) for the ssh transport',
 	'client.bad_transport'    => q{Unknown transport '%{transport}s' for repo %{repo}s},
 	'client.record_failed'    => 'cannot record this run in %{path}s: %{error}s',
+	'client.dir_replaced'     => q{%{path}s was a directory holding files the sync does not track (such as ignored ones); it was moved to the trash in %{trash}s before the file replaced it},
 	'client.no_versions'      => q{No trashed version of '%{path}s' for repo '%{repo}s' in %{trash}s},
 	'client.not_dir'          => 'Restore target %{path}s is not a directory',
 	'client.exists'           => 'Refusing to overwrite %{path}s; move it aside or use --to DIR',
