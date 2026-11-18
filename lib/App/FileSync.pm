@@ -6,16 +6,6 @@ package App::FileSync;
 
 # TODO: from the 0.002.0 gap analysis.  Pre-release blockers first.
 #
-# Behaviour that is silently wrong or inconsistent:
-# TODO: errors the server sends a client name absolute server paths, such as
-#	"Cannot store x on the server: Cannot replace non-empty directory
-#	/srv/filesync/master/docs/x".  strip_location removes only Perl's file
-#	and line; report the path relative to the repo, keeping the absolute
-#	one for the server's own log and journal.
-#
-# Commands and APIs with no tests:
-# TODO: the extra_args check in Transport::SSH->new has never run.
-#
 # Mutation testing:
 # TODO: the 80% score is 10 mutants, all in Platform.pm.  Mutation-test Merge,
 #	Delta, the server's %MAY table and the deletion guard.

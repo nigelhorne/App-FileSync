@@ -13,6 +13,7 @@ use warnings;
 use autodie qw(:all);
 
 use Digest::SHA ();
+use File::Spec;
 use File::Temp ();
 use List::Util qw(any);
 use Readonly;
@@ -267,6 +268,11 @@ Usage:
 Raised once the session is open.  Each ends the session: the open uploads
 are discarded, the failure is journalled, and the text (without Perl's
 file and line) reaches the client as C<< { ok => 0, fatal => 1, error => ... } >>.
+In that text a path in the master is relative to the repo, and any other
+server path starts with C<[server root]>: the client is not told where the
+server keeps its files.  The server's log is written the same way, because
+over ssh its standard error reaches the client; the journal, which stays on
+the server, keeps the full paths.
 Most mean a client bug or a hostile client; the resolution is to fix the
 client, or simply to rerun the sync.
 
@@ -358,16 +364,48 @@ sub run {
 
 	return 1 if $ok;
 
-	# The client shows this text to a person, so no Perl file and line.
+	# The client shows this text to a person, so no Perl file and line, and
+	# only where in the repo, not where the server keeps it.  The log is
+	# rewritten too: over ssh the server's stderr reaches the client.  Only
+	# the journal, which stays on the server, keeps the absolute paths.
 	my $error = strip_location($@) || $self->i18n('server.unknown_error');
-	$self->{logger}->error($error);
+	my $shown = $self->_for_client($error);
+	$self->{logger}->error($shown);
 	$self->_discard_uploads();
 	$self->_journal_failed_session($error);
 
 	eval {
-		$connection->send({ ok => 0, error => $error, fatal => 1, ($self->{refusal} ? (code => $self->{refusal}) : ()) });
+		$connection->send({ ok => 0, error => $shown, fatal => 1, ($self->{refusal} ? (code => $self->{refusal}) : ()) });
 	};
 	return 0;
+}
+
+# _for_client
+# Purpose:     take the server's file layout out of an error for the client
+#              (and for the log, whose stderr reaches the client over ssh).
+# Entry:       $text is an error as the server logs it.
+# Exit:        returns the text with each path under the master made relative
+#              to the repo ("x", not "/srv/filesync/master/docs/x") and any
+#              other mention of the server root replaced by a placeholder.
+# Side effects: none.
+sub _for_client :Private {
+	my ($self, $text) = @_;
+
+	return $text unless defined $self->{root} && length $self->{root};
+
+	# The store builds its paths with catdir, so match the canonical form: a
+	# root given as "/srv/filesync/" appears as "/srv/filesync/master/...".
+	my $root = File::Spec->canonpath($self->{root});
+
+	if (defined $self->{repo}) {
+		my $master = File::Spec->catdir($root, 'master', $self->{repo});
+		$text =~ s{\Q$master\E[\\/]}{}g;
+	}
+	# Only a whole path component: a root of /srv must not touch /srvdata.
+	my $placeholder = $self->i18n('server.root_placeholder');
+	$text =~ s{\Q$root\E(?=[\\/'"\s:,)]|\z)}{$placeholder}g;
+
+	return $text;
 }
 
 =head2 validate_forced_command
@@ -501,7 +539,7 @@ sub _journal_failed_session :Private {
 		});
 		1;
 	};
-	$self->{logger}->warn($self->i18n('server.journal_failed', { error => strip_location($@) })) unless $ok;
+	$self->{logger}->warn($self->_for_client($self->i18n('server.journal_failed', { error => strip_location($@) }))) unless $ok;
 
 	return $ok ? 1 : 0;
 }

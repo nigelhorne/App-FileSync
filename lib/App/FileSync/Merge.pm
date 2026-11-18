@@ -36,13 +36,11 @@ my $type = sub {
 	return ($entry && defined $entry->{t} && length $entry->{t}) ? $entry->{t} : $TYPE_FILE;
 };
 
-# Two entries describe the same content: both absent, both directories, or
-# both files with the same hash.
+# Two entries describe the same content: both directories, or both files with
+# the same hash.  Both must be present: every caller checks that first, so an
+# absent entry is never compared here.
 my $same = sub {
 	my ($left, $right) = @_;
-
-	return 1 unless $left || $right;
-	return 0 unless $left && $right;
 
 	my $left_type = $type->($left);
 	return 0 unless $left_type eq $type->($right);

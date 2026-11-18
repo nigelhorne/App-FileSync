@@ -26,6 +26,7 @@ use App::FileSync::Merge;
 use App::FileSync::Process;
 use App::FileSync::Protocol;
 use App::FileSync::Scan;
+use App::FileSync::Server;
 use App::FileSync::Settings;
 use App::FileSync::Store;
 use App::FileSync::Transport::Local;
@@ -529,6 +530,66 @@ subtest 'Sync: a directory holding ignored files can become a file' => sub {
 		is(scalar @{ $ds_store->($trash) }, 1, 'pull: the ignored file is in the local trash');
 		is($env->sync()->{exit}, 0, 'pull: and the next sync is clean');
 	}
+};
+
+subtest 'Server: errors sent to the client name no server paths' => sub {
+	# Old: the client was sent the server's absolute paths, such as "Cannot
+	# replace non-empty directory /srv/filesync/master/docs/x".
+
+	# The rewriting itself, on a server rooted at /srv/filesync.
+	my $server = sub {
+		App::FileSync::Server->new(root => shift, repo => 'docs', client => 'c1', role => 'client', connection => bless({}, 'Stand::In'));
+	};
+	my $for_client = sub { my ($root, $text) = @_; $server->($root)->_for_client($text) };
+	my $master = File::Spec->catdir('/srv/filesync', 'master', 'docs');
+	my $meta = File::Spec->catfile('/srv/filesync', '.filesync', 'repos', 'docs', 'master.json');
+	my $elsewhere = File::Spec->catfile('/srv/filesyncdata', 'x');
+	my %cases = (
+		'a path in the master is relative to the repo' =>
+			[ '/srv/filesync', "Cannot replace non-empty directory $master/sub/x", 'Cannot replace non-empty directory sub/x' ],
+		'every one of them' =>
+			[ '/srv/filesync', "Cannot move $master/.filesync-tmp-1 to $master/a.txt: denied", 'Cannot move .filesync-tmp-1 to a.txt: denied' ],
+		'another server path keeps only its place under the root' =>
+			[ '/srv/filesync', "Cannot write $meta: full", 'Cannot write [server root]/.filesync/repos/docs/master.json: full' ],
+		'the root on its own' =>
+			[ '/srv/filesync', q{No such repo 'x' under /srv/filesync (run filesync-admin repo create)}, q{No such repo 'x' under [server root] (run filesync-admin repo create)} ],
+		'a root given with a trailing slash' =>
+			[ '/srv/filesync/', "Cannot replace non-empty directory $master/x", 'Cannot replace non-empty directory x' ],
+		'a longer name that only starts with the root is left alone' =>
+			[ '/srv/filesync', "Cannot read $elsewhere", "Cannot read $elsewhere" ],
+	);
+	for my $case (sort keys %cases) {
+		my ($root, $text, $expected) = @{ $cases{$case} };
+		is($for_client->($root, $text), $expected, $case);
+	}
+
+	# Through a real session: a master directory that refuses new files stops
+	# the upload's temporary file, and the error names that directory.
+	my $env = TestSync->new_env();
+	plan skip_all => why_not('create', $env->{server}) unless can_revoke_create($env->{server});
+	$env->write_file('client', 'sub/a.txt', "one\n", $T0);
+	$env->sync();
+	$env->write_file('client', 'sub/b.txt', "two\n", $T0 + 5);
+
+	# The local server shares our stderr, as an ssh server's reaches the
+	# client: catch it to see the server's log line.
+	my $error;
+	my $log = File::Spec->catfile(tempdir(CLEANUP => 1), 'server.err');
+	with_revoked(create => $env->server_path('sub'), sub {
+		open my $saved, '>&', \*STDERR or die "dup stderr: $!";
+		open STDERR, '>', $log or die "Cannot write $log: $!";
+		eval { $env->sync(); 1 } or $error = $@;
+		open STDERR, '>&', $saved or die "restore stderr: $!";
+	});
+	like($error, qr/Cannot create a temporary file in sub: /, 'the client is told the repo path');
+	unlike($error, qr/\Q$env->{server}\E/, 'and not where the server keeps it');
+	my $logged = do { open my $fh, '<', $log or die "Cannot read $log: $!"; local $/; <$fh> };
+	like($logged, qr/Cannot create a temporary file in sub: /, 'the server logs the same text');
+	unlike($logged, qr/\Q$env->{server}\E/, 'so its stderr carries no server path either');
+
+	my ($event) = grep { ($_->{action} // '') eq 'session' && ($_->{result} // '') eq 'error' }
+		@{ App::FileSync::Admin->new(root => $env->{server})->journal_read(repo => 'docs') };
+	like($event->{error}, qr/\Q$env->{server}\E/, 'the server journal keeps the absolute path');
 };
 
 # --- Client -----------------------------------------------------------------

@@ -112,6 +112,43 @@ my $recorded = sub {
 }
 
 
+# --- Transport::SSH: extra_args ----------------------------------------------------
+
+# The client config's ssh.extra_args go on the command line just before the
+# host.  Each must be a defined, plain string with no NUL or newline: the
+# argv is handed to ssh as it is, and the remote end splits a command line.
+{
+	local $ENV{FAKE_EXIT} = 0;
+	my $ssh = App::FileSync::Transport::SSH->new(
+		server => 'host', repo => 'docs', client => 'laptop', command => $fake,
+		extra_args => [ '-o', 'Compression=yes', '-v', 'with space', '$(not run)' ],
+	);
+	my $command = $ssh->command();
+	my ($host) = grep { $command->[$_] eq 'host' } 0 .. $#{$command};
+	is_deeply([ @{$command}[ $host - 5 .. $host - 1 ] ], [ '-o', 'Compression=yes', '-v', 'with space', '$(not run)' ],
+		'extra_args go in order, unchanged, just before the host');
+	$ssh->close();
+
+	my %bad = (
+		'an undefined element' => [ [ '-v', undef ], qr/bad extra_args ''/ ],
+		'a reference'          => [ [ [ '-v' ] ], qr/bad extra_args 'ARRAY\(/ ],
+		'a newline'            => [ [ "-v\n-oProxyCommand=evil" ], qr/bad extra_args '-v/ ],
+		'a NUL'                => [ [ "-v\0x" ], qr/bad extra_args '-v/ ],
+	);
+	for my $case (sort keys %bad) {
+		my ($extra, $error) = @{ $bad{$case} };
+		throws_ok {
+			App::FileSync::Transport::SSH->new(server => 'host', repo => 'docs', client => 'laptop', command => $fake, extra_args => $extra)
+		} qr/\ASSH transport: $error/, "$case is refused";
+	}
+	throws_ok {
+		App::FileSync::Transport::SSH->new(server => 'host', repo => 'docs', client => 'laptop', command => $fake, extra_args => '-v')
+	} qr/'extra_args'/, 'extra_args that is not a list is refused';
+	my ($at) = grep { $command->[$_] eq $fake } 0 .. $#{$command};
+	is_deeply($recorded->(), [ @{$command}[ $at + 1 .. $#{$command} ] ],
+		'a refused transport starts no ssh: the last argv recorded is the good one');
+}
+
 # --- Transport::Local::error_text ------------------------------------------------
 
 # The local server shares this process's stderr, so the transport has nothing
