@@ -486,4 +486,28 @@ for my $case (
 	is($copied, $big, 'large file content matches across chunks');
 }
 
+
+# ------------------------------------------------- stale temporaries are swept
+# Each sync removes stale .filesync-tmp-* files from the client tree and the
+# server's master before scanning; a young one may be another run's.
+{
+	my $env = TestSync->new_env();
+	$env->write_file('client', 'a.txt', "alpha\n", $T0);
+	$env->sync();
+
+	my $stale = time - 2 * 3_600;
+	for my $side (qw(client server)) {
+		$env->write_file($side, 'sub/.filesync-tmp-stale', "partial\n", $stale);
+		$env->write_file($side, '.filesync-tmp-young', "in progress\n", time);
+	}
+
+	my $result = $env->sync();
+	is($result->{summary}{pushed} + $result->{summary}{pulled}, 0, 'temporaries are never synced');
+	for my $side (qw(client server)) {
+		ok(!$env->exists_in($side, 'sub/.filesync-tmp-stale'), "$side: the stale temporary is removed");
+		ok($env->exists_in($side, '.filesync-tmp-young'), "$side: a young one is left alone");
+	}
+	is($env->read_file('server', 'a.txt'), "alpha\n", 'real files are untouched');
+}
+
 done_testing();
