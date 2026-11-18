@@ -26,40 +26,40 @@ https://pjcj.net
 <table>
 <tr><th>line</th><th>%</th><th colspan="2">coverage</th><th>branch</th></tr>
 <tr><td class="h"><a id="L120">120</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if defined $_</td></tr>
-<tr><td class="h"><a id="L257">257</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if -e $config_path</td></tr>
-<tr><td class="h"><a id="L264">264</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if defined $args-&gt;{$limit}</td></tr>
-<tr><td class="h"><a id="L267">267</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if $args-&gt;{&#39;ignore&#39;} and @{$args-&gt;{&#39;ignore&#39;};}</td></tr>
-<tr><td class="h"><a id="L273">273</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ($made)</td></tr>
-<tr><td class="h"><a id="L281">281</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">if defined $blocked</td></tr>
-<tr><td class="h"><a id="L334">334</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless list_dir($root)</td></tr>
-<tr><td class="h"><a id="L451">451</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless &amp;any(sub {
+<tr><td class="h"><a id="L259">259</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if -e $config_path</td></tr>
+<tr><td class="h"><a id="L266">266</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if defined $args-&gt;{$limit}</td></tr>
+<tr><td class="h"><a id="L269">269</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">if $args-&gt;{&#39;ignore&#39;} and @{$args-&gt;{&#39;ignore&#39;};}</td></tr>
+<tr><td class="h"><a id="L275">275</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ($made)</td></tr>
+<tr><td class="h"><a id="L283">283</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">if defined $blocked</td></tr>
+<tr><td class="h"><a id="L336">336</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless list_dir($root)</td></tr>
+<tr><td class="h"><a id="L453">453</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless &amp;any(sub {
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$_ eq $role;
 }
 , @App::FileSync::Admin::ROLES)</td></tr>
-<tr><td class="h"><a id="L514">514</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">defined $base &amp;&amp; -e $base ? :</td></tr>
-<tr><td class="h"><a id="L573">573</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -e $path</td></tr>
-<tr><td class="h"><a id="L575">575</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless eval {
+<tr><td class="h"><a id="L516">516</a></td><td class="c0">0</td><td class="c0">T</td><td class="c0">F</td><td class="s">defined $base &amp;&amp; -e $base ? :</td></tr>
+<tr><td class="h"><a id="L575">575</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -e $path</td></tr>
+<tr><td class="h"><a id="L577">577</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless eval {
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do {
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;App::FileSync::Admin::unlink($path);
 1
 }
 }</td></tr>
-<tr><td class="h"><a id="L701">701</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless list_dir($dir)</td></tr>
-<tr><td class="h"><a id="L707">707</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if defined $limit and $limit &gt; 0 and @events &gt; $limit</td></tr>
-<tr><td class="h"><a id="L782">782</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$report-&gt;{&#39;ok&#39;} ? :</td></tr>
-<tr><td class="h"><a id="L854">854</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$args-&gt;{&#39;dry_run&#39;} ? :</td></tr>
-<tr><td class="h"><a id="L857">857</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless my $lock = $store-&gt;acquire_lock</td></tr>
-<tr><td class="h"><a id="L862">862</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ($dry_run)</td></tr>
-<tr><td class="h"><a id="L872">872</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$dry_run ? :</td></tr>
-<tr><td class="h"><a id="L964">964</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $safe</td></tr>
-<tr><td class="h"><a id="L969">969</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if ($args-&gt;{&#39;list&#39;})</td></tr>
-<tr><td class="h"><a id="L976">976</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$into_master ? :</td></tr>
-<tr><td class="h"><a id="L977">977</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ($into_master)</td></tr>
-<tr><td class="h"><a id="L979">979</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $base</td></tr>
-<tr><td class="h"><a id="L983">983</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if -e $destination or -l $destination</td></tr>
-<tr><td class="h"><a id="L990">990</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $into_master</td></tr>
-<tr><td class="h"><a id="L992">992</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">defined $sha ? :</td></tr>
-<tr><td class="h"><a id="L997">997</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$into_master ? :</td></tr>
+<tr><td class="h"><a id="L703">703</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless list_dir($dir)</td></tr>
+<tr><td class="h"><a id="L709">709</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if defined $limit and $limit &gt; 0 and @events &gt; $limit</td></tr>
+<tr><td class="h"><a id="L784">784</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$report-&gt;{&#39;ok&#39;} ? :</td></tr>
+<tr><td class="h"><a id="L856">856</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$args-&gt;{&#39;dry_run&#39;} ? :</td></tr>
+<tr><td class="h"><a id="L859">859</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless my $lock = $store-&gt;acquire_lock</td></tr>
+<tr><td class="h"><a id="L864">864</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ($dry_run)</td></tr>
+<tr><td class="h"><a id="L874">874</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$dry_run ? :</td></tr>
+<tr><td class="h"><a id="L966">966</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $safe</td></tr>
+<tr><td class="h"><a id="L971">971</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if ($args-&gt;{&#39;list&#39;})</td></tr>
+<tr><td class="h"><a id="L978">978</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$into_master ? :</td></tr>
+<tr><td class="h"><a id="L979">979</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless ($into_master)</td></tr>
+<tr><td class="h"><a id="L981">981</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless -d $base</td></tr>
+<tr><td class="h"><a id="L985">985</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if -e $destination or -l $destination</td></tr>
+<tr><td class="h"><a id="L992">992</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if $into_master</td></tr>
+<tr><td class="h"><a id="L994">994</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">defined $sha ? :</td></tr>
+<tr><td class="h"><a id="L999">999</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">$into_master ? :</td></tr>
 </table>
 </body>
 </html>

@@ -32,154 +32,141 @@ https://pjcj.net
 <tr><td class="h">6</td><td colspan="6"></td></tr><tr><td class="h">7</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: from the 0.002.0 gap analysis.&nbsp;&nbsp;Pre-release blockers first.</td></tr>
 <tr><td class="h">8</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
 <tr><td class="h">9</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Behaviour that is silently wrong or inconsistent:</td></tr>
-<tr><td class="h">10</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: give --max-delete-percent an upper bound of 100 (150 is accepted).</td></tr>
-<tr><td class="h">11</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: Params::Validate::Strict failures bypass the catalogue and name the</td></tr>
-<tr><td class="h">12</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal parameter (&#39;trash_days&#39;) instead of the option (--trash-days).</td></tr>
-<tr><td class="h">13</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: I18N::warning is exported but never called or tested, and its</td></tr>
-<tr><td class="h">14</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trailing &quot;\n&quot; to carp puts the location on its own line, unlike its</td></tr>
-<tr><td class="h">15</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FORMAL SPECIFICATION.&nbsp;&nbsp;Test and fix it, or remove it.</td></tr>
-<tr><td class="h">16</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
-<tr><td class="h">17</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Failure and rollback paths no test runs:</td></tr>
-<tr><td class="h">18</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: Delta past the 8 MiB scan window (the literal tail loop in diff):</td></tr>
-<tr><td class="h">19</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;large-file deltas are unverified; &quot;local $SCAN_LIMIT&quot; makes it cheap.</td></tr>
-<tr><td class="h">20</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: Snapshot rollback: a failed build should remove its temp directory.</td></tr>
-<tr><td class="h">21</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: IO::write_atomic failure (a full disk): the temp file is discarded.</td></tr>
-<tr><td class="h">22</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: Scan::clean_stale_temps never deletes a stale temp in any test.</td></tr>
-<tr><td class="h">23</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: type changes: moving a directory into the trash (Trash::move_to_trash)</td></tr>
-<tr><td class="h">24</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and replacing a directory with a file (IO::clear_target).</td></tr>
-<tr><td class="h">25</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: the admin root-not-writable path in Admin::repo_create.</td></tr>
-<tr><td class="h">26</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
-<tr><td class="h">27</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Commands and APIs with no tests:</td></tr>
-<tr><td class="h">28</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: filesync-admin &quot;client list&quot; (Admin::client_list) never runs,</td></tr>
-<tr><td class="h">29</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in-process or through the CLI.</td></tr>
-<tr><td class="h">30</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: Protocol::close, Transport::SSH::command and exit_status,</td></tr>
-<tr><td class="h">31</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Transport::Local::error_text, Store::root and Store::repo.</td></tr>
-<tr><td class="h">32</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: the extra_args check in Transport::SSH-&gt;new has never run.</td></tr>
-<tr><td class="h">33</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
-<tr><td class="h">34</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Mutation testing:</td></tr>
-<tr><td class="h">35</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: the 80% score is 10 mutants, all in Platform.pm.&nbsp;&nbsp;Mutation-test Merge,</td></tr>
-<tr><td class="h">36</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Delta, the server&#39;s %MAY table and the deletion guard.</td></tr>
-<tr><td class="h">37</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: kill the two survivors: nothing checks the return value of</td></tr>
-<tr><td class="h">38</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Platform::use_plain_end_of_scope_hook.</td></tr>
+<tr><td class="h">10</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
+<tr><td class="h">11</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Failure and rollback paths no test runs:</td></tr>
+<tr><td class="h">12</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: type changes: moving a directory into the trash (Trash::move_to_trash)</td></tr>
+<tr><td class="h">13</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and replacing a directory with a file (IO::clear_target).</td></tr>
+<tr><td class="h">14</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: the admin root-not-writable path in Admin::repo_create.</td></tr>
+<tr><td class="h">15</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
+<tr><td class="h">16</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Commands and APIs with no tests:</td></tr>
+<tr><td class="h">17</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: filesync-admin &quot;client list&quot; (Admin::client_list) never runs,</td></tr>
+<tr><td class="h">18</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in-process or through the CLI.</td></tr>
+<tr><td class="h">19</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: Protocol::close, Transport::SSH::command and exit_status,</td></tr>
+<tr><td class="h">20</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Transport::Local::error_text, Store::root and Store::repo.</td></tr>
+<tr><td class="h">21</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: the extra_args check in Transport::SSH-&gt;new has never run.</td></tr>
+<tr><td class="h">22</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
+<tr><td class="h">23</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Mutation testing:</td></tr>
+<tr><td class="h">24</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: the 80% score is 10 mutants, all in Platform.pm.&nbsp;&nbsp;Mutation-test Merge,</td></tr>
+<tr><td class="h">25</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Delta, the server&#39;s %MAY table and the deletion guard.</td></tr>
+<tr><td class="h">26</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: kill the two survivors: nothing checks the return value of</td></tr>
+<tr><td class="h">27</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Platform::use_plain_end_of_scope_hook.</td></tr>
+<tr><td class="h">28</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
+<tr><td class="h">29</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Documentation:</td></tr>
+<tr><td class="h">30</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: =head3 PSEUDOCODE for the 24 public routines over 15 lines without it</td></tr>
+<tr><td class="h">31</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Server::new, Client::new, Trash::move_to_trash and prune,</td></tr>
+<tr><td class="h">32</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Merge::check_delete_limit, Scan::clean_stale_temps, Ignore::new, ...).</td></tr>
+<tr><td class="h">33</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: UTF-8 notes in Scan, Ignore, Trash, Snapshot and Store: names are</td></tr>
+<tr><td class="h">34</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bytes, and NFC and NFD forms of a name are different files.</td></tr>
+<tr><td class="h">35</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: warn when the client cache is damaged: the run silently re-hashes</td></tr>
+<tr><td class="h">36</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;every file (no data is at risk; the merge base is on the server).</td></tr>
+<tr><td class="h">37</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: remove the unused message key word.snapshot, and make t/locales.t</td></tr>
+<tr><td class="h">38</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report unused keys as well as missing ones.</td></tr>
 <tr><td class="h">39</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
-<tr><td class="h">40</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Documentation:</td></tr>
-<tr><td class="h">41</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: =head3 PSEUDOCODE for the 24 public routines over 15 lines without it</td></tr>
-<tr><td class="h">42</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Server::new, Client::new, Trash::move_to_trash and prune,</td></tr>
-<tr><td class="h">43</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Merge::check_delete_limit, Scan::clean_stale_temps, Ignore::new, ...).</td></tr>
-<tr><td class="h">44</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: UTF-8 notes in Scan, Ignore, Trash, Snapshot and Store: names are</td></tr>
-<tr><td class="h">45</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bytes, and NFC and NFD forms of a name are different files.</td></tr>
-<tr><td class="h">46</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: warn when the client cache is damaged: the run silently re-hashes</td></tr>
-<tr><td class="h">47</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;every file (no data is at risk; the merge base is on the server).</td></tr>
-<tr><td class="h">48</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: remove the unused message key word.snapshot, and make t/locales.t</td></tr>
-<tr><td class="h">49</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report unused keys as well as missing ones.</td></tr>
-<tr><td class="h">50</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
-<tr><td class="h">51</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Post-release roadmap: features.</td></tr>
-<tr><td class="h">52</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: incremental manifests (a change journal or Merkle summary), so an</td></tr>
-<tr><td class="h">53</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;idle run costs almost nothing instead of O(files).</td></tr>
-<tr><td class="h">54</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: &quot;filesync watch&quot;: sync on file changes (inotify, FSEvents,</td></tr>
-<tr><td class="h">55</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ReadDirectoryChangesW), with cron as the fallback.</td></tr>
-<tr><td class="h">56</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: let a client restore from the server&#39;s trash (admin-only today).</td></tr>
-<tr><td class="h">57</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: selective sync: a client takes only a subtree of a repo.</td></tr>
-<tr><td class="h">58</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: --bwlimit and a quiet-hours window for metered links.</td></tr>
-<tr><td class="h">59</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: monitoring output: a node-exporter textfile, or a status --json health</td></tr>
-<tr><td class="h">60</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;summary that alerts on repeated exit codes 3 or 4.</td></tr>
-<tr><td class="h">61</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: reconcile NFC and NFD forms of a name (the macOS/Linux gap).</td></tr>
-<tr><td class="h">62</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: a conflict review command to list and resolve conflict copies.</td></tr>
-<tr><td class="h">63</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
-<tr><td class="h">64</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Post-release roadmap: technical debt.</td></tr>
-<tr><td class="h">65</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: widen mutation testing (Merge, Delta, Server, Trash first) and gate CI</td></tr>
-<tr><td class="h">66</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on condition coverage (57% now).</td></tr>
-<tr><td class="h">67</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: pipeline the protocol: one request in flight bounds throughput by the</td></tr>
-<tr><td class="h">68</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;round-trip time.</td></tr>
-<tr><td class="h">69</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: stream the plan as JSON lines instead of one huge line, which also</td></tr>
-<tr><td class="h">70</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bounds message size.</td></tr>
-<tr><td class="h">71</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: fsync: renames are atomic between processes but not durable across a</td></tr>
-<tr><td class="h">72</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;power cut.</td></tr>
-<tr><td class="h">73</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: an optional native rolling checksum (Inline::C or XS) to lift the</td></tr>
-<tr><td class="h">74</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8 MiB scan window; pure Perl manages about 2.5 MB/s when nothing matches.</td></tr>
-<tr><td class="h">75</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: one validation error layer that turns Params::Validate::Strict</td></tr>
-<tr><td class="h">76</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;failures into catalogue messages naming the CLI option.</td></tr>
-<tr><td class="h">77</td><td colspan="6"></td></tr><tr><td class="h">78</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L78">348</a></div></td><td><div>222533</div><div>271</div><div>3267</div></td><td class="s">use App::FileSync::Platform;</td></tr>
-<tr><td class="h">79</td><td colspan="6"></td></tr><tr><td class="h">80</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L80">348</a></div></td><td><div>399</div><div>223</div><div>2039</div></td><td class="s">use strict;</td></tr>
-<tr><td class="h">81</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L81">348</a></div></td><td><div>387</div><div>210</div><div>4994</div></td><td class="s">use warnings;</td></tr>
-<tr><td class="h">82</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L82">348</a></div></td><td><div>1014</div><div>17940</div><div>1478</div></td><td class="s">use autodie qw(:all);</td></tr>
-<tr><td class="h">83</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L83">348</a></div></td><td><div>568755</div><div>450</div><div>19878</div></td><td class="s">use feature &#39;current_sub&#39;;</td></tr>
-<tr><td class="h">84</td><td colspan="6"></td></tr><tr><td class="h">85</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L85">348</a></div></td><td><div>650</div><div>370</div><div>3034</div></td><td class="s">use Exporter qw(import);</td></tr>
-<tr><td class="h">86</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L86">348</a></div></td><td><div>497</div><div>247</div><div>1817</div></td><td class="s">use JSON::MaybeXS ();</td></tr>
-<tr><td class="h">87</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L87">348</a></div></td><td><div>445</div><div>206</div><div>1073</div></td><td class="s">use POSIX qw(strftime);</td></tr>
-<tr><td class="h">88</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L88">348</a></div></td><td><div>9193</div><div>3779</div><div>4919</div></td><td class="s">use Readonly;</td></tr>
-<tr><td class="h">89</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L89">348</a></div></td><td><div>1160</div><div>83866</div><div>756</div></td><td class="s">use Sub::Private { mode =&gt; &#39;enforce&#39; };</td></tr>
-<tr><td class="h">90</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L90">348</a></div></td><td><div>85053</div><div>199815</div><div>3463</div></td><td class="s">use Time::Local ();</td></tr>
-<tr><td class="h">91</td><td colspan="6"></td></tr><tr><td class="h">92</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L92">348</a></div></td><td><div>38063</div><div>354</div><div>19834</div></td><td class="s">use App::FileSync::Constants qw($MAX_ID_LENGTH $SECONDS_PER_DAY);</td></tr>
-<tr><td class="h">93</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L93">348</a></div></td><td><div>44844</div><div>339</div><div>8195</div></td><td class="s">use App::FileSync::I18N qw(message throw);</td></tr>
-<tr><td class="h">94</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L94">348</a></div></td><td><div>44778</div><div>403</div><div>8178</div></td><td class="s">use App::FileSync::IO qw(write_atomic read_text set_mtime);</td></tr>
-<tr><td class="h">95</td><td colspan="6"></td></tr><tr><td class="h">96</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L96">348</a></div></td><td><div>538</div><div>215</div><div>516</div></td><td class="s">use version; our $VERSION = version-&gt;declare(&#39;0.002.1&#39;);</td></tr>
-<tr><td class="h">97</td><td colspan="6"></td></tr><tr><td class="h">98</td><td></td><td></td><td></td><td></td><td></td><td class="s">our @EXPORT_OK = qw(</td></tr>
-<tr><td class="h">99</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;json_encode json_decode</td></tr>
-<tr><td class="h">100</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_relpath validate_repo_name validate_client_id</td></tr>
-<tr><td class="h">101</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conflict_name name_with_suffix split_name</td></tr>
-<tr><td class="h">102</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;format_utc parse_since parse_until</td></tr>
-<tr><td class="h">103</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write_atomic read_text set_mtime</td></tr>
-<tr><td class="h">104</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
-<tr><td class="h">105</td><td colspan="6"></td></tr><tr><td class="h">106</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Limits on paths as they travel on the wire.&nbsp;&nbsp;Package variables rather than</td></tr>
-<tr><td class="h">107</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Readonly because they document the protocol and tests read them.</td></tr>
-<tr><td class="h">108</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $MAX_PATH_BYTES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 4096;</td></tr>
-<tr><td class="h">109</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $MAX_COMPONENT_BYTES = 255;</td></tr>
-<tr><td class="h">110</td><td colspan="6"></td></tr><tr><td class="h">111</td><td></td><td></td><td></td><td></td><td></td><td class="s"># A conflict-copy name is kept this far inside the common 255-byte limit, and</td></tr>
-<tr><td class="h">112</td><td></td><td></td><td></td><td></td><td></td><td class="s"># never trims the original stem below the minimum.</td></tr>
-<tr><td class="h">113</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar my $CONFLICT_NAME_BYTES =&gt; 200;</td></tr>
-<tr><td class="h">114</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar my $MIN_STEM_BYTES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; 16;</td></tr>
-<tr><td class="h">115</td><td colspan="6"></td></tr><tr><td class="h">116</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The alphabet of a repo or client id: it becomes a directory name.</td></tr>
-<tr><td class="h">117</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $ID_PATTERN =&gt; qr/\A[A-Za-z0-9][A-Za-z0-9._-]*\z/;</td></tr>
-<tr><td class="h">118</td><td colspan="6"></td></tr><tr><td class="h">119</td><td></td><td></td><td></td><td></td><td></td><td class="s"># What an unusable client id is replaced with in a conflict-copy name.</td></tr>
-<tr><td class="h">120</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar my $UNKNOWN_CLIENT =&gt; &#39;unknown&#39;;</td></tr>
-<tr><td class="h">121</td><td colspan="6"></td></tr><tr><td class="h">122</td><td></td><td></td><td></td><td></td><td></td><td class="s"># format_utc&#39;s ISO 8601 basic format: 20261104T014157Z.</td></tr>
-<tr><td class="h">123</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar my $UTC_STAMP =&gt; &#39;%Y%m%dT%H%M%SZ&#39;;</td></tr>
-<tr><td class="h">124</td><td colspan="6"></td></tr><tr><td class="h">125</td><td></td><td></td><td></td><td></td><td></td><td class="s"># JSON::MaybeXS picks Cpanel::JSON::XS, then JSON::XS, then the core JSON::PP,</td></tr>
-<tr><td class="h">126</td><td></td><td></td><td></td><td></td><td></td><td class="s"># and installing it pulls in Cpanel::JSON::XS wherever there is a compiler.&nbsp;&nbsp;On</td></tr>
-<tr><td class="h">127</td><td></td><td></td><td></td><td></td><td></td><td class="s"># a 100,000-file manifest Cpanel::JSON::XS decodes in 0.2s where JSON::PP takes</td></tr>
-<tr><td class="h">128</td><td></td><td></td><td></td><td></td><td></td><td class="s"># about 15s.&nbsp;&nbsp;All three read any valid JSON, so a client and a server using</td></tr>
-<tr><td class="h">129</td><td></td><td></td><td></td><td></td><td></td><td class="s"># different backends still understand each other.&nbsp;&nbsp;The text differs only in</td></tr>
-<tr><td class="h">130</td><td></td><td></td><td></td><td></td><td></td><td class="s"># number formatting (Cpanel::JSON::XS writes a whole-valued float as 1000.0),</td></tr>
-<tr><td class="h">131</td><td></td><td></td><td></td><td></td><td></td><td class="s"># which decodes to the same value everywhere.</td></tr>
-<tr><td class="h">132</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
-<tr><td class="h">133</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Deliberately utf8(0): paths are byte strings on the wire, and both ends of the</td></tr>
-<tr><td class="h">134</td><td></td><td></td><td></td><td></td><td></td><td class="s"># protocol are this implementation.</td></tr>
-<tr><td class="h">135</td><td></td><td></td><td></td><td></td><td></td><td class="s">my $JSON = JSON::MaybeXS-&gt;new-&gt;canonical-&gt;allow_nonref;</td></tr>
-<tr><td class="h">136</td><td colspan="6"></td></tr><tr><td class="h">137</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Both backends return UTF8-flagged strings even though paths are byte strings on</td></tr>
-<tr><td class="h">138</td><td></td><td></td><td></td><td></td><td></td><td class="s"># disk.&nbsp;&nbsp;Left alone, the flag makes -e/stat encode the name a second time and</td></tr>
-<tr><td class="h">139</td><td></td><td></td><td></td><td></td><td></td><td class="s"># every non-ASCII file &quot;disappears&quot;.&nbsp;&nbsp;This downgrades back to the original</td></tr>
-<tr><td class="h">140</td><td></td><td></td><td></td><td></td><td></td><td class="s"># bytes; only a genuine wide-character string is encoded as UTF-8.</td></tr>
-<tr><td class="h">141</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
-<tr><td class="h">142</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Hash keys need the same treatment, and manifests are keyed by path, but a key</td></tr>
-<tr><td class="h">143</td><td></td><td></td><td></td><td></td><td></td><td class="s"># cannot be changed in place: a non-ASCII key is deleted and stored again as</td></tr>
-<tr><td class="h">144</td><td></td><td></td><td></td><td></td><td></td><td class="s"># bytes.&nbsp;&nbsp;An ASCII key names the same file flagged or not, so it is left alone,</td></tr>
-<tr><td class="h">145</td><td></td><td></td><td></td><td></td><td></td><td class="s"># which keeps the cost to one pattern match per key.</td></tr>
-<tr><td class="h">146</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
-<tr><td class="h">147</td><td></td><td></td><td></td><td></td><td></td><td class="s"># A lexical coderef rather than a named sub: it runs once per JSON value (six</td></tr>
-<tr><td class="h">148</td><td></td><td></td><td></td><td></td><td></td><td class="s"># times per manifest entry), and the Sub::Private enforce wrapper would cost</td></tr>
-<tr><td class="h">149</td><td></td><td></td><td></td><td></td><td></td><td class="s"># more than the work.&nbsp;&nbsp;Being lexical, nothing outside this file can reach it.</td></tr>
-<tr><td class="h">150</td><td></td><td></td><td></td><td></td><td></td><td class="s">my $to_bytes = sub {</td></tr>
-<tr><td class="h">151</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Work through @_ aliases: copying the scalar would rewrite the copy only.</td></tr>
-<tr><td class="h">152</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (ref($_[0]) eq &#39;HASH&#39;) {</td></tr>
-<tr><td class="h">153</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $hash = $_[0];</td></tr>
-<tr><td class="h">154</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $key (grep { /[^\x00-\x7f]/ } keys %{$hash}) {</td></tr>
-<tr><td class="h">155</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $bytes = $key;</td></tr>
-<tr><td class="h">156</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;utf8::encode($bytes) unless utf8::downgrade($bytes, 1);</td></tr>
-<tr><td class="h">157</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# delete first: a flagged key and its bytes are the same hash key.</td></tr>
-<tr><td class="h">158</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $value = delete $hash-&gt;{$key};</td></tr>
-<tr><td class="h">159</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$hash-&gt;{$bytes} = $value;</td></tr>
-<tr><td class="h">160</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">161</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__SUB__-&gt;($_) for values %{$hash};</td></tr>
-<tr><td class="h">162</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} elsif (ref($_[0]) eq &#39;ARRAY&#39;) {</td></tr>
-<tr><td class="h">163</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__SUB__-&gt;($_) for @{ $_[0] };</td></tr>
-<tr><td class="h">164</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} elsif (defined($_[0]) &amp;&amp; !ref($_[0]) &amp;&amp; utf8::is_utf8($_[0])) {</td></tr>
-<tr><td class="h">165</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;utf8::encode($_[0]) unless utf8::downgrade($_[0], 1);</td></tr>
-<tr><td class="h">166</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">167</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;</td></tr>
-<tr><td class="h">168</td><td></td><td></td><td></td><td></td><td></td><td class="s">};</td></tr>
-<tr><td class="h">169</td><td colspan="6"></td></tr><tr><td class="h">170</td><td></td><td></td><td></td><td></td><td></td><td class="s">=encoding utf8</td></tr>
-<tr><td class="h">171</td><td colspan="6"></td></tr><tr><td class="h">172 - 254</td><td colspan="5"></td><td class="s"><pre>=head1 NAME
+<tr><td class="h">40</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Post-release roadmap: features.</td></tr>
+<tr><td class="h">41</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: incremental manifests (a change journal or Merkle summary), so an</td></tr>
+<tr><td class="h">42</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;idle run costs almost nothing instead of O(files).</td></tr>
+<tr><td class="h">43</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: &quot;filesync watch&quot;: sync on file changes (inotify, FSEvents,</td></tr>
+<tr><td class="h">44</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ReadDirectoryChangesW), with cron as the fallback.</td></tr>
+<tr><td class="h">45</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: let a client restore from the server&#39;s trash (admin-only today).</td></tr>
+<tr><td class="h">46</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: selective sync: a client takes only a subtree of a repo.</td></tr>
+<tr><td class="h">47</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: --bwlimit and a quiet-hours window for metered links.</td></tr>
+<tr><td class="h">48</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: monitoring output: a node-exporter textfile, or a status --json health</td></tr>
+<tr><td class="h">49</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;summary that alerts on repeated exit codes 3 or 4.</td></tr>
+<tr><td class="h">50</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: reconcile NFC and NFD forms of a name (the macOS/Linux gap).</td></tr>
+<tr><td class="h">51</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: a conflict review command to list and resolve conflict copies.</td></tr>
+<tr><td class="h">52</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
+<tr><td class="h">53</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Post-release roadmap: technical debt.</td></tr>
+<tr><td class="h">54</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: widen mutation testing (Merge, Delta, Server, Trash first) and gate CI</td></tr>
+<tr><td class="h">55</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on condition coverage (57% now).</td></tr>
+<tr><td class="h">56</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: pipeline the protocol: one request in flight bounds throughput by the</td></tr>
+<tr><td class="h">57</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;round-trip time.</td></tr>
+<tr><td class="h">58</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: stream the plan as JSON lines instead of one huge line, which also</td></tr>
+<tr><td class="h">59</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bounds message size.</td></tr>
+<tr><td class="h">60</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: fsync: renames are atomic between processes but not durable across a</td></tr>
+<tr><td class="h">61</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;power cut.</td></tr>
+<tr><td class="h">62</td><td></td><td></td><td></td><td></td><td></td><td class="s"># TODO: an optional native rolling checksum (Inline::C or XS) to lift the</td></tr>
+<tr><td class="h">63</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8 MiB scan window; pure Perl manages about 2.5 MB/s when nothing matches.</td></tr>
+<tr><td class="h">64</td><td colspan="6"></td></tr><tr><td class="h">65</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L65">352</a></div></td><td><div>282154</div><div>286</div><div>4944</div></td><td class="s">use App::FileSync::Platform;</td></tr>
+<tr><td class="h">66</td><td colspan="6"></td></tr><tr><td class="h">67</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L67">352</a></div></td><td><div>577</div><div>231</div><div>2779</div></td><td class="s">use strict;</td></tr>
+<tr><td class="h">68</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L68">352</a></div></td><td><div>461</div><div>216</div><div>6222</div></td><td class="s">use warnings;</td></tr>
+<tr><td class="h">69</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L69">352</a></div></td><td><div>1246</div><div>23228</div><div>1512</div></td><td class="s">use autodie qw(:all);</td></tr>
+<tr><td class="h">70</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L70">352</a></div></td><td><div>744179</div><div>466</div><div>21349</div></td><td class="s">use feature &#39;current_sub&#39;;</td></tr>
+<tr><td class="h">71</td><td colspan="6"></td></tr><tr><td class="h">72</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L72">352</a></div></td><td><div>937</div><div>360</div><div>3975</div></td><td class="s">use Exporter qw(import);</td></tr>
+<tr><td class="h">73</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L73">352</a></div></td><td><div>613</div><div>242</div><div>2483</div></td><td class="s">use JSON::MaybeXS ();</td></tr>
+<tr><td class="h">74</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L74">352</a></div></td><td><div>532</div><div>262</div><div>1069</div></td><td class="s">use POSIX qw(strftime);</td></tr>
+<tr><td class="h">75</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L75">352</a></div></td><td><div>10838</div><div>5101</div><div>6573</div></td><td class="s">use Readonly;</td></tr>
+<tr><td class="h">76</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L76">352</a></div></td><td><div>1431</div><div>107262</div><div>871</div></td><td class="s">use Sub::Private { mode =&gt; &#39;enforce&#39; };</td></tr>
+<tr><td class="h">77</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L77">352</a></div></td><td><div>101980</div><div>252734</div><div>5020</div></td><td class="s">use Time::Local ();</td></tr>
+<tr><td class="h">78</td><td colspan="6"></td></tr><tr><td class="h">79</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L79">352</a></div></td><td><div>46843</div><div>402</div><div>22126</div></td><td class="s">use App::FileSync::Constants qw($MAX_ID_LENGTH $SECONDS_PER_DAY);</td></tr>
+<tr><td class="h">80</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L80">352</a></div></td><td><div>55444</div><div>424</div><div>10415</div></td><td class="s">use App::FileSync::I18N qw(message throw);</td></tr>
+<tr><td class="h">81</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L81">352</a></div></td><td><div>55449</div><div>446</div><div>10408</div></td><td class="s">use App::FileSync::IO qw(write_atomic read_text set_mtime);</td></tr>
+<tr><td class="h">82</td><td colspan="6"></td></tr><tr><td class="h">83</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L83">352</a></div></td><td><div>728</div><div>261</div><div>602</div></td><td class="s">use version; our $VERSION = version-&gt;declare(&#39;0.002.1&#39;);</td></tr>
+<tr><td class="h">84</td><td colspan="6"></td></tr><tr><td class="h">85</td><td></td><td></td><td></td><td></td><td></td><td class="s">our @EXPORT_OK = qw(</td></tr>
+<tr><td class="h">86</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;json_encode json_decode</td></tr>
+<tr><td class="h">87</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_relpath validate_repo_name validate_client_id</td></tr>
+<tr><td class="h">88</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conflict_name name_with_suffix split_name</td></tr>
+<tr><td class="h">89</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;format_utc parse_since parse_until</td></tr>
+<tr><td class="h">90</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write_atomic read_text set_mtime</td></tr>
+<tr><td class="h">91</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
+<tr><td class="h">92</td><td colspan="6"></td></tr><tr><td class="h">93</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Limits on paths as they travel on the wire.&nbsp;&nbsp;Package variables rather than</td></tr>
+<tr><td class="h">94</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Readonly because they document the protocol and tests read them.</td></tr>
+<tr><td class="h">95</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $MAX_PATH_BYTES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 4096;</td></tr>
+<tr><td class="h">96</td><td></td><td></td><td></td><td></td><td></td><td class="s">our $MAX_COMPONENT_BYTES = 255;</td></tr>
+<tr><td class="h">97</td><td colspan="6"></td></tr><tr><td class="h">98</td><td></td><td></td><td></td><td></td><td></td><td class="s"># A conflict-copy name is kept this far inside the common 255-byte limit, and</td></tr>
+<tr><td class="h">99</td><td></td><td></td><td></td><td></td><td></td><td class="s"># never trims the original stem below the minimum.</td></tr>
+<tr><td class="h">100</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar my $CONFLICT_NAME_BYTES =&gt; 200;</td></tr>
+<tr><td class="h">101</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar my $MIN_STEM_BYTES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; 16;</td></tr>
+<tr><td class="h">102</td><td colspan="6"></td></tr><tr><td class="h">103</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The alphabet of a repo or client id: it becomes a directory name.</td></tr>
+<tr><td class="h">104</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly my $ID_PATTERN =&gt; qr/\A[A-Za-z0-9][A-Za-z0-9._-]*\z/;</td></tr>
+<tr><td class="h">105</td><td colspan="6"></td></tr><tr><td class="h">106</td><td></td><td></td><td></td><td></td><td></td><td class="s"># What an unusable client id is replaced with in a conflict-copy name.</td></tr>
+<tr><td class="h">107</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar my $UNKNOWN_CLIENT =&gt; &#39;unknown&#39;;</td></tr>
+<tr><td class="h">108</td><td colspan="6"></td></tr><tr><td class="h">109</td><td></td><td></td><td></td><td></td><td></td><td class="s"># format_utc&#39;s ISO 8601 basic format: 20261104T014157Z.</td></tr>
+<tr><td class="h">110</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar my $UTC_STAMP =&gt; &#39;%Y%m%dT%H%M%SZ&#39;;</td></tr>
+<tr><td class="h">111</td><td colspan="6"></td></tr><tr><td class="h">112</td><td></td><td></td><td></td><td></td><td></td><td class="s"># JSON::MaybeXS picks Cpanel::JSON::XS, then JSON::XS, then the core JSON::PP,</td></tr>
+<tr><td class="h">113</td><td></td><td></td><td></td><td></td><td></td><td class="s"># and installing it pulls in Cpanel::JSON::XS wherever there is a compiler.&nbsp;&nbsp;On</td></tr>
+<tr><td class="h">114</td><td></td><td></td><td></td><td></td><td></td><td class="s"># a 100,000-file manifest Cpanel::JSON::XS decodes in 0.2s where JSON::PP takes</td></tr>
+<tr><td class="h">115</td><td></td><td></td><td></td><td></td><td></td><td class="s"># about 15s.&nbsp;&nbsp;All three read any valid JSON, so a client and a server using</td></tr>
+<tr><td class="h">116</td><td></td><td></td><td></td><td></td><td></td><td class="s"># different backends still understand each other.&nbsp;&nbsp;The text differs only in</td></tr>
+<tr><td class="h">117</td><td></td><td></td><td></td><td></td><td></td><td class="s"># number formatting (Cpanel::JSON::XS writes a whole-valued float as 1000.0),</td></tr>
+<tr><td class="h">118</td><td></td><td></td><td></td><td></td><td></td><td class="s"># which decodes to the same value everywhere.</td></tr>
+<tr><td class="h">119</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
+<tr><td class="h">120</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Deliberately utf8(0): paths are byte strings on the wire, and both ends of the</td></tr>
+<tr><td class="h">121</td><td></td><td></td><td></td><td></td><td></td><td class="s"># protocol are this implementation.</td></tr>
+<tr><td class="h">122</td><td></td><td></td><td></td><td></td><td></td><td class="s">my $JSON = JSON::MaybeXS-&gt;new-&gt;canonical-&gt;allow_nonref;</td></tr>
+<tr><td class="h">123</td><td colspan="6"></td></tr><tr><td class="h">124</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Both backends return UTF8-flagged strings even though paths are byte strings on</td></tr>
+<tr><td class="h">125</td><td></td><td></td><td></td><td></td><td></td><td class="s"># disk.&nbsp;&nbsp;Left alone, the flag makes -e/stat encode the name a second time and</td></tr>
+<tr><td class="h">126</td><td></td><td></td><td></td><td></td><td></td><td class="s"># every non-ASCII file &quot;disappears&quot;.&nbsp;&nbsp;This downgrades back to the original</td></tr>
+<tr><td class="h">127</td><td></td><td></td><td></td><td></td><td></td><td class="s"># bytes; only a genuine wide-character string is encoded as UTF-8.</td></tr>
+<tr><td class="h">128</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
+<tr><td class="h">129</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Hash keys need the same treatment, and manifests are keyed by path, but a key</td></tr>
+<tr><td class="h">130</td><td></td><td></td><td></td><td></td><td></td><td class="s"># cannot be changed in place: a non-ASCII key is deleted and stored again as</td></tr>
+<tr><td class="h">131</td><td></td><td></td><td></td><td></td><td></td><td class="s"># bytes.&nbsp;&nbsp;An ASCII key names the same file flagged or not, so it is left alone,</td></tr>
+<tr><td class="h">132</td><td></td><td></td><td></td><td></td><td></td><td class="s"># which keeps the cost to one pattern match per key.</td></tr>
+<tr><td class="h">133</td><td></td><td></td><td></td><td></td><td></td><td class="s">#</td></tr>
+<tr><td class="h">134</td><td></td><td></td><td></td><td></td><td></td><td class="s"># A lexical coderef rather than a named sub: it runs once per JSON value (six</td></tr>
+<tr><td class="h">135</td><td></td><td></td><td></td><td></td><td></td><td class="s"># times per manifest entry), and the Sub::Private enforce wrapper would cost</td></tr>
+<tr><td class="h">136</td><td></td><td></td><td></td><td></td><td></td><td class="s"># more than the work.&nbsp;&nbsp;Being lexical, nothing outside this file can reach it.</td></tr>
+<tr><td class="h">137</td><td></td><td></td><td></td><td></td><td></td><td class="s">my $to_bytes = sub {</td></tr>
+<tr><td class="h">138</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Work through @_ aliases: copying the scalar would rewrite the copy only.</td></tr>
+<tr><td class="h">139</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (ref($_[0]) eq &#39;HASH&#39;) {</td></tr>
+<tr><td class="h">140</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $hash = $_[0];</td></tr>
+<tr><td class="h">141</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $key (grep { /[^\x00-\x7f]/ } keys %{$hash}) {</td></tr>
+<tr><td class="h">142</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $bytes = $key;</td></tr>
+<tr><td class="h">143</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;utf8::encode($bytes) unless utf8::downgrade($bytes, 1);</td></tr>
+<tr><td class="h">144</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# delete first: a flagged key and its bytes are the same hash key.</td></tr>
+<tr><td class="h">145</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $value = delete $hash-&gt;{$key};</td></tr>
+<tr><td class="h">146</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$hash-&gt;{$bytes} = $value;</td></tr>
+<tr><td class="h">147</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">148</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__SUB__-&gt;($_) for values %{$hash};</td></tr>
+<tr><td class="h">149</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} elsif (ref($_[0]) eq &#39;ARRAY&#39;) {</td></tr>
+<tr><td class="h">150</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__SUB__-&gt;($_) for @{ $_[0] };</td></tr>
+<tr><td class="h">151</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} elsif (defined($_[0]) &amp;&amp; !ref($_[0]) &amp;&amp; utf8::is_utf8($_[0])) {</td></tr>
+<tr><td class="h">152</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;utf8::encode($_[0]) unless utf8::downgrade($_[0], 1);</td></tr>
+<tr><td class="h">153</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">154</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;</td></tr>
+<tr><td class="h">155</td><td></td><td></td><td></td><td></td><td></td><td class="s">};</td></tr>
+<tr><td class="h">156</td><td colspan="6"></td></tr><tr><td class="h">157</td><td></td><td></td><td></td><td></td><td></td><td class="s">=encoding utf8</td></tr>
+<tr><td class="h">158</td><td colspan="6"></td></tr><tr><td class="h">159 - 241</td><td colspan="5"></td><td class="s"><pre>=head1 NAME
 
 App::FileSync - cron-driven file synchronisation without a daemon
 
@@ -262,11 +249,11 @@ L&lt;JSON::XS&gt;, else L&lt;JSON::PP&gt;.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;json_decode(json_encode(v)) = v
 
 =cut</pre></td></tr>
-<tr><td class="h">255</td><td colspan="6"></td></tr><tr><td class="h">256</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub json_encode {</td></tr>
-<tr><td class="h">257</td><td><div class="c3">5156</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L257">5156</a></div></td><td><div>71933</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($data) = @_;</td></tr>
-<tr><td class="h">258</td><td colspan="6"></td></tr><tr><td class="h">259</td><td><div class="c3">5156</div></td><td></td><td></td><td></td><td><div>27592</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $JSON-&gt;encode($data);</td></tr>
-<tr><td class="h">260</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">261</td><td colspan="6"></td></tr><tr><td class="h">262 - 303</td><td colspan="5"></td><td class="s"><pre>=head2 json_decode
+<tr><td class="h">242</td><td colspan="6"></td></tr><tr><td class="h">243</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub json_encode {</td></tr>
+<tr><td class="h">244</td><td><div class="c3">5197</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L244">5197</a></div></td><td><div>92242</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($data) = @_;</td></tr>
+<tr><td class="h">245</td><td colspan="6"></td></tr><tr><td class="h">246</td><td><div class="c3">5197</div></td><td></td><td></td><td></td><td><div>32738</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $JSON-&gt;encode($data);</td></tr>
+<tr><td class="h">247</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">248</td><td colspan="6"></td></tr><tr><td class="h">249 - 290</td><td colspan="5"></td><td class="s"><pre>=head2 json_decode
 
 Purpose: decode one JSON document, keeping strings as byte strings.
 
@@ -308,13 +295,13 @@ else L&lt;JSON::PP&gt;).
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&acirc;&#136;&#128; s : STRING in result &acirc;&#128;&cent; &Acirc;&not; utf8_flag(s) &acirc;&#136;&uml; &acirc;&#136;&#131; c &acirc;&#136;&#136; s &acirc;&#128;&cent; ord c &gt; 255
 
 =cut</pre></td></tr>
-<tr><td class="h">304</td><td colspan="6"></td></tr><tr><td class="h">305</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub json_decode {</td></tr>
-<tr><td class="h">306</td><td><div class="c3">5599</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L306">5599</a></div></td><td><div>68133650</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($text) = @_;</td></tr>
-<tr><td class="h">307</td><td colspan="6"></td></tr><tr><td class="h">308</td><td><div class="c3">5599</div></td><td></td><td></td><td></td><td><div>34975</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $data = $JSON-&gt;decode($text);</td></tr>
-<tr><td class="h">309</td><td><div class="c3">5595</div></td><td></td><td></td><td></td><td><div>7171</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$to_bytes-&gt;($data);</td></tr>
-<tr><td class="h">310</td><td colspan="6"></td></tr><tr><td class="h">311</td><td><div class="c3">5595</div></td><td></td><td></td><td></td><td><div>5094</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $data;</td></tr>
-<tr><td class="h">312</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">313</td><td colspan="6"></td></tr><tr><td class="h">314 - 383</td><td colspan="5"></td><td class="s"><pre>=head2 validate_relpath
+<tr><td class="h">291</td><td colspan="6"></td></tr><tr><td class="h">292</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub json_decode {</td></tr>
+<tr><td class="h">293</td><td><div class="c3">5631</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L293">5631</a></div></td><td><div>94624429</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($text) = @_;</td></tr>
+<tr><td class="h">294</td><td colspan="6"></td></tr><tr><td class="h">295</td><td><div class="c3">5631</div></td><td></td><td></td><td></td><td><div>40255</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $data = $JSON-&gt;decode($text);</td></tr>
+<tr><td class="h">296</td><td><div class="c3">5627</div></td><td></td><td></td><td></td><td><div>8767</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$to_bytes-&gt;($data);</td></tr>
+<tr><td class="h">297</td><td colspan="6"></td></tr><tr><td class="h">298</td><td><div class="c3">5627</div></td><td></td><td></td><td></td><td><div>6511</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $data;</td></tr>
+<tr><td class="h">299</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">300</td><td colspan="6"></td></tr><tr><td class="h">301 - 370</td><td colspan="5"></td><td class="s"><pre>=head2 validate_relpath
 
 Purpose: decide whether a path is safe to join to a sync root.
 
@@ -384,36 +371,36 @@ Resolution: rename the file on the side that holds it.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;accept
 
 =cut</pre></td></tr>
-<tr><td class="h">384</td><td colspan="6"></td></tr><tr><td class="h">385</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub validate_relpath {</td></tr>
-<tr><td class="h">386</td><td><div class="c3">2040</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L386">2040</a></div></td><td><div>64896</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($path) = @_;</td></tr>
-<tr><td class="h">387</td><td colspan="6"></td></tr><tr><td class="h">388</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# One key per rejection, checked in order: the first problem found is</td></tr>
-<tr><td class="h">389</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# the one reported.</td></tr>
-<tr><td class="h">390</td><td><div class="c3">2040</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L390">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L390">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L390">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L390">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L390">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L390">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L390">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L390">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L390">100</a></div></td><td></td><td></td><td><div>6058</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $problem =</td></tr>
-<tr><td class="h">391</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!defined $path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.missing&#39;</td></tr>
-<tr><td class="h">392</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ref $path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.not_text&#39;</td></tr>
-<tr><td class="h">393</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: !length $path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.empty&#39;</td></tr>
-<tr><td class="h">394</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: length($path) &gt; $MAX_PATH_BYTES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.too_long&#39;</td></tr>
-<tr><td class="h">395</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $path =~ m{\A/}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.absolute&#39;</td></tr>
-<tr><td class="h">396</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $path =~ /\A[A-Za-z]:/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.drive&#39;</td></tr>
-<tr><td class="h">397</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $path =~ /\\/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.backslash&#39;</td></tr>
-<tr><td class="h">398</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $path =~ /\0/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.nul&#39;</td></tr>
-<tr><td class="h">399</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $path =~ /[\x01-\x1f\x7f]/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.control&#39;</td></tr>
-<tr><td class="h">400</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: undef;</td></tr>
-<tr><td class="h">401</td><td colspan="6"></td></tr><tr><td class="h">402</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Components are only worth checking once the whole path is plausible.</td></tr>
-<tr><td class="h">403</td><td><div class="c3">2040</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L403">100</a></div></td><td></td><td></td><td><div>1652</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless (defined $problem) {</td></tr>
-<tr><td class="h">404</td><td><div class="c3">2027</div></td><td></td><td></td><td></td><td><div>2392</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $part (split m{/}, $path, -1) {</td></tr>
-<tr><td class="h">405</td><td><div class="c3">2245</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L405">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L405">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L405">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L405">100</a></div></td><td></td><td></td><td><div>2846</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$problem =</td></tr>
-<tr><td class="h">406</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$part eq &#39;&#39;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.empty_component&#39;</td></tr>
-<tr><td class="h">407</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $part eq &#39;.&#39;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.dot_component&#39;</td></tr>
-<tr><td class="h">408</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $part eq &#39;..&#39;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.parent_component&#39;</td></tr>
-<tr><td class="h">409</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: length($part) &gt; $MAX_COMPONENT_BYTES&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.component_too_long&#39;</td></tr>
-<tr><td class="h">410</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: undef;</td></tr>
-<tr><td class="h">411</td><td><div class="c3">2245</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L411">100</a></div></td><td></td><td></td><td><div>1615</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last if defined $problem;</td></tr>
-<tr><td class="h">412</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">413</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
-<tr><td class="h">414</td><td colspan="6"></td></tr><tr><td class="h">415</td><td><div class="c3">2040</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L415">100</a></div></td><td></td><td></td><td><div>2281</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return defined $problem ? (0, message($problem)) : (1, undef);</td></tr>
-<tr><td class="h">416</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">417</td><td colspan="6"></td></tr><tr><td class="h">418 - 466</td><td colspan="5"></td><td class="s"><pre>=head2 validate_repo_name
+<tr><td class="h">371</td><td colspan="6"></td></tr><tr><td class="h">372</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub validate_relpath {</td></tr>
+<tr><td class="h">373</td><td><div class="c3">2047</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L373">2047</a></div></td><td><div>86752</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($path) = @_;</td></tr>
+<tr><td class="h">374</td><td colspan="6"></td></tr><tr><td class="h">375</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# One key per rejection, checked in order: the first problem found is</td></tr>
+<tr><td class="h">376</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# the one reported.</td></tr>
+<tr><td class="h">377</td><td><div class="c3">2047</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L377">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L377">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L377">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L377">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L377">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L377">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L377">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L377">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L377">100</a></div></td><td></td><td></td><td><div>7373</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $problem =</td></tr>
+<tr><td class="h">378</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!defined $path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.missing&#39;</td></tr>
+<tr><td class="h">379</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ref $path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.not_text&#39;</td></tr>
+<tr><td class="h">380</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: !length $path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.empty&#39;</td></tr>
+<tr><td class="h">381</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: length($path) &gt; $MAX_PATH_BYTES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.too_long&#39;</td></tr>
+<tr><td class="h">382</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $path =~ m{\A/}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.absolute&#39;</td></tr>
+<tr><td class="h">383</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $path =~ /\A[A-Za-z]:/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.drive&#39;</td></tr>
+<tr><td class="h">384</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $path =~ /\\/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.backslash&#39;</td></tr>
+<tr><td class="h">385</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $path =~ /\0/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.nul&#39;</td></tr>
+<tr><td class="h">386</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $path =~ /[\x01-\x1f\x7f]/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.control&#39;</td></tr>
+<tr><td class="h">387</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: undef;</td></tr>
+<tr><td class="h">388</td><td colspan="6"></td></tr><tr><td class="h">389</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Components are only worth checking once the whole path is plausible.</td></tr>
+<tr><td class="h">390</td><td><div class="c3">2047</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L390">100</a></div></td><td></td><td></td><td><div>1911</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless (defined $problem) {</td></tr>
+<tr><td class="h">391</td><td><div class="c3">2034</div></td><td></td><td></td><td></td><td><div>2796</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for my $part (split m{/}, $path, -1) {</td></tr>
+<tr><td class="h">392</td><td><div class="c3">2252</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L392">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L392">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L392">100</a></div><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L392">100</a></div></td><td></td><td></td><td><div>3434</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$problem =</td></tr>
+<tr><td class="h">393</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$part eq &#39;&#39;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.empty_component&#39;</td></tr>
+<tr><td class="h">394</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $part eq &#39;.&#39;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.dot_component&#39;</td></tr>
+<tr><td class="h">395</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $part eq &#39;..&#39;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.parent_component&#39;</td></tr>
+<tr><td class="h">396</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: length($part) &gt; $MAX_COMPONENT_BYTES&nbsp;&nbsp;&nbsp;&nbsp;? &#39;path.component_too_long&#39;</td></tr>
+<tr><td class="h">397</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: undef;</td></tr>
+<tr><td class="h">398</td><td><div class="c3">2252</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L398">100</a></div></td><td></td><td></td><td><div>2127</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last if defined $problem;</td></tr>
+<tr><td class="h">399</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">400</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td></tr>
+<tr><td class="h">401</td><td colspan="6"></td></tr><tr><td class="h">402</td><td><div class="c3">2047</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L402">100</a></div></td><td></td><td></td><td><div>2894</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return defined $problem ? (0, message($problem)) : (1, undef);</td></tr>
+<tr><td class="h">403</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">404</td><td colspan="6"></td></tr><tr><td class="h">405 - 453</td><td colspan="5"></td><td class="s"><pre>=head2 validate_repo_name
 
 Documented with L&lt;/validate_client_id&gt; below.
 
@@ -462,34 +449,34 @@ Usage:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate(s) = (1, &acirc;&#138;&yen;) if s &acirc;&#136;&#136; Id, (0, reason) otherwise
 
 =cut</pre></td></tr>
-<tr><td class="h">467</td><td colspan="6"></td></tr><tr><td class="h">468</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub validate_repo_name {</td></tr>
-<tr><td class="h">469</td><td><div class="c3">1320</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L469">1320</a></div></td><td><div>2748</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value) = @_;</td></tr>
-<tr><td class="h">470</td><td colspan="6"></td></tr><tr><td class="h">471</td><td><div class="c3">1320</div></td><td></td><td></td><td></td><td><div>2093</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return _validate_id(&#39;id.repo_name&#39;, $value);</td></tr>
-<tr><td class="h">472</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">473</td><td colspan="6"></td></tr><tr><td class="h">474</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub validate_client_id {</td></tr>
-<tr><td class="h">475</td><td><div class="c3">618</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L475">618</a></div></td><td><div>751</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value) = @_;</td></tr>
-<tr><td class="h">476</td><td colspan="6"></td></tr><tr><td class="h">477</td><td><div class="c3">618</div></td><td></td><td></td><td></td><td><div>887</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return _validate_id(&#39;id.client_id&#39;, $value);</td></tr>
-<tr><td class="h">478</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">479</td><td colspan="6"></td></tr><tr><td class="h">480</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _validate_id</td></tr>
-<tr><td class="h">481</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared check for repo names and client ids.</td></tr>
-<tr><td class="h">482</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$what_key is the catalogue key naming the kind of id;</td></tr>
-<tr><td class="h">483</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$value is the candidate.</td></tr>
-<tr><td class="h">484</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns (1, undef) or (0, translated reason).</td></tr>
-<tr><td class="h">485</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
-<tr><td class="h">486</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _validate_id :Private {</td></tr>
-<tr><td class="h">487</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($what_key, $value) = @_;</td></tr>
-<tr><td class="h">488</td><td colspan="6"></td></tr><tr><td class="h">489</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $problem =</td></tr>
-<tr><td class="h">490</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!defined $value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;id.missing&#39;</td></tr>
-<tr><td class="h">491</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ref $value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;id.not_text&#39;</td></tr>
-<tr><td class="h">492</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: !length $value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;id.empty&#39;</td></tr>
-<tr><td class="h">493</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: length($value) &gt; $MAX_ID_LENGTH&nbsp;&nbsp;&nbsp;&nbsp;? &#39;id.too_long&#39;</td></tr>
-<tr><td class="h">494</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $value !~ $ID_PATTERN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;id.bad&#39;</td></tr>
-<tr><td class="h">495</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: undef;</td></tr>
-<tr><td class="h">496</td><td colspan="6"></td></tr><tr><td class="h">497</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return defined $problem</td></tr>
-<tr><td class="h">498</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? (0, message($problem, { what =&gt; message($what_key), value =&gt; $value }))</td></tr>
-<tr><td class="h">499</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: (1, undef);</td></tr>
-<tr><td class="h">500</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L500">348</a></div></td><td><div>135874</div><div>249</div><div>3313</div></td><td class="s">}</td></tr>
-<tr><td class="h">501</td><td colspan="6"></td></tr><tr><td class="h">502 - 545</td><td colspan="5"></td><td class="s"><pre>=head2 parse_since
+<tr><td class="h">454</td><td colspan="6"></td></tr><tr><td class="h">455</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub validate_repo_name {</td></tr>
+<tr><td class="h">456</td><td><div class="c3">1333</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L456">1333</a></div></td><td><div>3788</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value) = @_;</td></tr>
+<tr><td class="h">457</td><td colspan="6"></td></tr><tr><td class="h">458</td><td><div class="c3">1333</div></td><td></td><td></td><td></td><td><div>2265</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return _validate_id(&#39;id.repo_name&#39;, $value);</td></tr>
+<tr><td class="h">459</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">460</td><td colspan="6"></td></tr><tr><td class="h">461</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub validate_client_id {</td></tr>
+<tr><td class="h">462</td><td><div class="c3">625</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L462">625</a></div></td><td><div>755</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value) = @_;</td></tr>
+<tr><td class="h">463</td><td colspan="6"></td></tr><tr><td class="h">464</td><td><div class="c3">625</div></td><td></td><td></td><td></td><td><div>989</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return _validate_id(&#39;id.client_id&#39;, $value);</td></tr>
+<tr><td class="h">465</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">466</td><td colspan="6"></td></tr><tr><td class="h">467</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _validate_id</td></tr>
+<tr><td class="h">468</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared check for repo names and client ids.</td></tr>
+<tr><td class="h">469</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$what_key is the catalogue key naming the kind of id;</td></tr>
+<tr><td class="h">470</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$value is the candidate.</td></tr>
+<tr><td class="h">471</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns (1, undef) or (0, translated reason).</td></tr>
+<tr><td class="h">472</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">473</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _validate_id :Private {</td></tr>
+<tr><td class="h">474</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($what_key, $value) = @_;</td></tr>
+<tr><td class="h">475</td><td colspan="6"></td></tr><tr><td class="h">476</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $problem =</td></tr>
+<tr><td class="h">477</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!defined $value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;id.missing&#39;</td></tr>
+<tr><td class="h">478</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ref $value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;id.not_text&#39;</td></tr>
+<tr><td class="h">479</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: !length $value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;id.empty&#39;</td></tr>
+<tr><td class="h">480</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: length($value) &gt; $MAX_ID_LENGTH&nbsp;&nbsp;&nbsp;&nbsp;? &#39;id.too_long&#39;</td></tr>
+<tr><td class="h">481</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $value !~ $ID_PATTERN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? &#39;id.bad&#39;</td></tr>
+<tr><td class="h">482</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: undef;</td></tr>
+<tr><td class="h">483</td><td colspan="6"></td></tr><tr><td class="h">484</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return defined $problem</td></tr>
+<tr><td class="h">485</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? (0, message($problem, { what =&gt; message($what_key), value =&gt; $value }))</td></tr>
+<tr><td class="h">486</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: (1, undef);</td></tr>
+<tr><td class="h">487</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L487">352</a></div></td><td><div>172770</div><div>335</div><div>4051</div></td><td class="s">}</td></tr>
+<tr><td class="h">488</td><td colspan="6"></td></tr><tr><td class="h">489 - 532</td><td colspan="5"></td><td class="s"><pre>=head2 parse_since
 
 Purpose: the start of a time window.
 
@@ -533,12 +520,12 @@ Usage:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parse_since(n) = n ; parse_since(d) = midnight_utc(d) ; parse_since(&acirc;&#138;&yen;) = &acirc;&#138;&yen;
 
 =cut</pre></td></tr>
-<tr><td class="h">546</td><td colspan="6"></td></tr><tr><td class="h">547</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub parse_since {</td></tr>
-<tr><td class="h">548</td><td><div class="c3">34</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L548">34</a></div></td><td><div>955</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value, $option) = @_;</td></tr>
-<tr><td class="h">549</td><td colspan="6"></td></tr><tr><td class="h">550</td><td><div class="c3">34</div><div class="c3">34</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-pm--condition.html#L550">50</a></div></td><td></td><td><div>31</div><div>124</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($epoch) = @{ _parse_when($value, $option || &#39;--since&#39;) };</td></tr>
-<tr><td class="h">551</td><td><div class="c3">30</div></td><td></td><td></td><td></td><td><div>41</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $epoch;</td></tr>
-<tr><td class="h">552</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">553</td><td colspan="6"></td></tr><tr><td class="h">554 - 595</td><td colspan="5"></td><td class="s"><pre>=head2 parse_until
+<tr><td class="h">533</td><td colspan="6"></td></tr><tr><td class="h">534</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub parse_since {</td></tr>
+<tr><td class="h">535</td><td><div class="c3">34</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L535">34</a></div></td><td><div>1208</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value, $option) = @_;</td></tr>
+<tr><td class="h">536</td><td colspan="6"></td></tr><tr><td class="h">537</td><td><div class="c3">34</div><div class="c3">34</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-pm--condition.html#L537">50</a></div></td><td></td><td><div>36</div><div>135</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($epoch) = @{ _parse_when($value, $option || &#39;--since&#39;) };</td></tr>
+<tr><td class="h">538</td><td><div class="c3">30</div></td><td></td><td></td><td></td><td><div>48</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $epoch;</td></tr>
+<tr><td class="h">539</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">540</td><td colspan="6"></td></tr><tr><td class="h">541 - 582</td><td colspan="5"></td><td class="s"><pre>=head2 parse_until
 
 Purpose: the end of a time window.
 
@@ -580,28 +567,28 @@ Usage:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parse_until(n) = n ; parse_until(d) = midnight_utc(d) + 86399 ; parse_until(&acirc;&#138;&yen;) = &acirc;&#138;&yen;
 
 =cut</pre></td></tr>
-<tr><td class="h">596</td><td colspan="6"></td></tr><tr><td class="h">597</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub parse_until {</td></tr>
-<tr><td class="h">598</td><td><div class="c3">33</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L598">33</a></div></td><td><div>1314911</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value, $option) = @_;</td></tr>
-<tr><td class="h">599</td><td colspan="6"></td></tr><tr><td class="h">600</td><td><div class="c3">33</div><div class="c3">33</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-pm--condition.html#L600">50</a></div></td><td></td><td><div>32</div><div>101</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($epoch, $is_date) = @{ _parse_when($value, $option || &#39;--until&#39;) };</td></tr>
-<tr><td class="h">601</td><td><div class="c3">31</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L601">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-pm--condition.html#L601">67</a></div></td><td></td><td><div>89</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (defined $epoch &amp;&amp; $is_date) ? $epoch + $SECONDS_PER_DAY - 1 : $epoch;</td></tr>
-<tr><td class="h">602</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">603</td><td colspan="6"></td></tr><tr><td class="h">604</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _parse_when</td></tr>
-<tr><td class="h">605</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parse &quot;YYYY-MM-DD&quot; or an epoch.</td></tr>
-<tr><td class="h">606</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$value may be undef; $option names the option for errors.</td></tr>
-<tr><td class="h">607</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns [ $epoch_or_undef, $is_date ]; a date cutoff means a</td></tr>
-<tr><td class="h">608</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;different instant at each end of a range, hence the flag.</td></tr>
-<tr><td class="h">609</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: raises when.bad for anything else.</td></tr>
-<tr><td class="h">610</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _parse_when :Private {</td></tr>
-<tr><td class="h">611</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value, $option) = @_;</td></tr>
-<tr><td class="h">612</td><td colspan="6"></td></tr><tr><td class="h">613</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $parsed =</td></tr>
-<tr><td class="h">614</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!defined $value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? [ undef, 0 ]</td></tr>
-<tr><td class="h">615</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $value =~ /\A\d+\z/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? [ $value + 0, 0 ]</td></tr>
-<tr><td class="h">616</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $value =~ /\A(\d{4})-(\d{2})-(\d{2})\z/&nbsp;&nbsp;? [ Time::Local::timegm(0, 0, 0, $3, $2 - 1, $1), 1 ]</td></tr>
-<tr><td class="h">617</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: undef;</td></tr>
-<tr><td class="h">618</td><td colspan="6"></td></tr><tr><td class="h">619</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;when.bad&#39;, { option =&gt; $option, value =&gt; $value }) unless $parsed;</td></tr>
-<tr><td class="h">620</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $parsed;</td></tr>
-<tr><td class="h">621</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L621">348</a></div></td><td><div>107383</div><div>280</div><div>2192</div></td><td class="s">}</td></tr>
-<tr><td class="h">622</td><td colspan="6"></td></tr><tr><td class="h">623 - 660</td><td colspan="5"></td><td class="s"><pre>=head2 format_utc
+<tr><td class="h">583</td><td colspan="6"></td></tr><tr><td class="h">584</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub parse_until {</td></tr>
+<tr><td class="h">585</td><td><div class="c3">33</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L585">33</a></div></td><td><div>1810775</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value, $option) = @_;</td></tr>
+<tr><td class="h">586</td><td colspan="6"></td></tr><tr><td class="h">587</td><td><div class="c3">33</div><div class="c3">33</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-pm--condition.html#L587">50</a></div></td><td></td><td><div>35</div><div>110</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($epoch, $is_date) = @{ _parse_when($value, $option || &#39;--until&#39;) };</td></tr>
+<tr><td class="h">588</td><td><div class="c3">31</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L588">100</a></div></td><td><div class="c0"><a href="blib-lib-App-FileSync-pm--condition.html#L588">67</a></div></td><td></td><td><div>110</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (defined $epoch &amp;&amp; $is_date) ? $epoch + $SECONDS_PER_DAY - 1 : $epoch;</td></tr>
+<tr><td class="h">589</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">590</td><td colspan="6"></td></tr><tr><td class="h">591</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _parse_when</td></tr>
+<tr><td class="h">592</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parse &quot;YYYY-MM-DD&quot; or an epoch.</td></tr>
+<tr><td class="h">593</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$value may be undef; $option names the option for errors.</td></tr>
+<tr><td class="h">594</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns [ $epoch_or_undef, $is_date ]; a date cutoff means a</td></tr>
+<tr><td class="h">595</td><td></td><td></td><td></td><td></td><td></td><td class="s">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;different instant at each end of a range, hence the flag.</td></tr>
+<tr><td class="h">596</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: raises when.bad for anything else.</td></tr>
+<tr><td class="h">597</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _parse_when :Private {</td></tr>
+<tr><td class="h">598</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($value, $option) = @_;</td></tr>
+<tr><td class="h">599</td><td colspan="6"></td></tr><tr><td class="h">600</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $parsed =</td></tr>
+<tr><td class="h">601</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!defined $value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? [ undef, 0 ]</td></tr>
+<tr><td class="h">602</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $value =~ /\A\d+\z/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? [ $value + 0, 0 ]</td></tr>
+<tr><td class="h">603</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $value =~ /\A(\d{4})-(\d{2})-(\d{2})\z/&nbsp;&nbsp;? [ Time::Local::timegm(0, 0, 0, $3, $2 - 1, $1), 1 ]</td></tr>
+<tr><td class="h">604</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: undef;</td></tr>
+<tr><td class="h">605</td><td colspan="6"></td></tr><tr><td class="h">606</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw(&#39;when.bad&#39;, { option =&gt; $option, value =&gt; $value }) unless $parsed;</td></tr>
+<tr><td class="h">607</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $parsed;</td></tr>
+<tr><td class="h">608</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L608">352</a></div></td><td><div>136840</div><div>320</div><div>3121</div></td><td class="s">}</td></tr>
+<tr><td class="h">609</td><td colspan="6"></td></tr><tr><td class="h">610 - 647</td><td colspan="5"></td><td class="s"><pre>=head2 format_utc
 
 Purpose: a compact UTC timestamp.
 
@@ -639,11 +626,11 @@ None.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;format_utc(e) = yyyy mm dd &#39;T&#39; HH MM SS &#39;Z&#39; of gmtime(e)
 
 =cut</pre></td></tr>
-<tr><td class="h">661</td><td colspan="6"></td></tr><tr><td class="h">662</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub format_utc {</td></tr>
-<tr><td class="h">663</td><td><div class="c3">163</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L663">163</a></div></td><td><div>1124</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($epoch) = @_;</td></tr>
-<tr><td class="h">664</td><td colspan="6"></td></tr><tr><td class="h">665</td><td><div class="c3">163</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-pm--condition.html#L665">33</a></div></td><td></td><td><div>9727</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return strftime($UTC_STAMP, gmtime($epoch // time));</td></tr>
-<tr><td class="h">666</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">667</td><td colspan="6"></td></tr><tr><td class="h">668 - 707</td><td colspan="5"></td><td class="s"><pre>=head2 split_name
+<tr><td class="h">648</td><td colspan="6"></td></tr><tr><td class="h">649</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub format_utc {</td></tr>
+<tr><td class="h">650</td><td><div class="c3">163</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L650">163</a></div></td><td><div>1626</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($epoch) = @_;</td></tr>
+<tr><td class="h">651</td><td colspan="6"></td></tr><tr><td class="h">652</td><td><div class="c3">163</div></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-pm--condition.html#L652">33</a></div></td><td></td><td><div>11652</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return strftime($UTC_STAMP, gmtime($epoch // time));</td></tr>
+<tr><td class="h">653</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">654</td><td colspan="6"></td></tr><tr><td class="h">655 - 694</td><td colspan="5"></td><td class="s"><pre>=head2 split_name
 
 Purpose: split a relative path into directory, stem and extension.
 
@@ -683,13 +670,13 @@ None.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e = &acirc;&#159;&uml;&acirc;&#159;&copy; &acirc;&#136;&uml; (head e = &#39;.&#39; &acirc;&#136;&sect; &#39;.&#39; &acirc;&#136;&#137; ran(tail e)) ; s &acirc;&#137;&nbsp; &acirc;&#159;&uml;&acirc;&#159;&copy;
 
 =cut</pre></td></tr>
-<tr><td class="h">708</td><td colspan="6"></td></tr><tr><td class="h">709</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub split_name {</td></tr>
-<tr><td class="h">710</td><td><div class="c3">27</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L710">27</a></div></td><td><div>26</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($path) = @_;</td></tr>
-<tr><td class="h">711</td><td colspan="6"></td></tr><tr><td class="h">712</td><td><div class="c3">27</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L712">100</a></div></td><td></td><td></td><td><div>50</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($dir, $base) = $path =~ m{\A(.*)/([^/]+)\z} ? ($1, $2) : (&#39;&#39;, $path);</td></tr>
-<tr><td class="h">713</td><td><div class="c3">27</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L713">100</a></div></td><td></td><td></td><td><div>77</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($stem, $ext) = $base =~ /\A(.+)(\.[^.]+)\z/ ? ($1, $2) : ($base, &#39;&#39;);</td></tr>
-<tr><td class="h">714</td><td colspan="6"></td></tr><tr><td class="h">715</td><td><div class="c3">27</div></td><td></td><td></td><td></td><td><div>48</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return [ $dir, $stem, $ext ];</td></tr>
-<tr><td class="h">716</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">717</td><td colspan="6"></td></tr><tr><td class="h">718 - 758</td><td colspan="5"></td><td class="s"><pre>=head2 name_with_suffix
+<tr><td class="h">695</td><td colspan="6"></td></tr><tr><td class="h">696</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub split_name {</td></tr>
+<tr><td class="h">697</td><td><div class="c3">27</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L697">27</a></div></td><td><div>31</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($path) = @_;</td></tr>
+<tr><td class="h">698</td><td colspan="6"></td></tr><tr><td class="h">699</td><td><div class="c3">27</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L699">100</a></div></td><td></td><td></td><td><div>51</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($dir, $base) = $path =~ m{\A(.*)/([^/]+)\z} ? ($1, $2) : (&#39;&#39;, $path);</td></tr>
+<tr><td class="h">700</td><td><div class="c3">27</div></td><td><div class="c3" title="T/F"><a href="blib-lib-App-FileSync-pm--branch.html#L700">100</a></div></td><td></td><td></td><td><div>83</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($stem, $ext) = $base =~ /\A(.+)(\.[^.]+)\z/ ? ($1, $2) : ($base, &#39;&#39;);</td></tr>
+<tr><td class="h">701</td><td colspan="6"></td></tr><tr><td class="h">702</td><td><div class="c3">27</div></td><td></td><td></td><td></td><td><div>62</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return [ $dir, $stem, $ext ];</td></tr>
+<tr><td class="h">703</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">704</td><td colspan="6"></td></tr><tr><td class="h">705 - 745</td><td colspan="5"></td><td class="s"><pre>=head2 name_with_suffix
 
 Purpose: make a name unique by numbering it before its extension.
 
@@ -730,12 +717,12 @@ None.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name_with_suffix(p, n) = join(d, s &acirc;&#129;&#128; &quot;-&quot; &acirc;&#129;&#128; n &acirc;&#129;&#128; e)
 
 =cut</pre></td></tr>
-<tr><td class="h">759</td><td colspan="6"></td></tr><tr><td class="h">760</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub name_with_suffix {</td></tr>
-<tr><td class="h">761</td><td><div class="c0">0</div></td><td></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-pm--subroutine.html#L761">0</a></div></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($path, $suffix) = @_;</td></tr>
-<tr><td class="h">762</td><td colspan="6"></td></tr><tr><td class="h">763</td><td><div class="c0">0</div><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($dir, $stem, $ext) = @{ split_name($path) };</td></tr>
-<tr><td class="h">764</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return _join_dir($dir, &quot;$stem-$suffix$ext&quot;);</td></tr>
-<tr><td class="h">765</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">766</td><td colspan="6"></td></tr><tr><td class="h">767 - 811</td><td colspan="5"></td><td class="s"><pre>=head2 conflict_name
+<tr><td class="h">746</td><td colspan="6"></td></tr><tr><td class="h">747</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub name_with_suffix {</td></tr>
+<tr><td class="h">748</td><td><div class="c0">0</div></td><td></td><td></td><td><div class="c0"><a href="blib-lib-App-FileSync-pm--subroutine.html#L748">0</a></div></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($path, $suffix) = @_;</td></tr>
+<tr><td class="h">749</td><td colspan="6"></td></tr><tr><td class="h">750</td><td><div class="c0">0</div><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($dir, $stem, $ext) = @{ split_name($path) };</td></tr>
+<tr><td class="h">751</td><td><div class="c0">0</div></td><td></td><td></td><td></td><td><div>0</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return _join_dir($dir, &quot;$stem-$suffix$ext&quot;);</td></tr>
+<tr><td class="h">752</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">753</td><td colspan="6"></td></tr><tr><td class="h">754 - 798</td><td colspan="5"></td><td class="s"><pre>=head2 conflict_name
 
 Purpose: the name a losing version is kept under.
 
@@ -780,31 +767,31 @@ None.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conflict_name(p, c, when) = join(d, s[1..room] &acirc;&#129;&#128; &quot;.conflict-&quot; &acirc;&#129;&#128; id &acirc;&#129;&#128; &quot;-&quot; &acirc;&#129;&#128; t &acirc;&#129;&#128; e)
 
 =cut</pre></td></tr>
-<tr><td class="h">812</td><td colspan="6"></td></tr><tr><td class="h">813</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub conflict_name {</td></tr>
-<tr><td class="h">814</td><td><div class="c3">27</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L814">27</a></div></td><td><div>30</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($path, $client_id, $epoch) = @_;</td></tr>
-<tr><td class="h">815</td><td colspan="6"></td></tr><tr><td class="h">816</td><td><div class="c3">27</div><div class="c3">27</div></td><td></td><td></td><td></td><td><div>19</div><div>41</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($dir, $stem, $ext) = @{ split_name($path) };</td></tr>
-<tr><td class="h">817</td><td colspan="6"></td></tr><tr><td class="h">818</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The id lands in a file name, so anything outside the id alphabet is</td></tr>
-<tr><td class="h">819</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# flattened rather than trusted.</td></tr>
-<tr><td class="h">820</td><td><div class="c3">27</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-pm--branch.html#L820">50</a></div></td><td></td><td></td><td><div>35</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $id = defined $client_id ? $client_id : $UNKNOWN_CLIENT;</td></tr>
-<tr><td class="h">821</td><td><div class="c3">27</div></td><td></td><td></td><td></td><td><div>29</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$id =~ s/[^A-Za-z0-9._-]+/_/g;</td></tr>
-<tr><td class="h">822</td><td><div class="c3">27</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-pm--branch.html#L822">50</a></div></td><td></td><td></td><td><div>39</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$id = $UNKNOWN_CLIENT unless length $id;</td></tr>
-<tr><td class="h">823</td><td colspan="6"></td></tr><tr><td class="h">824</td><td><div class="c3">27</div></td><td></td><td></td><td></td><td><div>42</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $tail = &quot;.conflict-$id-&quot; . format_utc($epoch) . $ext;</td></tr>
-<tr><td class="h">825</td><td colspan="6"></td></tr><tr><td class="h">826</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Keep the whole name inside the 255-byte limit of common filesystems.</td></tr>
-<tr><td class="h">827</td><td><div class="c3">27</div></td><td></td><td></td><td></td><td><div>56</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $room = $CONFLICT_NAME_BYTES - length($tail);</td></tr>
-<tr><td class="h">828</td><td><div class="c3">27</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-pm--branch.html#L828">50</a></div></td><td></td><td></td><td><div>30</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$room = $MIN_STEM_BYTES if $room &lt; $MIN_STEM_BYTES;</td></tr>
-<tr><td class="h">829</td><td><div class="c3">27</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-pm--branch.html#L829">50</a></div></td><td></td><td></td><td><div>29</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$stem = substr($stem, 0, $room) if length($stem) &gt; $room;</td></tr>
-<tr><td class="h">830</td><td colspan="6"></td></tr><tr><td class="h">831</td><td><div class="c3">27</div></td><td></td><td></td><td></td><td><div>53</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return _join_dir($dir, $stem . $tail);</td></tr>
-<tr><td class="h">832</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
-<tr><td class="h">833</td><td colspan="6"></td></tr><tr><td class="h">834</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _join_dir</td></tr>
-<tr><td class="h">835</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;put a relative directory and a name back together.</td></tr>
-<tr><td class="h">836</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$dir may be empty (top level).</td></tr>
-<tr><td class="h">837</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns &quot;dir/name&quot; or &quot;name&quot;.</td></tr>
-<tr><td class="h">838</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
-<tr><td class="h">839</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _join_dir :Private {</td></tr>
-<tr><td class="h">840</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($dir, $name) = @_;</td></tr>
-<tr><td class="h">841</td><td colspan="6"></td></tr><tr><td class="h">842</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return length($dir) ? &quot;$dir/$name&quot; : $name;</td></tr>
-<tr><td class="h">843</td><td><div class="c3">348</div><div class="c3">348</div><div class="c3">348</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L843">348</a></div></td><td><div>121875</div><div>337</div><div>2383</div></td><td class="s">}</td></tr>
-<tr><td class="h">844</td><td colspan="6"></td></tr><tr><td class="h">845 - 857</td><td colspan="5"></td><td class="s"><pre>=head2 write_atomic
+<tr><td class="h">799</td><td colspan="6"></td></tr><tr><td class="h">800</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub conflict_name {</td></tr>
+<tr><td class="h">801</td><td><div class="c3">27</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L801">27</a></div></td><td><div>38</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($path, $client_id, $epoch) = @_;</td></tr>
+<tr><td class="h">802</td><td colspan="6"></td></tr><tr><td class="h">803</td><td><div class="c3">27</div><div class="c3">27</div></td><td></td><td></td><td></td><td><div>22</div><div>33</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($dir, $stem, $ext) = @{ split_name($path) };</td></tr>
+<tr><td class="h">804</td><td colspan="6"></td></tr><tr><td class="h">805</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The id lands in a file name, so anything outside the id alphabet is</td></tr>
+<tr><td class="h">806</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# flattened rather than trusted.</td></tr>
+<tr><td class="h">807</td><td><div class="c3">27</div></td><td><div class="c0" title="T/-"><a href="blib-lib-App-FileSync-pm--branch.html#L807">50</a></div></td><td></td><td></td><td><div>35</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $id = defined $client_id ? $client_id : $UNKNOWN_CLIENT;</td></tr>
+<tr><td class="h">808</td><td><div class="c3">27</div></td><td></td><td></td><td></td><td><div>36</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$id =~ s/[^A-Za-z0-9._-]+/_/g;</td></tr>
+<tr><td class="h">809</td><td><div class="c3">27</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-pm--branch.html#L809">50</a></div></td><td></td><td></td><td><div>27</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$id = $UNKNOWN_CLIENT unless length $id;</td></tr>
+<tr><td class="h">810</td><td colspan="6"></td></tr><tr><td class="h">811</td><td><div class="c3">27</div></td><td></td><td></td><td></td><td><div>46</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $tail = &quot;.conflict-$id-&quot; . format_utc($epoch) . $ext;</td></tr>
+<tr><td class="h">812</td><td colspan="6"></td></tr><tr><td class="h">813</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Keep the whole name inside the 255-byte limit of common filesystems.</td></tr>
+<tr><td class="h">814</td><td><div class="c3">27</div></td><td></td><td></td><td></td><td><div>32</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my $room = $CONFLICT_NAME_BYTES - length($tail);</td></tr>
+<tr><td class="h">815</td><td><div class="c3">27</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-pm--branch.html#L815">50</a></div></td><td></td><td></td><td><div>41</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$room = $MIN_STEM_BYTES if $room &lt; $MIN_STEM_BYTES;</td></tr>
+<tr><td class="h">816</td><td><div class="c3">27</div></td><td><div class="c0" title="-/F"><a href="blib-lib-App-FileSync-pm--branch.html#L816">50</a></div></td><td></td><td></td><td><div>28</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$stem = substr($stem, 0, $room) if length($stem) &gt; $room;</td></tr>
+<tr><td class="h">817</td><td colspan="6"></td></tr><tr><td class="h">818</td><td><div class="c3">27</div></td><td></td><td></td><td></td><td><div>81</div></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return _join_dir($dir, $stem . $tail);</td></tr>
+<tr><td class="h">819</td><td></td><td></td><td></td><td></td><td></td><td class="s">}</td></tr>
+<tr><td class="h">820</td><td colspan="6"></td></tr><tr><td class="h">821</td><td></td><td></td><td></td><td></td><td></td><td class="s"># _join_dir</td></tr>
+<tr><td class="h">822</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Purpose:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;put a relative directory and a name back together.</td></tr>
+<tr><td class="h">823</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Entry:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$dir may be empty (top level).</td></tr>
+<tr><td class="h">824</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Exit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns &quot;dir/name&quot; or &quot;name&quot;.</td></tr>
+<tr><td class="h">825</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Side effects: none.</td></tr>
+<tr><td class="h">826</td><td></td><td></td><td></td><td></td><td></td><td class="s">sub _join_dir :Private {</td></tr>
+<tr><td class="h">827</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my ($dir, $name) = @_;</td></tr>
+<tr><td class="h">828</td><td colspan="6"></td></tr><tr><td class="h">829</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return length($dir) ? &quot;$dir/$name&quot; : $name;</td></tr>
+<tr><td class="h">830</td><td><div class="c3">352</div><div class="c3">352</div><div class="c3">352</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-pm--subroutine.html#L830">352</a></div></td><td><div>167276</div><div>295</div><div>3175</div></td><td class="s">}</td></tr>
+<tr><td class="h">831</td><td colspan="6"></td></tr><tr><td class="h">832 - 844</td><td colspan="5"></td><td class="s"><pre>=head2 write_atomic
 
 Documented with L&lt;/set_mtime&gt; below.
 
@@ -817,7 +804,7 @@ Documented with L&lt;/set_mtime&gt; below.
 Re-exported from L&lt;App::FileSync::IO&gt;, where they are documented.
 
 =cut</pre></td></tr>
-<tr><td class="h">858</td><td colspan="6"></td></tr><tr><td class="h">859</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
-<tr><td class="h">860</td><td colspan="6"></td></tr></table>
+<tr><td class="h">845</td><td colspan="6"></td></tr><tr><td class="h">846</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
+<tr><td class="h">847</td><td colspan="6"></td></tr></table>
 </body>
 </html>

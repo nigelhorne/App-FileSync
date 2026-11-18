@@ -29,11 +29,11 @@ https://pjcj.net
 <tr><td class="h">2</td><td colspan="6"></td></tr><tr><td class="h">3</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Every fixed number and reserved name the distribution shares.&nbsp;&nbsp;Tunables that</td></tr>
 <tr><td class="h">4</td><td></td><td></td><td></td><td></td><td></td><td class="s"># tests adjust with &quot;local&quot; (chunk sizes, the run-log limit, the delta</td></tr>
 <tr><td class="h">5</td><td></td><td></td><td></td><td></td><td></td><td class="s"># thresholds) stay as package variables in their own modules instead.</td></tr>
-<tr><td class="h">6</td><td colspan="6"></td></tr><tr><td class="h">7</td><td><div class="c3">356</div><div class="c3">356</div><div class="c3">356</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Constants-pm--subroutine.html#L7">356</a></div></td><td><div>51068</div><div>207</div><div>2874</div></td><td class="s">use strict;</td></tr>
-<tr><td class="h">8</td><td><div class="c3">356</div><div class="c3">356</div><div class="c3">356</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Constants-pm--subroutine.html#L8">356</a></div></td><td><div>371</div><div>185</div><div>5260</div></td><td class="s">use warnings;</td></tr>
-<tr><td class="h">9</td><td colspan="6"></td></tr><tr><td class="h">10</td><td><div class="c3">356</div><div class="c3">356</div><div class="c3">356</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Constants-pm--subroutine.html#L10">356</a></div></td><td><div>383</div><div>190</div><div>2476</div></td><td class="s">use Exporter qw(import);</td></tr>
-<tr><td class="h">11</td><td><div class="c3">356</div><div class="c3">356</div><div class="c3">356</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Constants-pm--subroutine.html#L11">356</a></div></td><td><div>536</div><div>1379</div><div>4330</div></td><td class="s">use Readonly;</td></tr>
-<tr><td class="h">12</td><td colspan="6"></td></tr><tr><td class="h">13</td><td><div class="c3">356</div><div class="c3">356</div><div class="c3">356</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Constants-pm--subroutine.html#L13">356</a></div></td><td><div>531</div><div>809</div><div>929</div></td><td class="s">use version; our $VERSION = version-&gt;declare(&#39;0.002.1&#39;);</td></tr>
+<tr><td class="h">6</td><td colspan="6"></td></tr><tr><td class="h">7</td><td><div class="c3">361</div><div class="c3">361</div><div class="c3">361</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Constants-pm--subroutine.html#L7">361</a></div></td><td><div>64331</div><div>268</div><div>4621</div></td><td class="s">use strict;</td></tr>
+<tr><td class="h">8</td><td><div class="c3">361</div><div class="c3">361</div><div class="c3">361</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Constants-pm--subroutine.html#L8">361</a></div></td><td><div>520</div><div>234</div><div>6475</div></td><td class="s">use warnings;</td></tr>
+<tr><td class="h">9</td><td colspan="6"></td></tr><tr><td class="h">10</td><td><div class="c3">361</div><div class="c3">361</div><div class="c3">361</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Constants-pm--subroutine.html#L10">361</a></div></td><td><div>523</div><div>234</div><div>3304</div></td><td class="s">use Exporter qw(import);</td></tr>
+<tr><td class="h">11</td><td><div class="c3">361</div><div class="c3">361</div><div class="c3">361</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Constants-pm--subroutine.html#L11">361</a></div></td><td><div>716</div><div>1845</div><div>5663</div></td><td class="s">use Readonly;</td></tr>
+<tr><td class="h">12</td><td colspan="6"></td></tr><tr><td class="h">13</td><td><div class="c3">361</div><div class="c3">361</div><div class="c3">361</div></td><td></td><td></td><td><div class="c3"><a href="blib-lib-App-FileSync-Constants-pm--subroutine.html#L13">361</a></div></td><td><div>733</div><div>1012</div><div>915</div></td><td class="s">use version; our $VERSION = version-&gt;declare(&#39;0.002.1&#39;);</td></tr>
 <tr><td class="h">14</td><td colspan="6"></td></tr><tr><td class="h">15</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Plain values use Readonly::Scalar: it sets Perl&#39;s own read-only flag, where</td></tr>
 <tr><td class="h">16</td><td></td><td></td><td></td><td></td><td></td><td class="s"># &quot;Readonly our $X&quot; ties the variable and makes every read a method call</td></tr>
 <tr><td class="h">17</td><td></td><td></td><td></td><td></td><td></td><td class="s"># (about nine times slower).&nbsp;&nbsp;Several of these are read once per file.&nbsp;&nbsp;The</td></tr>
@@ -80,33 +80,35 @@ https://pjcj.net
 <tr><td class="h">71</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $TRASH_DAYS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; 30;</td></tr>
 <tr><td class="h">72</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $MAX_DELETES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt; 200;</td></tr>
 <tr><td class="h">73</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $MAX_DELETE_PERCENT =&gt; 10;</td></tr>
-<tr><td class="h">74</td><td colspan="6"></td></tr><tr><td class="h">75</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Replica snapshots kept by &quot;filesync snapshot&quot; when nothing says otherwise.</td></tr>
-<tr><td class="h">76</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $SNAPSHOT_KEEP =&gt; 14;</td></tr>
-<tr><td class="h">77</td><td colspan="6"></td></tr><tr><td class="h">78</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Calendar arithmetic.</td></tr>
-<tr><td class="h">79</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $SECONDS_PER_DAY =&gt; 86_400;</td></tr>
-<tr><td class="h">80</td><td colspan="6"></td></tr><tr><td class="h">81</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Repo and client ids become directory names, so they are short.</td></tr>
-<tr><td class="h">82</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $MAX_ID_LENGTH =&gt; 64;</td></tr>
-<tr><td class="h">83</td><td colspan="6"></td></tr><tr><td class="h">84</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The Digest::SHA algorithm behind every content hash.</td></tr>
-<tr><td class="h">85</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $SHA_BITS =&gt; 256;</td></tr>
-<tr><td class="h">86</td><td colspan="6"></td></tr><tr><td class="h">87</td><td></td><td></td><td></td><td></td><td></td><td class="s"># A SHA-256 digest as it appears on the wire and in the index.</td></tr>
-<tr><td class="h">88</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly our $SHA256_HEX =&gt; qr/\A[0-9a-f]{64}\z/;</td></tr>
-<tr><td class="h">89</td><td colspan="6"></td></tr><tr><td class="h">90</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Two clocks are treated as agreeing within this many seconds (FAT stores</td></tr>
-<tr><td class="h">91</td><td></td><td></td><td></td><td></td><td></td><td class="s"># mtimes in 2-second units).</td></tr>
-<tr><td class="h">92</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $MTIME_TOLERANCE =&gt; 2;</td></tr>
-<tr><td class="h">93</td><td colspan="6"></td></tr><tr><td class="h">94</td><td></td><td></td><td></td><td></td><td></td><td class="s">our @EXPORT_OK = qw(</td></tr>
-<tr><td class="h">95</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$EXIT_OK $EXIT_FATAL $EXIT_LOCKED $EXIT_WARNINGS $EXIT_DRIFT $EXIT_MAX</td></tr>
-<tr><td class="h">96</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$PROTOCOL_VERSION $DEFAULT_SERVER_ROOT $SERVER_PROGRAM</td></tr>
-<tr><td class="h">97</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ROLE_CLIENT $ROLE_REPLICA @ROLES</td></tr>
-<tr><td class="h">98</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$TYPE_FILE $TYPE_DIR</td></tr>
-<tr><td class="h">99</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$STAT_MODE $STAT_SIZE $STAT_MTIME</td></tr>
-<tr><td class="h">100</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$MODE_MASK $DEFAULT_FILE_MODE</td></tr>
-<tr><td class="h">101</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ROOT_MARKER $TEMP_PREFIX $SNAPSHOT_DIR $STALE_TEMP_SECONDS</td></tr>
-<tr><td class="h">102</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$MAX_CHUNK_BYTES</td></tr>
-<tr><td class="h">103</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$TRASH_DAYS $MAX_DELETES $MAX_DELETE_PERCENT $SNAPSHOT_KEEP</td></tr>
-<tr><td class="h">104</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$SECONDS_PER_DAY $MAX_ID_LENGTH $SHA_BITS $SHA256_HEX $MTIME_TOLERANCE</td></tr>
-<tr><td class="h">105</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
-<tr><td class="h">106</td><td colspan="6"></td></tr><tr><td class="h">107</td><td></td><td></td><td></td><td></td><td></td><td class="s">our %EXPORT_TAGS = (all =&gt; \@EXPORT_OK);</td></tr>
-<tr><td class="h">108</td><td colspan="6"></td></tr><tr><td class="h">109</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
-<tr><td class="h">110</td><td colspan="6"></td></tr></table>
+<tr><td class="h">74</td><td colspan="6"></td></tr><tr><td class="h">75</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The most max_delete_percent can be: a percentage of the repo.</td></tr>
+<tr><td class="h">76</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $MAX_PERCENT =&gt; 100;</td></tr>
+<tr><td class="h">77</td><td colspan="6"></td></tr><tr><td class="h">78</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Replica snapshots kept by &quot;filesync snapshot&quot; when nothing says otherwise.</td></tr>
+<tr><td class="h">79</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $SNAPSHOT_KEEP =&gt; 14;</td></tr>
+<tr><td class="h">80</td><td colspan="6"></td></tr><tr><td class="h">81</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Calendar arithmetic.</td></tr>
+<tr><td class="h">82</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $SECONDS_PER_DAY =&gt; 86_400;</td></tr>
+<tr><td class="h">83</td><td colspan="6"></td></tr><tr><td class="h">84</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Repo and client ids become directory names, so they are short.</td></tr>
+<tr><td class="h">85</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $MAX_ID_LENGTH =&gt; 64;</td></tr>
+<tr><td class="h">86</td><td colspan="6"></td></tr><tr><td class="h">87</td><td></td><td></td><td></td><td></td><td></td><td class="s"># The Digest::SHA algorithm behind every content hash.</td></tr>
+<tr><td class="h">88</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $SHA_BITS =&gt; 256;</td></tr>
+<tr><td class="h">89</td><td colspan="6"></td></tr><tr><td class="h">90</td><td></td><td></td><td></td><td></td><td></td><td class="s"># A SHA-256 digest as it appears on the wire and in the index.</td></tr>
+<tr><td class="h">91</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly our $SHA256_HEX =&gt; qr/\A[0-9a-f]{64}\z/;</td></tr>
+<tr><td class="h">92</td><td colspan="6"></td></tr><tr><td class="h">93</td><td></td><td></td><td></td><td></td><td></td><td class="s"># Two clocks are treated as agreeing within this many seconds (FAT stores</td></tr>
+<tr><td class="h">94</td><td></td><td></td><td></td><td></td><td></td><td class="s"># mtimes in 2-second units).</td></tr>
+<tr><td class="h">95</td><td></td><td></td><td></td><td></td><td></td><td class="s">Readonly::Scalar our $MTIME_TOLERANCE =&gt; 2;</td></tr>
+<tr><td class="h">96</td><td colspan="6"></td></tr><tr><td class="h">97</td><td></td><td></td><td></td><td></td><td></td><td class="s">our @EXPORT_OK = qw(</td></tr>
+<tr><td class="h">98</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$EXIT_OK $EXIT_FATAL $EXIT_LOCKED $EXIT_WARNINGS $EXIT_DRIFT $EXIT_MAX</td></tr>
+<tr><td class="h">99</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$PROTOCOL_VERSION $DEFAULT_SERVER_ROOT $SERVER_PROGRAM</td></tr>
+<tr><td class="h">100</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ROLE_CLIENT $ROLE_REPLICA @ROLES</td></tr>
+<tr><td class="h">101</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$TYPE_FILE $TYPE_DIR</td></tr>
+<tr><td class="h">102</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$STAT_MODE $STAT_SIZE $STAT_MTIME</td></tr>
+<tr><td class="h">103</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$MODE_MASK $DEFAULT_FILE_MODE</td></tr>
+<tr><td class="h">104</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ROOT_MARKER $TEMP_PREFIX $SNAPSHOT_DIR $STALE_TEMP_SECONDS</td></tr>
+<tr><td class="h">105</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$MAX_CHUNK_BYTES</td></tr>
+<tr><td class="h">106</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$TRASH_DAYS $MAX_DELETES $MAX_DELETE_PERCENT $MAX_PERCENT $SNAPSHOT_KEEP</td></tr>
+<tr><td class="h">107</td><td></td><td></td><td></td><td></td><td></td><td class="s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$SECONDS_PER_DAY $MAX_ID_LENGTH $SHA_BITS $SHA256_HEX $MTIME_TOLERANCE</td></tr>
+<tr><td class="h">108</td><td></td><td></td><td></td><td></td><td></td><td class="s">);</td></tr>
+<tr><td class="h">109</td><td colspan="6"></td></tr><tr><td class="h">110</td><td></td><td></td><td></td><td></td><td></td><td class="s">our %EXPORT_TAGS = (all =&gt; \@EXPORT_OK);</td></tr>
+<tr><td class="h">111</td><td colspan="6"></td></tr><tr><td class="h">112</td><td></td><td></td><td></td><td></td><td></td><td class="s">1;</td></tr>
+<tr><td class="h">113</td><td colspan="6"></td></tr></table>
 </body>
 </html>
