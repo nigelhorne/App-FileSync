@@ -393,16 +393,12 @@ sub run {
 sub _for_client :Private {
 	my ($self, $text) = @_;
 
-	return $text unless defined $self->{root} && length $self->{root};
-
-	# The store builds its paths with catdir, so match the canonical form: a
-	# root given as "/srv/filesync/" appears as "/srv/filesync/master/...".
+	# new() refuses a server without a root or a repo, so both are set.  The
+	# store builds its paths with catdir, so match the canonical form: a root
+	# given as "/srv/filesync/" appears as "/srv/filesync/master/...".
 	my $root = File::Spec->canonpath($self->{root});
-
-	if (defined $self->{repo}) {
-		my $master = File::Spec->catdir($root, 'master', $self->{repo});
-		$text =~ s{\Q$master\E[\\/]}{}g;
-	}
+	my $master = File::Spec->catdir($root, 'master', $self->{repo});
+	$text =~ s{\Q$master\E[\\/]}{}g;
 	# Only a whole path component: a root of /srv must not touch /srvdata.
 	my $placeholder = $self->i18n('server.root_placeholder');
 	$text =~ s{\Q$root\E(?=[\\/'"\s:,)]|\z)}{$placeholder}g;

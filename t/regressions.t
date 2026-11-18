@@ -20,6 +20,7 @@ use App::FileSync::Args;
 use App::FileSync::CLI;
 use App::FileSync::Client;
 use App::FileSync::Config;
+use App::FileSync::Delta;
 use App::FileSync::I18N qw(strip_location);
 use App::FileSync::Ignore;
 use App::FileSync::Merge;
@@ -320,6 +321,68 @@ subtest 'Server: get validates offset and size' => sub {
 		like($reply->{error}, qr/Bad '$bad->[0]'/, 'naming the field');
 		$session->{transport}->close();
 	}
+};
+
+subtest 'Server: a pull signature is accepted up to its limits and refused past them' => sub {
+	# A client's signature for a delta pull is bounded so it cannot make the
+	# server hold or hash an unreasonable amount: at most 16384 blocks, each
+	# 1 KiB to 1 MiB.  The limits themselves are allowed.
+	my $env = TestSync->new_env();
+	$env->write_file('server', 'pull.txt', "pull me\n", $T0);
+	my $record = "\0" x 36;	# a 4-byte weak and a 32-byte strong checksum
+
+	for my $case (
+		[ 'the most blocks',      16_384, 1_024,         1 ],
+		[ 'one block too many',   16_385, 1_024,         0 ],
+		[ 'the smallest block',   1,      1_024,         1 ],
+		[ 'a block too small',    1,      1_023,         0 ],
+		[ 'the largest block',    1,      1_048_576,     1 ],
+		[ 'a block too large',    1,      1_048_577,     0 ],
+	) {
+		my ($name, $count, $block, $accepted) = @{$case};
+		my $s = session($env);
+		is($s->{plan}{'pull.txt'}{a}, 'pull', "$name: pull.txt is a pull");
+		my $reply = call($s, { cmd => 'dsig', p => 'pull.txt', n => $count, b => $block }, $record x $count);
+		if ($accepted) {
+			ok($reply->{ok}, "$name ($count x $block) is accepted");
+			is($reply->{delta}, 0, '... and a file this small is sent whole');
+		} else {
+			ok(!$reply->{ok}, "$name ($count x $block) is refused");
+			like($reply->{error}, qr/\ABad signature for 'pull\.txt'\z/, '... as a bad signature');
+		}
+		$s->{transport}->close();
+	}
+};
+
+subtest 'Server: a delta pull no smaller than the file is not sent' => sub {
+	# The server estimates a delta's size as its literal bytes plus 12 bytes a
+	# record plus 64, and sends the file whole unless that is smaller.  This
+	# file makes the estimate exactly its size: the client's signature matches
+	# only its first 1 KiB block, and the rest (one repeated byte the block
+	# never matches) goes as 79 literal records of $LITERAL bytes, so the
+	# estimate is 79 * $LITERAL + 12 * 80 + 64 = 1024 + 79 * $LITERAL.
+	my $env = TestSync->new_env();
+	srand 23;
+	my $head = join '', map { chr int rand 256 } 1 .. 1_024;
+	my $content = $head . ('a' x (79 * $App::FileSync::Delta::LITERAL));
+	$env->write_file('server', 'big.bin', $content, $T0);
+	my $signature = App::FileSync::Delta::signature($env->server_path('big.bin'), 1_024);
+	my $first = App::FileSync::Delta::encode_signature({ blocks => [ $signature->{blocks}[0] ] });
+
+	my $s = session($env);
+	is($s->{plan}{'big.bin'}{a}, 'pull', 'big.bin is a pull');
+	my $reply = call($s, { cmd => 'dsig', p => 'big.bin', n => 1, b => 1_024 }, $first);
+	ok($reply->{ok}, 'the signature is accepted');
+	is($reply->{delta}, 0, 'a delta estimated at exactly the file size is not sent');
+	$s->{transport}->close();
+
+	# Matching the second block too ("a" x 1024) turns the run of "a"s into
+	# copies: the delta is far smaller, and is sent.
+	$s = session($env);
+	my $two = App::FileSync::Delta::encode_signature({ blocks => [ @{ $signature->{blocks} }[ 0, 1 ] ] });
+	$reply = call($s, { cmd => 'dsig', p => 'big.bin', n => 2, b => 1_024 }, $two);
+	is($reply->{delta}, 1, 'a smaller delta is sent');
+	$s->{transport}->close();
 };
 
 subtest 'Server: an upload larger than announced is refused and discarded' => sub {

@@ -7,8 +7,10 @@ package App::FileSync;
 # TODO: from the 0.002.0 gap analysis.  Pre-release blockers first.
 #
 # Mutation testing:
-# TODO: the 80% score is 10 mutants, all in Platform.pm.  Mutation-test Merge,
-#	Delta, the server's %MAY table and the deletion guard.
+# TODO: Server.pm's remaining survivors (about 80 of its 154 mutants) all
+#	negate or undef a return value nothing reads: _loop discards every
+#	command handler's, and the upload, journal and _reply helpers' callers
+#	ignore theirs.  Either test them white-box or stop promising "returns 1".
 # TODO: kill the two survivors: nothing checks the return value of
 #	Platform::use_plain_end_of_scope_hook.
 #
