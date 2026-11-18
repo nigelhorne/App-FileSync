@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use Test::Most;
 
+use Errno qw(ENOENT);
 use File::Path qw(make_path);
 use File::Spec;
 use File::Temp qw(tempdir);
@@ -161,6 +162,75 @@ sub read_file {
 			'in-place edits show through a hardlinked snapshot (documented caveat)');
 		is(read_file("$copy->{path}/a.txt"), "alpha\n",
 			'a copy-mode snapshot is unaffected by in-place edits');
+	}
+}
+
+# ------------------------------------------------- a failed build rolls back
+# create() builds in .filesync-snapshots/.tmp-PID-N and renames it to the date
+# only when the whole tree is in; a failure part way must leave neither the
+# temporary directory nor the dated snapshot.
+{
+	my $leftovers = sub {
+		my ($root) = @_;
+		my $dir = App::FileSync::Snapshot::snapshot_root($root);
+		opendir my $dh, $dir or return [];
+		my @names = sort grep { !/\A\.\.?\z/ } readdir $dh;
+		closedir $dh;
+		return \@names;
+	};
+
+	# An error that is already catalogued (a directory that cannot be read)
+	# passes through unchanged.
+	SKIP: {
+		skip 'permission checks are not enforced here', 5 if $> == 0 || $^O eq 'MSWin32';
+
+		my $root = tempdir(CLEANUP => 1);
+		write_file("$root/a.txt", "alpha\n", $T0);
+		write_file("$root/b.txt", "bravo\n", $T0);
+		write_file("$root/locked/c.txt", "charlie\n", $T0);
+		chmod 0000, "$root/locked" or die "chmod: $!";
+
+		throws_ok { App::FileSync::Snapshot::create(root => $root, date => '2026-10-24', mode => 'copy') }
+			qr/\ASnapshot: cannot read \Q$root\E\/locked: /, 'an unreadable directory stops the build';
+		is_deeply($leftovers->($root), [], 'no temporary directory and no snapshot are left');
+
+		chmod 0755, "$root/locked" or die "chmod: $!";
+		my $retry = App::FileSync::Snapshot::create(root => $root, date => '2026-10-24', mode => 'copy');
+		is($retry->{created}, 1, 'the same day can then be built');
+		is($retry->{files}, 3, 'with every file');
+		is_deeply($leftovers->($root), ['2026-10-24'], 'and only the dated snapshot remains');
+	}
+
+	# An autodie failure (here a copy that cannot open its source) becomes
+	# snapshot.failed with the OS reason.  The first file is copied before the
+	# second fails, so the temporary directory is not empty when it goes.
+	{
+		my $root = tempdir(CLEANUP => 1);
+		write_file("$root/a.txt", "alpha\n", $T0);
+		write_file("$root/b.txt", "bravo\n", $T0);
+		write_file("$root/sub/c.txt", "charlie\n", $T0);
+
+		my ($calls, $temp_had) = (0, 0);
+		my $real = \&App::FileSync::Snapshot::copy_preserving;
+		{
+			no warnings 'redefine';
+			local *App::FileSync::Snapshot::copy_preserving = sub {
+				my ($from, $to) = @_;
+				return $real->(@_) unless $calls++;
+				$temp_had = -e File::Spec->catfile((File::Spec->splitpath($to))[1], 'a.txt');
+				use autodie qw(open);
+				open my $fh, '<', File::Spec->catfile($root, 'no-such-file');
+			};
+			my $enoent = do { local $! = ENOENT; "$!" };
+			throws_ok { App::FileSync::Snapshot::create(root => $root, date => '2026-10-25', mode => 'copy') }
+				qr/\ASnapshot: cannot create \S+2026-10-25: .*\Q$enoent\E/, 'a failed copy is snapshot.failed with the reason';
+		}
+		ok($temp_had, 'the first file was in the temporary directory before the failure');
+		is_deeply($leftovers->($root), [], 'which is removed, and no snapshot is made');
+
+		my $retry = App::FileSync::Snapshot::create(root => $root, date => '2026-10-25', mode => 'copy');
+		is($retry->{files}, 3, 'a later attempt builds the whole day');
+		is(read_file("$retry->{path}/sub/c.txt"), "charlie\n", 'with its content');
 	}
 }
 
