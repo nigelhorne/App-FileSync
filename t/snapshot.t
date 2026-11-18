@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Test::Most;
+use Test::Permissions qw(:revoke :guard);
 
 use Errno qw(ENOENT);
 use File::Path qw(make_path);
@@ -180,21 +181,23 @@ sub read_file {
 	};
 
 	# An error that is already catalogued (a directory that cannot be read)
-	# passes through unchanged.
+	# passes through unchanged.  Test::Permissions finds out whether chmod
+	# can really take the access away here (not as root, not on Windows or a
+	# filesystem that ignores modes), and puts the mode back afterwards.
+	my $root = tempdir(CLEANUP => 1);
 	SKIP: {
-		skip 'permission checks are not enforced here', 5 if $> == 0 || $^O eq 'MSWin32';
+		skip_unless_can_revoke('search', 5, $root);
 
-		my $root = tempdir(CLEANUP => 1);
 		write_file("$root/a.txt", "alpha\n", $T0);
 		write_file("$root/b.txt", "bravo\n", $T0);
 		write_file("$root/locked/c.txt", "charlie\n", $T0);
-		chmod 0000, "$root/locked" or die "chmod: $!";
 
-		throws_ok { App::FileSync::Snapshot::create(root => $root, date => '2026-10-24', mode => 'copy') }
-			qr/\ASnapshot: cannot read \Q$root\E\/locked: /, 'an unreadable directory stops the build';
+		with_revoked(search => "$root/locked", sub {
+			throws_ok { App::FileSync::Snapshot::create(root => $root, date => '2026-10-24', mode => 'copy') }
+				qr/\ASnapshot: cannot read \Q$root\E\/locked: /, 'an unreadable directory stops the build';
+		});
 		is_deeply($leftovers->($root), [], 'no temporary directory and no snapshot are left');
 
-		chmod 0755, "$root/locked" or die "chmod: $!";
 		my $retry = App::FileSync::Snapshot::create(root => $root, date => '2026-10-24', mode => 'copy');
 		is($retry->{created}, 1, 'the same day can then be built');
 		is($retry->{files}, 3, 'with every file');

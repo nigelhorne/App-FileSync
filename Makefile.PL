@@ -1,3 +1,5 @@
+#!/usr/bin/env perl
+
 use strict;
 use warnings;
 use ExtUtils::MakeMaker 6.64;
@@ -66,6 +68,7 @@ WriteMakefile(
 		'Test::Exception' => 0,
 		'Test::Mockingbird::TimeTravel' => '0.14',
 		'Test::Most'     => 0,
+		'Test::Permissions' => 0,
 	}, META_MERGE      => {
 		'meta-spec' => { version => 2 },
 		prereqs     => {

@@ -11,6 +11,7 @@ use File::Path qw(make_path);
 use File::Spec;
 use File::Temp qw(tempdir);
 use Test::Most;
+use Test::Permissions qw(:revoke :guard);
 
 use lib 't/lib';
 use TestSync;
@@ -259,28 +260,31 @@ subtest 'Store and Admin reject names that would escape the root' => sub {
 };
 
 subtest 'Admin: repo create says how to fix an unwritable root' => sub {
-	plan skip_all => 'permission checks are not enforced here' if $> == 0 || $^O eq 'MSWin32';
-
 	my $parent = tempdir(CLEANUP => 1);
+
+	# Test::Permissions finds out whether chmod can really stop new files
+	# here (not as root, under fakeroot, on Windows or on a filesystem that
+	# ignores modes), and with_revoked restores each mode even if a test dies.
+	plan skip_all => why_not('create', $parent) unless can_revoke_create($parent);
+
 	my $root = File::Spec->catdir($parent, 'filesync');
 	make_path($root);
-	chmod 0555, $root or die "chmod: $!";
-
 	my $admin = App::FileSync::Admin->new(root => $root);
 
 	# Old: make_path reported "Cannot create directory .../master/docs:
 	# Permission denied", naming a path below the root the caller passed.
-	throws_ok { $admin->repo_create(name => 'docs') }
-		qr/not writable by this account .*chown/s, 'the root and the remedy are named';
+	with_revoked(create => $root, sub {
+		throws_ok { $admin->repo_create(name => 'docs') }
+			qr/not writable by this account .*chown/s, 'the root and the remedy are named';
+	});
 
 	# The same mistake one level down: the root is ours, its master is not.
-	chmod 0755, $root or die "chmod: $!";
 	my $master = File::Spec->catdir($root, 'master');
 	make_path($master);
-	chmod 0555, $master or die "chmod: $!";
-	throws_ok { $admin->repo_create(name => 'docs') }
-		qr/not writable by this account \(\Q$master\E\)/, 'an unwritable master directory is named';
-	chmod 0755, $master or die "chmod: $!";
+	with_revoked(create => $master, sub {
+		throws_ok { $admin->repo_create(name => 'docs') }
+			qr/not writable by this account \(\Q$master\E\)/, 'an unwritable master directory is named';
+	});
 
 	lives_ok { $admin->repo_create(name => 'docs') } 'a writable root still creates the repo';
 };
