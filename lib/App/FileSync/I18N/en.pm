@@ -479,7 +479,9 @@ USAGE
 	'cli.repo.created.config' => '  config: %{config}s',
 	'cli.repo.none'           => 'No repos under %{root}s',
 	'cli.repo.no_clients'     => '(none)',
-	'cli.repo.show'           => "name:    %{name}s\nmaster:  %{master}s\nmeta:    %{meta}s\ntrash:   %{trash_days}s days\nlimits:  %{max_deletes}s files / %{max_delete_percent}s%%\nclients: %{clients}s",
+	'cli.repo.trash_days'     => { _by => 'count', one => 'kept %{count}d day', other => 'kept %{count}d days' },
+	'cli.repo.trash_forever'  => 'kept forever',
+	'cli.repo.show'           => "name:    %{name}s\nmaster:  %{master}s\nmeta:    %{meta}s\ntrash:   %{trash}s\nlimits:  %{max_deletes}s files / %{max_delete_percent}s%%\nclients: %{clients}s",
 
 	'cli.reindex.would'   => '%{repo}s: would index %{files}s, %{dirs}s (%{size}s); index unchanged',
 	'cli.reindex.done'    => '%{repo}s: indexed %{files}s, %{dirs}s (%{size}s); master index written',

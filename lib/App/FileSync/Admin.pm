@@ -177,7 +177,8 @@ empty index.
 
 Args: C<name> (a repo id), optional C<trash_days>, C<max_deletes>,
 C<max_delete_percent> (non-negative integers) and C<ignore> (patterns; the
-default ignore list when absent or empty).
+default ignore list when absent or empty).  A C<trash_days> of 0 keeps the
+server's trash forever.
 
 Returns: C<{ name, master, config }> (the master and config paths).
 

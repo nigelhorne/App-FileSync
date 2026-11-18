@@ -271,7 +271,7 @@ filesync snapshot restore 2026-10-20 notes --repo offsite</code></pre>
 			<tr><th>Command</th><th>What it does</th></tr>
 		</thead>
 		<tbody>
-			<tr><td><code>repo create</code></td><td>Creates the master tree, the metadata directory, the policy and an empty index. <code>--trash-days</code> sets retention, <code>--max-deletes</code> and <code>--max-delete-percent</code> the per-session deletion limits, and <code>--ignore</code> replaces the default ignore list.</td></tr>
+			<tr><td><code>repo create</code></td><td>Creates the master tree, the metadata directory, the policy and an empty index. <code>--trash-days</code> sets how many days the server keeps deleted files (0 keeps them forever), <code>--max-deletes</code> and <code>--max-delete-percent</code> the per-session deletion limits, and <code>--ignore</code> replaces the default ignore list.</td></tr>
 			<tr><td><code>repo list</code></td><td>Lists the repos under the root.</td></tr>
 			<tr><td><code>repo show</code></td><td>Prints one repo's policy.</td></tr>
 			<tr><td><code>client allow</code></td><td>Admits a client id to a repo, as <code>client</code> or <code>replica</code>. A repo with no listed clients admits every client.</td></tr>

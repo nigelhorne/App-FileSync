@@ -1,5 +1,13 @@
 Revision history for App-FileSync
 
+0.002.2
+	[ Bug Fixes ]
+	- A server repo created with "--trash-days 0" pruned its trash after
+	  30 days, while a client's "local_trash_days": 0 kept its trash
+	  forever.  0 now means "keep forever" on both sides, and the
+	  documentation says so.  "filesync-admin repo show" prints
+	  "kept forever" for such a repo instead of "0 days".
+
 0.002.1	Sun Nov 15 03:36:05 PM EST 2026
 	[ Enhancements ]
 	- Block deltas are much faster to compute.  A changed file of 8 MiB or

@@ -766,7 +766,8 @@ Purpose: housekeeping at the start of a session.
 
 Args: C<clean_stale_temps(max_age =E<gt> SECONDS)>;
 C<prune_trash(days =E<gt> N, dry_run =E<gt> BOOL)>.  Defaults: one hour, and
-the repo's C<trash_days> (30).
+the repo's C<trash_days> (30 when the policy has none).  A retention of 0
+days keeps the trash forever, as on the client.
 
 Returns: the number of temporaries removed; the arrayref of trash buckets
 removed.
@@ -824,7 +825,7 @@ sub prune_trash {
 
 	return App::FileSync::Trash::prune(
 		root    => $self->trash_dir(),
-		days    => defined $args{days} ? $args{days} : ($self->{config}{trash_days} || $TRASH_DAYS),
+		days    => defined $args{days} ? $args{days} : ($self->{config}{trash_days} // $TRASH_DAYS),
 		dry_run => $args{dry_run},
 	);
 }

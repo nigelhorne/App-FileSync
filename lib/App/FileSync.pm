@@ -7,10 +7,6 @@ package App::FileSync;
 # TODO: from the 0.002.0 gap analysis.  Pre-release blockers first.
 #
 # Behaviour that is silently wrong or inconsistent:
-# TODO: trash retention of 0 means different things on each side: the client's
-#	local_trash_days 0 keeps trash forever (Client.pm, "//"), the server's
-#	trash_days 0 silently becomes 30 days (Store.pm prune_trash, "||").
-#	Pick one meaning, document it, add a regression test.
 # TODO: document for users that 0 switches off --max-deletes and
 #	--max-delete-percent (only Merge's internal POD says so; not the help
 #	text, the admin POD or website/html/commands.html).
@@ -32,8 +28,8 @@ package App::FileSync;
 # TODO: the admin root-not-writable path in Admin::repo_create.
 #
 # Commands and APIs with no tests:
-# TODO: filesync-admin "repo show" and "client list" (Admin::repo_show,
-#	Admin::client_list) never run, in-process or through the CLI.
+# TODO: filesync-admin "client list" (Admin::client_list) never runs,
+#	in-process or through the CLI.
 # TODO: Protocol::close, Transport::SSH::command and exit_status,
 #	Transport::Local::error_text, Store::root and Store::repo.
 # TODO: the extra_args check in Transport::SSH->new has never run.

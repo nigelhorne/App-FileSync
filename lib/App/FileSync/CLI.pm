@@ -25,6 +25,7 @@ use App::FileSync::Config;
 use App::FileSync::Constants qw(
 	$EXIT_OK $EXIT_FATAL $EXIT_LOCKED $EXIT_WARNINGS $EXIT_DRIFT $EXIT_MAX
 	$DEFAULT_SERVER_ROOT $PROTOCOL_VERSION $ROLE_CLIENT @ROLES $ROOT_MARKER $MAX_ID_LENGTH $TYPE_FILE
+	$TRASH_DAYS
 );
 use App::FileSync::I18N qw(message throw strip_location);
 use App::FileSync::IO qw(ensure_dir);
@@ -1215,8 +1216,12 @@ sub _admin_repo_show :Private {
 
 	my $info = $admin->repo_show(_require(shift @args, 'repo show', 'NAME'));
 	my $config = $info->{config};
+	# A policy without trash_days prunes at the default (Store::prune_trash);
+	# 0 keeps the trash forever.
+	my $days = $config->{trash_days} // $TRASH_DAYS;
 	_say('cli.repo.show', {
 		%{$config},
+		trash   => $days ? message('cli.repo.trash_days', { count => $days }) : message('cli.repo.trash_forever'),
 		master  => $info->{master},
 		meta    => $info->{meta},
 		clients => @{ $info->{clients} } ? join(', ', @{ $info->{clients} }) : message('cli.repo.no_clients'),

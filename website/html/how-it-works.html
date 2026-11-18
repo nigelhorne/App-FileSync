@@ -163,9 +163,10 @@
 	when that is really what you want.</p>
 
 	<p>On the client, a removed file is moved into that repo's local trash, kept
-	for 30 days by default. A second deletion of the same path on the same day is
+	for 30 days by default (<code>local_trash_days</code>; 0 keeps it forever). A second deletion of the same path on the same day is
 	stored as <code>PATH.1</code>, then <code>PATH.2</code>, and so on. The server
-	keeps its own trash, with the retention set per repo.</p>
+	keeps its own trash, with the retention set per repo
+	(<code>trash_days</code>, where 0 likewise means forever).</p>
 
 <pre><code>filesync restore notes/a.txt --list
 filesync restore notes/a.txt

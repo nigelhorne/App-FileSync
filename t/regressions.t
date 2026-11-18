@@ -326,6 +326,48 @@ subtest 'Admin: restore --date picks that day, and checks the format' => sub {
 		qr/1999-01-01/, 'a date with no version is refused';
 };
 
+subtest 'Store: trash_days 0 keeps the server trash forever, as on the client' => sub {
+	my $root = tempdir(CLEANUP => 1);
+	my $admin = App::FileSync::Admin->new(root => $root);
+	$admin->repo_create(name => 'forever', trash_days => 0);
+	$admin->repo_create(name => 'default');
+
+	my $src = tempdir(CLEANUP => 1);
+	for my $repo (qw(forever default)) {
+		my $store = App::FileSync::Store->new(root => $root, repo => $repo);
+		my $file = File::Spec->catfile($src, "$repo.txt");
+		open my $fh, '>', $file or die $!;
+		print {$fh} "old\n";
+		close $fh;
+		App::FileSync::Trash::move_to_trash(src => $file, rel => 'a.txt', root => $store->trash_dir(), epoch => $T0);
+	}
+
+	# Old: "||" turned the 0 into the 30-day default, so the server
+	# pruned a bucket the policy said to keep.
+	my $forever = App::FileSync::Store->new(root => $root, repo => 'forever');
+	is($forever->{config}{trash_days}, 0, 'the policy records 0');
+	is_deeply($forever->prune_trash(), [], 'nothing is pruned with trash_days 0');
+	is(scalar @{ App::FileSync::Trash::versions(root => $forever->trash_dir(), rel => 'a.txt') }, 1, 'the old version is still there');
+
+	my $default = App::FileSync::Store->new(root => $root, repo => 'default');
+	is(scalar @{ $default->prune_trash() }, 1, 'the 30-day default still prunes the old bucket');
+
+	# The client already read 0 this way; Trash::prune is the shared rule.
+	is_deeply(App::FileSync::Trash::prune(root => $forever->trash_dir(), days => 0), [], 'Trash::prune keeps everything at 0 days');
+
+	# Old: "repo show" printed "trash: 0 days" for a repo that keeps
+	# everything.
+	my $show = sub { my $repo = shift; scalar `$^X -Ilib bin/filesync-admin --root "$root" repo show $repo 2>&1` };
+	like($show->('forever'), qr/^trash:\s+kept forever$/m, 'repo show says kept forever');
+	like($show->('default'), qr/^trash:\s+kept 30 days$/m, 'and the default in days');
+
+	# A policy with no trash_days prunes at the default, so it is not "forever".
+	my $policy = App::FileSync::Config::load_repo($root, 'default');
+	delete $policy->{trash_days};
+	App::FileSync::Config::save_repo($root, 'default', $policy);
+	like($show->('default'), qr/^trash:\s+kept 30 days$/m, 'a policy without trash_days shows the default');
+};
+
 # --- Client -----------------------------------------------------------------
 
 subtest 'Client: each repo has its own local trash' => sub {
