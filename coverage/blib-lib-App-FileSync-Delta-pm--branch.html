@@ -20,15 +20,15 @@ https://pjcj.net
 <h1>Branch Coverage</h1>
 <table>
 <tr><td class="h" align="right">File:</td><td align="left">blib/lib/App/FileSync/Delta.pm</td></tr>
-<tr><td class="h" align="right">Coverage:</td><td align="left" class="c0">68.2%</td></tr>
+<tr><td class="h" align="right">Coverage:</td><td align="left" class="c1">75.0%</td></tr>
 </table>
 <div><br/></div>
 <table>
 <tr><th>line</th><th>%</th><th colspan="2">coverage</th><th>branch</th></tr>
 <tr><td class="h"><a id="L152">152</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $size &amp;&amp; $size &gt; $BLOCK * $MAX_BLOCKS ? :</td></tr>
 <tr><td class="h"><a id="L156">156</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">defined $per_block ? :</td></tr>
-<tr><td class="h"><a id="L215">215</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $path and length $path and -f $path</td></tr>
-<tr><td class="h"><a id="L217">217</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $size &gt;= $MIN_SIZE</td></tr>
+<tr><td class="h"><a id="L215">215</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless defined $path and length $path and -f $path</td></tr>
+<tr><td class="h"><a id="L217">217</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless $size &gt;= $MIN_SIZE</td></tr>
 <tr><td class="h"><a id="L219">219</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless defined $block and $block &gt; 0</td></tr>
 <tr><td class="h"><a id="L287">287</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $signature-&gt;{&#39;blocks&#39;}</td></tr>
 <tr><td class="h"><a id="L293">293</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless defined $count</td></tr>
@@ -38,7 +38,7 @@ https://pjcj.net
 <tr><td class="h"><a id="L383">383</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $out</td></tr>
 <tr><td class="h"><a id="L384">384</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless my $block = $signature-&gt;{&#39;blocklen&#39;}</td></tr>
 <tr><td class="h"><a id="L464">464</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless print {$out;} $COPY . pack(&quot;NN&quot;, $offset, $length)</td></tr>
-<tr><td class="h"><a id="L471">471</a></td><td class="c0">50</td><td class="c3">T</td><td class="c0">F</td><td class="s">if (defined $bytes and length $bytes)</td></tr>
+<tr><td class="h"><a id="L471">471</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">if (defined $bytes and length $bytes)</td></tr>
 <tr><td class="h"><a id="L472">472</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless print {$out;} $LIT . pack(&quot;N&quot;, length $bytes) . $bytes</td></tr>
 <tr><td class="h"><a id="L526">526</a></td><td class="c3">100</td><td class="c3">T</td><td class="c3">F</td><td class="s">unless length $type</td></tr>
 <tr><td class="h"><a id="L527">527</a></td><td class="c0">50</td><td class="c0">T</td><td class="c3">F</td><td class="s">unless $type eq $COPY or $type eq $LIT</td></tr>
