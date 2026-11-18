@@ -568,6 +568,8 @@ Args: as for L</throw>.
 Returns: 1.
 
 Side Effects: carps the rendered message to STDERR (or C<$SIG{__WARN__}>).
+As with L</throw>, the message ends in a newline, so the caller's location
+follows on a line of its own and L</strip_location> removes it.
 
 Usage:
 
@@ -598,13 +600,15 @@ Whatever C<$key> names.
 
 =head3 FORMAL SPECIFICATION
 
-	warning(k, a, l) ⇒ STDERR' = STDERR ⁀ message(k, a, l) ⁀ location
+	warning : KEY × ARGS × LANG → {1}
+	warning(k, a, l) ⇒ STDERR' = STDERR ⁀ message(k, a, l) ⁀ "\n" ⁀ location
 
 =cut
 
 sub warning {
 	my ($key, $args, $wanted) = @_;
 
+	# The newline does for the location what it does in throw().
 	carp(message($key, $args, $wanted) . "\n");
 	return 1;
 }

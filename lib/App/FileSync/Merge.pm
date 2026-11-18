@@ -17,7 +17,7 @@ use App::FileSync qw(conflict_name);
 use App::FileSync::Args qw(named);
 use App::FileSync::Constants qw(
 	$ROLE_CLIENT $ROLE_REPLICA @ROLES $TYPE_FILE $TYPE_DIR
-	$MAX_DELETES $MAX_DELETE_PERCENT $MTIME_TOLERANCE
+	$MAX_DELETES $MAX_DELETE_PERCENT $MAX_PERCENT $MTIME_TOLERANCE
 );
 use App::FileSync::I18N qw(message);
 
@@ -236,8 +236,8 @@ Purpose: guard against a misconfigured client (or an empty mount) wiping the
 master.
 
 Args: C<deletions> (planned), C<base_size> (files known at the last sync),
-C<max_deletes> (default 200; 0 disables), C<max_delete_percent> (default 10;
-0 disables), C<force>.
+C<max_deletes> (default 200; 0 disables), C<max_delete_percent> (default 10,
+at most 100; 0 disables), C<force>.
 
 Returns: C<undef> when the plan is acceptable, or a translated sentence
 explaining the refusal.  At least one deletion is always allowed, so a small
@@ -262,7 +262,7 @@ Usage:
 		deletions          => { type => 'integer', min => 0, optional => 1 },
 		base_size          => { type => 'integer', min => 0, optional => 1 },
 		max_deletes        => { type => 'integer', min => 0, optional => 1 },
-		max_delete_percent => { type => 'number', min => 0, optional => 1 },
+		max_delete_percent => { type => 'number', min => 0, max => 100, optional => 1 },
 		force              => { type => 'boolean', optional => 1 },
 	}
 
@@ -288,7 +288,7 @@ sub check_delete_limit {
 		deletions          => { type => 'integer', min => 0, optional => 1 },
 		base_size          => { type => 'integer', min => 0, optional => 1 },
 		max_deletes        => { type => 'integer', min => 0, optional => 1 },
-		max_delete_percent => { type => 'number', min => 0, optional => 1 },
+		max_delete_percent => { type => 'number', min => 0, max => $MAX_PERCENT, optional => 1 },
 		force              => { type => 'boolean', optional => 1 },
 	}, 'Merge::check_delete_limit');
 

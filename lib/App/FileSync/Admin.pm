@@ -20,7 +20,7 @@ use parent 'App::FileSync::Base';
 use App::FileSync qw(json_decode validate_relpath validate_repo_name validate_client_id parse_since parse_until);
 use App::FileSync::Args qw(named positional);
 use App::FileSync::Config;
-use App::FileSync::Constants qw($DEFAULT_SERVER_ROOT $ROLE_CLIENT @ROLES);
+use App::FileSync::Constants qw($DEFAULT_SERVER_ROOT $ROLE_CLIENT @ROLES $MAX_PERCENT);
 use App::FileSync::I18N qw(os_error);
 use App::FileSync::Ignore;
 use App::FileSync::IO qw(ensure_dir list_dir open_file sha256_file);
@@ -176,7 +176,8 @@ Purpose: create a repo: its master tree, metadata directories, policy and an
 empty index.
 
 Args: C<name> (a repo id), optional C<trash_days>, C<max_deletes>,
-C<max_delete_percent> (non-negative integers) and C<ignore> (patterns; the
+C<max_delete_percent> (non-negative integers; C<max_delete_percent> is at
+most 100) and C<ignore> (patterns; the
 default ignore list when absent or empty).  A C<trash_days> of 0 keeps the
 server's trash forever.  A C<max_deletes> or C<max_delete_percent> of 0
 switches that deletion limit off; the other still applies, and setting both
@@ -203,7 +204,7 @@ Usage:
 		name               => { type => 'string', min => 1, max => 64 },
 		trash_days         => { type => 'integer', min => 0, optional => 1 },
 		max_deletes        => { type => 'integer', min => 0, optional => 1 },
-		max_delete_percent => { type => 'integer', min => 0, optional => 1 },
+		max_delete_percent => { type => 'integer', min => 0, max => 100, optional => 1 },
 		ignore             => { type => 'arrayref', optional => 1 },
 	}
 
@@ -230,6 +231,7 @@ Usage:
 
 	ΔFS
 	pre name ∈ Id ∧ repo_config_path(root, name) ∉ dom FS ∧ writable(root)
+	pre max_delete_percent ∈ 0 .. 100
 	post repo_config_path(root, name) ∈ dom FS' ∧ index(name) = ∅
 
 =head3 PSEUDOCODE
@@ -247,7 +249,7 @@ sub repo_create {
 		name               => { type => 'string', optional => 1 },
 		trash_days         => { type => 'integer', min => 0, optional => 1 },
 		max_deletes        => { type => 'integer', min => 0, optional => 1 },
-		max_delete_percent => { type => 'integer', min => 0, optional => 1 },
+		max_delete_percent => { type => 'integer', min => 0, max => $MAX_PERCENT, optional => 1 },
 		ignore             => { type => 'arrayref', optional => 1 },
 	}, 'Admin::repo_create');
 

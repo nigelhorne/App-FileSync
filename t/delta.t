@@ -387,4 +387,87 @@ sub text_file {
 	}
 }
 
+# ------------------------------------------------------- past the scan window
+
+# Only $SCAN_LIMIT bytes after the matched prefix are scanned; the rest of the
+# file goes through diff's literal tail loop.  A shrunken window puts most of
+# a small file there.
+{
+	my $dir = tempdir(CLEANUP => 1);
+	my $delta = sub {
+		my ($old, $new, $name) = @_;
+		my $signature = App::FileSync::Delta::signature($old, 1_024);
+		my $spool_path = File::Spec->catfile($dir, "$name.delta");
+		open my $spool, '+>', $spool_path or die "Cannot write $spool_path: $!";
+		binmode $spool;
+		my $stats = App::FileSync::Delta::diff($new, $signature, $spool);
+
+		seek $spool, 0, 0;
+		my %seen = (copy => 0, literal => 0, records => 0, largest => 0);
+		while (my ($type, @rest) = App::FileSync::Delta::read_op($spool)) {
+			$seen{records}++;
+			if ($type eq 'copy') {
+				$seen{copy} += $rest[1];
+			} else {
+				$seen{literal} += length $rest[0];
+				$seen{largest} = length $rest[0] if length $rest[0] > $seen{largest};
+			}
+		}
+
+		seek $spool, 0, 0;
+		my $out_path = File::Spec->catfile($dir, "$name.out");
+		open my $out, '>', $out_path or die "Cannot write $out_path: $!";
+		binmode $out;
+		App::FileSync::Delta::apply($old, $spool, $out);
+		close $out;
+		close $spool;
+		return ($stats, \%seen, slurp($out_path));
+	};
+
+	srand 13;
+	my $old_content = join '', map { chr int rand 256 } 1 .. 300_000;
+	my $new_content = $old_content;
+	substr($new_content, 2_048, 0, '!');	# shifts every block after the second
+	my $old = write_raw(File::Spec->catfile($dir, 'old.bin'), $old_content);
+	my $new = write_raw(File::Spec->catfile($dir, 'new.bin'), $new_content);
+
+	# With the whole file in the window, the shifted blocks are all found.
+	my ($whole) = $delta->($old, $new, 'whole');
+	ok($whole->{copy} > 290_000, 'a full scan finds the shifted blocks');
+
+	{
+		local $App::FileSync::Delta::SCAN_LIMIT = 8 * 1_024;
+		local $App::FileSync::Delta::LITERAL = 100_000;
+		my ($stats, $seen, $rebuilt) = $delta->($old, $new, 'window');
+
+		# The prefix copies blocks 0 and 1.  The window is the next 9 KiB
+		# ($SCAN_LIMIT plus a block); the shifted blocks start one byte into it,
+		# so it holds eight whole blocks (at 1, 1025, ... 7169).  Nothing after
+		# it is matched, though every block there is in the old file.
+		is($stats->{copy}, 2 * 1_024 + 8 * 1_024, 'only the prefix and the window are copied');
+		is($stats->{literal}, length($new_content) - $stats->{copy}, 'everything past the window is literal');
+		is_deeply([ @{$seen}{qw(copy literal)} ], [ @{$stats}{qw(copy literal)} ], 'the records carry what the stats count');
+		is($seen->{records}, $stats->{ops}, 'one op per record');
+		is($seen->{largest}, 100_000, 'the tail is cut into $LITERAL records');
+		is($rebuilt, $new_content, 'and the delta rebuilds the new file');
+	}
+
+	# A last tail chunk of "0" is still data: the loop tests length, not truth.
+	{
+		my $small_old = join '', map { chr int rand 256 } 1 .. 70_000;
+		my $small_new = "X$small_old" . '0';
+		my $from = write_raw(File::Spec->catfile($dir, 'small-old.bin'), $small_old);
+		my $to   = write_raw(File::Spec->catfile($dir, 'small-new.bin'), $small_new);
+
+		local $App::FileSync::Delta::SCAN_LIMIT = 2 * 1_024;
+		# No prefix matches, so the window is the first 3 KiB; the tail is read
+		# in chunks of $LITERAL, leaving a final chunk of the single "0".
+		local $App::FileSync::Delta::LITERAL = length($small_new) - 3 * 1_024 - 1;
+		my ($stats, undef, $rebuilt) = $delta->($from, $to, 'zero');
+		is($stats->{literal} + $stats->{copy}, length $small_new, 'every byte is accounted for');
+		is(substr($rebuilt, -1), '0', 'the final "0" chunk is written');
+		is($rebuilt, $small_new, 'and the file rebuilds exactly');
+	}
+}
+
 done_testing();

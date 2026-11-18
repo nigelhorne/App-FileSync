@@ -11,6 +11,14 @@ Revision history for App-FileSync
 	  deletion limits are switched off, which read as "nothing may be
 	  deleted".  It now says "no file limit", "no percentage limit", or
 	  "none (any number of deletions)" when both are off.
+	- "filesync-admin repo create --max-delete-percent" accepted values
+	  over 100.  It now refuses anything above 100, and so does the
+	  deletion check when a policy file holds such a value.
+	- A bad argument was reported in Params::Validate::Strict's own
+	  English, naming the internal parameter: "Admin::repo_create:
+	  Parameter 'trash_days' (-1) must be at least 0".  It is now a
+	  catalogued message, and the programs name the option that was
+	  typed: "--trash-days must be at least 0, not -1".
 
 	[ Documentation ]
 	- "filesync-admin help", the repo_create POD and the website now

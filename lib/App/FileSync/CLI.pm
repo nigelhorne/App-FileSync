@@ -20,6 +20,7 @@ use Sys::Hostname ();
 
 use App::FileSync qw(json_encode format_utc validate_repo_name validate_client_id parse_since parse_until write_atomic);
 use App::FileSync::Admin;
+use App::FileSync::Args qw(with_options);
 use App::FileSync::Client;
 use App::FileSync::Config;
 use App::FileSync::Constants qw(
@@ -1178,21 +1179,21 @@ sub _admin_dispatch :Private {
 sub _admin_repo_create :Private {
 	my ($admin, @args) = @_;
 
+	my @limits = qw(trash-days max-deletes max-delete-percent);
 	my (%opt, @ignore);
 	_options(\@args, {
-		(map { ("$_=i" => \$opt{$_}) } qw(trash-days max-deletes max-delete-percent)),
+		(map { ("$_=i" => \$opt{$_}) } @limits),
 		'ignore=s' => \@ignore,
 	}, 'repo_create');
 	my $name = _require(shift @args, 'repo create', 'NAME');
 	_no_more(\@args, 'repo create');
 
-	my $result = $admin->repo_create(
-		name               => $name,
-		trash_days         => $opt{'trash-days'},
-		max_deletes        => $opt{'max-deletes'},
-		max_delete_percent => $opt{'max-delete-percent'},
-		ignore             => \@ignore,
-	);
+	# Each limit option is its parameter with "-" for "_"; a bad value is
+	# reported by the option the user typed.
+	my %option = map { (my $key = $_) =~ tr/-/_/; $key => $_ } @limits;
+	my $result = with_options({ map { $_ => "--$option{$_}" } keys %option }, sub {
+		$admin->repo_create(name => $name, (map { $_ => $opt{ $option{$_} } } keys %option), ignore => \@ignore);
+	});
 
 	_say("cli.repo.created.$_", { %{$result}, repo => $result->{name} }) for qw(name master config);
 	return $EXIT_OK;

@@ -93,6 +93,24 @@ subtest 'geographic: concurrent instances keep their own language' => sub {
 	throws_ok { $admin{en}->_throw('admin.locked', { repo => 'docs' }) } qr/holds the lock for repo 'docs'/, 'English error';
 };
 
+subtest 'warning: catalogued, with the caller on a line of its own' => sub {
+	my @warned;
+	local $SIG{__WARN__} = sub { push @warned, $_[0] };
+
+	my $line = __LINE__ + 1;
+	my $returned = App::FileSync::I18N::warning('client.record_failed', { path => '/x at y line 3', error => 'full' });
+	is($returned, 1, 'returns 1');
+	is(scalar @warned, 1, 'warns once');
+	like($warned[0], qr/\Acannot record this run in \/x at y line 3: full\n at \Q$0\E line $line\.\n\z/,
+		'the message, then the caller (not I18N.pm) on the next line');
+	is(App::FileSync::I18N::strip_location($warned[0]), 'cannot record this run in /x at y line 3: full',
+		'strip_location removes the location and keeps a look-alike inside the message');
+
+	@warned = ();
+	App::FileSync::I18N::warning('admin.locked', { repo => 'docs' }, 'de');
+	like($warned[0], qr/\AEine andere Sitzung halt die Sperre fur 'docs'\n/, 'in the language asked for');
+};
+
 subtest 'plural rules' => sub {
 	is(message('word.file', { count => 0 }, 'en'), '0 files', 'English zero is plural');
 	is(message('word.file', { count => 1 }, 'en'), '1 file', 'English one');

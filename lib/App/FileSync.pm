@@ -7,16 +7,8 @@ package App::FileSync;
 # TODO: from the 0.002.0 gap analysis.  Pre-release blockers first.
 #
 # Behaviour that is silently wrong or inconsistent:
-# TODO: give --max-delete-percent an upper bound of 100 (150 is accepted).
-# TODO: Params::Validate::Strict failures bypass the catalogue and name the
-#	internal parameter ('trash_days') instead of the option (--trash-days).
-# TODO: I18N::warning is exported but never called or tested, and its
-#	trailing "\n" to carp puts the location on its own line, unlike its
-#	FORMAL SPECIFICATION.  Test and fix it, or remove it.
 #
 # Failure and rollback paths no test runs:
-# TODO: Delta past the 8 MiB scan window (the literal tail loop in diff):
-#	large-file deltas are unverified; "local $SCAN_LIMIT" makes it cheap.
 # TODO: Snapshot rollback: a failed build should remove its temp directory.
 # TODO: IO::write_atomic failure (a full disk): the temp file is discarded.
 # TODO: Scan::clean_stale_temps never deletes a stale temp in any test.
@@ -72,8 +64,6 @@ package App::FileSync;
 #	power cut.
 # TODO: an optional native rolling checksum (Inline::C or XS) to lift the
 #	8 MiB scan window; pure Perl manages about 2.5 MB/s when nothing matches.
-# TODO: one validation error layer that turns Params::Validate::Strict
-#	failures into catalogue messages naming the CLI option.
 
 use App::FileSync::Platform;
 

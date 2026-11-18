@@ -295,7 +295,7 @@ filesync snapshot restore 2026-10-20 notes --repo offsite</code></pre>
 		<tbody>
 			<tr><td><code>--trash-days N</code></td><td>30</td><td>How many days the server keeps deleted files. 0 keeps them forever.</td></tr>
 			<tr><td><code>--max-deletes N</code></td><td>200</td><td>The most files one sync may delete. 0 switches this limit off.</td></tr>
-			<tr><td><code>--max-delete-percent N</code></td><td>10</td><td>The most deletions in one sync, as a percentage of the files the client last synced. A sync may always delete at least one file. 0 switches this limit off.</td></tr>
+			<tr><td><code>--max-delete-percent N</code></td><td>10</td><td>The most deletions in one sync, as a percentage (0 to 100) of the files the client last synced. A sync may always delete at least one file. 0 switches this limit off.</td></tr>
 			<tr><td><code>--ignore PATTERN</code></td><td>the default list</td><td>Replaces the default ignore list; repeat it for several patterns.</td></tr>
 		</tbody>
 	</table>

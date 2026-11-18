@@ -72,6 +72,9 @@ Readonly::Scalar our $TRASH_DAYS         => 30;
 Readonly::Scalar our $MAX_DELETES        => 200;
 Readonly::Scalar our $MAX_DELETE_PERCENT => 10;
 
+# The most max_delete_percent can be: a percentage of the repo.
+Readonly::Scalar our $MAX_PERCENT => 100;
+
 # Replica snapshots kept by "filesync snapshot" when nothing says otherwise.
 Readonly::Scalar our $SNAPSHOT_KEEP => 14;
 
@@ -100,7 +103,7 @@ our @EXPORT_OK = qw(
 	$MODE_MASK $DEFAULT_FILE_MODE
 	$ROOT_MARKER $TEMP_PREFIX $SNAPSHOT_DIR $STALE_TEMP_SECONDS
 	$MAX_CHUNK_BYTES
-	$TRASH_DAYS $MAX_DELETES $MAX_DELETE_PERCENT $SNAPSHOT_KEEP
+	$TRASH_DAYS $MAX_DELETES $MAX_DELETE_PERCENT $MAX_PERCENT $SNAPSHOT_KEEP
 	$SECONDS_PER_DAY $MAX_ID_LENGTH $SHA_BITS $SHA256_HEX $MTIME_TOLERANCE
 );
 

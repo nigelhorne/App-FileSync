@@ -15,7 +15,21 @@ our %MESSAGES = (
 	'i18n.bad_catalogue' => "The catalogue for '%{language}s' is not a hash",
 
 	# -------------------------------------------------------- arguments
-	'args.invalid' => '%{routine}s: %{reason}s',
+	# %{what}s is args.param, or the command-line option the value came from.
+	'args.invalid'     => '%{routine}s: %{reason}s',
+	'args.param'       => q{%{routine}s: '%{param}s'},
+	'args.unknown'     => '%{what}s is not a known argument',
+	'args.missing'     => '%{what}s is required',
+	'args.not_number'  => q{%{what}s must be a number, not '%{value}s'},
+	'args.not_integer' => q{%{what}s must be a whole number, not '%{value}s'},
+	'args.too_small'   => '%{what}s must be at least %{min}s, not %{value}s',
+	'args.too_large'   => '%{what}s must be no more than %{max}s, not %{value}s',
+	'args.too_short'   => { _by => 'count', one => '%{what}s must be at least %{count}d character long', other => '%{what}s must be at least %{count}d characters long' },
+	'args.too_long'    => { _by => 'count', one => '%{what}s must be at most %{count}d character long', other => '%{what}s must be at most %{count}d characters long' },
+	'args.too_few'     => { _by => 'count', one => '%{what}s must have at least %{count}d entry', other => '%{what}s must have at least %{count}d entries' },
+	'args.too_many'    => { _by => 'count', one => '%{what}s must have at most %{count}d entry', other => '%{what}s must have at most %{count}d entries' },
+	'args.not_one_of'  => q{%{what}s must be one of %{list}s, not '%{value}s'},
+	'args.bad_form'    => q{%{what}s is not in the expected form: '%{value}s'},
 
 	# ------------------------------------------------------- shared words
 	'word.file'      => { _by => 'count', one => '%{count}d file', other => '%{count}d files' },
@@ -334,8 +348,8 @@ repo create options:
   --max-deletes N         most files one sync may delete; default 200,
                           0 switches this limit off
   --max-delete-percent N  most deletions in one sync, as a percentage of
-                          the files the client last synced; default 10,
-                          0 switches this limit off
+                          the files the client last synced; 0 to 100,
+                          default 10, 0 switches this limit off
   A sync stops at whichever limit it reaches first, unless it is run with
   "filesync sync --force".
 

@@ -15,11 +15,13 @@ use Test::Most;
 use lib 't/lib';
 use TestSync;
 use App::FileSync::Admin;
+use App::FileSync::Args;
 use App::FileSync::CLI;
 use App::FileSync::Client;
 use App::FileSync::Config;
 use App::FileSync::I18N qw(strip_location);
 use App::FileSync::Ignore;
+use App::FileSync::Merge;
 use App::FileSync::Process;
 use App::FileSync::Protocol;
 use App::FileSync::Scan;
@@ -394,6 +396,85 @@ subtest 'CLI: repo show says when a deletion limit is switched off' => sub {
 	App::FileSync::Config::save_repo($root, 'none', $policy);
 	like(scalar `$^X -Ilib bin/filesync-admin --root "$root" repo show none 2>&1`,
 		qr{^limits:\s+200 files / 10%$}m, 'missing limits show the defaults');
+};
+
+subtest 'Admin: --max-delete-percent is at most 100' => sub {
+	my $root = tempdir(CLEANUP => 1);
+	my $admin = App::FileSync::Admin->new(root => $root);
+
+	# Old: 150 was accepted and stored, a percentage of more than the repo.
+	throws_ok { $admin->repo_create(name => 'over', max_delete_percent => 150) }
+		qr/max_delete_percent.*no more than 100/, '150 is refused';
+	throws_ok { $admin->repo_create(name => 'over', max_delete_percent => 101) }
+		qr/no more than 100/, '101 is refused';
+	ok(!-e App::FileSync::Config::repo_config_path($root, 'over'), 'and no repo is created');
+
+	lives_ok { $admin->repo_create(name => 'full', max_delete_percent => 100) } '100 is accepted';
+	is(App::FileSync::Config::load_repo($root, 'full')->{max_delete_percent}, 100, 'and stored');
+
+	my $out = `$^X -Ilib bin/filesync-admin --root "$root" repo create cli --max-delete-percent 150 2>&1`;
+	isnt($? >> 8, 0, 'the CLI exits non-zero');
+	like($out, qr/no more than 100/, 'and says why');
+};
+
+subtest 'Args: validation failures are catalogued and name the option' => sub {
+	my $schema = {
+		count => { type => 'integer', min => 0, max => 10, optional => 1 },
+		ratio => { type => 'number', optional => 1 },
+		name  => { type => 'string', min => 2, max => 4, optional => 1 },
+		list  => { type => 'arrayref', min => 1, optional => 1 },
+		role  => { type => 'string', memberof => [ 'client', 'replica' ], optional => 1 },
+		date  => { type => 'string', matches => qr/\A\d{4}\z/, optional => 1 },
+		need  => { type => 'string' },
+	};
+	my $call = sub { App::FileSync::Args::named([ need => 'x', @_ ], $schema, 'Test::routine') };
+
+	# Old: the validator's own English, naming the parameter, such as
+	# "Parameter 'count' (11) must be no more than 10".
+	my %expect = (
+		'count 11'   => [ [ count => 11 ],         qr/\ATest::routine: 'count' must be no more than 10, not 11$/m ],
+		'count -1'   => [ [ count => -1 ],         qr/'count' must be at least 0, not -1$/m ],
+		'count 1.5'  => [ [ count => 1.5 ],        qr/'count' must be a whole number, not '1\.5'$/m ],
+		'count x'    => [ [ count => 'x' ],        qr/'count' must be a whole number, not 'x'$/m ],
+		'ratio x'    => [ [ ratio => 'x' ],        qr/'ratio' must be a number, not 'x'$/m ],
+		'name short' => [ [ name => 'a' ],         qr/'name' must be at least 2 characters long$/m ],
+		'name long'  => [ [ name => 'abcde' ],     qr/'name' must be at most 4 characters long$/m ],
+		'list empty' => [ [ list => [] ],          qr/'list' must have at least 1 entry$/m ],
+		'role'       => [ [ role => 'boss' ],      qr/'role' must be one of client, replica, not 'boss'$/m ],
+		'date'       => [ [ date => 'May' ],       qr/'date' is not in the expected form: 'May'$/m ],
+		'unknown'    => [ [ bogus => 1 ],          qr/'bogus' is not a known argument$/m ],
+	);
+	for my $case (sort keys %expect) {
+		my ($args, $error) = @{ $expect{$case} };
+		throws_ok { $call->(@{$args}) } $error, $case;
+	}
+	throws_ok { App::FileSync::Args::named([], $schema, 'Test::routine') }
+		qr/'need' is required$/m, 'missing';
+
+	# A failure it cannot name keeps the validator's text, without its location.
+	throws_ok { $call->(list => 'x') } qr/\ATest::routine: Parameter 'list' must be an arrayref/, 'a wrong reference type falls back';
+
+	# Inside with_options the option is named instead; outside, the parameter again.
+	throws_ok { App::FileSync::Args::with_options({ count => '--count' }, sub { $call->(count => 11) }) }
+		qr/\A--count must be no more than 10, not 11$/m, 'with_options names the option';
+	throws_ok { $call->(count => 11) } qr/\ATest::routine: 'count'/, 'and is undone after a failure';
+	is(App::FileSync::Args::with_options({ count => '--count' }, sub { $call->(count => 3)->{count} }), 3,
+		'with_options returns what the code returns');
+
+	# Through the program: the option the user typed.
+	my $root = tempdir(CLEANUP => 1);
+	my $out = `$^X -Ilib bin/filesync-admin --root "$root" repo create docs --trash-days -1 2>&1`;
+	isnt($? >> 8, 0, 'repo create --trash-days -1 fails');
+	like($out, qr/^ERROR: --trash-days must be at least 0, not -1$/m, 'naming --trash-days');
+	unlike($out, qr/trash_days|Admin::repo_create/, 'not the parameter or the routine');
+};
+
+subtest 'Merge: max_delete_percent above 100 is refused' => sub {
+	# Old: the policy check accepted any percentage.
+	throws_ok { App::FileSync::Merge::check_delete_limit(deletions => 1, base_size => 10, max_delete_percent => 150) }
+		qr/'max_delete_percent' must be no more than 100, not 150/, '150 is refused';
+	lives_ok { App::FileSync::Merge::check_delete_limit(deletions => 1, base_size => 10, max_delete_percent => 100) }
+		'100 is accepted';
 };
 
 # --- Client -----------------------------------------------------------------
