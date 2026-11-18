@@ -301,8 +301,9 @@ sub check_delete_limit {
 	$allowed = 1 if $allowed < 1;
 
 	my %args = (count => $deletions, known => $known, max => $max, percent => $percent);
+	# No limit refuses zero deletions: $allowed is at least one.
 	my $refusal =
-		  ($deletions == 0 || $args->{force})       ? undef
+		  $args->{force}                            ? undef
 		: ($max && $deletions > $max)               ? message('merge.too_many', \%args)
 		: ($percent && $known > 0 && $deletions > $allowed) ? message('merge.too_many_percent', \%args)
 		: undef;

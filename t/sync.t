@@ -197,9 +197,28 @@ my $T0 = 1_700_000_000;
 	like($error, qr/refusing to delete 6/, 'the refusal names the count');
 	ok($env->exists_in('server', 'file1.txt'), 'the master was not touched');
 
+	my $dry_error;
+	eval { $env->sync(dry_run => 1); 1 } or $dry_error = $@;
+	like($dry_error, qr/refusing to delete 6/, 'a dry run reports the refusal too');
+
 	my $forced = $env->sync(force => 1);
 	is($forced->{summary}{deleted}, 6, '--force performs the deletions');
 	ok(!$env->exists_in('server', 'file1.txt'), 'files are gone after --force');
+}
+
+# The limit is inclusive: deleting exactly max_deletes files goes ahead.
+{
+	my $env = TestSync->new_env(max_deletes => 5);
+	my $policy = App::FileSync::Config::load_repo($env->{server}, 'docs');
+	$policy->{max_delete_percent} = 0;
+	App::FileSync::Config::save_repo($env->{server}, 'docs', $policy);
+
+	$env->write_file('client', "file$_.txt", "content $_\n", $T0 + $_) for 1 .. 10;
+	$env->sync();
+	unlink $env->client_path("file$_.txt") for 1 .. 5;
+
+	is($env->sync()->{summary}{deleted}, 5, 'deleting exactly max_deletes files is allowed');
+	ok(!$env->exists_in('server', 'file5.txt'), 'and the files are gone from the master');
 }
 
 # The percentage guard is not replica-only: a normal client with a surviving

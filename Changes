@@ -33,6 +33,10 @@ Revision history for App-FileSync
 	  with "[server root]".  The server's log is written the same way,
 	  since over ssh its standard error reaches the client; the journal
 	  keeps the full paths.
+	- The server accepted a "mkdir" request for a path whose planned
+	  action was a conflict the client's file had won, which no client
+	  sends: a client wins a conflict only with a file, and uploads it.
+	  Such a request is now refused like any other outside the plan.
 
 	[ Documentation ]
 	- "filesync-admin help", the repo_create POD and the website now

@@ -580,4 +580,25 @@ sub text_file {
 	is(App::FileSync::Delta::_rolling_scan($short, 'abcdefgh', []), 1, 'and for a longer one');
 }
 
+# ------------------------------------- the smallest delta, through a sync
+
+# A master file of exactly $MIN_SIZE bytes is the smallest the server offers
+# a signature for.  It is a whole number of blocks, so when the client appends
+# to it, the last copy record ends exactly at the end of the old file, which
+# the server must accept.
+{
+	my $env = TestSync->new_env();
+	srand 19;
+	my $old = join '', map { chr int rand 256 } 1 .. $App::FileSync::Delta::MIN_SIZE;
+	$env->write_file('client', 'least.bin', $old, 1_700_000_000);
+	$env->sync();
+
+	my $new = $old . 'appended';
+	$env->write_file('client', 'least.bin', $new, 1_700_000_100);
+	my $push = $env->sync();
+	is($push->{summary}{delta_pushed}, 1, 'a master file of exactly $MIN_SIZE bytes is updated by delta');
+	ok($push->{summary}{bytes_sent} < 1_024, 'sending little more than the appended bytes');
+	is($env->read_file('server', 'least.bin'), $new, 'and the master is rebuilt exactly');
+}
+
 done_testing();

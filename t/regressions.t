@@ -172,6 +172,109 @@ subtest 'Server: a conflict_name other than the planned one is refused' => sub {
 	$s->{transport}->close();
 };
 
+subtest 'Server: each request is refused for every planned action it does not serve' => sub {
+	# One path for each kind of planned action.  Two of the four synced files
+	# are deleted, so the percentage guard is switched off.
+	my $env = TestSync->new_env();
+	my $policy = App::FileSync::Config::load_repo($env->{server}, 'docs');
+	$policy->{max_delete_percent} = 0;
+	App::FileSync::Config::save_repo($env->{server}, 'docs', $policy);
+
+	$env->write_file('client', $_, "v0\n", $T0) for qw(gone-there.txt gone-here.txt client-wins.txt master-wins.txt);
+	$env->sync();
+	$env->write_file('server', 'new-there.txt', "new\n", $T0 + 10);
+	$env->write_file('client', 'new-here.txt', "new\n", $T0 + 10);
+	unlink $env->server_path('gone-there.txt') or die $!;
+	unlink $env->client_path('gone-here.txt') or die $!;
+	$env->write_file('server', 'client-wins.txt', "server\n", $T0 + 10);
+	$env->write_file('client', 'client-wins.txt', "client\n", $T0 + 20);
+	$env->write_file('client', 'master-wins.txt', "client\n", $T0 + 10);
+	$env->write_file('server', 'master-wins.txt', "server\n", $T0 + 20);
+
+	my %path = (
+		pull              => 'new-there.txt',
+		push              => 'new-here.txt',
+		delete_local      => 'gone-there.txt',
+		delete_remote     => 'gone-here.txt',
+		'conflict:client' => 'client-wins.txt',
+		'conflict:remote' => 'master-wins.txt',
+	);
+	my $s = session($env);
+	my %planned = map {
+		my $action = $s->{plan}{ $path{$_} } || {};
+		($_ => ($action->{a} // '') eq 'conflict' ? "conflict:$action->{winner}" : $action->{a} // '')
+	} keys %path;
+	is_deeply(\%planned, { map { $_ => $_ } keys %path }, 'the plan has one path for each kind of action');
+	$s->{transport}->close();
+
+	# The request each kind of _expect gate serves, and the actions it may
+	# serve.  Every other pairing must be refused at the gate, before the
+	# server looks at anything else in the request.
+	my %request = (
+		get  => [ 'read',   qw(pull conflict:remote) ],
+		put  => [ 'write',  qw(push conflict:client) ],
+		sig  => [ 'delta',  qw(push) ],
+		dsig => [ 'pull',   qw(pull) ],
+		mkdir => [ 'mkdir', qw(push) ],
+		del  => [ 'delete', qw(delete_remote) ],
+		ack  => [ 'ack',    qw(pull delete_local conflict:remote) ],
+	);
+	for my $cmd (sort keys %request) {
+		my ($kind, @may) = @{ $request{$cmd} };
+		my %may = map { $_ => 1 } @may;
+		for my $action (sort grep { !$may{$_} } keys %path) {
+			my $session = session($env);
+			my $reply = call($session, { cmd => $cmd, p => $path{$action} });
+			ok(!$reply->{ok}, "$cmd ($kind) of a planned $action is refused");
+			like($reply->{error}, qr/\A\S.* of '\Q$path{$action}\E' is not in the plan\z/, '... at the plan gate');
+			$session->{transport}->close();
+		}
+	}
+	ok($env->exists_in('server', 'gone-here.txt'), 'and the refused requests changed nothing on the master');
+	ok(!$env->exists_in('server', 'new-here.txt'), 'nothing was created there either');
+};
+
+subtest 'Server: filesync-server exits 0 after a good session and 1 after a failed one' => sub {
+	# ssh hands the server's exit status back to the client, so it must say
+	# whether the session worked.  Nothing checked it, and Server::run could
+	# have reported success as failure unnoticed.
+	my $env = TestSync->new_env();
+	my $exit = sub {
+		my ($repo, @messages) = @_;
+		open my $saved, '>&', \*STDERR or die "dup stderr: $!";
+		open STDERR, '>', File::Spec->devnull() or die "null stderr: $!";
+		my $child = App::FileSync::Process::spawn(command => [
+			$^X, '-Ilib', 'bin/filesync-server',
+			'--root', $env->{server}, '--repo', $repo, '--client', 'test-1', '--role', 'client',
+		], stderr => fileno(STDERR));
+		open STDERR, '>&', $saved or die "restore stderr: $!";
+
+		my $conn = App::FileSync::Protocol->new(in => $child->{reader}, out => $child->{writer});
+		my @replies;
+		for my $message (@messages) {
+			$conn->send($message);
+			push @replies, $conn->recv();
+			last unless $replies[-1]{ok};
+		}
+		close $child->{writer};
+		close $child->{reader};
+		return (App::FileSync::Process::reap(pid => $child->{pid})->{status}, \@replies);
+	};
+	my %hello = (
+		cmd => 'hello', proto => 2, client => 'test-1', host => 'test', os => $^O,
+		role => 'client', repo => 'docs', case_insensitive => 0, now => time,
+	);
+
+	my ($status, $replies) = $exit->('docs',
+		\%hello, { cmd => 'manifest', part => 0, of => 1, entries => [] }, { cmd => 'plan' }, { cmd => 'done' });
+	is(scalar(grep { $_->{ok} } @{$replies}), 4, 'a whole session is served');
+	is($status, 0, 'and the server exits 0');
+
+	($status, $replies) = $exit->('no-such-repo', { %hello, repo => 'no-such-repo' });
+	ok(!$replies->[0]{ok}, 'a session for a missing repo is refused');
+	is($status, 1, 'and the server exits 1');
+};
+
 subtest 'Server: ack is accepted only for actions the client applies' => sub {
 	my $env = TestSync->new_env();
 	$env->write_file('client', 'new.txt', "push me\n", $T0);
@@ -232,9 +335,20 @@ subtest 'Server: an upload larger than announced is refused and discarded' => su
 	like($reply->{error}, qr/larger than announced/, 'with server.overflow');
 	$s->{transport}->close();
 
+	# tree() takes a directory: this check used to pass 'server', which
+	# listed nothing, so a temporary file left behind went unnoticed.
 	ok(!$env->exists_in('server', 'new.txt'), 'nothing was committed');
-	my @temps = grep { /filesync-tmp/ } @{ $env->tree('server') || [] };
-	is_deeply(\@temps, [], 'and no temporary file is left');
+	my $temps = sub { [ grep { /filesync-tmp/ } @{ $env->tree($env->{server}) } ] };
+	is_deeply($temps->(), [], 'and no temporary file is left');
+
+	# A client that goes away mid-upload: the failed session discards it.
+	$s = session($env);
+	ok(call($s, { cmd => 'put', p => 'new.txt', s => 3, h => sha256_hex('abc'), m => $T0, mode => 0644 })->{ok}, 'another put');
+	$s->{conn}->send_data({ cmd => 'chunk', p => 'new.txt' }, 'a');
+	ok($s->{conn}->recv()->{ok}, 'and part of it arrives');
+	is(scalar @{ $temps->() }, 1, 'into a temporary file');
+	$s->{transport}->close();
+	is_deeply($temps->(), [], 'which is removed when the client goes away');
 };
 
 subtest 'Server: unfinished actions are listed in order' => sub {

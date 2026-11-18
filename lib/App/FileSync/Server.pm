@@ -84,12 +84,14 @@ Readonly my %COMMANDS => (
 
 # Which planned actions each kind of request may serve.  "conflict:client"
 # is a conflict the client's version won; "conflict:remote" one the master's won.
+# The client wins a conflict only with a file (Merge::_conflict), so mkdir
+# never serves one.
 Readonly my %MAY => (
 	read   => [ 'pull', 'conflict:remote' ],
 	write  => [ 'push', 'conflict:client' ],
 	delta  => [ 'push' ],
 	pull   => [ 'pull' ],
-	mkdir  => [ 'push', 'conflict:client' ],
+	mkdir  => [ 'push' ],
 	delete => [ 'delete_remote' ],
 	ack    => [ 'pull', 'delete_local', 'conflict:remote' ],
 );
