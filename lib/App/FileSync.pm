@@ -14,8 +14,6 @@ package App::FileSync;
 #	one for the server's own log and journal.
 #
 # Commands and APIs with no tests:
-# TODO: Protocol::close, Transport::SSH::command and exit_status,
-#	Transport::Local::error_text, Store::root and Store::repo.
 # TODO: the extra_args check in Transport::SSH->new has never run.
 #
 # Mutation testing:
