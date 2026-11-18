@@ -34,7 +34,6 @@ requires 'Sub::Protected', '0.03';
 requires 'Sys::Hostname';
 requires 'Time::HiRes';
 requires 'Time::Local';
-requires 'Win32API::File';   # Process: pipe ends the child must not inherit
 requires 'autodie', '2.37';
 requires 'version', '0.77';
 recommends 'Cpanel::JSON::XS';   # JSON::MaybeXS adds it given a compiler

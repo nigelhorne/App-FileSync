@@ -13,6 +13,14 @@ if ($^O eq 'darwin') {
 	$dist->{'TAR'} = 'gtar';
 }
 
+# Process keeps a child from inheriting the parent's pipe ends on Windows.
+# Win32API::File is core there (since 5.8.9) and cannot be built anywhere
+# else, so it is declared only when Makefile.PL runs on Windows.  It is kept
+# out of the PREREQ_PM literal on purpose: makefilepl2cpanfile reads that
+# block without running it, and would make it a requirement everywhere,
+# which fails "cpanm --installdeps ." on Linux and macOS.
+my %windows_only = $^O eq 'MSWin32' ? ('Win32API::File' => 0) : ();
+
 WriteMakefile(
 	NAME               => 'App::FileSync',
 	ABSTRACT_FROM      => 'lib/App/FileSync.pm',
@@ -60,7 +68,7 @@ WriteMakefile(
 		'Time::HiRes'    => 0,
 		'Time::Local'    => 0,
 		'version'        => '0.77',
-		($^O eq 'MSWin32' ? ('Win32API::File' => 0) : ()),	# Process: pipe ends the child must not inherit
+		%windows_only,
 	}, TEST_REQUIRES   => {
 		'Errno'          => 0,
 		'File::Find'     => 0,

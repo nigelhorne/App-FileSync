@@ -9,7 +9,6 @@ package App::FileSync;
 # Behaviour that is silently wrong or inconsistent:
 #
 # Failure and rollback paths no test runs:
-# TODO: IO::write_atomic failure (a full disk): the temp file is discarded.
 # TODO: Scan::clean_stale_temps never deletes a stale temp in any test.
 # TODO: type changes: moving a directory into the trash (Trash::move_to_trash)
 #	and replacing a directory with a file (IO::clear_target).
