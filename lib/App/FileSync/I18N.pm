@@ -18,7 +18,7 @@ use Scalar::Util qw(blessed);
 
 use App::FileSync::I18N::en;
 
-use version; our $VERSION = version->declare('0.002.1');
+use version; our $VERSION = version->declare('0.002.2');
 
 our @EXPORT_OK = qw(message throw warning os_error strip_location);
 

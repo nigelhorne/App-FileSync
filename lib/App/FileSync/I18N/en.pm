@@ -7,7 +7,7 @@ package App::FileSync::I18N::en;
 use strict;
 use warnings;
 
-use version; our $VERSION = version->declare('0.002.1');
+use version; our $VERSION = version->declare('0.002.2');
 
 our %MESSAGES = (
 	# ---------------------------------------------------------- i18n itself
@@ -34,7 +34,6 @@ our %MESSAGES = (
 	# ------------------------------------------------------- shared words
 	'word.file'      => { _by => 'count', one => '%{count}d file', other => '%{count}d files' },
 	'word.empty_dir' => { _by => 'count', one => '%{count}d empty dir', other => '%{count}d empty dirs' },
-	'word.snapshot'  => { _by => 'count', one => 'snapshot', other => 'snapshots' },
 
 	# ---------------------------------------------------- path validation
 	'path.missing'            => 'missing path',
@@ -347,11 +346,12 @@ filesync-admin --root DIR <command>
 repo create options:
   --trash-days N          days the server keeps deleted files; default 30,
                           0 keeps them forever
-  --max-deletes N         most files one sync may delete; default 200,
-                          0 switches this limit off
+  --max-deletes N         most files one sync may delete (N itself is
+                          allowed); default 200, 0 switches this limit off
   --max-delete-percent N  most deletions in one sync, as a percentage of
-                          the files the client last synced; 0 to 100,
-                          default 10, 0 switches this limit off
+                          the files the client last synced, rounded down
+                          but at least 1; 0 to 100, default 10, 0 switches
+                          this limit off
   A sync stops at whichever limit it reaches first, unless it is run with
   "filesync sync --force".
 

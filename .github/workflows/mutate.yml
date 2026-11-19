@@ -63,6 +63,7 @@ jobs:
       - name: Generate the mutants
         env:
           AUTOMATED_TESTING: 1
+          EXTENDED_TESTING: 1
           NO_NETWORK_TESTING: 1
           NONINTERACTIVE_TESTING: 1
           INPUTS_FULL: ${{ inputs.full }}
@@ -71,6 +72,13 @@ jobs:
           # split by the shell, which is what shellcheck's SC2086 is about, and
           # a path with a space in it would break.  An empty array expands to
           # nothing here, which is what the empty string was for.
+          #
+          # Up to App::Test::Generator 0.50 the compile check before each
+          # mutant runs "perl -c" without lib/, so a module that loads another
+          # App::FileSync module fails it and every one of its mutants is
+          # dropped: mutation.json held only Platform.pm, which loads none.
+          # PERL5LIB lets those modules compile.
+          export PERL5LIB="$PWD/lib${PERL5LIB:+:$PERL5LIB}"
           if [ -n "$MUTATION_BASE_SHA" ]; then
             BASE_SHA_FLAG=(--base_sha "$MUTATION_BASE_SHA")
           else
@@ -125,3 +133,7 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}" || true
             git push origin HEAD:"${GITHUB_REF_NAME}"
           fi
+
+      # After the commit, so a failing run's results are still recorded.
+      - name: Check each module against its mutation score floor
+        run: perl .github/mutation-gate.pl mutation.json

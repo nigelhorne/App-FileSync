@@ -21,7 +21,7 @@ use App::FileSync::Constants qw(
 );
 use App::FileSync::I18N qw(message);
 
-use version; our $VERSION = version->declare('0.002.1');
+use version; our $VERSION = version->declare('0.002.2');
 
 # max_delete_percent is a percentage of the repo's size.
 Readonly::Scalar my $PERCENT => 100;
@@ -238,8 +238,11 @@ C<max_deletes> (default 200; 0 disables), C<max_delete_percent> (default 10,
 at most 100; 0 disables), C<force>.
 
 Returns: C<undef> when the plan is acceptable, or a translated sentence
-explaining the refusal.  At least one deletion is always allowed, so a small
-repo stays usable.
+explaining the refusal.  Both limits are inclusive: with C<max_deletes> 5, a
+plan may delete exactly 5 files and is refused at 6.  The percentage limit
+allows C<max_delete_percent> percent of C<base_size>, rounded down (10% of 25
+known files allows 2 deletions), but never fewer than one, so a small repo
+stays usable.  A plan that deletes nothing is always acceptable.
 
 Side Effects: none.
 

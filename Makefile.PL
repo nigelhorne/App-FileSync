@@ -77,6 +77,7 @@ WriteMakefile(
 		'Test::Mockingbird::TimeTravel' => '0.14',
 		'Test::Most'     => 0,
 		'Test::Permissions' => 0,
+		'Tie::Hash'      => 0,
 	}, META_MERGE      => {
 		'meta-spec' => { version => 2 },
 		prereqs     => {
@@ -86,7 +87,9 @@ WriteMakefile(
 				},
 			},
 		},
-		dynamic_config => 0,
+		# 1: the prerequisites depend on the platform (%windows_only), so
+		# an installer must run Makefile.PL rather than trust META.json.
+		dynamic_config => 1,
 		no_index    => {
 			directory => [ 't', 'xt' ],	# t/lib/TestSync.pm is not for CPAN
 		},

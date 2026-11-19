@@ -19,7 +19,7 @@ use Sub::Private { mode => 'enforce' };
 
 use App::FileSync::I18N qw(message throw strip_location);
 
-use version; our $VERSION = version->declare('0.002.1');
+use version; our $VERSION = version->declare('0.002.2');
 
 our @EXPORT_OK = qw(named positional with_options);
 

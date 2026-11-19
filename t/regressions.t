@@ -361,6 +361,11 @@ subtest 'Server: a delta pull no smaller than the file is not sent' => sub {
 	# only its first 1 KiB block, and the rest (one repeated byte the block
 	# never matches) goes as 79 literal records of $LITERAL bytes, so the
 	# estimate is 79 * $LITERAL + 12 * 80 + 64 = 1024 + 79 * $LITERAL.
+	#
+	# No smaller file will do: a 1 KiB block is the least the server accepts,
+	# so the 80 records must cover about 20 MB, held in memory and written
+	# to disk twice.  That is too much to ask of every CPAN smoker.
+	plan skip_all => 'builds a 20 MB file: set EXTENDED_TESTING to run it' unless $ENV{EXTENDED_TESTING};
 	my $env = TestSync->new_env();
 	srand 23;
 	my $head = join '', map { chr int rand 256 } 1 .. 1_024;

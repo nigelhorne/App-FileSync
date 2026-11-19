@@ -4,7 +4,8 @@ package App::FileSync;
 # byte-transparent JSON, path and id validation, conflict-copy naming, date
 # parsing and (re-exported from App::FileSync::IO) atomic file writes.
 
-# TODO: from the 0.002.0 gap analysis.  Pre-release blockers first.
+# TODO: open work from the 0.002.0 gap analysis.  None of it blocks a
+#	release: 0.002.1 and 0.002.2 shipped with it.
 #
 # Mutation testing:
 # TODO: Server.pm's remaining survivors (about 80 of its 154 mutants) all
@@ -22,8 +23,6 @@ package App::FileSync;
 #	bytes, and NFC and NFD forms of a name are different files.
 # TODO: warn when the client cache is damaged: the run silently re-hashes
 #	every file (no data is at risk; the merge base is on the server).
-# TODO: remove the unused message key word.snapshot, and make t/locales.t
-#	report unused keys as well as missing ones.
 #
 # Post-release roadmap: features.
 # TODO: incremental manifests (a change journal or Merkle summary), so an
@@ -39,8 +38,9 @@ package App::FileSync;
 # TODO: a conflict review command to list and resolve conflict copies.
 #
 # Post-release roadmap: technical debt.
-# TODO: widen mutation testing (Merge, Delta, Server, Trash first) and gate CI
-#	on condition coverage (57% now).
+# TODO: mutation-test Trash, Store and Client next (Merge, Delta and Server
+#	are done, and .github/mutation-gate.pl holds them to their scores), and
+#	gate CI on condition coverage (57% now).
 # TODO: pipeline the protocol: one request in flight bounds throughput by the
 #	round-trip time.
 # TODO: stream the plan as JSON lines instead of one huge line, which also
@@ -68,7 +68,7 @@ use App::FileSync::Constants qw($MAX_ID_LENGTH $SECONDS_PER_DAY);
 use App::FileSync::I18N qw(message throw);
 use App::FileSync::IO qw(write_atomic read_text set_mtime);
 
-use version; our $VERSION = version->declare('0.002.1');
+use version; our $VERSION = version->declare('0.002.2');
 
 our @EXPORT_OK = qw(
 	json_encode json_decode
@@ -150,7 +150,7 @@ App::FileSync - cron-driven file synchronisation without a daemon
 
 =head1 VERSION
 
-0.002.1
+0.002.2
 
 =head1 SYNOPSIS
 

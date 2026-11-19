@@ -30,7 +30,7 @@ use App::FileSync::Lock;
 use App::FileSync::Scan;
 use App::FileSync::Trash;
 
-use version; our $VERSION = version->declare('0.002.1');
+use version; our $VERSION = version->declare('0.002.2');
 
 # A month's journal file name: 2026-11.jsonl.
 Readonly::Scalar my $JOURNAL_NAME => '%Y-%m.jsonl';

@@ -61,6 +61,7 @@ jobs:
       - name: Install dependencies
         env:
           AUTOMATED_TESTING: 1
+          EXTENDED_TESTING: 1
           NO_NETWORK_TESTING: 1
           NONINTERACTIVE_TESTING: 1
           PERL_MM_USE_DEFAULT: 1
@@ -115,6 +116,7 @@ jobs:
       - name: Generate dashboard
         env:
           AUTOMATED_TESTING: 1
+          EXTENDED_TESTING: 1
           NO_NETWORK_TESTING: 1
           NONINTERACTIVE_TESTING: 1
         run: |

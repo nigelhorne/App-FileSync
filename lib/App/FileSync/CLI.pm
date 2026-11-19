@@ -35,7 +35,7 @@ use App::FileSync::Server;
 use App::FileSync::Settings;
 use App::FileSync::Transport::SSH;
 
-use version; our $VERSION = version->declare('0.002.1');
+use version; our $VERSION = version->declare('0.002.2');
 
 # What the marker file says to anyone who finds it.  File content, not a
 # message: it must not change with the reader's language.
@@ -111,7 +111,10 @@ and line numbers.  Text output goes to standard output; C<--json> prints one
 JSON document instead.
 
 Client exit codes: 0 ok, 1 fatal, 2 another run holds the lock, 3 completed
-with warnings, 4 verification found drift.  Admin: 0, 1 and 4.
+with warnings, 4 verification found drift.  Admin: 0, 1 and 4.  Server: 0
+after a session that finished, 1 after any other (a bad argument, a refused
+forced command, a protocol error, or another session holding the repo lock;
+the journal records a lock refusal as exit 2, but the process exits 1).
 
 =head1 FUNCTIONS
 

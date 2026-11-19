@@ -41,6 +41,7 @@ jobs:
     name: Perl ${{ matrix.perl }} on ${{ matrix.os }}
     env:
       AUTOMATED_TESTING: 1
+      EXTENDED_TESTING: 1
       NO_NETWORK_TESTING: 1
       NONINTERACTIVE_TESTING: 1
     steps:

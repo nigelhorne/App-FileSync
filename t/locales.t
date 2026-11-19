@@ -156,7 +156,7 @@ subtest 'environment selects the language' => sub {
 
 subtest 'catalogue completeness' => sub {
 	my %catalogue = %App::FileSync::I18N::en::MESSAGES;
-	my (%used, @files);
+	my (%used, %mentioned, @files);
 	File::Find::find(sub { push @files, $File::Find::name if /\.pm\z/ }, $lib);
 
 	# Literal keys passed to the message functions.  Keys built at run time
@@ -169,6 +169,13 @@ subtest 'catalogue completeness' => sub {
 		# Code only: POD examples are checked by reading them, not here.
 		$source =~ s/^=[a-zA-Z].*?(?:^=cut\b[^\n]*\n|\z)//msg;
 		$used{$1} = $file while $source =~ /$call/g;
+
+		# Any quoted key counts as a use: some are chosen in a ternary or a
+		# table and passed on later.  Comments, and the catalogue itself, do
+		# not.
+		next if $file =~ m{I18N[\\/]\w+\.pm\z};
+		$source =~ s/^\s*#.*$//mg;
+		$mentioned{$1} = 1 while $source =~ /'([a-z][a-z0-9_]*(?:\.[a-z0-9_]+)+)'/g;
 	}
 
 	ok(scalar(keys %used) > 100, 'the scan found the message calls');
@@ -188,7 +195,14 @@ subtest 'catalogue completeness' => sub {
 	) {
 		my ($prefix, @names) = @{$family};
 		ok(exists $catalogue{"$prefix$_"}, "$prefix$_ exists") for @names;
+		$mentioned{"$prefix$_"} = 1 for @names;
 	}
+
+	# And the other way round: a key nothing uses is dead text that every
+	# translation would have to carry.
+	my @unused = grep { !$mentioned{$_} } sort keys %catalogue;
+	is_deeply(\@unused, [], 'every key in the English catalogue is used')
+		or diag(join("\n", map { "unused: $_" } @unused));
 
 	# POD and messages must stay ASCII so any terminal can show them.
 	my @non_ascii = grep { !ref $catalogue{$_} && $catalogue{$_} =~ /[^\x00-\x7f]/ } keys %catalogue;

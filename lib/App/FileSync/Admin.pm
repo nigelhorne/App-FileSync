@@ -29,7 +29,7 @@ use App::FileSync::Store;
 use App::FileSync::Trash;
 use App::FileSync::Verify;
 
-use version; our $VERSION = version->declare('0.002.1');
+use version; our $VERSION = version->declare('0.002.2');
 
 # The per-repo metadata directories a new repo starts with.
 Readonly my @META_DIRS => qw(clients trash journal locks);
@@ -181,7 +181,10 @@ most 100) and C<ignore> (patterns; the
 default ignore list when absent or empty).  A C<trash_days> of 0 keeps the
 server's trash forever.  A C<max_deletes> or C<max_delete_percent> of 0
 switches that deletion limit off; the other still applies, and setting both
-to 0 lets a sync delete any number of files without C<--force>.
+to 0 lets a sync delete any number of files without C<--force>.  Both limits
+are inclusive (a sync may delete exactly C<max_deletes> files), and the
+percentage is of the files the client last synced, rounded down but never
+below one file.
 
 Returns: C<{ name, master, config }> (the master and config paths).
 

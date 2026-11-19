@@ -10,7 +10,7 @@ use warnings;
 use Exporter qw(import);
 use Readonly;
 
-use version; our $VERSION = version->declare('0.002.1');
+use version; our $VERSION = version->declare('0.002.2');
 
 # Plain values use Readonly::Scalar: it sets Perl's own read-only flag, where
 # "Readonly our $X" ties the variable and makes every read a method call

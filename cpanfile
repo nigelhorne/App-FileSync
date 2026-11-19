@@ -50,6 +50,7 @@ on 'test' => sub {
 	requires 'Test::Mockingbird::TimeTravel', '0.14';
 	requires 'Test::Most';
 	requires 'Test::Permissions';
+	requires 'Tie::Hash';
 };
 
 on 'develop' => sub {
