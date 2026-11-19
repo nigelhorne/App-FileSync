@@ -48,6 +48,7 @@ t/lib/TestSync.pm
 t/locales.t
 t/log.t
 t/merge.t
+t/mutation.t
 t/mtime.t
 t/paths.t
 t/regressions.t

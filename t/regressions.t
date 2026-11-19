@@ -364,8 +364,11 @@ subtest 'Server: a delta pull no smaller than the file is not sent' => sub {
 	#
 	# No smaller file will do: a 1 KiB block is the least the server accepts,
 	# so the 80 records must cover about 20 MB, held in memory and written
-	# to disk twice.  That is too much to ask of every CPAN smoker.
-	plan skip_all => 'builds a 20 MB file: set EXTENDED_TESTING to run it' unless $ENV{EXTENDED_TESTING};
+	# to disk twice.  That is too much to ask of every CPAN smoker, so it
+	# runs on GitHub Actions (where the mutation workflow needs it to kill the
+	# boundary mutant in Server's delta check) or with EXTENDED_TESTING.
+	plan skip_all => 'builds a 20 MB file: set EXTENDED_TESTING to run it'
+		unless $ENV{EXTENDED_TESTING} || $ENV{GITHUB_ACTIONS};
 	my $env = TestSync->new_env();
 	srand 23;
 	my $head = join '', map { chr int rand 256 } 1 .. 1_024;

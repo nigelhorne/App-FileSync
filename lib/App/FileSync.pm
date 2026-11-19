@@ -39,8 +39,10 @@ package App::FileSync;
 #
 # Post-release roadmap: technical debt.
 # TODO: mutation-test Trash, Store and Client next (Merge, Delta and Server
-#	are done, and .github/mutation-gate.pl holds them to their scores), and
-#	gate CI on condition coverage (57% now).
+#	are done, and t/mutation.t holds them to their scores), and gate CI
+#	on condition coverage (57% now).  CI's mutation workflow is shared by
+#	every repo and pins App::Test::Generator 0.50, which drops every
+#	module that loads another App::FileSync module; it needs 0.51.
 # TODO: pipeline the protocol: one request in flight bounds throughput by the
 #	round-trip time.
 # TODO: stream the plan as JSON lines instead of one huge line, which also
