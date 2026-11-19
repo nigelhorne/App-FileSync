@@ -41,13 +41,15 @@ my $T0 = 1_700_000_000;
 
 # Open a raw session as the env's client, send the client tree's manifest and
 # ask for a plan.  Returns { transport, conn, plan => { path => action } }.
-# The server's stderr goes to /dev/null: these sessions end abruptly on
-# purpose and its "connection closed" diagnostics are expected.
+# The server's stderr goes to a temporary file: these sessions end abruptly
+# on purpose and its "connection closed" diagnostics are expected, but when a
+# call finds the server gone, call() shows what it said.
 sub session {
 	my ($env) = @_;
 
+	my $log = File::Spec->catfile(tempdir(CLEANUP => 1), 'server.err');
 	open my $saved, '>&', \*STDERR or die "dup stderr: $!";
-	open STDERR, '>', File::Spec->devnull() or die "null stderr: $!";
+	open STDERR, '>', $log or die "stderr to $log: $!";
 	my $transport = App::FileSync::Transport::Local->new(root => $env->{server}, repo => 'docs', client => 'test-1');
 	open STDERR, '>&', $saved or die "restore stderr: $!";
 
@@ -69,15 +71,27 @@ sub session {
 	my $plan = $conn->recv();
 	die 'no plan' unless $plan->{ok};
 
-	return { transport => $transport, conn => $conn, plan => { map { $_->{p} => $_ } @{ $plan->{actions} } } };
+	return { transport => $transport, conn => $conn, log => $log, plan => { map { $_->{p} => $_ } @{ $plan->{actions} } } };
 }
 
-# Send one message (with optional data) and return the reply.
+# Send one message (with optional data) and return the reply.  If the
+# connection fails, the server's stderr is shown before the error is rethrown.
 sub call {
 	my ($session, $message, $bytes) = @_;
 
-	defined $bytes ? $session->{conn}->send_data($message, $bytes) : $session->{conn}->send($message);
-	return $session->{conn}->recv();
+	my $reply = eval {
+		defined $bytes ? $session->{conn}->send_data($message, $bytes) : $session->{conn}->send($message);
+		$session->{conn}->recv();
+	};
+	return $reply if $reply;
+
+	my $error = $@;
+	if (open my $fh, '<', $session->{log}) {
+		local $/;
+		my $said = <$fh>;
+		diag("the server's stderr:\n$said") if defined $said && length $said;
+	}
+	die $error;
 }
 
 sub sha256_hex {

@@ -4,6 +4,7 @@ use Test::Most;
 use Test::Permissions qw(:revoke :guard);
 
 use Errno qw(ENOENT);
+use File::Basename qw(dirname);
 use File::Path qw(make_path);
 use File::Spec;
 use File::Temp qw(tempdir);
@@ -220,7 +221,7 @@ sub read_file {
 			local *App::FileSync::Snapshot::copy_preserving = sub {
 				my ($from, $to) = @_;
 				return $real->(@_) unless $calls++;
-				$temp_had = -e File::Spec->catfile((File::Spec->splitpath($to))[1], 'a.txt');
+				$temp_had = -e File::Spec->catfile(dirname($to), 'a.txt');
 				use autodie qw(open);
 				open my $fh, '<', File::Spec->catfile($root, 'no-such-file');
 			};

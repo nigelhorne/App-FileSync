@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use Test::Most;
 
+use File::Basename qw(dirname);
 use File::Path qw(make_path);
 use File::Spec;
 use File::Temp qw(tempdir);
@@ -137,7 +138,7 @@ ok(-d File::Spec->catdir($trash_root, '2023', '11', '13'), 'dry run deleted noth
 	my $put = sub {
 		my ($rel, $content) = @_;
 		my $path = File::Spec->catfile($from, split m{/}, $rel);
-		make_path((File::Spec->splitpath($path))[1]);
+		make_path(dirname($path));
 		open my $out, '>', $path or die "Cannot write $path: $!";
 		print {$out} $content;
 		close $out;
