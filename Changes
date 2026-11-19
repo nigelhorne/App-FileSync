@@ -1,6 +1,6 @@
 Revision history for App-FileSync
 
-0.002.2
+0.002.2	Wed Nov 18 09:33:20 PM EST 2026
 	[ Bug Fixes ]
 	- When the server refused a request that carries data (a delta
 	  signature, an upload chunk), it closed the connection without reading
