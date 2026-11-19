@@ -2,6 +2,11 @@ Revision history for App-FileSync
 
 0.002.2
 	[ Bug Fixes ]
+	- When the server refused a request that carries data (a delta
+	  signature, an upload chunk), it closed the connection without reading
+	  that data, so the client could fail with "Broken pipe" instead of
+	  showing the reason.  This happened mostly on Windows.  The server now
+	  reads the data before it replies.
 	- A server repo created with "--trash-days 0" pruned its trash after
 	  30 days, while a client's "local_trash_days": 0 kept its trash
 	  forever.  0 now means "keep forever" on both sides, and the

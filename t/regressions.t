@@ -368,6 +368,27 @@ subtest 'Server: a pull signature is accepted up to its limits and refused past 
 	}
 };
 
+subtest 'Server: a refused request still reads its payload, so the client gets the reason' => sub {
+	# Old: the server refused a dsig on its header and exited without reading
+	# the signature after it.  A client still writing that payload got a
+	# broken pipe instead of the refusal - always on Windows, where the
+	# server usually won the race, and here once the server has had time.
+	local $SIG{PIPE} = 'IGNORE';
+	my $env = TestSync->new_env();
+	$env->write_file('server', 'pull.txt', "pull me\n", $T0);
+
+	my $s = session($env);
+	is($s->{plan}{'pull.txt'}{a}, 'pull', 'pull.txt is a pull');
+	my $payload = "\0" x 36;
+	$s->{conn}->send({ cmd => 'dsig', p => 'pull.txt', n => 1, b => 1_023, len => length $payload });
+	sleep 1;	# long enough for the old server to refuse and exit
+	my $reply = eval { $s->{conn}->send_bytes($payload); $s->{conn}->recv() };
+	ok($reply, 'the payload is written and a reply comes back') or diag($@);
+	ok($reply && !$reply->{ok}, 'the reply is a refusal');
+	like($reply && $reply->{error}, qr/\ABad signature for 'pull\.txt'\z/, 'which gives the reason');
+	$s->{transport}->close();
+};
+
 subtest 'Server: a delta pull no smaller than the file is not sent' => sub {
 	# The server estimates a delta's size as its literal bytes plus 12 bytes a
 	# record plus 64, and sends the file whole unless that is smaller.  This

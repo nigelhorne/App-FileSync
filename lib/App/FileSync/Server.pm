@@ -597,11 +597,42 @@ sub _loop :Private {
 
 	until ($self->{finished}) {
 		my $message = $self->{conn}->recv();
-		my $command = $message->{cmd} // '';
-		my $method = $COMMANDS{$command} or $self->_throw('server.unknown', { command => $command });
-		$self->$method($message);
+		my $received = $self->{conn}->bytes_received();
+		my $ok = eval {
+			my $command = $message->{cmd} // '';
+			my $method = $COMMANDS{$command} or $self->_throw('server.unknown', { command => $command });
+			$self->$method($message);
+			1;
+		};
+		next if $ok;
+
+		my $error = $@;
+		$self->_discard_payload($message) if $self->{conn}->bytes_received() == $received;
+		die $error;
 	}
 
+	return 1;
+}
+
+# _discard_payload
+# Purpose:     read and drop the payload of a request that was refused before
+#              its handler read it.
+# Entry:       $message announced len bytes that are still on the wire.
+# Exit:        returns 1.
+# Side effects: consumes the bytes.  The client writes a payload straight
+#              after its header, so a server that exits without reading it
+#              can close the pipe under that write: the client then sees a
+#              broken pipe (on Windows, where the server often wins the race)
+#              instead of the refusal.  A bad length, a failed transport or a
+#              read error leaves the bytes where they are.
+sub _discard_payload :Private {
+	my ($self, $message) = @_;
+
+	my $length = $message->{len};
+	return 1 unless defined $length && $length =~ $UINT && $length > 0
+		&& $length <= $App::FileSync::Protocol::MAX_WIRE && !$self->{conn}->transport_failed();
+
+	eval { $self->{conn}->read_bytes($length + 0) };
 	return 1;
 }
 
